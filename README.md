@@ -111,12 +111,16 @@ cd ~/repos/cordova-native-gradle-workspace
 # 新しい環境での初回のみ。依存、Gradle 8.13、Wrapper、Cordova platformを復元する。
 ./scripts/bootstrap.sh
 
+# 各cloneで初回のみ。git commit時にGradleの:preCommitを実行する。
+./scripts/setup-git-hooks.sh
+
 npm run cordova:prepare
 npm run native:build
 npm run verify:structure
 npm run verify:sync
 npm run cordova:build
 npm run test:hooks
+npm run test:git-hooks
 
 # Catalog全Artifactの解決と、検証用Kotlinコードのコンパイル。
 npm run verify:catalog
@@ -153,6 +157,7 @@ Android Studioでは`native/`を開き、GradleをWrapper、Gradle JDKを17に�
 | native/feature・dataのbuild.gradle.kts | Library化、Java/Kotlin 11、SDK、feature→dataの設定 |
 | native/feature・dataのManifest | Activityを追加しない空のLibrary Manifest |
 | scripts/bootstrap.sh | 再現用依存・Gradle取得・platform復元 |
+| scripts/setup-git-hooks.sh | Gitのpre-commitからGradleの:preCommitを呼ぶhookを初回登録。既存hookは上書きしない |
 | scripts/with-env.sh・cordova.sh | JDK 17とローカルGradleを使う実行環境 |
 | scripts/catalog-version.cjs | シェル補助処理も同じCatalog版を参照 |
 | scripts/tooling-sync.sh・verification/ToolingSync.java | Android V2モデルの取得検証 |

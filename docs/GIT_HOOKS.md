@@ -66,9 +66,21 @@ cd ~/repos/cordova-native-gradle-workspace
 ./scripts/with-env.sh ./native/gradlew -p native detektFormat
 ```
 
-`with-env.sh`はJDK 17等の実行環境を選ぶ既存の補助です。Hook本体がこのscriptを実行する構成ではありません。JDK 17を設定済みならnativeディレクトリで`./gradlew preCommit`を直接実行できます。
+`with-env.sh`はJDK 17等の実行環境を選ぶ既存の補助です。Gradleタスク本体がこのscriptを実行する構成ではありません。JDK 17を設定済みならnativeディレクトリで`./gradlew preCommit`を直接実行できます。
 
-Gitの自動hook登録用shellは追加せず、Gradleタスクとして直接実行する構成です。既存の`.git/hooks`や`core.hooksPath`は変更しません。
+## Gitコミット時の自動実行を初回設定する
+
+各cloneで一度、ワークスペースのルートから実行します。
+
+```sh
+./scripts/setup-git-hooks.sh
+```
+
+セットアップはGitのhookディレクトリに実行可能な`pre-commit`を作成します。通常は`.git/hooks/pre-commit`です。hookはワークスペースのルートへ移動し、`./scripts/with-env.sh ./native/gradlew -p native :preCommit`を実行します。Gradleが成功すればコミットを続行し、失敗すればコミットを中止します。整形でファイルが変わった場合は、内容を確認して再ステージしてからコミットしてください。JDKなどは手動実行時と同じ環境準備が必要です。
+
+同じhookが登録済みなら再実行できます。異なる既存hookやシンボリックリンクは上書きせず停止します。`core.hooksPath`が設定済みの場合も設定を変更せず停止するため、既存のhook側から上記のコマンドを呼び出してください。セットアップスクリプトはbootstrapからは自動実行しません。
+
+セットアップとGitからの呼び出しは、一時リポジトリを使って`npm run test:git-hooks`で検証できます。
 
 ## 解析範囲とTvAppから調整した点
 
