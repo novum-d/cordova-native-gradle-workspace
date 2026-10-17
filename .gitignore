@@ -1,0 +1,10 @@
+node_modules/
+.tools/
+.gradle/
+**/.gradle/
+**/build/
+**/local.properties
+CordovaComposeApp/platforms/
+CordovaComposeApp/plugins/
+.DS_Store
+artifacts/
