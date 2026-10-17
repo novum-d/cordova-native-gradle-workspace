@@ -1,0 +1,3 @@
+{
+  "working_tree_source": "package fixture\n\ninternal fun answer(value: Int): Int = value + 42\n"
+}

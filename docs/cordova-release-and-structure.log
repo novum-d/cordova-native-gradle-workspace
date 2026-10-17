@@ -1,0 +1,204 @@
+
+> Task :verifyNativeIntegration
+Host runtime report: /Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/build/reports/catalog/host-runtime.txt
+Verified JDK 17 / Gradle 8.13 / AGP 8.7.3 / Kotlin 1.9.24 / Java-Kotlin target 11
+Android modules: [:app, :CordovaLib, :data, :feature]; APK hosts: [:app]
+
+> Task :app:buildKotlinToolingMetadata
+> Task :app:checkKotlinGradlePluginConfigurationErrors
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preReleaseBuild UP-TO-DATE
+> Task :app:generateReleaseBuildConfig
+> Task :CordovaLib:preBuild UP-TO-DATE
+> Task :CordovaLib:preReleaseBuild UP-TO-DATE
+> Task :CordovaLib:writeReleaseAarMetadata
+> Task :data:preBuild UP-TO-DATE
+> Task :data:preReleaseBuild UP-TO-DATE
+> Task :data:writeReleaseAarMetadata
+> Task :feature:preBuild UP-TO-DATE
+> Task :feature:preReleaseBuild UP-TO-DATE
+> Task :feature:writeReleaseAarMetadata
+> Task :app:generateReleaseResValues
+> Task :CordovaLib:generateReleaseResValues
+> Task :app:checkReleaseAarMetadata
+> Task :CordovaLib:generateReleaseResources
+> Task :CordovaLib:packageReleaseResources
+> Task :data:generateReleaseResValues
+> Task :data:generateReleaseResources
+> Task :data:packageReleaseResources
+> Task :feature:generateReleaseResValues
+> Task :feature:generateReleaseResources
+> Task :feature:packageReleaseResources
+> Task :app:mapReleaseSourceSetPaths
+> Task :app:generateReleaseResources
+> Task :app:packageReleaseResources
+> Task :app:createReleaseCompatibleScreenManifests
+> Task :app:extractDeepLinksRelease
+> Task :CordovaLib:extractDeepLinksRelease
+> Task :app:parseReleaseLocalResources
+> Task :data:extractDeepLinksRelease
+> Task :CordovaLib:processReleaseManifest
+> Task :feature:extractDeepLinksRelease
+> Task :data:processReleaseManifest
+> Task :feature:processReleaseManifest
+> Task :CordovaLib:compileReleaseLibraryResources
+> Task :CordovaLib:parseReleaseLocalResources
+> Task :app:processReleaseMainManifest
+> Task :app:processReleaseManifest
+> Task :data:compileReleaseLibraryResources
+> Task :CordovaLib:generateReleaseRFile
+> Task :app:mergeReleaseResources
+> Task :feature:compileReleaseLibraryResources
+> Task :data:parseReleaseLocalResources
+> Task :feature:parseReleaseLocalResources
+> Task :CordovaLib:javaPreCompileRelease
+> Task :data:generateReleaseRFile
+> Task :feature:generateReleaseRFile
+
+> Task :CordovaLib:compileReleaseJavaWithJavac
+ノート:一部の入力ファイルは推奨されないAPIを使用またはオーバーライドしています。
+ノート:詳細は、-Xlint:deprecationオプションを指定して再コンパイルしてください。
+
+> Task :data:checkKotlinGradlePluginConfigurationErrors
+> Task :data:compileReleaseKotlin NO-SOURCE
+> Task :feature:checkKotlinGradlePluginConfigurationErrors
+> Task :data:javaPreCompileRelease
+> Task :feature:javaPreCompileRelease
+> Task :data:compileReleaseJavaWithJavac NO-SOURCE
+> Task :CordovaLib:bundleLibCompileToJarRelease
+> Task :data:bundleLibCompileToJarRelease
+> Task :app:javaPreCompileRelease
+> Task :feature:compileReleaseKotlin NO-SOURCE
+> Task :feature:compileReleaseJavaWithJavac NO-SOURCE
+> Task :feature:bundleLibCompileToJarRelease
+> Task :app:extractProguardFiles
+> Task :CordovaLib:processReleaseJavaRes
+> Task :CordovaLib:bundleLibRuntimeToJarRelease
+> Task :CordovaLib:extractProguardFiles
+> Task :CordovaLib:createFullJarRelease
+> Task :CordovaLib:generateReleaseLintModel
+> Task :CordovaLib:prepareLintJarForPublish
+> Task :data:bundleLibRuntimeToJarRelease
+> Task :data:processReleaseJavaRes NO-SOURCE
+> Task :data:createFullJarRelease
+> Task :data:extractProguardFiles
+> Task :data:generateReleaseLintModel
+> Task :data:prepareLintJarForPublish
+> Task :feature:bundleLibRuntimeToJarRelease
+> Task :feature:processReleaseJavaRes NO-SOURCE
+> Task :feature:createFullJarRelease
+> Task :feature:extractProguardFiles
+> Task :feature:generateReleaseLintModel
+> Task :feature:prepareLintJarForPublish
+> Task :feature:mergeReleaseJniLibFolders
+> Task :feature:mergeReleaseNativeLibs NO-SOURCE
+> Task :feature:stripReleaseDebugSymbols NO-SOURCE
+> Task :feature:copyReleaseJniLibsProjectAndLocalJars
+> Task :app:processReleaseManifestForPackage
+> Task :feature:extractDeepLinksForAarRelease
+> Task :feature:extractReleaseAnnotations
+> Task :feature:mergeReleaseGeneratedProguardFiles
+> Task :feature:mergeReleaseConsumerProguardFiles
+> Task :feature:mergeReleaseShaders
+> Task :feature:compileReleaseShaders NO-SOURCE
+> Task :feature:generateReleaseAssets UP-TO-DATE
+> Task :feature:packageReleaseAssets
+> Task :feature:prepareReleaseArtProfile
+> Task :feature:mergeReleaseJavaResource
+> Task :data:mergeReleaseJniLibFolders
+> Task :feature:syncReleaseLibJars
+> Task :feature:bundleReleaseLocalLintAar
+> Task :data:mergeReleaseNativeLibs NO-SOURCE
+> Task :data:stripReleaseDebugSymbols NO-SOURCE
+> Task :data:copyReleaseJniLibsProjectAndLocalJars
+> Task :data:extractDeepLinksForAarRelease
+> Task :data:extractReleaseAnnotations
+> Task :data:mergeReleaseGeneratedProguardFiles
+> Task :data:mergeReleaseConsumerProguardFiles
+> Task :data:mergeReleaseShaders
+> Task :data:compileReleaseShaders NO-SOURCE
+> Task :data:generateReleaseAssets UP-TO-DATE
+> Task :data:packageReleaseAssets
+> Task :data:prepareReleaseArtProfile
+> Task :data:mergeReleaseJavaResource
+> Task :CordovaLib:mergeReleaseJniLibFolders
+> Task :data:syncReleaseLibJars
+> Task :data:bundleReleaseLocalLintAar
+> Task :CordovaLib:mergeReleaseNativeLibs NO-SOURCE
+> Task :CordovaLib:stripReleaseDebugSymbols NO-SOURCE
+> Task :CordovaLib:copyReleaseJniLibsProjectAndLocalJars
+> Task :CordovaLib:extractDeepLinksForAarRelease
+> Task :CordovaLib:extractReleaseAnnotations
+> Task :CordovaLib:mergeReleaseGeneratedProguardFiles
+> Task :CordovaLib:mergeReleaseConsumerProguardFiles
+> Task :CordovaLib:mergeReleaseShaders
+> Task :CordovaLib:compileReleaseShaders NO-SOURCE
+> Task :CordovaLib:generateReleaseAssets UP-TO-DATE
+> Task :CordovaLib:packageReleaseAssets
+> Task :CordovaLib:prepareReleaseArtProfile
+> Task :CordovaLib:mergeReleaseJavaResource
+> Task :CordovaLib:syncReleaseLibJars
+> Task :CordovaLib:bundleReleaseLocalLintAar
+> Task :CordovaLib:writeReleaseLintModelMetadata
+> Task :data:writeReleaseLintModelMetadata
+> Task :feature:writeReleaseLintModelMetadata
+> Task :app:processReleaseResources
+> Task :CordovaLib:generateReleaseLintVitalModel
+> Task :app:compileReleaseKotlin NO-SOURCE
+> Task :app:compileReleaseJavaWithJavac
+> Task :app:generateReleaseLintVitalReportModel
+> Task :data:generateReleaseLintVitalModel
+> Task :feature:generateReleaseLintVitalModel
+> Task :app:mergeReleaseJniLibFolders
+> Task :CordovaLib:copyReleaseJniLibsProjectOnly
+> Task :data:copyReleaseJniLibsProjectOnly
+> Task :feature:copyReleaseJniLibsProjectOnly
+> Task :feature:bundleLibRuntimeToDirRelease
+> Task :app:mergeReleaseNativeLibs NO-SOURCE
+> Task :app:stripReleaseDebugSymbols NO-SOURCE
+> Task :app:extractReleaseNativeSymbolTables NO-SOURCE
+> Task :app:mergeReleaseNativeDebugMetadata NO-SOURCE
+> Task :data:bundleLibRuntimeToDirRelease
+> Task :app:checkReleaseDuplicateClasses
+> Task :CordovaLib:bundleLibRuntimeToDirRelease
+> Task :app:dexBuilderRelease
+> Task :app:desugarReleaseFileDependencies
+> Task :app:mergeReleaseStartupProfile
+> Task :feature:lintVitalAnalyzeRelease
+> Task :app:mergeReleaseArtProfile
+> Task :app:mergeReleaseShaders
+> Task :app:compileReleaseShaders NO-SOURCE
+> Task :app:generateReleaseAssets UP-TO-DATE
+> Task :app:mergeReleaseGlobalSynthetics
+> Task :app:mergeReleaseAssets
+> Task :app:compressReleaseAssets
+> Task :app:extractReleaseVersionControlInfo
+> Task :app:processReleaseJavaRes
+> Task :app:collectReleaseDependencies
+> Task :app:sdkReleaseDependencyData
+> Task :app:writeReleaseAppMetadata
+> Task :app:writeReleaseSigningConfigVersions
+> Task :app:optimizeReleaseResources
+> Task :app:mergeReleaseJavaResource
+> Task :app:mergeExtDexRelease
+> Task :app:mergeDexRelease
+> Task :app:compileReleaseArtProfile
+> Task :app:packageRelease
+> Task :app:createReleaseApkListingFileRedirect
+> Task :CordovaLib:lintVitalAnalyzeRelease
+> Task :data:lintVitalAnalyzeRelease
+> Task :app:lintVitalAnalyzeRelease
+> Task :app:lintVitalReportRelease
+> Task :app:lintVitalRelease
+> Task :app:assembleRelease
+
+[Incubating] Problems report is available at: file:///Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/build/reports/problems/problems-report.html
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/8.13/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD SUCCESSFUL in 8s
+150 actionable tasks: 150 executed

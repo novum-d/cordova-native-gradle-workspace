@@ -1,0 +1,27 @@
+// Applied ONLY to the existing Cordova :app via its supported build-extras.gradle.
+def catalog = extensions.getByType(org.gradle.api.artifacts.VersionCatalogsExtension).named('libs')
+def requiredVersions = [MIN_BUILD_TOOLS_VERSION: 'build-tools', AGP_VERSION: 'agp', GRADLE_VERSION: 'gradle', KOTLIN_VERSION: 'kotlin',
+                        ANDROIDX_WEBKIT_VERSION: 'webkit', JAVA_SOURCE_COMPATIBILITY: 'jvm-target',
+                        JAVA_TARGET_COMPATIBILITY: 'jvm-target', MIN_SDK_VERSION: 'min-sdk', SDK_VERSION: 'compile-sdk']
+requiredVersions.each { key, alias ->
+    def expected = catalog.findVersion(alias).get().requiredVersion
+    if (cordovaConfig[key].toString() != expected) {
+        throw new GradleException("Cordova ${key}=${cordovaConfig[key]} differs from catalog ${alias}=${expected}")
+    }
+}
+if (gradle.gradleVersion != catalog.findVersion('gradle').get().requiredVersion) {
+    throw new GradleException('Cordova and native must use the same catalog Gradle version')
+}
+
+dependencies {
+    implementation(project(':feature'))
+    implementation(project(':data'))
+}
+
+if (!rootProject.ext.has('nativeCatalogVerificationConfigured')) {
+    rootProject.apply from: new File(rootDir, '../../../verification/catalog-verification.gradle')
+}
+
+if (!rootProject.ext.has('nativeGitHooksConfigured')) {
+    rootProject.apply from: new File(rootDir, '../../../native/gradle/git-hooks.gradle.kts')
+}

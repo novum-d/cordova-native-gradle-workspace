@@ -1,0 +1,12 @@
+> Task :setupHookFixture
+
+> Task :preparePreCommit
+No staged Kotlin files; skipping pre-commit detekt.
+
+> Task :detektPreCommitFormat SKIPPED
+> Task :detektPreCommitFormatCheck SKIPPED
+> Task :detektPreCommit SKIPPED
+> Task :preCommit
+
+BUILD SUCCESSFUL in 762ms
+3 actionable tasks: 3 executed

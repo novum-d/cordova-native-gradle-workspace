@@ -1,0 +1,64 @@
+> Task :setupHookFixture
+
+> Task :preparePreCommit
+Staged Kotlin: native/data/src/main/kotlin/fixture/日本語 Probe.kt; checking all native Kotlin sources.
+
+> Task :detektPreCommitFormat
+.
+
+1 kotlin file was analyzed.
+Complexity Report:
+	- 4 lines of code (loc)
+	- 2 source lines of code (sloc)
+	- 1 logical lines of code (lloc)
+	- 0 comment lines of code (cloc)
+	- 1 cyclomatic complexity (mcc)
+	- 0 cognitive complexity
+	- 0 number of total code smells
+	- 0% comment source ratio
+	- 1,000 mcc per 1,000 lloc
+	- 0 code smells per 1,000 lloc
+
+Project Statistics:
+	- number of properties: 0
+	- number of functions: 1
+	- number of classes: 0
+	- number of packages: 1
+	- number of kt files: 1
+
+Successfully generated HTML report at file:///private/var/folders/_z/0psds5k51gnfc1k9rs6mtjnc0000gn/T/gradle-git-hook-tests-wuhmmb1x/spaces-and-unicode/native/build/reports/detekt/detektPreCommitFormat.html
+
+> Task :detektPreCommitFormatCheck
+.
+
+1 kotlin file was analyzed.
+Complexity Report:
+	- 4 lines of code (loc)
+	- 2 source lines of code (sloc)
+	- 1 logical lines of code (lloc)
+	- 0 comment lines of code (cloc)
+	- 1 cyclomatic complexity (mcc)
+	- 0 cognitive complexity
+	- 0 number of total code smells
+	- 0% comment source ratio
+	- 1,000 mcc per 1,000 lloc
+	- 0 code smells per 1,000 lloc
+
+Project Statistics:
+	- number of properties: 0
+	- number of functions: 1
+	- number of classes: 0
+	- number of packages: 1
+	- number of kt files: 1
+
+Successfully generated HTML report at file:///private/var/folders/_z/0psds5k51gnfc1k9rs6mtjnc0000gn/T/gradle-git-hook-tests-wuhmmb1x/spaces-and-unicode/native/build/reports/detekt/detektPreCommitFormatCheck.html
+
+> Task :detektPreCommit
+/private/var/folders/_z/0psds5k51gnfc1k9rs6mtjnc0000gn/T/gradle-git-hook-tests-wuhmmb1x/spaces-and-unicode/native/data/src/main/kotlin/fixture/日本語 Probe.kt:1:1: File name '日本語 Probe.kt' should conform PascalCase [Filename]
+
+
+> Task :preCommit
+preCommit passed. Existing unstaged changes are preserved; the Git index was not updated.
+
+BUILD SUCCESSFUL in 287ms
+6 actionable tasks: 6 executed

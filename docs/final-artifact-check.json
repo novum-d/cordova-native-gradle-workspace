@@ -1,0 +1,19 @@
+{
+  "minSdk": 24,
+  "targetSdk": 35,
+  "launchers": [
+    "dev.example.cordovanative.MainActivity"
+  ],
+  "probe_assets_present": false,
+  "probe_classes_present": false,
+  "artifacts": {
+    "artifacts/CordovaComposeApp-release-unsigned.apk": {
+      "bytes": 2714940,
+      "sha256": "36503b5aee0e0586a53fad7448058f0b971dbc26b2b6098fd2b12fda48f08a60"
+    },
+    "artifacts/CordovaComposeApp-debug.apk": {
+      "bytes": 3442820,
+      "sha256": "5ca4ca85fbfb3f201443e6175b00fd6995ff8e833db1b4e34ac6c0d50ea2adf1"
+    }
+  }
+}

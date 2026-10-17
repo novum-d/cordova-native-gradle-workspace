@@ -1,0 +1,15 @@
+[native-gradle] integration restored (test)
+[native-gradle] integration restored (test)
+[native-gradle] integration restored (test)
+✔ preserves existing plugin settings and is byte-identical after repeated runs (4.896458ms)
+✔ fails before modifying generated files when a native module is missing (3.087ms)
+✔ rejects damaged markers instead of erasing unrelated Gradle content (3.36825ms)
+✔ does not touch Android for a non-Android prepare (0.043333ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 41.87675

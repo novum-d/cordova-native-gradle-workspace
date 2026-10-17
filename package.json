@@ -1,0 +1,19 @@
+{
+  "name": "cordova-native-gradle-workspace",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Cordova Android 14 and native Android Library Gradle integration verification",
+  "devDependencies": {
+    "cordova": "13.0.0"
+  },
+  "scripts": {
+    "cordova:prepare": "./scripts/cordova.sh prepare android",
+    "cordova:build": "./scripts/cordova.sh build android",
+    "native:build": "./scripts/with-env.sh ./native/gradlew -p native :feature:assembleDebug :data:assembleDebug",
+    "verify:catalog": "./scripts/with-env.sh ./native/gradlew -p native verifyCatalogResolution verifyCatalogPlugins",
+    "verify:compile": "./scripts/with-env.sh ./native/gradlew -p native -PverifyCatalog=true :feature:assembleDebug :data:assembleDebug",
+    "test:hooks": "node --test verification/hook.test.cjs",
+    "verify:structure": "./scripts/with-env.sh ./native/gradlew -p native verifyNativeIntegration",
+    "verify:sync": "./scripts/tooling-sync.sh native"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "launcher": [
+    {
+      "name": "dev.example.cordovanative.MainActivity",
+      "exported": "true"
+    }
+  ],
+  "probe_assets": [
+    "assets/gradle-verification/data.txt",
+    "assets/gradle-verification/feature.txt"
+  ],
+  "manifest": "CordovaComposeApp/platforms/android/app/build/intermediates/merged_manifests/debug/processDebugManifest/AndroidManifest.xml",
+  "apk_bytes": 13272963
+}

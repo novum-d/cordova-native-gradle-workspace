@@ -1,0 +1,14 @@
+Using cordova-fetch for cordova-android@14.0.1
+Adding android project...
+Creating Cordova project for the Android platform:
+	Path: platforms/android
+	Package: dev.example.cordovanative
+	Name: CordovaComposeApp
+	Activity: MainActivity
+	Android Target SDK: android-35
+	Android Compile SDK: 35
+Subproject Path: CordovaLib
+Subproject Path: app
+Android project created with cordova-android@14.0.1
+[native-gradle] integration restored (after_prepare)
+[native-gradle] integration restored (after_prepare)

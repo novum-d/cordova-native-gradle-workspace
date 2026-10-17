@@ -1,0 +1,85 @@
+> Task :feature:preBuild UP-TO-DATE
+> Task :feature:preDebugBuild UP-TO-DATE
+> Task :feature:mergeDebugJniLibFolders UP-TO-DATE
+> Task :feature:mergeDebugNativeLibs NO-SOURCE
+> Task :feature:stripDebugDebugSymbols NO-SOURCE
+> Task :feature:copyDebugJniLibsProjectAndLocalJars UP-TO-DATE
+> Task :data:checkKotlinGradlePluginConfigurationErrors
+> Task :data:generateCatalogCompileProbe
+> Task :data:preBuild UP-TO-DATE
+> Task :data:preDebugBuild UP-TO-DATE
+> Task :data:generateDebugResValues UP-TO-DATE
+> Task :data:generateDebugResources UP-TO-DATE
+> Task :data:packageDebugResources UP-TO-DATE
+> Task :data:parseDebugLocalResources UP-TO-DATE
+> Task :data:generateDebugRFile UP-TO-DATE
+> Task :data:compileDebugKotlin UP-TO-DATE
+> Task :data:javaPreCompileDebug UP-TO-DATE
+> Task :data:compileDebugJavaWithJavac NO-SOURCE
+> Task :feature:checkKotlinGradlePluginConfigurationErrors
+> Task :feature:generateCatalogCompileProbe
+> Task :feature:generateDebugResValues UP-TO-DATE
+> Task :feature:generateDebugResources UP-TO-DATE
+> Task :feature:packageDebugResources UP-TO-DATE
+> Task :feature:parseDebugLocalResources UP-TO-DATE
+> Task :feature:generateDebugRFile UP-TO-DATE
+> Task :feature:extractDeepLinksForAarDebug UP-TO-DATE
+> Task :feature:javaPreCompileDebug UP-TO-DATE
+> Task :feature:mergeDebugShaders UP-TO-DATE
+> Task :feature:compileDebugShaders NO-SOURCE
+> Task :feature:generateDebugAssets
+> Task :feature:packageDebugAssets UP-TO-DATE
+> Task :feature:prepareDebugArtProfile UP-TO-DATE
+> Task :feature:prepareLintJarForPublish UP-TO-DATE
+> Task :feature:processDebugManifest UP-TO-DATE
+> Task :feature:writeDebugAarMetadata UP-TO-DATE
+> Task :data:mergeDebugJniLibFolders UP-TO-DATE
+> Task :data:mergeDebugNativeLibs NO-SOURCE
+> Task :data:stripDebugDebugSymbols NO-SOURCE
+> Task :data:copyDebugJniLibsProjectAndLocalJars UP-TO-DATE
+> Task :data:bundleLibCompileToJarDebug
+> Task :data:extractDebugAnnotations
+> Task :data:extractDeepLinksForAarDebug UP-TO-DATE
+> Task :data:mergeDebugGeneratedProguardFiles
+> Task :data:mergeDebugConsumerProguardFiles
+> Task :data:mergeDebugShaders UP-TO-DATE
+> Task :data:compileDebugShaders NO-SOURCE
+> Task :data:generateDebugAssets
+> Task :data:packageDebugAssets UP-TO-DATE
+> Task :data:prepareDebugArtProfile UP-TO-DATE
+> Task :data:prepareLintJarForPublish UP-TO-DATE
+> Task :data:processDebugManifest UP-TO-DATE
+> Task :data:processDebugJavaRes
+> Task :data:writeDebugAarMetadata UP-TO-DATE
+> Task :data:mergeDebugJavaResource
+> Task :feature:compileDebugKotlin
+
+> Task :verifyCatalogResolution
+Resolved 129 catalog artifacts; report: /Users/novumd/repos/cordova-native-gradle-workspace/native/build/reports/catalog/libraries.txt
+
+> Task :feature:extractDebugAnnotations
+> Task :feature:compileDebugJavaWithJavac NO-SOURCE
+> Task :feature:mergeDebugGeneratedProguardFiles
+> Task :feature:mergeDebugConsumerProguardFiles
+> Task :feature:processDebugJavaRes
+> Task :feature:mergeDebugJavaResource
+> Task :data:syncDebugLibJars
+> Task :feature:syncDebugLibJars
+> Task :feature:bundleDebugAar
+> Task :feature:assembleDebug
+> Task :data:bundleDebugAar
+> Task :data:assembleDebug
+
+> Task :verifyCatalogPlugins
+Resolved 155 plugin artifacts without applying Hilt, KSP, ktlint or detekt; report: /Users/novumd/repos/cordova-native-gradle-workspace/native/build/reports/catalog/plugins.txt
+
+[Incubating] Problems report is available at: file:///Users/novumd/repos/cordova-native-gradle-workspace/native/build/reports/problems/problems-report.html
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/8.13/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD SUCCESSFUL in 47s
+53 actionable tasks: 22 executed, 31 up-to-date

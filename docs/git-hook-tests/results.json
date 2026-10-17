@@ -1,0 +1,69 @@
+{
+  "passed": 9,
+  "total": 9,
+  "results": [
+    {
+      "scenario": "no-staged-kotlin",
+      "passed": true,
+      "exit_code": 0,
+      "expected_success": true,
+      "git_index_unchanged": true
+    },
+    {
+      "scenario": "clean-staged",
+      "passed": true,
+      "exit_code": 0,
+      "expected_success": true,
+      "git_index_unchanged": true
+    },
+    {
+      "scenario": "formatting-changed",
+      "passed": true,
+      "exit_code": 1,
+      "expected_success": false,
+      "git_index_unchanged": true
+    },
+    {
+      "scenario": "existing-unstaged",
+      "passed": true,
+      "exit_code": 0,
+      "expected_success": true,
+      "git_index_unchanged": true
+    },
+    {
+      "scenario": "analysis-failed",
+      "passed": true,
+      "exit_code": 1,
+      "expected_success": false,
+      "git_index_unchanged": true
+    },
+    {
+      "scenario": "deletion-only",
+      "passed": true,
+      "exit_code": 0,
+      "expected_success": true,
+      "git_index_unchanged": true
+    },
+    {
+      "scenario": "spaces-and-unicode",
+      "passed": true,
+      "exit_code": 0,
+      "expected_success": true,
+      "git_index_unchanged": true
+    },
+    {
+      "scenario": "unstaged-formatting-changed",
+      "passed": true,
+      "exit_code": 1,
+      "expected_success": false,
+      "git_index_unchanged": true
+    },
+    {
+      "scenario": "check-does-not-format",
+      "passed": true,
+      "exit_code": 1,
+      "expected_success": false,
+      "git_index_unchanged": true
+    }
+  ]
+}

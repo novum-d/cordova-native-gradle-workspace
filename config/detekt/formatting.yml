@@ -1,0 +1,70 @@
+# buildUponDefaultConfig=false requires rule-level autoCorrect to be explicit.
+formatting:
+  active: true
+  android: true
+  autoCorrect: true
+  ClassName:
+    active: true
+    autoCorrect: true
+  ContextReceiverMapping:
+    active: true
+    autoCorrect: true
+  DiscouragedCommentLocation:
+    active: true
+    autoCorrect: true
+  EnumWrapping:
+    active: true
+    autoCorrect: true
+  FunctionSignature:
+    active: true
+    autoCorrect: true
+    forceMultilineWhenParameterCountGreaterOrEqualThan: 2
+  IfElseBracing:
+    active: true
+    autoCorrect: true
+  NoBlankLineInList:
+    active: true
+    autoCorrect: true
+  NoConsecutiveComments:
+    active: true
+    autoCorrect: true
+  NoSingleLineBlockComment:
+    active: false
+  TryCatchFinallySpacing:
+    active: true
+    autoCorrect: true
+  TypeArgumentListSpacing:
+    active: true
+    autoCorrect: true
+  TypeParameterListSpacing:
+    active: true
+    autoCorrect: true
+  TrailingCommaOnDeclarationSite:
+    active: true
+    autoCorrect: true
+  Indentation:
+    active: true
+    autoCorrect: true
+    indentSize: 4
+  MaximumLineLength:
+    active: true
+    autoCorrect: true
+    maxLineLength: 120
+    ignoreBackTickedIdentifier: true
+    excludePackageStatements: true
+    excludeImportStatements: true
+  NoTrailingSpaces:
+    active: true
+    autoCorrect: true
+  NoWildcardImports:
+    active: true
+    autoCorrect: true
+  ParameterListWrapping:
+    active: true
+    autoCorrect: true
+  SpacingAroundColon:
+    active: true
+    autoCorrect: true
+  SpacingAroundComma:
+    active: true
+    autoCorrect: true

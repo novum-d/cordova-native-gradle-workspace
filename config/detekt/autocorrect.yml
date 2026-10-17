@@ -1,0 +1,5 @@
+# Corrected findings must not abort the formatting phase.
+# The separate, read-only formatting check still rejects every remaining violation.
+build:
+  maxIssues: 0
+  excludeCorrectable: true

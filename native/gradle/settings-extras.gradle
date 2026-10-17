@@ -1,0 +1,26 @@
+// Applied in Settings scope through Cordova 14's generated cdv-gradle-name.gradle.
+def nativeDir = new File(settingsDir, '../../../native').canonicalFile
+def catalogFile = new File(nativeDir, 'gradle/libs.versions.toml')
+if (!catalogFile.isFile()) {
+    throw new GradleException("Missing native Version Catalog: ${catalogFile}")
+}
+if (new File(settingsDir, 'gradle/libs.versions.toml').exists()) {
+    throw new GradleException('Remove the generated Android build local libs catalog before sharing native/libs')
+}
+def catalogs = dependencyResolutionManagement.versionCatalogs
+if (catalogs.findByName('libs') != null) {
+    throw new GradleException('A libs catalog already exists; reconcile it with the shared native catalog')
+}
+catalogs.create('libs') { from(files(catalogFile)) }
+
+['feature', 'data'].each { name ->
+    def dir = new File(nativeDir, name)
+    if (!new File(dir, 'build.gradle.kts').isFile()) {
+        throw new GradleException("Missing native module ${name}: ${dir}")
+    }
+    if (findProject(":${name}") != null) {
+        throw new GradleException("Native module path :${name} is already registered")
+    }
+    include(":${name}")
+    project(":${name}").projectDir = dir
+}

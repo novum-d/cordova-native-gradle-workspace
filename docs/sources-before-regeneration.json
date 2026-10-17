@@ -1,0 +1,14 @@
+{
+  "CordovaComposeApp/config.xml": "7cb16b6b7fc60f9051c8301c8bcc349ae88198893746d235f6d1a93eb28a55a2",
+  "CordovaComposeApp/hooks/copy-gradle-extras.js": "27196d5eeb9f2db622821e7bac2475e5b720e1d84f61c924fd91d00c45dbb054",
+  "native/build.gradle.kts": "f34bc3507900f5b44cba105bd567c9a1f00c5415154e4b45d34d7afc3a04a6c3",
+  "native/settings.gradle.kts": "dc90f50ab69953357b324ba1e9e0fce3ab807a9553b4cb0768424ebfb249dd06",
+  "native/gradle/settings-extras.gradle": "e6442cd418f600b2759358f3b1e8512e760b69297baa327d17341c4be04e7441",
+  "native/gradle/build-extras.gradle": "1561ae75c622ece60c000b550691f95c72bb060dad9b393574ab05a64438b41e",
+  "native/gradle/libs.versions.toml": "be293748f081759c169f9b447ad9c2fe6f8a03df6a8cf1611d15590c6bf902c7",
+  "native/feature/build.gradle.kts": "8b7e9cebf901f8295a4c56089d882a07b8809c77718f49f043038ece5db84c71",
+  "native/data/build.gradle.kts": "be91c2696912d4ffca6811730081c3c11e0b3ea1e6f078d252b63aca1eb6b859",
+  "native/feature/src/main/AndroidManifest.xml": "343d5be1ac17cdd45d1a2f2ddc616c509290e655869125a9422a96d88aa66066",
+  "native/data/src/main/AndroidManifest.xml": "343d5be1ac17cdd45d1a2f2ddc616c509290e655869125a9422a96d88aa66066",
+  "CordovaComposeApp/platforms/android/app/src/main/java/dev/example/cordovanative/MainActivity.java": "0455680c848c010c13d4b2b918ea46d5afe56734ae0950ba67cbe4c9ce50c194"
+}

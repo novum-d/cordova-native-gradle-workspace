@@ -1,0 +1,354 @@
+
+> Task :preparePreCommit
+No staged Kotlin files; skipping pre-commit detekt.
+
+> Task :detektPreCommitFormat SKIPPED
+> Task :detektPreCommitFormatCheck SKIPPED
+> Task :detektPreCommit SKIPPED
+> Task :preCommit
+> Task :detekt NO-SOURCE
+> Task :detektFormatCheck NO-SOURCE
+> Task :ktlintCheck UP-TO-DATE
+> Task :check UP-TO-DATE
+> Task :feature:preBuild UP-TO-DATE
+> Task :feature:preDebugBuild UP-TO-DATE
+> Task :feature:mergeDebugJniLibFolders UP-TO-DATE
+> Task :feature:mergeDebugNativeLibs NO-SOURCE
+> Task :feature:stripDebugDebugSymbols NO-SOURCE
+> Task :feature:copyDebugJniLibsProjectAndLocalJars
+> Task :data:checkKotlinGradlePluginConfigurationErrors
+> Task :data:preBuild UP-TO-DATE
+> Task :data:preDebugBuild UP-TO-DATE
+> Task :data:generateDebugResValues UP-TO-DATE
+> Task :data:generateDebugResources UP-TO-DATE
+> Task :data:packageDebugResources UP-TO-DATE
+> Task :data:parseDebugLocalResources UP-TO-DATE
+> Task :data:generateDebugRFile UP-TO-DATE
+> Task :data:compileDebugKotlin NO-SOURCE
+> Task :data:javaPreCompileDebug UP-TO-DATE
+> Task :data:compileDebugJavaWithJavac NO-SOURCE
+> Task :data:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :feature:checkKotlinGradlePluginConfigurationErrors
+> Task :feature:generateDebugResValues UP-TO-DATE
+> Task :feature:generateDebugResources UP-TO-DATE
+> Task :feature:packageDebugResources UP-TO-DATE
+> Task :feature:parseDebugLocalResources UP-TO-DATE
+> Task :feature:generateDebugRFile UP-TO-DATE
+> Task :feature:compileDebugKotlin NO-SOURCE
+> Task :feature:extractDebugAnnotations
+> Task :feature:extractDeepLinksForAarDebug
+> Task :feature:javaPreCompileDebug UP-TO-DATE
+> Task :feature:compileDebugJavaWithJavac NO-SOURCE
+> Task :feature:mergeDebugGeneratedProguardFiles
+> Task :feature:mergeDebugConsumerProguardFiles
+> Task :feature:mergeDebugShaders UP-TO-DATE
+> Task :feature:compileDebugShaders NO-SOURCE
+> Task :feature:generateDebugAssets UP-TO-DATE
+> Task :feature:packageDebugAssets UP-TO-DATE
+> Task :feature:prepareDebugArtProfile
+> Task :feature:processDebugManifest UP-TO-DATE
+> Task :feature:prepareLintJarForPublish
+> Task :feature:processDebugJavaRes NO-SOURCE
+> Task :feature:writeDebugAarMetadata UP-TO-DATE
+> Task :data:mergeDebugJniLibFolders UP-TO-DATE
+> Task :data:mergeDebugNativeLibs NO-SOURCE
+> Task :feature:mergeDebugJavaResource
+> Task :data:stripDebugDebugSymbols NO-SOURCE
+> Task :feature:syncDebugLibJars
+> Task :feature:bundleDebugLocalLintAar
+> Task :data:copyDebugJniLibsProjectAndLocalJars
+> Task :data:extractDebugAnnotations
+> Task :data:extractDeepLinksForAarDebug
+> Task :data:mergeDebugGeneratedProguardFiles
+> Task :data:mergeDebugConsumerProguardFiles
+> Task :data:mergeDebugShaders UP-TO-DATE
+> Task :data:compileDebugShaders NO-SOURCE
+> Task :data:generateDebugAssets UP-TO-DATE
+> Task :data:packageDebugAssets UP-TO-DATE
+> Task :data:prepareDebugArtProfile
+> Task :data:prepareLintJarForPublish
+> Task :data:processDebugManifest UP-TO-DATE
+> Task :data:processDebugJavaRes NO-SOURCE
+> Task :data:writeDebugAarMetadata UP-TO-DATE
+> Task :CordovaLib:preBuild UP-TO-DATE
+> Task :CordovaLib:preDebugBuild UP-TO-DATE
+> Task :CordovaLib:mergeDebugJniLibFolders UP-TO-DATE
+> Task :data:mergeDebugJavaResource
+> Task :CordovaLib:mergeDebugNativeLibs NO-SOURCE
+> Task :data:syncDebugLibJars
+> Task :data:bundleDebugLocalLintAar
+> Task :CordovaLib:stripDebugDebugSymbols NO-SOURCE
+> Task :CordovaLib:copyDebugJniLibsProjectAndLocalJars
+> Task :CordovaLib:generateDebugResValues UP-TO-DATE
+> Task :CordovaLib:generateDebugResources UP-TO-DATE
+> Task :CordovaLib:packageDebugResources UP-TO-DATE
+> Task :CordovaLib:parseDebugLocalResources UP-TO-DATE
+> Task :CordovaLib:generateDebugRFile UP-TO-DATE
+> Task :CordovaLib:extractDebugAnnotations
+> Task :CordovaLib:extractDeepLinksForAarDebug
+> Task :CordovaLib:javaPreCompileDebug UP-TO-DATE
+> Task :CordovaLib:compileDebugJavaWithJavac UP-TO-DATE
+> Task :CordovaLib:mergeDebugGeneratedProguardFiles
+> Task :CordovaLib:mergeDebugConsumerProguardFiles
+> Task :CordovaLib:mergeDebugShaders UP-TO-DATE
+> Task :CordovaLib:compileDebugShaders NO-SOURCE
+> Task :CordovaLib:generateDebugAssets UP-TO-DATE
+> Task :CordovaLib:packageDebugAssets UP-TO-DATE
+> Task :CordovaLib:prepareDebugArtProfile
+> Task :CordovaLib:prepareLintJarForPublish
+> Task :CordovaLib:processDebugManifest UP-TO-DATE
+> Task :CordovaLib:processDebugJavaRes UP-TO-DATE
+> Task :CordovaLib:writeDebugAarMetadata UP-TO-DATE
+> Task :app:checkKotlinGradlePluginConfigurationErrors
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:generateDebugBuildConfig UP-TO-DATE
+> Task :CordovaLib:mergeDebugJavaResource
+> Task :app:checkDebugAarMetadata UP-TO-DATE
+> Task :CordovaLib:syncDebugLibJars
+> Task :CordovaLib:bundleDebugLocalLintAar
+> Task :app:generateDebugResValues UP-TO-DATE
+> Task :app:mapDebugSourceSetPaths UP-TO-DATE
+> Task :app:generateDebugResources UP-TO-DATE
+> Task :app:mergeDebugResources UP-TO-DATE
+> Task :app:packageDebugResources UP-TO-DATE
+> Task :app:parseDebugLocalResources UP-TO-DATE
+> Task :app:createDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksDebug UP-TO-DATE
+> Task :CordovaLib:extractDeepLinksDebug UP-TO-DATE
+> Task :data:extractDeepLinksDebug UP-TO-DATE
+> Task :feature:extractDeepLinksDebug UP-TO-DATE
+> Task :app:processDebugMainManifest UP-TO-DATE
+> Task :app:processDebugManifest UP-TO-DATE
+> Task :app:processDebugManifestForPackage UP-TO-DATE
+> Task :CordovaLib:compileDebugLibraryResources UP-TO-DATE
+> Task :data:compileDebugLibraryResources UP-TO-DATE
+> Task :feature:compileDebugLibraryResources UP-TO-DATE
+> Task :app:processDebugResources UP-TO-DATE
+> Task :CordovaLib:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :feature:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :app:compileDebugKotlin NO-SOURCE
+> Task :app:javaPreCompileDebug UP-TO-DATE
+> Task :app:compileDebugJavaWithJavac UP-TO-DATE
+> Task :app:preDebugAndroidTestBuild SKIPPED
+> Task :app:generateDebugAndroidTestResValues
+> Task :CordovaLib:writeDebugLintModelMetadata
+> Task :app:bundleDebugClassesToCompileJar
+> Task :data:bundleLibRuntimeToJarDebug
+> Task :data:writeDebugLintModelMetadata
+> Task :data:createFullJarDebug
+> Task :feature:bundleLibRuntimeToJarDebug
+> Task :feature:writeDebugLintModelMetadata
+> Task :feature:createFullJarDebug
+> Task :CordovaLib:bundleLibRuntimeToJarDebug
+> Task :app:extractProguardFiles
+> Task :CordovaLib:createFullJarDebug
+> Task :app:generateDebugAndroidTestLintModel
+> Task :CordovaLib:extractProguardFiles
+> Task :CordovaLib:generateDebugLintModel
+> Task :data:extractProguardFiles
+> Task :data:generateDebugLintModel
+> Task :feature:extractProguardFiles
+> Task :feature:generateDebugLintModel
+> Task :app:generateDebugLintReportModel
+> Task :app:preDebugUnitTestBuild UP-TO-DATE
+> Task :app:generateDebugUnitTestLintModel
+> Task :CordovaLib:preDebugAndroidTestBuild UP-TO-DATE
+> Task :CordovaLib:generateDebugAndroidTestResValues
+> Task :CordovaLib:generateDebugAndroidTestLintModel
+> Task :CordovaLib:preDebugUnitTestBuild UP-TO-DATE
+> Task :CordovaLib:generateDebugUnitTestLintModel
+> Task :data:preDebugAndroidTestBuild UP-TO-DATE
+> Task :data:generateDebugAndroidTestResValues
+> Task :data:generateDebugAndroidTestLintModel
+> Task :data:preDebugUnitTestBuild UP-TO-DATE
+> Task :data:generateDebugUnitTestLintModel
+> Task :feature:preDebugAndroidTestBuild UP-TO-DATE
+> Task :feature:generateDebugAndroidTestResValues
+> Task :feature:generateDebugAndroidTestLintModel
+> Task :feature:preDebugUnitTestBuild UP-TO-DATE
+> Task :feature:generateDebugUnitTestLintModel
+> Task :app:compileDebugUnitTestKotlin NO-SOURCE
+> Task :app:javaPreCompileDebugUnitTest
+> Task :app:processDebugJavaRes NO-SOURCE
+> Task :app:bundleDebugClassesToRuntimeJar
+> Task :app:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :app:processDebugUnitTestJavaRes NO-SOURCE
+> Task :app:testDebugUnitTest NO-SOURCE
+> Task :app:buildKotlinToolingMetadata
+> Task :app:preReleaseBuild UP-TO-DATE
+> Task :app:generateReleaseBuildConfig
+> Task :CordovaLib:preReleaseBuild UP-TO-DATE
+> Task :data:preReleaseBuild UP-TO-DATE
+> Task :CordovaLib:writeReleaseAarMetadata
+> Task :feature:preReleaseBuild UP-TO-DATE
+> Task :data:writeReleaseAarMetadata
+> Task :feature:writeReleaseAarMetadata
+> Task :app:generateReleaseResValues
+> Task :CordovaLib:generateReleaseResValues
+> Task :app:checkReleaseAarMetadata
+> Task :CordovaLib:generateReleaseResources
+> Task :CordovaLib:packageReleaseResources
+> Task :data:generateReleaseResValues
+> Task :data:generateReleaseResources
+> Task :data:packageReleaseResources
+> Task :feature:generateReleaseResValues
+> Task :feature:generateReleaseResources
+> Task :feature:packageReleaseResources
+> Task :app:mapReleaseSourceSetPaths
+> Task :app:generateReleaseResources
+> Task :app:lintAnalyzeDebugAndroidTest
+> Task :app:packageReleaseResources
+> Task :app:createReleaseCompatibleScreenManifests
+> Task :app:extractDeepLinksRelease
+> Task :CordovaLib:extractDeepLinksRelease
+> Task :app:parseReleaseLocalResources
+> Task :data:extractDeepLinksRelease
+> Task :CordovaLib:processReleaseManifest
+> Task :feature:extractDeepLinksRelease
+> Task :data:processReleaseManifest
+> Task :feature:processReleaseManifest
+> Task :CordovaLib:compileReleaseLibraryResources
+> Task :app:processReleaseMainManifest
+> Task :app:processReleaseManifest
+> Task :app:processReleaseManifestForPackage
+> Task :CordovaLib:parseReleaseLocalResources
+> Task :data:compileReleaseLibraryResources
+> Task :data:parseReleaseLocalResources
+> Task :CordovaLib:generateReleaseRFile
+> Task :feature:compileReleaseLibraryResources
+> Task :data:generateReleaseRFile
+> Task :app:mergeReleaseResources
+> Task :CordovaLib:javaPreCompileRelease
+> Task :feature:parseReleaseLocalResources
+> Task :data:compileReleaseKotlin NO-SOURCE
+> Task :feature:generateReleaseRFile
+> Task :data:lintAnalyzeDebug
+> Task :app:lintAnalyzeDebugUnitTest
+
+> Task :CordovaLib:compileReleaseJavaWithJavac
+ノート:一部の入力ファイルは推奨されないAPIを使用またはオーバーライドしています。
+ノート:詳細は、-Xlint:deprecationオプションを指定して再コンパイルしてください。
+
+> Task :CordovaLib:bundleLibCompileToJarRelease
+> Task :data:javaPreCompileRelease
+> Task :feature:javaPreCompileRelease
+> Task :data:compileReleaseJavaWithJavac NO-SOURCE
+> Task :data:bundleLibCompileToJarRelease
+> Task :app:javaPreCompileRelease
+> Task :feature:compileReleaseKotlin NO-SOURCE
+> Task :feature:compileReleaseJavaWithJavac NO-SOURCE
+> Task :app:preReleaseUnitTestBuild UP-TO-DATE
+> Task :feature:bundleLibCompileToJarRelease
+> Task :app:javaPreCompileReleaseUnitTest
+> Task :CordovaLib:processReleaseJavaRes
+> Task :CordovaLib:bundleLibRuntimeToJarRelease
+> Task :data:bundleLibRuntimeToJarRelease
+> Task :data:processReleaseJavaRes NO-SOURCE
+> Task :feature:bundleLibRuntimeToJarRelease
+> Task :feature:processReleaseJavaRes NO-SOURCE
+> Task :CordovaLib:generateDebugLintReportModel
+> Task :CordovaLib:javaPreCompileDebugUnitTest
+> Task :CordovaLib:processDebugUnitTestJavaRes NO-SOURCE
+> Task :CordovaLib:preReleaseUnitTestBuild UP-TO-DATE
+> Task :CordovaLib:javaPreCompileReleaseUnitTest
+> Task :CordovaLib:processReleaseUnitTestJavaRes NO-SOURCE
+> Task :data:generateDebugLintReportModel
+> Task :data:preReleaseUnitTestBuild UP-TO-DATE
+> Task :data:generateDebugUnitTestStubRFile
+> Task :data:javaPreCompileDebugUnitTest
+> Task :CordovaLib:generateDebugUnitTestStubRFile
+> Task :CordovaLib:generateReleaseUnitTestStubRFile
+> Task :CordovaLib:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :data:generateReleaseUnitTestStubRFile
+> Task :CordovaLib:testDebugUnitTest NO-SOURCE
+> Task :CordovaLib:compileReleaseUnitTestJavaWithJavac NO-SOURCE
+> Task :CordovaLib:testReleaseUnitTest NO-SOURCE
+> Task :CordovaLib:test UP-TO-DATE
+> Task :data:compileDebugUnitTestKotlin NO-SOURCE
+> Task :data:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :data:processDebugUnitTestJavaRes NO-SOURCE
+> Task :data:testDebugUnitTest NO-SOURCE
+> Task :data:compileReleaseUnitTestKotlin NO-SOURCE
+> Task :data:javaPreCompileReleaseUnitTest
+> Task :data:processReleaseUnitTestJavaRes NO-SOURCE
+> Task :data:compileReleaseUnitTestJavaWithJavac NO-SOURCE
+> Task :data:testReleaseUnitTest NO-SOURCE
+> Task :data:test UP-TO-DATE
+> Task :feature:generateDebugLintReportModel
+> Task :feature:preReleaseUnitTestBuild UP-TO-DATE
+> Task :feature:javaPreCompileDebugUnitTest
+> Task :feature:generateDebugUnitTestStubRFile
+> Task :feature:compileDebugUnitTestKotlin NO-SOURCE
+> Task :feature:generateReleaseUnitTestStubRFile
+> Task :feature:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :feature:processDebugUnitTestJavaRes NO-SOURCE
+> Task :feature:testDebugUnitTest NO-SOURCE
+> Task :feature:compileReleaseUnitTestKotlin NO-SOURCE
+> Task :feature:processReleaseUnitTestJavaRes NO-SOURCE
+> Task :feature:javaPreCompileReleaseUnitTest
+
+> Task :verifyNativeIntegration
+Host runtime report: /Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/build/reports/catalog/host-runtime.txt
+Verified JDK 17 / Gradle 8.13 / AGP 8.7.3 / Kotlin 1.9.24 / Java-Kotlin target 11
+Android modules: [:app, :CordovaLib, :data, :feature]; APK hosts: [:app]
+
+> Task :feature:compileReleaseUnitTestJavaWithJavac NO-SOURCE
+> Task :feature:testReleaseUnitTest NO-SOURCE
+> Task :feature:test UP-TO-DATE
+> Task :app:processReleaseResources
+> Task :app:compileReleaseKotlin NO-SOURCE
+> Task :CordovaLib:lintAnalyzeDebugAndroidTest
+> Task :feature:lintAnalyzeDebug
+> Task :app:compileReleaseJavaWithJavac
+> Task :app:processReleaseJavaRes
+> Task :app:bundleReleaseClassesToRuntimeJar
+> Task :app:bundleReleaseClassesToCompileJar
+> Task :app:compileReleaseUnitTestKotlin NO-SOURCE
+> Task :app:compileReleaseUnitTestJavaWithJavac NO-SOURCE
+> Task :app:processReleaseUnitTestJavaRes NO-SOURCE
+> Task :app:testReleaseUnitTest NO-SOURCE
+> Task :app:test UP-TO-DATE
+> Task :CordovaLib:lintAnalyzeDebugUnitTest
+> Task :data:lintAnalyzeDebugAndroidTest
+> Task :feature:lintAnalyzeDebugAndroidTest
+> Task :data:lintAnalyzeDebugUnitTest
+
+> Task :data:lintReportDebug
+Wrote HTML report to file:///Users/novumd/repos/cordova-native-gradle-workspace/native/data/build/reports/lint-results-debug.html
+
+> Task :data:lintDebug
+> Task :data:lint
+> Task :data:check
+> Task :feature:lintAnalyzeDebugUnitTest
+> Task :feature:lintReportDebug
+> Task :feature:lintDebug
+> Task :feature:lint
+> Task :feature:check
+> Task :CordovaLib:lintAnalyzeDebug
+
+> Task :CordovaLib:lintReportDebug
+Wrote HTML report to file:///Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/CordovaLib/build/reports/lint-results-debug.html
+
+> Task :CordovaLib:lintDebug
+> Task :CordovaLib:lint
+> Task :CordovaLib:check
+> Task :app:lintAnalyzeDebug
+
+> Task :app:lintReportDebug
+Wrote HTML report to file:///Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/app/build/reports/lint-results-debug.html
+
+> Task :app:lintDebug
+> Task :app:lint
+> Task :app:check
+
+[Incubating] Problems report is available at: file:///Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/build/reports/problems/problems-report.html
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/8.13/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD SUCCESSFUL in 8s
+222 actionable tasks: 162 executed, 60 up-to-date
