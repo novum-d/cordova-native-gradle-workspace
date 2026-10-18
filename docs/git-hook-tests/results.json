@@ -1,6 +1,6 @@
 {
-  "passed": 9,
-  "total": 9,
+  "passed": 15,
+  "total": 15,
   "results": [
     {
       "scenario": "no-staged-kotlin",
@@ -21,6 +21,20 @@
       "passed": true,
       "exit_code": 1,
       "expected_success": false,
+      "git_index_unchanged": true
+    },
+    {
+      "scenario": "retry-without-restaging",
+      "passed": true,
+      "exit_code": 1,
+      "expected_success": false,
+      "git_index_unchanged": true
+    },
+    {
+      "scenario": "retry-after-restaging",
+      "passed": true,
+      "exit_code": 0,
+      "expected_success": true,
       "git_index_unchanged": true
     },
     {
@@ -60,6 +74,34 @@
     },
     {
       "scenario": "check-does-not-format",
+      "passed": true,
+      "exit_code": 1,
+      "expected_success": false,
+      "git_index_unchanged": true
+    },
+    {
+      "scenario": "staged-formatting-only",
+      "passed": true,
+      "exit_code": 1,
+      "expected_success": false,
+      "git_index_unchanged": true
+    },
+    {
+      "scenario": "staged-formatting-without-working-file",
+      "passed": true,
+      "exit_code": 1,
+      "expected_success": false,
+      "git_index_unchanged": true
+    },
+    {
+      "scenario": "staged-formatting-spaces-and-unicode",
+      "passed": true,
+      "exit_code": 1,
+      "expected_success": false,
+      "git_index_unchanged": true
+    },
+    {
+      "scenario": "alternate-index-formatting-only",
       "passed": true,
       "exit_code": 1,
       "expected_success": false,

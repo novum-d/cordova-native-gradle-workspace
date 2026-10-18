@@ -2,6 +2,7 @@ import io.gitlab.arturbosch.detekt.Detekt
 import io.gitlab.arturbosch.detekt.DetektPlugin
 import io.gitlab.arturbosch.detekt.extensions.DetektExtension
 import org.eclipse.jgit.api.Git
+import org.eclipse.jgit.lib.FileMode
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder
 import org.gradle.api.artifacts.VersionCatalogsExtension
 import java.nio.file.Files
@@ -34,12 +35,16 @@ val autoCorrectConfig = workspaceDir.resolve("config/detekt/autocorrect.yml")
 check(detektConfig.isFile && formattingConfig.isFile && autoCorrectConfig.isFile) { "Missing config/detekt YAML in $workspaceDir" }
 
 // 各モジュールsrcのファイルツリーを作成
-val kotlinSources = files(listOf("feature", "data").map { module ->
-    fileTree(workspaceDir.resolve("native/$module/src")) {
+val nativeModules = listOf("feature", "data")
+fun nativeKotlinSources(baseDir: File) = files(nativeModules.map { module ->
+    fileTree(baseDir.resolve("native/$module/src")) {
         include("**/*.kt")
         exclude("**/build/**", "**/generated/**")
     }
 })
+val kotlinSources = nativeKotlinSources(workspaceDir)
+val stagedSourcesDir = layout.buildDirectory.dir("tmp/git-hooks/staged")
+val stagedSources = nativeKotlinSources(stagedSourcesDir.get().asFile)
 
 // detektのプラグインを追加（フォーマッター・Composeのルール）
 dependencies {
@@ -115,16 +120,24 @@ fun sourceDigests(): Map<String, String> = kotlinSources.files.sortedBy { it.pat
 }
 
 var stagedKotlin = emptyList<String>()
+var stagedNativeKotlin = emptyList<String>()
 var beforeFormatting = emptyMap<String, String>()
 val hookReport = layout.buildDirectory.file("reports/git-hooks/preCommit.txt")
 
 val preparePreCommit = tasks.register("preparePreCommit") {
     group = "verification"
-    description = "Reads the Git index with JGit and snapshots native Kotlin working-tree bytes."
+    description = "Snapshots staged native Kotlin with JGit and records working-tree bytes before formatting."
     notCompatibleWithConfigurationCache("Reads the live Git index and passes execution-time state to hook tasks")
     doLast {
+        val snapshotDir = stagedSourcesDir.get().asFile
+        delete(snapshotDir)
         val builder = FileRepositoryBuilder().findGitDir(workspaceDir)
+        System.getenv("GIT_INDEX_FILE")?.takeIf { it.isNotEmpty() }?.let { indexPath ->
+            builder.setIndexFile(workspaceDir.resolve(indexPath))
+        }
+
         check(builder.gitDir != null) { "No Git repository found for $workspaceDir" }
+
         builder.build().use { repository ->
             check(repository.workTree.canonicalFile == workspaceDir.canonicalFile) {
                 "Git work tree must be the workspace root: $workspaceDir"
@@ -133,6 +146,26 @@ val preparePreCommit = tasks.register("preparePreCommit") {
                 val status = git.status().call()
                 check(status.conflicting.isEmpty()) { "Resolve Git conflicts before running preCommit" }
                 stagedKotlin = (status.added + status.changed).filter { it.endsWith(".kt") }.sorted()
+            }
+            stagedNativeKotlin = stagedKotlin.filter { path ->
+                nativeModules.any { path.startsWith("native/$it/src/") } &&
+                    path.split('/').none { it == "build" || it == "generated" }
+            }
+            // 作業ファイルではなく、indexが指す内容を読み取り専用で取り出す
+            val index = repository.readDirCache()
+            stagedNativeKotlin.forEach { path ->
+                val entry = checkNotNull(index.getEntry(path)) { "Staged file disappeared from the Git index: $path" }
+                check(entry.fileMode == FileMode.REGULAR_FILE || entry.fileMode == FileMode.EXECUTABLE_FILE) {
+                    "Staged Kotlin must be a regular file: $path"
+                }
+                val destination = snapshotDir.resolve(path).canonicalFile
+                check(destination.toPath().startsWith(snapshotDir.canonicalFile.toPath())) {
+                    "Staged file must stay inside the snapshot directory: $path"
+                }
+                destination.parentFile.mkdirs()
+                repository.open(entry.objectId).openStream().use { input ->
+                    destination.outputStream().use { output -> input.copyTo(output) }
+                }
             }
         }
         beforeFormatting = if (stagedKotlin.isEmpty()) emptyMap() else sourceDigests()
@@ -158,10 +191,33 @@ val preCommitFormat = tasks.register<Detekt>("detektPreCommitFormat") {
     notCompatibleWithConfigurationCache("Uses the live pre-commit snapshot")
 }
 
+val checkPreCommitFormattingChanges = tasks.register("checkPreCommitFormattingChanges") {
+    group = "verification"
+    description = "Stops after auto-formatting so the user can review and restage the changes."
+    dependsOn(preCommitFormat)
+    onlyIf("staged Kotlin files exist") { stagedKotlin.isNotEmpty() }
+    notCompatibleWithConfigurationCache("Compares the live working tree with the pre-formatting snapshot")
+    doLast {
+        val afterFormatting = sourceDigests()
+        val changedFiles = (beforeFormatting.keys + afterFormatting.keys).filter {
+            beforeFormatting[it] != afterFormatting[it]
+        }.sorted()
+        hookReport.get().asFile.appendText(
+            "Formatting changed files: ${changedFiles.size}\n" + changedFiles.joinToString("\n") + "\n",
+        )
+        check(changedFiles.isEmpty()) {
+            "Formatting changed files. 以下のファイルを自動整形したため、コミットを中止しました。\n" +
+                changedFiles.joinToString("\n") +
+                "\n差分を確認し、コミットに含める内容を再ステージしてください。\n" +
+                "  git diff -- <file>\n  git add -- <file>"
+        }
+    }
+}
+
 val preCommitFormatCheck = tasks.register<Detekt>("detektPreCommitFormatCheck") {
     group = "verification"
     description = "Rejects remaining formatting violations after preCommit auto-correction."
-    dependsOn(preCommitFormat)
+    dependsOn(checkPreCommitFormattingChanges)
     onlyIf("staged Kotlin files exist") { stagedKotlin.isNotEmpty() }
     config.setFrom(formattingConfig)
     buildUponDefaultConfig = false
@@ -183,25 +239,35 @@ val preCommitAnalysis = tasks.register<Detekt>("detektPreCommit") {
     notCompatibleWithConfigurationCache("Uses the live pre-commit snapshot")
 }
 
+val preCommitStagedFormatCheck = tasks.register<Detekt>("detektPreCommitStagedFormatCheck") {
+    group = "verification"
+    description = "Checks the staged native Kotlin contents without changing the Git index or working files."
+    dependsOn(preCommitAnalysis)
+    onlyIf("staged native Kotlin files exist") { stagedNativeKotlin.isNotEmpty() }
+    setSource(stagedSources)
+    config.setFrom(formattingConfig)
+    buildUponDefaultConfig = false
+    autoCorrect = false
+    outputs.upToDateWhen { false }
+    outputs.cacheIf { false }
+    notCompatibleWithConfigurationCache("Checks the live Git index snapshot")
+    doFirst {
+        logger.lifecycle(
+            "ステージ済みのKotlinを検査します。整形違反がある場合は、対象ファイルの差分を確認し、" +
+                "コミットに含める内容を再ステージしてください（git diff -- <file> / git add -- <file>）。",
+        )
+    }
+}
+
 // コミット前、自動整形・静的解析のタスクを設定
 tasks.register("preCommit") {
     group = "verification"
-    description = "TvApp hook behavior as Gradle tasks: staged gate, format, analyze, reject newly formatted changes."
-    dependsOn(preCommitAnalysis)
-    notCompatibleWithConfigurationCache("Checks the working tree after the ordered hook pipeline")
+    description = "Formats and analyzes native Kotlin, and rejects unformatted staged contents on every attempt."
+    dependsOn(preCommitStagedFormatCheck)
+    notCompatibleWithConfigurationCache("Uses the live Git index and working-tree state")
     doLast {
         if (stagedKotlin.isEmpty()) return@doLast
-        val afterFormatting = sourceDigests()
-        val changedFiles = (beforeFormatting.keys + afterFormatting.keys).filter {
-            beforeFormatting[it] != afterFormatting[it]
-        }.sorted()
-        hookReport.get().asFile.appendText(
-            "Formatting changed files: ${changedFiles.size}\n" + changedFiles.joinToString("\n") + "\n",
-        )
-        check(changedFiles.isEmpty()) {
-            "Formatting changed files. Review and stage the formatted changes before committing:\n" +
-                changedFiles.joinToString("\n")
-        }
+        hookReport.get().asFile.appendText("Staged native Kotlin formatting passed: ${stagedNativeKotlin.size}\n")
         logger.lifecycle("preCommit passed. Existing unstaged changes are preserved; the Git index was not updated.")
     }
 }

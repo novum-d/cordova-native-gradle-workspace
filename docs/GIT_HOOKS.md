@@ -27,6 +27,7 @@ TvAppのdetektは1.23.7、Twitter Compose rulesは0.0.26でした。AGP 9.2.1・
 | 整形・解析 | 公式detekt Gradle Pluginの型付き`Detekt`タスク |
 | 実行順序 | GradleのdependsOnで固定 |
 | 変更検出 | Kotlin/Java APIで実行前後のファイルSHA-256を比較 |
+| ステージ内容の整形検査 | JGitでindexの内容をbuild/tmpへ取り出し、毎回読み取り専用のDetektタスクで検査 |
 | Git index | 読み取りのみ。自動stage・commit・resetはしない |
 | パス | 文字列集合として扱い、空白・日本語をshellで分割しない |
 | レポート | `build/reports/detekt/<task>.html`、`build/reports/git-hooks/preCommit.txt` |
@@ -41,14 +42,14 @@ detekt Plugin、detekt-formatting、Twitter Compose rules、JGitは通常のMave
 
 | タスク | 処理 |
 | --- | --- |
-| `preCommit` | staged判定→自動整形→残存整形違反チェック→通常解析→変更検出 |
+| `preCommit` | staged判定・内容取得→自動整形→変更検出→残存整形違反チェック→通常解析→ステージ内容の整形検査 |
 | `detektFormat` | 自動整形だけを明示実行。stagedの有無ではスキップしない |
 | `detektFormatCheck` | 整形違反を検査し、ファイルは変更しない |
 | `detekt` | 通常の静的解析。ファイルは変更しない |
 | `ktlintCheck` | TvAppと同じ互換名。detektFormatCheckへ依存 |
 | `check` | detektFormatCheckとdetektを実行する読み取り専用の品質ゲート |
 
-`preparePreCommit`、`detektPreCommitFormat`、`detektPreCommitFormatCheck`、`detektPreCommit`はpreCommitの内部段階です。コミット前の確認には最終の`preCommit`を使います。
+`preparePreCommit`、`detektPreCommitFormat`、`checkPreCommitFormattingChanges`、`detektPreCommitFormatCheck`、`detektPreCommit`、`detektPreCommitStagedFormatCheck`はpreCommitの内部段階です。コミット前の確認には最終の`preCommit`を使います。
 
 ```sh
 cd ~/repos/cordova-native-gradle-workspace
@@ -86,9 +87,13 @@ cd ~/repos/cordova-native-gradle-workspace
 
 `native/feature/src/**/*.kt`と`native/data/src/**/*.kt`を対象にします。`java`・`kotlin`双方の配置、test、androidTest、その他のsource setを含め、build/generatedは除外します。生成されたCordova platform、Gradle Kotlin DSL自体（`.kts`）、検証用build/generatedコードは対象外です。
 
-TvApp同様に「stagedの`.kt`は実行のトリガー」であり、解析対象は全対象ソースの**working tree**です。staged版そのもののコンパイル・解析ではありません。既存の部分ステージを許容する挙動を維持しています。
+TvApp同様に「stagedの`.kt`は実行のトリガー」であり、自動整形・通常の静的解析は全対象ソースの**working tree**に対して行います。これに加えて、解析対象範囲内で追加・変更がstageされた`.kt`は、indexから取り出した内容全体の整形チェックを毎回行います。build/generatedなどの除外条件は作業ツリーと共通です。ステージ内容の静的解析・コンパイルは行いません。
 
-変更検出はstagedファイルだけでなく全解析対象へ広げました。全体の自動整形で未ステージの別ファイルが変わった場合も、レビューを要求して失敗します。もとの未ステージ差分が変わらなければ成功します。indexは全ケースで変更しません。
+自動整形で内容が変わった場合は、その直後に対象ファイルと差分確認・再ステージの案内を表示して停止します。変更検出はstagedファイルだけでなく全解析対象に対して行うため、未ステージの別ファイルを整形した場合も確認が必要です。
+
+再ステージせず再試行した場合、作業ファイルの整形前後は一致していても、ステージ内容の整形違反を検出して停止します。ステージ内容は`build/tmp/git-hooks/staged/`へ元のパス構造で取り出し、毎回作り直します。`GIT_INDEX_FILE`でコミット用のindexが指定された場合は、そちらを読み取ります。
+
+作業ツリーとステージ内容が異なることだけでは拒否しません。どちらも整形済みなら、部分ステージした状態でも成功します。indexの自動更新や作業内容の退避・復元は行いません。
 
 ### 自動整形の補正
 
@@ -100,7 +105,7 @@ TvApp同様に「stagedの`.kt`は実行のトリガー」であり、解析対�
 
 ## 検証結果
 
-一時的なGit repositoryをJGitで作成し、実際のKotlin DSL・detektを実行した9ケースがすべて成功しました。fixtureのGit操作も既存GitコマンドではなくJGit APIで行います。workspaceのindexへテストファイルをstageしていません。
+一時的なGit repositoryをJGitで作成し、実際のKotlin DSL・detektを実行した15ケースがすべて成功しました。ビルドキャッシュを有効にした状態で、同じリポジトリの再試行・再ステージまで確認しています。fixtureのGit操作も既存GitコマンドではなくJGit APIで行います。workspaceのindexへテストファイルをstageしていません。
 
 | ケース | 期待する結果 | 実測 |
 | --- | --- | --- |
@@ -113,15 +118,24 @@ TvApp同様に「stagedの`.kt`は実行のトリガー」であり、解析対�
 | 空白・日本語を含むファイル名 | 正常に扱う | 成功 |
 | stagedとは別の未ステージファイルを整形 | その変更も検出して失敗 | 期待どおり失敗 |
 | 読み取り専用detektFormatCheckで違反 | 失敗し、元ファイルを変更しない | 期待どおり失敗 |
+| 自動整形後に再ステージせず再試行 | ステージ内容の整形違反で再び失敗 | 期待どおり失敗 |
+| 整形済み内容を再ステージして再試行 | ステージ内容も整形チェックを通過 | 成功 |
+| 作業ファイルだけ整形済み | ステージ内容の整形違反で失敗 | 期待どおり失敗 |
+| 作業ファイルが消失し、ステージ内容に整形違反あり | ステージ内容を検査して失敗 | 期待どおり失敗 |
+| 空白・日本語を含むファイル名でステージ内容に整形違反あり | ステージ内容を検査して失敗 | 期待どおり失敗 |
+| GIT_INDEX_FILEで指定されたindexに整形違反あり | 指定されたindexを検査し、通常のindexも変更しない | 期待どおり失敗 |
 
-全9ケースでindexの実行前後SHA-256が一致しました。[結果JSON](git-hook-tests/results.json)、[実行ログ](git-hook-tests.log)
+全15ケースでindexの実行前後SHA-256が一致しました。[結果JSON](git-hook-tests/results.json)。初回9ケースの実行記録は[旧実行ログ](git-hook-tests.log)に保存しています。
 
 ```sh
 python3 verification/verify-gradle-git-hooks.py
+
+# ログをリポジトリ外へ出力する場合
+python3 verification/verify-gradle-git-hooks.py --output-dir /tmp/cordova-precommit-staged-check
 ```
 
 検証は一時repositoryだけで行い、終了時に削除します。Gradle本体の呼び出しはテスト実行用で、Hook実装が外部コマンドへ処理を委譲するものではありません。
 
-workspace自体のnative・Cordovaルートでも`check`・`preCommit`・ビルドを確認しています。実際のLibraryは空なので通常のdetektはNO-SOURCE、preCommitは未stageのためスキップです。実ソースに対する陽性・陰性の動作確認は上記fixtureで行っています。
+workspace自体のnative・Cordovaルートでも品質タスクの読み込みを確認しています。未stageの状態ではpreCommitをスキップします。ステージ済みソースに対する陽性・陰性の動作確認は上記fixtureで行っています。
 
 preCommitは実行時のindexと一時状態に依存するためConfiguration Cache非対応を明示しています。自動整形タスクはキャッシュ復元で処理を省略しません。

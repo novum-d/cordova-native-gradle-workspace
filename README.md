@@ -94,6 +94,8 @@ Hilt・KSPは適用せず、Hilt CompilerをProcessorとして有効化してい
 
 nativeはGradle標準の`gradle/libs.versions.toml`自動読込を使います。Cordovaは同じTOMLをSettingsスコープで`libs`として登録します。生成側の別Catalogや同名登録があれば上書きせず明示的に失敗します。
 
+シェルからは`./scripts/catalog-version.sh gradle`などで同じCatalogの版を取得します。`[versions]`内の`name = "value"`形式をsh・awkで読み取ります。hookのテストもシェルで実行し、CordovaのJavaScript関数を呼ぶ部分だけNode.jsを使います。
+
 nativeルートだけがAGP・KotlinをCatalogの版付きaliasで宣言します。共有LibraryはversionなしのPlugin IDを使います。Cordova側では既存`buildscript`クラスパスをそのまま使うため、既知でない版のPluginが既にクラスパスにあるという競合を避けられます。Hilt・KSP等の未使用Pluginを`apply false`で先行ロードすることもしていません。
 
 Cordova 14.0.1の`ProjectBuilder.prepBuildFiles()`は**build時にsettings.gradleを上書き**します。生成されるsettingsは`cdv-gradle-name.gradle`を読み込むため、このファイルに共有settingsへの相対参照をhookで登録します。Appの`build-extras.gradle`からも共有app設定へ相対参照を登録します。
@@ -159,11 +161,12 @@ Android Studioでは`native/`を開き、GradleをWrapper、Gradle JDKを17に�
 | scripts/bootstrap.sh | 再現用依存・Gradle取得・platform復元 |
 | scripts/setup-git-hooks.sh | Gitのpre-commitからGradleの:preCommitを呼ぶhookを初回登録。既存hookは上書きしない |
 | scripts/with-env.sh・cordova.sh | JDK 17とローカルGradleを使う実行環境 |
-| scripts/catalog-version.cjs | シェル補助処理も同じCatalog版を参照 |
+| scripts/catalog-version.sh | sh・awkで共有Catalogの版を取得し、シェル補助処理へ渡す |
 | scripts/tooling-sync.sh・verification/ToolingSync.java | Android V2モデルの取得検証 |
 | verification/catalog-verification.gradle | 独立したArtifact解決、基盤・依存方向の検証、任意のコンパイルprobe |
 | verification/fixtures/*.kt | Kotlin/Compose APIの検証専用コード。通常ビルドから除外 |
-| verification/hook.test.cjs | 冪等性、既存設定保持、不足・破損時の挙動を検証 |
+| verification/hook.test.sh | Cordova hookの冪等性、既存設定保持、不足・破損時の挙動をシェルで検証 |
+| verification/git-hooks-setup.test.sh | Git hookの登録・既存設定保持・コミット時の呼び出しをシェルで検証 |
 | .gitignore | 生成platform、依存、ビルド結果、ローカル設定をGit管理外にする |
 | README.md・docs/ | 採用理由、実行方法、実測結果、ログを保存 |
 
@@ -171,4 +174,4 @@ Android Studioでは`native/`を開き、GradleをWrapper、Gradle JDKを17に�
 
 ## 検証結果と未対応事項
 
-実測結果、APK、コマンド、残存事項は[検証レポート](docs/VALIDATION.md)に記載しています。追加したdetekt・preCommit環境、TvAppとの差異、9ケースの実行検証は[Git hookのKotlin DSL実装](docs/GIT_HOOKS.md)を参照してください。
+実測結果、APK、コマンド、残存事項は[検証レポート](docs/VALIDATION.md)に記載しています。追加したdetekt・preCommit環境、TvAppとの差異、15ケースの実行検証は[Git hookのKotlin DSL実装](docs/GIT_HOOKS.md)を参照してください。

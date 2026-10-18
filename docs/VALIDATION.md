@@ -68,14 +68,14 @@ SHA-256と実際のサイズは[最終Artifact検査](final-artifact-check.json)
 ./scripts/tooling-sync.sh native
 ./scripts/tooling-sync.sh CordovaComposeApp/platforms/android
 
-node --test verification/hook.test.cjs
+sh verification/hook.test.sh
 ```
 
 ## 今回適用していないもの・未検証
 
 - Hilt・KSPはCatalogへの定義とArtifact解決だけ。Application/Activity/Processor/DI生成を変更していません。
-- ktlint PluginはCatalogへの定義だけです。detektは後続の追加作業で適用済みです。TvAppを参照したKotlin DSL品質タスクと9ケースの実行検証は[Git hook検証](GIT_HOOKS.md)を参照してください。
-- JUnit/AndroidX TestはCatalogへの定義と解決だけ。JUnit・Instrumentationのテストコードと実行環境は追加していません。hook検証の4件はNode.jsテストです。
+- ktlint PluginはCatalogへの定義だけです。detektは後続の追加作業で適用済みです。TvAppを参照したKotlin DSL品質タスクと15ケースの実行検証は[Git hook検証](GIT_HOOKS.md)を参照してください。
+- JUnit/AndroidX TestはCatalogへの定義と解決だけ。JUnit・Instrumentationのテストコードと実行環境は追加していません。Cordova hook検証の4件はシェルテストで、対象のJavaScript関数を呼ぶ部分だけNode.jsを使います。
 - 既存業務コード・既存CordovaPluginは提供されていません。このworkspaceに追加Pluginはなく、実案件固有のMainActivity・Pluginとの統合は未検証です。[Plugin一覧](cordova-plugins.log)
 - 端末・エミュレーターへのインストールや起動、画面遷移、カメラ・NFC、WebView通信の実行試験は今回の対象外です。
 - 署名付きRelease配布、R8有効化、CI導入、DI導入は未対応です。
@@ -95,6 +95,6 @@ Nix管理の既存CLIは自己更新できないため残し、`~/.local/bin/and
 
 - detekt/formatting 1.23.8、Twitter Compose rules 0.0.26、JGit 7.8.0.202609011348-rをbuild-timeで管理。
 - native・Cordova両方で`check`・`preCommit`を実行可能。
-- 一時Git repositoryの9ケースが成功し、全ケースでindex不変を確認。[結果](git-hook-tests/results.json)
+- 一時Git repositoryの15ケースが成功し、全ケースでindex不変を確認。自動整形後の再試行と、ステージ済み内容の整形検査も含みます。[結果](git-hook-tests/results.json)
 - [nativeの品質タスク・ビルド](git-hooks-native.log)、[Cordovaの品質タスク](git-hooks-cordova.log)、[Cordovaビルド](git-hooks-cordova-build.log)
 - Hilt・KSP、Cordovaの基盤版、APKホストの構成は維持。
