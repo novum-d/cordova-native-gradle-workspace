@@ -131,6 +131,7 @@ npm run verify:structure
 npm run verify:sync
 npm run cordova:build
 npm run test:hooks
+npm run test:bootstrap
 npm run test:git-hooks
 npm run check:android
 
@@ -138,6 +139,13 @@ npm run check:android
 npm run verify:catalog
 npm run verify:dependencies
 npm run verify:compile
+```
+
+`bootstrap.sh`はルートのCordova CLIを開発用依存も含めてインストールします。`cordova.sh`は`.bin`リンクの有無に依存せず、インストールされたCLIをNode.jsで起動します。CLIだけを復元する場合は、リポジトリ直下で以下を実行してください。
+
+```sh
+npm ci --include=dev
+./scripts/cordova.sh --version
 ```
 
 Git hookがKotlinを検査した場合は、最後にHTMLの結果一覧を自動表示します。違反で停止した場合も同様です。出力先は`native/build/reports/git-hooks/preCommit.html`で、詳細レポートへのリンクを含みます。CIでは自動表示せず、`-PopenPreCommitReport=false`でも無効化できます。[動作と検証結果](docs/GIT_HOOKS.md#最後にhtmlレポートを開く)

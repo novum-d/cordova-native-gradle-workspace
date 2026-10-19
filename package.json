@@ -18,6 +18,7 @@
     "verify:dependencies": "./scripts/with-env.sh ./native/gradlew -p native verifyModuleDependencies",
     "verify:compile": "./scripts/with-env.sh ./native/gradlew -p native -PverifyCatalog=true :feature:assembleDebug :data:assembleDebug",
     "test:hooks": "sh verification/hook.test.sh",
+    "test:bootstrap": "sh verification/bootstrap.test.sh",
     "test:git-hooks": "sh verification/git-hooks-setup.test.sh",
     "check:android": "sh scripts/check-android.sh",
     "verify:structure": "./scripts/with-env.sh ./native/gradlew -p native verifyNativeIntegration",

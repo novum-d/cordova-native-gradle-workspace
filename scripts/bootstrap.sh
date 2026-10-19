@@ -1,11 +1,15 @@
 #!/bin/sh
 set -eu
 
-workspace_dir=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+workspace_dir=$(CDPATH='' cd -- "$(dirname -- "$0")/.." && pwd -P)
 cd "$workspace_dir"
 
-# npm
-npm ci --no-audit --no-fund
+# Cordova CLI is a development dependency, including when NODE_ENV=production.
+npm ci --include=dev --no-audit --no-fund
+[ -f node_modules/cordova/bin/cordova ] || {
+  echo 'Cordova CLI was not installed. Check the root package.json and npm ci output.' >&2
+  exit 1
+}
 (cd CordovaComposeApp && npm ci --no-audit --no-fund)
 
 # Gradle
