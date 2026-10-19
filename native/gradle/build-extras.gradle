@@ -18,6 +18,8 @@ dependencies {
     implementation(project(':data'))
 }
 
+apply from: new File(rootDir, '../../../native/gradle/licenses.gradle')
+
 if (!rootProject.ext.has('nativeCatalogVerificationConfigured')) {
     rootProject.apply from: new File(rootDir, '../../../verification/catalog-verification.gradle')
 }

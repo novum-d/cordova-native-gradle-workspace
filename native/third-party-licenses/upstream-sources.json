@@ -1,0 +1,9 @@
+{
+  "kotlin-COPYRIGHT.txt": "https://raw.githubusercontent.com/JetBrains/kotlin/v1.9.24/license/COPYRIGHT.txt",
+  "kotlin-NOTICE.txt": "https://raw.githubusercontent.com/JetBrains/kotlin/v1.9.24/license/NOTICE.txt",
+  "kotlin-licensing-README.md": "https://raw.githubusercontent.com/JetBrains/kotlin/v1.9.24/license/README.md",
+  "kotlin-boost-LICENSE.txt": "https://raw.githubusercontent.com/JetBrains/kotlin/v1.9.24/license/third_party/boost_LICENSE.txt",
+  "kotlin-gwt-LICENSE.txt": "https://raw.githubusercontent.com/JetBrains/kotlin/v1.9.24/license/third_party/gwt_license.txt",
+  "kotlin-guava-LICENSE.txt": "https://raw.githubusercontent.com/JetBrains/kotlin/v1.9.24/license/third_party/guava_license.txt",
+  "coroutines-NOTICE.txt": "https://raw.githubusercontent.com/Kotlin/kotlinx.coroutines/1.6.4/license/NOTICE.txt"
+}

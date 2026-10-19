@@ -1,0 +1,26 @@
+[
+  {
+    "variant": "debug",
+    "apk": "CordovaComposeApp/platforms/android/app/build/outputs/apk/debug/app-debug.apk",
+    "sha256": "a49baf45757b99363e42b4da25a1ac9d2cad83907fd14cb7969943b7c6cc4b22",
+    "verifiedRuntimeComponents": 44,
+    "matchingAssets": [
+      "index.html",
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "licensePageAbsent": true,
+    "licenseLinkAbsent": true
+  },
+  {
+    "variant": "release",
+    "apk": "CordovaComposeApp/platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk",
+    "sha256": "c2bc91cf847f74bb4c49c07bb720aa8f930073922f44786e0746f740873531e6",
+    "verifiedRuntimeComponents": 44,
+    "matchingAssets": [
+      "index.html",
+      "licenses/THIRD_PARTY_NOTICES.txt"
+    ],
+    "licensePageAbsent": true,
+    "licenseLinkAbsent": true
+  }
+]

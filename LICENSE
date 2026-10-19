@@ -1,0 +1,25 @@
+Third-party licensing
+=====================
+
+The Apache Cordova template in CordovaComposeApp/www and Cordova-generated
+sources are licensed under the Apache License, Version 2.0. The Gradle
+Wrapper scripts and JAR are also licensed under Apache-2.0; their original
+headers and the JAR's embedded META-INF/LICENSE are retained.
+
+The full Apache-2.0 license is in native/third-party-licenses/Apache-2.0.txt.
+Attribution notices are in NOTICE.
+
+Resolved Android runtime dependencies, their versions, declared licenses,
+artifact hashes and evidence URLs are recorded in native/third-party-licenses/runtime.json.
+Kotlin's standard library also includes code under the Boost Software
+License 1.0; its full text is in native/third-party-licenses/kotlin-boost-LICENSE.txt.
+Additional upstream copyright and license documents are in native/third-party-licenses/.
+
+These statements cover the identified third-party works. This file does not
+assign a new license to independently authored workspace code. The sample
+application's package.json license field describes its Cordova template;
+it must not be used to infer the licensing of all files in this workspace.
+
+Installed build tools and node_modules are not included in the source or
+APK distribution. If redistributing them, preserve their own complete
+licenses and notices and review that separate distribution.

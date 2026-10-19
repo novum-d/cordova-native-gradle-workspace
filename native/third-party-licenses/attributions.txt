@@ -1,0 +1,17 @@
+Kotlin standard-library third-party code
+======================================
+
+The Kotlin 1.9.24 upstream license/README.md identifies:
+
+- libraries/stdlib/src/kotlin/collections: derived from GWT,
+  (C) 2007-08 Google Inc.; Apache License 2.0.
+- libraries/stdlib/unsigned/src/kotlin/UnsignedUtils.kt: derived from
+  Guava's UnsignedLongs, (C) 2011 The Guava Authors; Apache License 2.0.
+- libraries/stdlib/jvm/src/kotlin/util/MathJVM.kt: derived from Boost
+  special math functions, Copyright Eric Ford & Hubert Holin 2001;
+  Boost Software License 1.0.
+
+The upstream license texts are retained in kotlin-gwt-LICENSE.txt,
+kotlin-guava-LICENSE.txt and kotlin-boost-LICENSE.txt. The full upstream
+licensing README is retained as source evidence, not as a statement that
+the Kotlin compiler, JS/Native/Wasm libraries or its test data are shipped.

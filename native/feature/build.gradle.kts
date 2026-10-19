@@ -9,7 +9,8 @@ android {
     buildToolsVersion = libs.versions.build.tools.get()
     compileSdk = libs.versions.compile.sdk.get().toInt()
     defaultConfig { minSdk = libs.versions.min.sdk.get().toInt() }
-    buildFeatures { compose = true }
+    // Only the catalog probe uses Compose; ordinary Activity sources do not.
+    buildFeatures { compose = providers.gradleProperty("verifyCatalog").map { it == "true" }.getOrElse(false) }
     composeOptions { kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get() }
     compileOptions {
         sourceCompatibility = JavaVersion.toVersion(libs.versions.jvm.target.get())

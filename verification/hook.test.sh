@@ -17,7 +17,7 @@ fixture() {
   app_dir="$fixture_dir/CordovaComposeApp"
   for relative in native/gradle/libs.versions.toml native/gradle/settings-extras.gradle \
     native/gradle/build-extras.gradle native/feature/build.gradle.kts native/data/build.gradle.kts \
-    native/gradle/git-hooks.gradle.kts config/detekt/detekt.yml config/detekt/formatting.yml \
+    native/gradle/git-hooks.gradle.kts native/gradle/licenses.gradle scripts/licenses.js config/detekt/detekt.yml config/detekt/formatting.yml \
     config/detekt/autocorrect.yml verification/catalog-verification.gradle \
     CordovaComposeApp/platforms/android/settings.gradle CordovaComposeApp/platforms/android/app/build-extras.gradle; do
     mkdir -p "$(dirname -- "$fixture_dir/$relative")"
