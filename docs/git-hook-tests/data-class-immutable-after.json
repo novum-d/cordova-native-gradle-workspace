@@ -1,0 +1,4 @@
+{
+  "working_tree_source": "package fixture\n\ninternal data class Answer(val count: Int)\n",
+  "staged_source_snapshot": "package fixture\n\ninternal data class Answer(val count: Int)\n"
+}

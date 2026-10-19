@@ -40,7 +40,7 @@ Cordova :app ──implementation──> :CordovaLib
              └implementation──> :data
 ```
 
-`feature`・`data`はどちらも`com.android.library`です。`native/app`、LibraryのtargetSdk、追加Launcherはありません。ソースはコピーしません。通常ビルドでは業務ソースがないため、LibraryのKotlinコンパイルタスクは`NO-SOURCE`となります。
+`feature`・`data`はどちらも`com.android.library`です。`native/app`、LibraryのtargetSdk、追加Launcherはありません。ソースはコピーしません。通常の`feature`には確認用の`MainActivity.kt`があります。`data`には通常のKotlinソースがないため、コンパイルタスクは`NO-SOURCE`となります。
 
 ## 固定する基盤
 
@@ -73,25 +73,29 @@ GradleはCatalogの`gradle`をWrapper生成・実行環境の選択・実行版�
 | DataStore Preferences・Core | 1.1.7 | 1.1系の修正を反映。1.2系のstdlib 2.0への移行を避ける | 1.1.7: “Fixed missing Proguard rules issue”<br>1.2.0のPOM: `<artifactId>kotlin-stdlib</artifactId>` … `<version>2.0.21</version>` | [DataStore 1.1.7の修正](https://developer.android.com/jetpack/androidx/releases/datastore?hl=en#1.1.7)、[Core JVM 1.2.0 POM](https://dl.google.com/dl/android/maven2/androidx/datastore/datastore-core-jvm/1.2.0/datastore-core-jvm-1.2.0.pom) |
 | WorkManager Runtime KTX | 2.10.5 | SDK 35内の修正版。2.11系のKotlin 2.1メタデータを避ける | `work-runtime:2.10.5`のAAR: `minCompileSdk=35`<br>`work-runtime:2.11.0`の`androidx.work.CoroutineWorker.class`: `mv=[2,1,0]` | [Runtime 2.10.5 AAR](https://dl.google.com/dl/android/maven2/androidx/work/work-runtime/2.10.5/work-runtime-2.10.5.aar)、[Runtime 2.11.0 AAR](https://dl.google.com/dl/android/maven2/androidx/work/work-runtime/2.11.0/work-runtime-2.11.0.aar) |
 | Coroutines Core・Android | 1.8.1 | 1.9でのKotlin 2.0への更新を避ける | 1.9.0: “Kotlin was updated to 2.0” | [Coroutines 1.9.0の変更点](https://github.com/Kotlin/kotlinx.coroutines/releases/tag/1.9.0) |
+| Kotlinx Datetime | 0.6.2 | Kotlin 1.9.24で実コンパイルを確認。0.7系の`kotlin.time.Instant`への移行を避ける | JVM POM: `<artifactId>kotlin-stdlib</artifactId>` … `<version>1.9.21</version>`<br>Instantの`mv=[1,9,0]`<br>0.7.0: “Remove `kotlinx.datetime.Instant` and `kotlinx.datetime.Clock` in favor of `kotlin.time.Instant`” | [0.6.2 JVM POM](https://repo.maven.apache.org/maven2/org/jetbrains/kotlinx/kotlinx-datetime-jvm/0.6.2/kotlinx-datetime-jvm-0.6.2.pom)、[0.7.0のAPI変更](https://github.com/Kotlin/kotlinx-datetime/releases/tag/v0.7.0)、[追加内容](docs/DEPENDENCIES.md) |
+| Immutable Collections | 0.3.8 | Kotlin 1.9.24で使える0.3系を採用。0.4.0以降へのKotlin 2系移行を避ける。実コンパイル確認済み | 0.4.0: “Updated Kotlin to version 2.1.20 and core dependencies”<br>0.3.8のJVM POM: `<version>1.9.21</version>`（kotlin-stdlib）、PersistentListの`mv=[1,9,0]` | [0.4.0の変更点](https://github.com/Kotlin/kotlinx.collections.immutable/releases/tag/v0.4.0)、[0.3.8 JVM POM](https://repo.maven.apache.org/maven2/org/jetbrains/kotlinx/kotlinx-collections-immutable-jvm/0.3.8/kotlinx-collections-immutable-jvm-0.3.8.pom)、[追加内容と検証](docs/IMMUTABLE_COLLECTIONS.md) |
 | Serialization JSON | 1.6.3 | 1.7系が求めるSerialization Compiler Plugin 2.0.0-RC1以降と、現在のPlugin 1.9.24との不整合を避けるため維持 | 1.7.0: “it may not be possible to use it with the Kotlin 1.9.x compiler plugin.”<br>同版が参照する1.7.0-RC: “it requires a compiler plugin with a version at least of 2.0.0-RC1.” | [Serialization 1.7.0の注意事項](https://github.com/Kotlin/kotlinx.serialization/releases/tag/v1.7.0)、[1.7.0-RCのCompiler Plugin要件](https://github.com/Kotlin/kotlinx.serialization/releases/tag/v1.7.0-RC) |
 | Retrofit | 2.11.0 | 2.12のKotlin 2.1メタデータを避ける | 2.12.0 JAR内の`retrofit2.KotlinExtensions.class`: `kotlin.Metadata(` … `mv=[2,1,0]` | [Retrofit 2.12.0 JAR](https://repo.maven.apache.org/maven2/com/squareup/retrofit2/retrofit/2.12.0/retrofit-2.12.0.jar) |
 | OkHttp・Logging Interceptor | 4.12.0 | Kotlin 1.9基盤で同版に統一 | Logging InterceptorのPOM: `<artifactId>okhttp</artifactId>` … `<version>4.12.0</version>`、`<artifactId>kotlin-stdlib-jdk8</artifactId>` … `<version>1.8.21</version>` | [Logging Interceptor 4.12.0 POM](https://repo.maven.apache.org/maven2/com/squareup/okhttp3/logging-interceptor/4.12.0/logging-interceptor-4.12.0.pom) |
 | kotlin-result | 2.0.1 | Kotlin 1.9対応の2系へ更新。既存1系から移す場合はinline value class化に伴うAPI修正が必要 | 2.0.0: “The base `Result` class is now modelled as an inline value class.”<br>2.0.1 JVMのPOM: `<artifactId>kotlin-stdlib</artifactId>` … `<version>1.9.22</version>` | [2.0.0の移行説明](https://github.com/michaelbull/kotlin-result/releases/tag/2.0.0)、[2.0.1 JVM POM](https://repo.maven.apache.org/maven2/com/michael-bull/kotlin-result/kotlin-result-jvm/2.0.1/kotlin-result-jvm-2.0.1.pom) |
-| Hilt Android・Compiler・Plugin | 2.52 | stdlib 1.9.24世代へ更新。2.53の本体は2.0 Beta系へ進む。定義・解決確認のみ | `hilt-android:2.52`のPOM: `<artifactId>kotlin-stdlib</artifactId>` … `<version>1.9.24</version>`<br>`hilt-android:2.53`のPOM: `<artifactId>kotlin-stdlib</artifactId>` … `<version>2.0.0-Beta5</version>` | [Hilt Android 2.52 POM](https://repo.maven.apache.org/maven2/com/google/dagger/hilt-android/2.52/hilt-android-2.52.pom)、[2.53 POM](https://repo.maven.apache.org/maven2/com/google/dagger/hilt-android/2.53/hilt-android-2.53.pom) |
-| KSP Plugin | 1.9.24-1.0.20 | Kotlin Compiler 1.9.24用。定義・解決確認のみ | “KSP 1.0.20 for kotlin compiler version 1.9.24” | [KSP 1.9.24-1.0.20の公開情報](https://github.com/google/ksp/releases/tag/1.9.24-1.0.20) |
+| Hilt Android・Compiler・Plugin | 2.52 | stdlib 1.9.24世代へ更新。2.53の本体は2.0 Beta系へ進む。両モジュールに適用し、KSPコード生成も確認 | `hilt-android:2.52`のPOM: `<artifactId>kotlin-stdlib</artifactId>` … `<version>1.9.24</version>`<br>`hilt-android:2.53`のPOM: `<artifactId>kotlin-stdlib</artifactId>` … `<version>2.0.0-Beta5</version>` | [Hilt Android 2.52 POM](https://repo.maven.apache.org/maven2/com/google/dagger/hilt-android/2.52/hilt-android-2.52.pom)、[2.53 POM](https://repo.maven.apache.org/maven2/com/google/dagger/hilt-android/2.53/hilt-android-2.53.pom) |
+| KSP Plugin | 1.9.24-1.0.20 | Kotlin Compiler 1.9.24用。両モジュールに適用し、KSPコード生成も確認 | “KSP 1.0.20 for kotlin compiler version 1.9.24” | [KSP 1.9.24-1.0.20の公開情報](https://github.com/google/ksp/releases/tag/1.9.24-1.0.20) |
 | Timber | 5.0.1 | 公開安定版を維持 | 公開版: “5.0.1”<br>修正内容: “Fix TimberArgCount lint check false positive on some calls to `String.format`.” | [Timber 5.0.1の変更点](https://github.com/JakeWharton/timber/releases/tag/5.0.1) |
 | JUnit 4 | 4.13.2 | 維持 | 公式リリース名: “JUnit 4.13.2” | [JUnit 4.13.2の公開情報](https://github.com/junit-team/junit4/releases/tag/r4.13.2) |
 | AndroidX Test Core KTX / Ext JUnit KTX | 1.7.0 / 1.3.0 | Kotlinメタデータ1.9世代へ更新。Artifact解決確認済み | Core KTXの`androidx.test.core.app.ActivityScenarioKt.class`: `mv=[1,9,0]`<br>Ext JUnit KTXの`androidx.test.ext.junit.rules.ActivityScenarioRuleKt.class`: `mv=[1,9,0]` | [Core KTX 1.7.0 AAR](https://dl.google.com/dl/android/maven2/androidx/test/core-ktx/1.7.0/core-ktx-1.7.0.aar)、[Ext JUnit KTX 1.3.0 AAR](https://dl.google.com/dl/android/maven2/androidx/test/ext/junit-ktx/1.3.0/junit-ktx-1.3.0.aar) |
 | ktlint Gradle Plugin／ktlint本体 | 14.2.0／1.8.0 | どちらも確認時点の最新安定版。独立した検証用Gradleプロジェクトへ適用し、実ソースのコピーのチェック・故意の整形違反の検出・整形後の成功を確認 | Plugin Portal: “Version 14.2.0 (latest)”<br>ktlint本体の公開版: “1.8.0”<br>実測: `PASS: clean Kotlin accepted, malformed Kotlin rejected, formatted Kotlin accepted.` | [Plugin Portal](https://plugins.gradle.org/plugin/org.jlleitschuh.gradle.ktlint)、[ktlint 1.8.0](https://github.com/ktlint/ktlint/releases/tag/1.8.0)、[実行ログ](docs/quality-ktlint-latest.log) |
 | detekt Gradle Plugin | 1.23.8 | 確認時点の最新安定版を適用済み。通常解析と整形チェックの実行成功を再確認 | 公式リリース: “v1.23.8”、`Latest`<br>実測: `> Task :detekt`、`> Task :detektFormatCheck`、`BUILD SUCCESSFUL` | [detekt 1.23.8](https://github.com/detekt/detekt/releases/tag/v1.23.8)、[実行ログ](docs/quality-detekt-latest.log)、[品質タスクの検証](docs/GIT_HOOKS.md) |
 
-Composeライブラリには個別版を付けず、BOMを利用する構成です。Catalogに全項目を定義していますが、通常のLibraryには未使用依存を追加していません。
+Composeライブラリには個別版を付けず、BOMを利用します。画面系は`feature`、通信・永続化系は`data`、日時・不変コレクション・Coroutines・Hilt・Result・Timberは両方へ通常依存として追加しています。単体テスト・Androidテスト依存と、Hilt/KSP・Serializationのコード生成も設定済みです。[配置一覧と解決結果](docs/DEPENDENCIES.md)を参照してください。
+
+Immutable Collectionsに合わせて、detektの`DataClassShouldBeImmutable`と`TwitterCompose.UnstableCollections`を有効にし、違反1件で停止する設定にしました。使い方とルールの範囲は[追加内容](docs/IMMUTABLE_COLLECTIONS.md)を参照してください。
 
 最新版との比較方法と結果は[バージョンの追加検証](docs/VERSION_CHECKS.md)を参照してください。Compose BOM 2025.07.00はビルド成功を確認した採用版であり、互換性のある最新版の上限を特定したものではありません。
 
 AppCompat、Truth、MockK、Turbine、coroutines-test、MockWebServer、KAPTのaliasや新規依存宣言はありません。Cordova由来の既存AppCompatは削除していません。
 
-Hilt・KSPは適用せず、Hilt CompilerをProcessorとして有効化していません。`verifyCatalogResolution`・`verifyCatalogPlugins`では別構成でArtifactを解決するだけです。DIの実行・コード生成・Hilt/KSP Plugin併用時の動作保証は今回の検証に含みません。ktlint Pluginは検証用の一時プロジェクトだけに適用し、`sh verification/verify-ktlint.sh`で再実行できます。通常のnative・Cordovaプロジェクトではdetektを適用し、読み取り専用checkとpreCommitを実行できます。この2つのルートにあるktlintCheckはdetektFormatCheckへの互換名です。詳細は[Git hookのKotlin DSL実装](docs/GIT_HOOKS.md)を参照してください。JUnitテストコードは追加していません。
+Hilt・KSPをfeature・dataへ適用し、`ksp(libs.hilt.compiler)`を設定しました。dataにはKotlin Serialization Pluginも適用し、検証コードでRepositoryのFactory、Hilt ViewModelのModule／Factory、日時を含むSerializerの生成とコンパイルを確認しています。CordovaのApplicationをHilt化した実機での注入は、この検証には含めていません。ktlint Pluginは検証用の一時プロジェクトだけに適用し、`sh verification/verify-ktlint.sh`で再実行できます。通常のnative・Cordovaプロジェクトではdetektを適用し、読み取り専用checkとpreCommitを実行できます。この2つのルートにあるktlintCheckはdetektFormatCheckへの互換名です。詳細は[Git hookのKotlin DSL実装](docs/GIT_HOOKS.md)を参照してください。JUnitテストコードは追加していません。
 
 選定根拠: [Cordova公式対応表](https://cordova.apache.org/docs/en/latest/guide/platforms/android/index.html)、[14.0.1既定値](https://github.com/apache/cordova-android/blob/14.0.1/framework/cdv-gradle-config-defaults.json)、[Compose BOM POM](https://dl.google.com/dl/android/maven2/androidx/compose/compose-bom/2025.07.00/compose-bom-2025.07.00.pom)、[Core](https://developer.android.com/jetpack/androidx/releases/core)、[Activity](https://developer.android.com/jetpack/androidx/releases/activity)、[DataStore](https://developer.android.com/jetpack/androidx/releases/datastore)、[WorkManager](https://developer.android.com/jetpack/androidx/releases/work)、[Hilt 2.52 POM](https://repo.maven.apache.org/maven2/com/google/dagger/hilt-android/2.52/hilt-android-2.52.pom)、[kotlin-result移行説明](https://github.com/michaelbull/kotlin-result/releases/tag/2.0.0)。最終的な解決座標は[ライブラリ](docs/resolved-catalog-libraries.txt)・[プラグイン](docs/resolved-catalog-plugins.txt)を参照してください。
 
@@ -101,7 +105,7 @@ nativeはGradle標準の`gradle/libs.versions.toml`自動読込を使います�
 
 シェルからは`./scripts/catalog-version.sh gradle`などで同じCatalogの版を取得します。`[versions]`内の`name = "value"`形式をsh・awkで読み取ります。hookのテストもシェルで実行し、CordovaのJavaScript関数を呼ぶ部分だけNode.jsを使います。
 
-nativeルートだけがAGP・KotlinをCatalogの版付きaliasで宣言します。共有LibraryはversionなしのPlugin IDを使います。Cordova側では既存`buildscript`クラスパスをそのまま使うため、既知でない版のPluginが既にクラスパスにあるという競合を避けられます。Hilt・KSP等の未使用Pluginを`apply false`で先行ロードすることもしていません。
+nativeルートだけがAGP・KotlinをCatalogの版付きaliasで宣言します。共有LibraryのAGP・KotlinはversionなしのPlugin IDを使います。Cordova側では既存`buildscript`クラスパスをそのまま使うため、既知でない版のPluginが既にクラスパスにあるという競合を避けられます。Hilt・KSP・Serializationは利用するLibraryの`plugins`でCatalogのaliasから宣言します。
 
 Cordova 14.0.1の`ProjectBuilder.prepBuildFiles()`は**build時にsettings.gradleを上書き**します。生成されるsettingsは`cdv-gradle-name.gradle`を読み込むため、このファイルに共有settingsへの相対参照をhookで登録します。Appの`build-extras.gradle`からも共有app設定へ相対参照を登録します。
 
@@ -111,7 +115,7 @@ Cordova 14.0.1の`ProjectBuilder.prepBuildFiles()`は**build時にsettings.gradl
 
 ## 再実行
 
-Node.js、JDK 17、SDK 35とBuild Tools 35.0.0を用意します。このマシンではmiseの17.0.2を利用します。miseを使わない場合は`CORDOVA_JAVA_HOME`を指定してください。環境スクリプトは既存のグローバルGradleやJDK設定を書き換えません。
+Node.js、JDK 17、SDK 35とBuild Tools 35.0.0、ライセンス検証用の`jq`と`shasum`または`sha256sum`を用意します。このマシンではmiseの17.0.2を利用します。miseを使わない場合は`CORDOVA_JAVA_HOME`を指定してください。環境スクリプトは既存のグローバルGradleやJDK設定を書き換えません。
 
 ```sh
 cd ~/repos/cordova-native-gradle-workspace
@@ -128,13 +132,19 @@ npm run verify:sync
 npm run cordova:build
 npm run test:hooks
 npm run test:git-hooks
+npm run check:android
 
 # Catalog全Artifactの解決と、検証用Kotlinコードのコンパイル。
 npm run verify:catalog
+npm run verify:dependencies
 npm run verify:compile
 ```
 
-`-PverifyCatalog=true`の検証ビルドだけが`verification/fixtures/*.kt`を`build/generated`へコピーし、Catalog依存とassetsを注入します。画面・Activity・DIは実装しません。Compose CompilerとKotlin APIの互換性、両Libraryのassetsマージを確認するための仕組みです。通常の配布APKには含めません。検証後に通常ビルドへ戻す場合は生成物をcleanしてください。
+Git hookがKotlinを検査した場合は、最後にHTMLの結果一覧を自動表示します。違反で停止した場合も同様です。出力先は`native/build/reports/git-hooks/preCommit.html`で、詳細レポートへのリンクを含みます。CIでは自動表示せず、`-PopenPreCommitReport=false`でも無効化できます。[動作と検証結果](docs/GIT_HOOKS.md#最後にhtmlレポートを開く)
+
+`npm run check:android`はCordova prepare後、nativeとCordovaのdetekt・整形チェック、Debug／ReleaseのAndroid Lint、基盤・依存方向・ライセンスの検証を順番に実行します。Lintエラーはビルドを失敗させ、ライブラリの指摘もアプリのレポートに含めます。修正した非推奨APIと残る警告は[Gradle・Android Lintの確認結果](docs/ANDROID_CHECKS.md)を参照してください。
+
+`-PverifyCatalog=true`の検証ビルドだけが`verification/fixtures/*.kt`を`build/generated`へコピーし、検証用assetsを注入します。依存は通常のbuild.gradle.ktsで宣言しており、検証時に追加しません。Compose・日時・Serialization APIとHilt/KSPコード生成の実コンパイル、両Libraryのassetsマージを確認します。通常の配布APKには含めません。検証後に通常ビルドへ戻す場合は生成物をcleanしてください。
 
 ```sh
 ./scripts/with-env.sh ./native/gradlew -p native :feature:clean :data:clean
@@ -179,13 +189,13 @@ Android Studioでは`native/`を開き、GradleをWrapper、Gradle JDKを17に�
 
 ## 検証結果と未対応事項
 
-実測結果、APK、コマンド、残存事項は[検証レポート](docs/VALIDATION.md)に記載しています。追加したdetekt・preCommit環境、TvAppとの差異、15ケースの実行検証は[Git hookのKotlin DSL実装](docs/GIT_HOOKS.md)を参照してください。
+実測結果、APK、コマンド、残存事項は[検証レポート](docs/VALIDATION.md)に記載しています。追加したdetekt・preCommit環境、TvAppとの差異、28ケースの実行検証は[Git hookのKotlin DSL実装](docs/GIT_HOOKS.md)を参照してください。
 
 ## ライセンス
 
 適用範囲は[LICENSE](LICENSE)、帰属表示は[NOTICE](NOTICE)を参照してください。ライセンス全文と必要な帰属表示は、APK内の`assets/www/licenses/THIRD_PARTY_NOTICES.txt`に同梱します。アプリ内のライセンス画面は設けていません。
 
-ライセンス原文・出典と通常APKの実行時依存44件の[台帳](native/third-party-licenses/runtime.json)を、`native/third-party-licenses/`で管理します。Cordovaのビルド前に依存の版・ハッシュと通知の整合性を検証します。更新時の手順、確認根拠、対象範囲は[ライセンス遵守の記録](docs/LICENSE_COMPLIANCE.md)を参照してください。`npm run licenses:verify`で単独実行できます。
+ライセンス原文・出典と通常APKの実行時依存（Debug 115件・Release 112件）の[台帳](native/third-party-licenses/runtime.json)を、`native/third-party-licenses/`で管理します。Cordovaのビルド前に依存の版・ハッシュと通知の整合性を検証します。更新時の手順、確認根拠、対象範囲は[ライセンス遵守の記録](docs/LICENSE_COMPLIANCE.md)を参照してください。`npm run licenses:verify`で単独実行できます。
 
 | 用途 | 置き場所 |
 | --- | --- |
@@ -196,4 +206,4 @@ Android Studioでは`native/`を開き、GradleをWrapper、Gradle JDKを17に�
 | APKに取り込む通知テキストの生成先 | [CordovaComposeApp/www/licenses/THIRD_PARTY_NOTICES.txt](CordovaComposeApp/www/licenses/THIRD_PARTY_NOTICES.txt) |
 | APK内の格納先 | `assets/www/licenses/THIRD_PARTY_NOTICES.txt` |
 
-原文・台帳を更新した場合は、`npm run licenses:generate`で`NOTICE`とAPK同梱用テキストを再生成し、生成結果もGitで管理します。
+生成・検証処理は[`scripts/licenses.sh`](scripts/licenses.sh)で実行します。JSONの読み取りに`jq`、ハッシュ計算に`shasum`または`sha256sum`が必要です。原文・台帳を更新した場合は、`npm run licenses:generate`で`NOTICE`とAPK同梱用テキストを再生成し、生成結果もGitで管理します。

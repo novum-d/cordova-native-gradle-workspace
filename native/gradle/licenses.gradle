@@ -33,17 +33,13 @@ def exportInventory = tasks.register('exportThirdPartyInventory') {
     }
 }
 
-def verifyLicenses = tasks.register('verifyThirdPartyLicenses') {
+def verifyLicenses = tasks.register('verifyThirdPartyLicenses', Exec) {
     group = 'verification'
     description = 'Rejects unreviewed runtime dependencies and missing or stale license notices.'
     dependsOn(exportInventory)
-    doLast {
-        project.exec {
-            workingDir(workspace)
-            commandLine('node', new File(workspace, 'scripts/licenses.js'), 'check', inventory.get().asFile,
-                new File(projectDir, 'src/main/assets/www'))
-        }
-    }
+    workingDir(workspace)
+    commandLine('sh', new File(workspace, 'scripts/licenses.sh'), 'check', inventory.get().asFile,
+        new File(projectDir, 'src/main/assets/www'))
 }
 
 tasks.matching { it.name == 'preBuild' }.configureEach { dependsOn(verifyLicenses) }

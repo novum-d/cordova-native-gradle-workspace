@@ -1,111 +1,258 @@
 {
-  "passed": 15,
-  "total": 15,
+  "passed": 28,
+  "total": 28,
   "results": [
     {
       "scenario": "no-staged-kotlin",
       "passed": true,
       "exit_code": 0,
       "expected_success": true,
-      "git_index_unchanged": true
+      "git_index_unchanged": true,
+      "html_report": false,
+      "browser_calls": 0
     },
     {
       "scenario": "clean-staged",
       "passed": true,
       "exit_code": 0,
       "expected_success": true,
-      "git_index_unchanged": true
+      "git_index_unchanged": true,
+      "html_report": true,
+      "browser_calls": 1
+    },
+    {
+      "scenario": "browser-disabled",
+      "passed": true,
+      "exit_code": 0,
+      "expected_success": true,
+      "git_index_unchanged": true,
+      "html_report": true,
+      "browser_calls": 0
+    },
+    {
+      "scenario": "ci-skips-browser",
+      "passed": true,
+      "exit_code": 0,
+      "expected_success": true,
+      "git_index_unchanged": true,
+      "html_report": true,
+      "browser_calls": 0
+    },
+    {
+      "scenario": "browser-command-fails",
+      "passed": true,
+      "exit_code": 0,
+      "expected_success": true,
+      "git_index_unchanged": true,
+      "html_report": true,
+      "browser_calls": 2
+    },
+    {
+      "scenario": "browser-fallback-succeeds",
+      "passed": true,
+      "exit_code": 0,
+      "expected_success": true,
+      "git_index_unchanged": true,
+      "html_report": true,
+      "browser_calls": 2
     },
     {
       "scenario": "formatting-changed",
       "passed": true,
       "exit_code": 1,
       "expected_success": false,
-      "git_index_unchanged": true
+      "git_index_unchanged": true,
+      "html_report": true,
+      "browser_calls": 1
     },
     {
       "scenario": "retry-without-restaging",
       "passed": true,
       "exit_code": 1,
       "expected_success": false,
-      "git_index_unchanged": true
+      "git_index_unchanged": true,
+      "html_report": true,
+      "browser_calls": 1
     },
     {
       "scenario": "retry-after-restaging",
       "passed": true,
       "exit_code": 0,
       "expected_success": true,
-      "git_index_unchanged": true
+      "git_index_unchanged": true,
+      "html_report": true,
+      "browser_calls": 1
     },
     {
       "scenario": "existing-unstaged",
       "passed": true,
       "exit_code": 0,
       "expected_success": true,
-      "git_index_unchanged": true
+      "git_index_unchanged": true,
+      "html_report": true,
+      "browser_calls": 1
     },
     {
       "scenario": "analysis-failed",
       "passed": true,
       "exit_code": 1,
       "expected_success": false,
-      "git_index_unchanged": true
+      "git_index_unchanged": true,
+      "html_report": true,
+      "browser_calls": 1
+    },
+    {
+      "scenario": "browser-failure-preserves-analysis-failure",
+      "passed": true,
+      "exit_code": 1,
+      "expected_success": false,
+      "git_index_unchanged": true,
+      "html_report": true,
+      "browser_calls": 2
     },
     {
       "scenario": "deletion-only",
       "passed": true,
       "exit_code": 0,
       "expected_success": true,
-      "git_index_unchanged": true
+      "git_index_unchanged": true,
+      "html_report": false,
+      "browser_calls": 0
     },
     {
       "scenario": "spaces-and-unicode",
       "passed": true,
       "exit_code": 0,
       "expected_success": true,
-      "git_index_unchanged": true
+      "git_index_unchanged": true,
+      "html_report": true,
+      "browser_calls": 1
     },
     {
       "scenario": "unstaged-formatting-changed",
       "passed": true,
       "exit_code": 1,
       "expected_success": false,
-      "git_index_unchanged": true
+      "git_index_unchanged": true,
+      "html_report": true,
+      "browser_calls": 1
     },
     {
       "scenario": "check-does-not-format",
       "passed": true,
       "exit_code": 1,
       "expected_success": false,
-      "git_index_unchanged": true
+      "git_index_unchanged": true,
+      "html_report": false,
+      "browser_calls": 0
     },
     {
       "scenario": "staged-formatting-only",
       "passed": true,
       "exit_code": 1,
       "expected_success": false,
-      "git_index_unchanged": true
+      "git_index_unchanged": true,
+      "html_report": true,
+      "browser_calls": 1
     },
     {
       "scenario": "staged-formatting-without-working-file",
       "passed": true,
       "exit_code": 1,
       "expected_success": false,
-      "git_index_unchanged": true
+      "git_index_unchanged": true,
+      "html_report": true,
+      "browser_calls": 1
     },
     {
       "scenario": "staged-formatting-spaces-and-unicode",
       "passed": true,
       "exit_code": 1,
       "expected_success": false,
-      "git_index_unchanged": true
+      "git_index_unchanged": true,
+      "html_report": true,
+      "browser_calls": 1
     },
     {
       "scenario": "alternate-index-formatting-only",
       "passed": true,
       "exit_code": 1,
       "expected_success": false,
-      "git_index_unchanged": true
+      "git_index_unchanged": true,
+      "html_report": true,
+      "browser_calls": 1
+    },
+    {
+      "scenario": "staged-formatting-html-name",
+      "passed": true,
+      "exit_code": 1,
+      "expected_success": false,
+      "git_index_unchanged": true,
+      "html_report": true,
+      "browser_calls": 1
+    },
+    {
+      "scenario": "data-class-mutable",
+      "passed": true,
+      "exit_code": 1,
+      "expected_success": false,
+      "git_index_unchanged": true,
+      "html_report": true,
+      "browser_calls": 1
+    },
+    {
+      "scenario": "data-class-immutable",
+      "passed": true,
+      "exit_code": 0,
+      "expected_success": true,
+      "git_index_unchanged": true,
+      "html_report": true,
+      "browser_calls": 1
+    },
+    {
+      "scenario": "compose-list",
+      "passed": true,
+      "exit_code": 1,
+      "expected_success": false,
+      "git_index_unchanged": true,
+      "html_report": true,
+      "browser_calls": 1
+    },
+    {
+      "scenario": "compose-set",
+      "passed": true,
+      "exit_code": 1,
+      "expected_success": false,
+      "git_index_unchanged": true,
+      "html_report": true,
+      "browser_calls": 1
+    },
+    {
+      "scenario": "compose-map",
+      "passed": true,
+      "exit_code": 1,
+      "expected_success": false,
+      "git_index_unchanged": true,
+      "html_report": true,
+      "browser_calls": 1
+    },
+    {
+      "scenario": "compose-mutable-list",
+      "passed": true,
+      "exit_code": 1,
+      "expected_success": false,
+      "git_index_unchanged": true,
+      "html_report": true,
+      "browser_calls": 1
+    },
+    {
+      "scenario": "compose-immutable-collections",
+      "passed": true,
+      "exit_code": 0,
+      "expected_success": true,
+      "git_index_unchanged": true,
+      "html_report": true,
+      "browser_calls": 1
     }
   ]
 }

@@ -5,8 +5,16 @@ import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.lib.FileMode
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder
 import org.gradle.api.artifacts.VersionCatalogsExtension
+import org.gradle.api.file.FileSystemOperations
+import org.gradle.process.ExecOperations
 import java.nio.file.Files
 import java.security.MessageDigest
+import javax.inject.Inject
+
+interface GitHookServices {
+    @get:Inject val files: FileSystemOperations
+    @get:Inject val processes: ExecOperations
+}
 
 // 静的解析・フォーマットで利用する依存関係を定義
 buildscript {
@@ -45,6 +53,18 @@ fun nativeKotlinSources(baseDir: File) = files(nativeModules.map { module ->
 val kotlinSources = nativeKotlinSources(workspaceDir)
 val stagedSourcesDir = layout.buildDirectory.dir("tmp/git-hooks/staged")
 val stagedSources = nativeKotlinSources(stagedSourcesDir.get().asFile)
+val hookServices = objects.newInstance<GitHookServices>()
+val hookHtmlReport = layout.buildDirectory.file("reports/git-hooks/preCommit.html")
+val detektReportsDir = layout.buildDirectory.dir("reports/detekt")
+val preCommitDetektNames = listOf(
+    "detektPreCommitFormat", "detektPreCommitFormatCheck", "detektPreCommit", "detektPreCommitStagedFormatCheck",
+)
+val openReport = providers.gradleProperty("openPreCommitReport").map(String::toBoolean).orElse(true)
+val onCi = providers.environmentVariable("CI").map { it.equals("true", ignoreCase = true) || it == "1" }.orElse(false)
+val osName = System.getProperty("os.name").lowercase()
+val display = providers.environmentVariable("DISPLAY")
+val waylandDisplay = providers.environmentVariable("WAYLAND_DISPLAY")
+val executablePath = providers.environmentVariable("PATH")
 
 // detektのプラグインを追加（フォーマッター・Composeのルール）
 dependencies {
@@ -122,6 +142,7 @@ fun sourceDigests(): Map<String, String> = kotlinSources.files.sortedBy { it.pat
 var stagedKotlin = emptyList<String>()
 var stagedNativeKotlin = emptyList<String>()
 var beforeFormatting = emptyMap<String, String>()
+var preCommitPrepared = false
 val hookReport = layout.buildDirectory.file("reports/git-hooks/preCommit.txt")
 
 val preparePreCommit = tasks.register("preparePreCommit") {
@@ -130,7 +151,14 @@ val preparePreCommit = tasks.register("preparePreCommit") {
     notCompatibleWithConfigurationCache("Reads the live Git index and passes execution-time state to hook tasks")
     doLast {
         val snapshotDir = stagedSourcesDir.get().asFile
-        delete(snapshotDir)
+        preCommitPrepared = false
+        // Remove old results so a failed or skipped phase cannot link to a previous run.
+        hookServices.files.delete {
+            delete(
+                listOf(snapshotDir, hookHtmlReport.get().asFile) +
+                    preCommitDetektNames.map { detektReportsDir.get().file("$it.html").asFile },
+            )
+        }
         val builder = FileRepositoryBuilder().findGitDir(workspaceDir)
         System.getenv("GIT_INDEX_FILE")?.takeIf { it.isNotEmpty() }?.let { indexPath ->
             builder.setIndexFile(workspaceDir.resolve(indexPath))
@@ -173,6 +201,7 @@ val preparePreCommit = tasks.register("preparePreCommit") {
             parentFile.mkdirs()
             writeText("Staged Kotlin: ${stagedKotlin.size}\n" + stagedKotlin.joinToString("\n") + "\n")
         }
+        preCommitPrepared = true
         if (stagedKotlin.isEmpty()) logger.lifecycle("No staged Kotlin files; skipping pre-commit detekt.")
         else logger.lifecycle("Staged Kotlin: ${stagedKotlin.joinToString()}; checking all native Kotlin sources.")
     }
@@ -260,7 +289,7 @@ val preCommitStagedFormatCheck = tasks.register<Detekt>("detektPreCommitStagedFo
 }
 
 // コミット前、自動整形・静的解析のタスクを設定
-tasks.register("preCommit") {
+val preCommit = tasks.register("preCommit") {
     group = "verification"
     description = "Formats and analyzes native Kotlin, and rejects unformatted staged contents on every attempt."
     dependsOn(preCommitStagedFormatCheck)
@@ -271,3 +300,91 @@ tasks.register("preCommit") {
         logger.lifecycle("preCommit passed. Existing unstaged changes are preserved; the Git index was not updated.")
     }
 }
+
+fun htmlEscape(value: String): String = value.replace("&", "&amp;")
+    .replace("<", "&lt;").replace(">", "&gt;").replace("\"", "&quot;").replace("'", "&#39;")
+
+val preCommitPhases = listOf(
+    preparePreCommit, preCommitFormat, checkPreCommitFormattingChanges,
+    preCommitFormatCheck, preCommitAnalysis, preCommitStagedFormatCheck, preCommit,
+)
+val showPreCommitReport = tasks.register("showPreCommitReport") {
+    group = "verification"
+    description = "Writes the current preCommit HTML summary and opens it in the desktop browser."
+    onlyIf("preCommit inspected staged Kotlin") { preCommitPrepared && stagedKotlin.isNotEmpty() }
+    // The finalizer is attached to prepare, which also runs when a later dependency fails.
+    // Wait until all scheduled phases finish instead of opening after prepare itself.
+    mustRunAfter(preCommitPhases)
+    notCompatibleWithConfigurationCache("Summarizes live pre-commit task states and opens a desktop report")
+    doLast {
+        val report = hookHtmlReport.get().asFile
+        val completed = preCommit.get().state.let { it.executed && !it.skipped && it.failure == null }
+        val rows = preCommitPhases.joinToString("\n") { phase ->
+            val task = phase.get()
+            val state = task.state
+            val status = when {
+                state.failure != null -> "失敗"
+                !state.executed -> "未実行"
+                state.skipped -> "スキップ"
+                else -> "成功"
+            }
+            val detail = detektReportsDir.get().file("${task.name}.html").asFile
+            val link = if (detail.isFile) {
+                "<a href=\"${htmlEscape(detail.toURI().toASCIIString())}\">詳細</a>"
+            } else "—"
+            val error = state.failure?.message?.let { "<pre>${htmlEscape(it)}</pre>" }.orEmpty()
+            "<tr><td>${htmlEscape(task.name)}</td><td>$status</td><td>$link$error</td></tr>"
+        }
+        report.parentFile.mkdirs()
+        report.writeText(
+            """<!doctype html>
+            <html lang="ja"><meta charset="utf-8"><title>preCommit の結果</title>
+            <style>body{font-family:system-ui,sans-serif;margin:2rem;line-height:1.6}
+            table{border-collapse:collapse}th,td{border:1px solid #888;padding:.5rem;text-align:left}
+            pre{white-space:pre-wrap;overflow-wrap:anywhere}</style>
+            <h1>preCommit: ${if (completed) "成功" else "コミットを中止"}</h1>
+            <p>今回の検査結果です。整形・解析に失敗した場合は差分を確認し、必要な内容を再ステージしてください。</p>
+            <pre>${htmlEscape(hookReport.get().asFile.readText())}</pre>
+            <table><tr><th>処理</th><th>結果</th><th>レポート・エラー</th></tr>$rows</table>
+            </html>
+            """.trimIndent(),
+        )
+        logger.lifecycle("preCommit HTML report: ${report.toURI().toASCIIString()}")
+        if (!openReport.get() || onCi.get()) return@doLast
+        val command = when {
+            osName.startsWith("mac") -> listOf("open", report.absolutePath)
+            osName.startsWith("windows") -> listOf("rundll32.exe", "url.dll,FileProtocolHandler", report.toURI().toASCIIString())
+            osName.startsWith("linux") && (display.orNull?.isNotBlank() == true || waylandDisplay.orNull?.isNotBlank() == true) ->
+                listOf("xdg-open", report.absolutePath)
+            else -> {
+                logger.lifecycle("Desktop browser is unavailable; open the HTML report using the link above.")
+                return@doLast
+            }
+        }
+        try {
+            // Resolve against this invocation's PATH, not the long-lived daemon's PATH.
+            val executable = executablePath.orNull.orEmpty().split(File.pathSeparator)
+                .map { File(it, command.first()) }.firstOrNull { it.isFile && it.canExecute() }
+            if (executable == null) {
+                logger.warn("Could not find ${command.first()}; use the HTML report link above.")
+                return@doLast
+            }
+            var result = hookServices.processes.exec {
+                commandLine(listOf(executable.absolutePath) + command.drop(1))
+                isIgnoreExitValue = true
+            }
+            if (result.exitValue != 0 && osName.startsWith("mac")) {
+                logger.lifecycle("Default HTML application could not open the report; trying Safari.")
+                result = hookServices.processes.exec {
+                    commandLine(executable.absolutePath, "-a", "Safari", report.absolutePath)
+                    isIgnoreExitValue = true
+                }
+            }
+            if (result.exitValue == 0) logger.lifecycle("Opened preCommit HTML report.")
+            else logger.warn("Could not open preCommit HTML report (exit ${result.exitValue}); use the link above.")
+        } catch (error: Exception) {
+            logger.warn("Could not open preCommit HTML report; use the link above. ${error.message}")
+        }
+    }
+}
+preparePreCommit.configure { finalizedBy(showPreCommitReport) }

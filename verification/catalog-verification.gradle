@@ -1,26 +1,22 @@
-// Build verification only. No source files or optional dependencies enter production builds.
+// Build verification only. Probe sources and assets never enter ordinary builds.
 import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.api.attributes.Usage
 
 ext.nativeCatalogVerificationConfigured = true
 
 def catalog = extensions.getByType(VersionCatalogsExtension).named('libs')
+// Capture the script's project at configuration time instead of Task.project in actions.
+def verificationProject = project
+def featureProject = project(':feature')
+def moduleProjects = [featureProject, project(':data')]
+def cordovaConfigFile = new File(rootDir, 'cdv-gradle-config.json')
+def catalogReports = layout.buildDirectory.dir('reports/catalog')
 def probesEnabled = providers.gradleProperty('verifyCatalog').map { it == 'true' }.getOrElse(false)
 def fixtureDir = new File(buildFile.parentFile.name == 'native' ? rootDir.parentFile : new File(rootDir, '../../..'), 'verification/fixtures')
 
-def probeDependencies = [
-    feature: ['androidx-core-ktx', 'compose-ui', 'compose-foundation', 'compose-foundation-layout',
-              'compose-material3', 'compose-ui-tooling', 'compose-ui-tooling-preview',
-              'androidx-activity-compose', 'androidx-lifecycle-runtime-ktx',
-              'androidx-lifecycle-runtime-compose', 'androidx-lifecycle-viewmodel-compose', 'androidx-webkit'],
-    data: ['datastore-preferences', 'datastore-core', 'kotlinx-serialization-json',
-           'kotlinx-coroutines-core', 'kotlinx-coroutines-android', 'androidx-work-runtime-ktx',
-           'retrofit', 'okhttp', 'okhttp-logging-interceptor', 'kotlin-result', 'timber']
-]
-
 if (probesEnabled) {
     subprojects { candidate ->
-        if (!probeDependencies.containsKey(candidate.name)) return
+        if (!(candidate.name in ['feature', 'data'])) return
         candidate.pluginManager.withPlugin('org.jetbrains.kotlin.android') {
             def output = candidate.layout.buildDirectory.dir('generated/catalogProbe')
             def generate = candidate.tasks.register('generateCatalogCompileProbe') {
@@ -38,13 +34,11 @@ if (probesEnabled) {
             }
             candidate.android.sourceSets.main.java.srcDir(output.map { new File(it.asFile, 'kotlin') })
             candidate.android.sourceSets.main.assets.srcDir(output.map { new File(it.asFile, 'assets') })
-            candidate.tasks.matching { it.name.startsWith('compile') && it.name.endsWith('Kotlin') || it.name.endsWith('Assets') }.configureEach {
-                dependsOn(generate)
-            }
-            candidate.dependencies {
-                if (candidate.name == 'feature') implementation(platform(catalog.findLibrary('compose-bom').get()))
-                probeDependencies[candidate.name].each { implementation(catalog.findLibrary(it).get()) }
-            }
+            // AGP 8/KSP 1 do not retain producer dependencies from sourceSet directory Providers.
+            candidate.tasks.matching {
+                it.name.startsWith('ksp') && it.name.endsWith('Kotlin') ||
+                    it.name.startsWith('compile') && it.name.endsWith('Kotlin') || it.name.endsWith('Assets')
+            }.configureEach { dependsOn(generate) }
         }
     }
 }
@@ -53,7 +47,7 @@ tasks.register('verifyCatalogResolution') {
     group = 'verification'
     description = 'Resolves application catalog libraries in an isolated configuration, without applying Hilt/KSP.'
     doLast {
-        def feature = project(':feature')
+        def feature = featureProject
         def buildToolGroups = ['io.gitlab.arturbosch.detekt', 'com.twitter.compose.rules']
         def dependenciesToCheck = catalog.libraryAliases.findAll {
             it != 'compose.bom' && !buildToolGroups.contains(catalog.findLibrary(it).get().get().module.group)
@@ -65,7 +59,7 @@ tasks.register('verifyCatalogResolution') {
         def reference = feature.configurations.getByName('debugRuntimeClasspath')
         reference.attributes.keySet().each { checking.attributes.attribute(it, reference.attributes.getAttribute(it)) }
         def artifacts = checking.incoming.artifacts.artifacts
-        def report = layout.buildDirectory.file('reports/catalog/libraries.txt').get().asFile
+        def report = new File(catalogReports.get().asFile, 'libraries.txt')
         report.parentFile.mkdirs()
         report.text = artifacts.collect { it.id.componentIdentifier.displayName }.unique().sort().join('\n') + '\n'
         println "Resolved ${artifacts.size()} catalog artifacts; report: ${report}"
@@ -78,15 +72,46 @@ tasks.register('verifyCatalogPlugins') {
     doLast {
         def markers = catalog.pluginAliases.collect {
             def plugin = catalog.findPlugin(it).get().get()
-            dependencies.create("${plugin.pluginId}:${plugin.pluginId}.gradle.plugin:${plugin.version.requiredVersion}")
+            verificationProject.dependencies.create("${plugin.pluginId}:${plugin.pluginId}.gradle.plugin:${plugin.version.requiredVersion}")
         }
-        def checking = configurations.detachedConfiguration(*markers)
-        checking.attributes.attribute(Usage.USAGE_ATTRIBUTE, objects.named(Usage, Usage.JAVA_RUNTIME))
+        def checking = verificationProject.configurations.detachedConfiguration(*markers)
+        checking.attributes.attribute(Usage.USAGE_ATTRIBUTE, verificationProject.objects.named(Usage, Usage.JAVA_RUNTIME))
         def artifacts = checking.incoming.artifacts.artifacts
-        def report = layout.buildDirectory.file('reports/catalog/plugins.txt').get().asFile
+        def report = new File(catalogReports.get().asFile, 'plugins.txt')
         report.parentFile.mkdirs()
         report.text = artifacts.collect { it.id.componentIdentifier.displayName }.unique().sort().join('\n') + '\n'
-        println "Resolved ${artifacts.size()} plugin artifacts without applying Hilt, KSP, ktlint or detekt; report: ${report}"
+        println "Resolved ${artifacts.size()} plugin artifacts in an isolated configuration without applying optional plugins; report: ${report}"
+    }
+}
+
+tasks.register('verifyModuleDependencies') {
+    group = 'verification'
+    description = 'Resolves actual module compile/runtime, test and KSP dependencies for both Android variants.'
+    doLast {
+        def configurationsToCheck = ['debugCompileClasspath', 'debugRuntimeClasspath',
+            'releaseCompileClasspath', 'releaseRuntimeClasspath',
+            'debugUnitTestCompileClasspath', 'debugUnitTestRuntimeClasspath',
+            'releaseUnitTestCompileClasspath', 'releaseUnitTestRuntimeClasspath',
+            'debugAndroidTestCompileClasspath', 'debugAndroidTestRuntimeClasspath']
+        def rows = []
+        moduleProjects.each { candidate ->
+            def names = configurationsToCheck + candidate.configurations.findAll {
+                it.canBeResolved && it.name.startsWith('ksp') && it.name.endsWith('ProcessorClasspath')
+            }*.name
+            names.unique().sort().each { name ->
+                def configuration = candidate.configurations.getByName(name)
+                def artifacts = configuration.incoming.artifactView {
+                    componentFilter { !(it instanceof org.gradle.api.artifacts.component.ProjectComponentIdentifier) }
+                }.artifacts.artifacts
+                def coordinates = artifacts.collect { it.id.componentIdentifier.displayName }.unique().sort()
+                rows.add([module: candidate.path, configuration: name, artifacts: coordinates])
+                println "Resolved ${candidate.path}:${name}: ${coordinates.size()} external artifacts"
+            }
+        }
+        def report = new File(catalogReports.get().asFile, 'module-dependencies.json')
+        report.parentFile.mkdirs()
+        report.text = groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(rows)) + '\n'
+        println "Module dependency report: ${report}"
     }
 }
 
@@ -96,50 +121,54 @@ tasks.register('verifyNativeIntegration') {
     doLast {
         assert System.getProperty('java.specification.version') == '17'
         assert gradle.gradleVersion == catalog.findVersion('gradle').get().requiredVersion
-        def libraryPlugin = project(':feature').plugins.getPlugin('com.android.library')
+        def libraryPlugin = featureProject.plugins.getPlugin('com.android.library')
         def agpVersion = libraryPlugin.class.classLoader.loadClass('com.android.builder.model.Version').getField('ANDROID_GRADLE_PLUGIN_VERSION').get(null)
         assert agpVersion == catalog.findVersion('agp').get().requiredVersion
-        def kotlinPlugin = project(':feature').plugins.getPlugin('org.jetbrains.kotlin.android')
+        def kotlinPlugin = featureProject.plugins.getPlugin('org.jetbrains.kotlin.android')
         def kotlinVersion = kotlinPlugin.class.classLoader.loadClass('org.jetbrains.kotlin.config.KotlinCompilerVersion').getField('VERSION').get(null)
         assert kotlinVersion == catalog.findVersion('kotlin').get().requiredVersion
-        def allAndroidProjects = allprojects.findAll { it.plugins.hasPlugin('com.android.application') || it.plugins.hasPlugin('com.android.library') }
+        def allAndroidProjects = verificationProject.allprojects.findAll { it.plugins.hasPlugin('com.android.application') || it.plugins.hasPlugin('com.android.library') }
         [':feature', ':data'].each { name ->
-            def candidate = project(name)
+            def candidate = verificationProject.project(name)
             assert candidate.plugins.hasPlugin('com.android.library')
             assert !candidate.plugins.hasPlugin('com.android.application')
-            assert !candidate.plugins.hasPlugin('com.google.dagger.hilt.android')
-            assert !candidate.plugins.hasPlugin('com.google.devtools.ksp')
+            assert candidate.plugins.hasPlugin('com.google.dagger.hilt.android')
+            assert candidate.plugins.hasPlugin('com.google.devtools.ksp')
             assert candidate.android.compileSdk == 35
             assert candidate.android.defaultConfig.minSdk == 24
             assert candidate.android.defaultConfig.targetSdk == null
             assert candidate.android.compileOptions.sourceCompatibility == JavaVersion.VERSION_11
             assert candidate.android.compileOptions.targetCompatibility == JavaVersion.VERSION_11
-            assert candidate.android.kotlinOptions.jvmTarget == '11'
+            ['compileDebugKotlin', 'compileReleaseKotlin'].each { taskName ->
+                assert candidate.tasks.named(taskName).get().compilerOptions.jvmTarget.get().target == '11'
+            }
         }
-        assert project(':feature').configurations.implementation.dependencies.any {
-            it instanceof ProjectDependency && it.dependencyProject.path == ':data'
+        assert featureProject.configurations.implementation.dependencies.any {
+            it instanceof ProjectDependency && it.path == ':data'
         }
-        def app = findProject(':app')
+        def app = verificationProject.findProject(':app')
         def hosts = allAndroidProjects.findAll { it.plugins.hasPlugin('com.android.application') }*.path
         if (app != null) {
             assert hosts == [':app']
             assert app.android.defaultConfig.targetSdk == 35
             assert app.android.defaultConfig.minSdk == 24
             assert app.android.compileSdk == 35
-            def config = new groovy.json.JsonSlurper().parse(new File(rootDir, 'cdv-gradle-config.json'))
+            assert app.android.lint.abortOnError
+            assert app.android.lint.checkDependencies
+            def config = new groovy.json.JsonSlurper().parse(cordovaConfigFile)
             assert config.AGP_VERSION == '8.7.3' && config.KOTLIN_VERSION == '1.9.24' && config.GRADLE_VERSION == '8.13'
             assert config.JAVA_SOURCE_COMPATIBILITY == 11 && config.JAVA_TARGET_COMPATIBILITY == 11
             assert app.configurations.implementation.dependencies.any {
-                it instanceof ProjectDependency && it.dependencyProject.path == ':feature'
+                it instanceof ProjectDependency && it.path == ':feature'
             }
             assert app.configurations.implementation.dependencies.any {
-                it instanceof ProjectDependency && it.dependencyProject.path == ':CordovaLib'
+                it instanceof ProjectDependency && it.path == ':CordovaLib'
             }
             def modules = app.configurations.debugRuntimeClasspath.incoming.resolutionResult.allComponents.findAll { it.moduleVersion != null }*.moduleVersion
             assert modules.find { it.group == 'androidx.appcompat' && it.name == 'appcompat' }.version == '1.7.0'
             assert modules.find { it.group == 'androidx.webkit' && it.name == 'webkit' }.version == '1.12.1'
             assert modules.findAll { it.group == 'org.jetbrains.kotlin' && (it.name.startsWith('kotlin-stdlib') || it.name == 'kotlin-reflect') }.every { it.version.startsWith('1.9.') }
-            def report = layout.buildDirectory.file('reports/catalog/host-runtime.txt').get().asFile
+            def report = new File(catalogReports.get().asFile, 'host-runtime.txt')
             report.parentFile.mkdirs()
             report.text = modules.collect { "${it.group}:${it.name}:${it.version}" }.sort().join('\n') + '\n'
             println "Host runtime report: ${report}"

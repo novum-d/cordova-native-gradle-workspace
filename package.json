@@ -7,17 +7,19 @@
     "cordova": "13.0.0"
   },
   "scripts": {
-    "licenses:generate": "node scripts/licenses.js generate",
-    "licenses:check": "node scripts/licenses.js check",
+    "licenses:generate": "sh scripts/licenses.sh generate",
+    "licenses:check": "sh scripts/licenses.sh check",
     "licenses:verify": "./scripts/with-env.sh ./native/gradlew -p CordovaComposeApp/platforms/android :app:verifyThirdPartyLicenses",
-    "test:licenses": "node --test verification/licenses.test.js",
+    "test:licenses": "sh verification/licenses.test.sh",
     "cordova:prepare": "./scripts/cordova.sh prepare android",
     "cordova:build": "./scripts/cordova.sh build android",
     "native:build": "./scripts/with-env.sh ./native/gradlew -p native :feature:assembleDebug :data:assembleDebug",
     "verify:catalog": "./scripts/with-env.sh ./native/gradlew -p native verifyCatalogResolution verifyCatalogPlugins",
+    "verify:dependencies": "./scripts/with-env.sh ./native/gradlew -p native verifyModuleDependencies",
     "verify:compile": "./scripts/with-env.sh ./native/gradlew -p native -PverifyCatalog=true :feature:assembleDebug :data:assembleDebug",
     "test:hooks": "sh verification/hook.test.sh",
     "test:git-hooks": "sh verification/git-hooks-setup.test.sh",
+    "check:android": "sh scripts/check-android.sh",
     "verify:structure": "./scripts/with-env.sh ./native/gradlew -p native verifyNativeIntegration",
     "verify:sync": "./scripts/tooling-sync.sh native"
   }

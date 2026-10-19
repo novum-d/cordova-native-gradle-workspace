@@ -1,0 +1,50 @@
+> Task :feature:clean
+> Task :data:clean
+
+> Task :verifyModuleDependencies
+Resolved :feature:debugAndroidTestCompileClasspath: 77 external artifacts
+Resolved :feature:debugAndroidTestRuntimeClasspath: 114 external artifacts
+Resolved :feature:debugCompileClasspath: 65 external artifacts
+Resolved :feature:debugRuntimeClasspath: 106 external artifacts
+Resolved :feature:debugUnitTestCompileClasspath: 67 external artifacts
+Resolved :feature:debugUnitTestRuntimeClasspath: 108 external artifacts
+Resolved :feature:kspDebugAndroidTestKotlinProcessorClasspath: 24 external artifacts
+Resolved :feature:kspDebugKotlinProcessorClasspath: 24 external artifacts
+Resolved :feature:kspDebugUnitTestKotlinProcessorClasspath: 24 external artifacts
+Resolved :feature:kspReleaseKotlinProcessorClasspath: 24 external artifacts
+Resolved :feature:kspReleaseUnitTestKotlinProcessorClasspath: 24 external artifacts
+Resolved :feature:releaseCompileClasspath: 63 external artifacts
+Resolved :feature:releaseRuntimeClasspath: 103 external artifacts
+Resolved :feature:releaseUnitTestCompileClasspath: 65 external artifacts
+Resolved :feature:releaseUnitTestRuntimeClasspath: 105 external artifacts
+Resolved :data:debugAndroidTestCompileClasspath: 63 external artifacts
+Resolved :data:debugAndroidTestRuntimeClasspath: 76 external artifacts
+Resolved :data:debugCompileClasspath: 52 external artifacts
+Resolved :data:debugRuntimeClasspath: 68 external artifacts
+Resolved :data:debugUnitTestCompileClasspath: 54 external artifacts
+Resolved :data:debugUnitTestRuntimeClasspath: 70 external artifacts
+Resolved :data:kspDebugAndroidTestKotlinProcessorClasspath: 24 external artifacts
+Resolved :data:kspDebugKotlinProcessorClasspath: 24 external artifacts
+Resolved :data:kspDebugUnitTestKotlinProcessorClasspath: 24 external artifacts
+Resolved :data:kspReleaseKotlinProcessorClasspath: 24 external artifacts
+Resolved :data:kspReleaseUnitTestKotlinProcessorClasspath: 24 external artifacts
+Resolved :data:releaseCompileClasspath: 52 external artifacts
+Resolved :data:releaseRuntimeClasspath: 68 external artifacts
+Resolved :data:releaseUnitTestCompileClasspath: 54 external artifacts
+Resolved :data:releaseUnitTestRuntimeClasspath: 70 external artifacts
+Module dependency report: /Users/novumd/repos/cordova-native-gradle-workspace/native/build/reports/catalog/module-dependencies.json
+
+> Task :verifyNativeIntegration
+Verified JDK 17 / Gradle 8.13 / AGP 8.7.3 / Kotlin 1.9.24 / Java-Kotlin target 11
+Android modules: [:data, :feature]; APK hosts: []
+
+[Incubating] Problems report is available at: file:///Users/novumd/repos/cordova-native-gradle-workspace/native/build/reports/problems/problems-report.html
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/8.13/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD SUCCESSFUL in 2s
+4 actionable tasks: 4 executed

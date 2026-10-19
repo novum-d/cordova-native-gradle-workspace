@@ -1,3 +1,4 @@
 {
-  "working_tree_source": "package fixture\n\ninternal fun answer(value: Int): Int = value + 42\n"
+  "working_tree_source": "package fixture\n\ninternal fun answer(value: Int): Int = value + 42\n",
+  "staged_source_snapshot": "package fixture\n\ninternal fun answer(value: Int): Int = value + 42    \n"
 }

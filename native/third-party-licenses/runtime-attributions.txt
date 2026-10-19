@@ -1,0 +1,589 @@
+Runtime dependency source attributions
+======================================
+
+Source JAR URLs and SHA-256 hashes are recorded in runtime.json.
+Copyright statements below are preserved from the selected source archives.
+
+androidx.activity:activity-compose:1.10.1
+-----------------------------------------
+Copyright 2021 The Android Open Source Project
+Copyright 2022 The Android Open Source Project
+Copyright 2023 The Android Open Source Project
+Copyright 2024 The Android Open Source Project
+
+androidx.activity:activity:1.10.1
+---------------------------------
+Copyright (C) 2020 The Android Open Source Project
+Copyright 2018 The Android Open Source Project
+Copyright 2019 The Android Open Source Project
+Copyright 2020 The Android Open Source Project
+Copyright 2021 The Android Open Source Project
+Copyright 2022 The Android Open Source Project
+Copyright 2023 The Android Open Source Project
+
+androidx.annotation:annotation-jvm:1.9.1
+----------------------------------------
+Copyright (C) 2013 The Android Open Source Project
+Copyright (C) 2014 The Android Open Source Project
+Copyright (C) 2015 The Android Open Source Project
+Copyright (C) 2016 The Android Open Source Project
+Copyright (C) 2017 The Android Open Source Project
+Copyright (C) 2020 The Android Open Source Project
+Copyright (C) 2021 The Android Open Source Project
+Copyright (C) 2022 The Android Open Source Project
+Copyright 2018 The Android Open Source Project
+Copyright 2019 The Android Open Source Project
+Copyright 2021 The Android Open Source Project
+Copyright 2023 The Android Open Source Project
+Copyright 2024 The Android Open Source Project
+
+androidx.autofill:autofill:1.0.0
+--------------------------------
+Copyright 2019 The Android Open Source Project
+
+androidx.collection:collection-jvm:1.5.0
+----------------------------------------
+Copyright (C) 2017 The Android Open Source Project
+Copyright (C) 2019 The Android Open Source Project
+Copyright 2018 The Android Open Source Project
+Copyright 2020 The Android Open Source Project
+Copyright 2022 The Android Open Source Project
+Copyright 2023 The Android Open Source Project
+Copyright 2024 The Android Open Source Project
+
+androidx.compose.animation:animation-android:1.8.3
+--------------------------------------------------
+Copyright 2019 The Android Open Source Project
+Copyright 2020 The Android Open Source Project
+Copyright 2021 The Android Open Source Project
+Copyright 2022 The Android Open Source Project
+Copyright 2024 The Android Open Source Project
+
+androidx.compose.animation:animation-core-android:1.8.3
+-------------------------------------------------------
+Copyright 2019 The Android Open Source Project
+Copyright 2020 The Android Open Source Project
+Copyright 2021 The Android Open Source Project
+Copyright 2022 The Android Open Source Project
+Copyright 2023 The Android Open Source Project
+Copyright 2024 The Android Open Source Project
+
+androidx.compose.foundation:foundation-android:1.8.3
+----------------------------------------------------
+Copyright 2018 The Android Open Source Project
+Copyright 2019 The Android Open Source Project
+Copyright 2020 The Android Open Source Project
+Copyright 2021 The Android Open Source Project
+Copyright 2022 The Android Open Source Project
+Copyright 2023 The Android Open Source Project
+Copyright 2024 The Android Open Source Project
+Copyright 2025 The Android Open Source Project
+
+androidx.compose.foundation:foundation-layout-android:1.8.3
+-----------------------------------------------------------
+Copyright 2019 The Android Open Source Project
+Copyright 2020 The Android Open Source Project
+Copyright 2021 The Android Open Source Project
+Copyright 2022 The Android Open Source Project
+Copyright 2023 The Android Open Source Project
+Copyright 2024 The Android Open Source Project
+
+androidx.compose.material3:material3-android:1.3.2
+--------------------------------------------------
+Copyright 2021 The Android Open Source Project
+Copyright 2022 The Android Open Source Project
+Copyright 2023 The Android Open Source Project
+Copyright 2024 The Android Open Source Project
+
+androidx.compose.material:material-android:1.8.3
+------------------------------------------------
+Copyright 2018 The Android Open Source Project
+Copyright 2019 The Android Open Source Project
+Copyright 2020 The Android Open Source Project
+Copyright 2021 The Android Open Source Project
+Copyright 2022 The Android Open Source Project
+Copyright 2023 The Android Open Source Project
+Copyright 2024 The Android Open Source Project
+
+androidx.compose.material:material-icons-core-android:1.7.8
+-----------------------------------------------------------
+Copyright 2020 The Android Open Source Project
+Copyright 2025 The Android Open Source Project
+
+androidx.compose.material:material-ripple-android:1.8.3
+-------------------------------------------------------
+Copyright 2019 The Android Open Source Project
+Copyright 2020 The Android Open Source Project
+Copyright 2021 The Android Open Source Project
+
+androidx.compose.runtime:runtime-android:1.8.3
+----------------------------------------------
+Copyright 2016-2019 JetBrains s.r.o.
+Copyright 2016-2020 JetBrains s.r.o.
+Copyright 2019 The Android Open Source Project
+Copyright 2020 The Android Open Source Project
+Copyright 2021 The Android Open Source Project
+Copyright 2022 The Android Open Source Project
+Copyright 2023 The Android Open Source Project
+Copyright 2024 The Android Open Source Project
+
+androidx.compose.runtime:runtime-saveable-android:1.8.3
+-------------------------------------------------------
+Copyright 2020 The Android Open Source Project
+Copyright 2021 The Android Open Source Project
+
+androidx.compose.ui:ui-android:1.8.3
+------------------------------------
+Copyright 2019 The Android Open Source Project
+Copyright 2020 The Android Open Source Project
+Copyright 2021 The Android Open Source Project
+Copyright 2022 The Android Open Source Project
+Copyright 2023 The Android Open Source Project
+Copyright 2024 The Android Open Source Project
+Copyright 2025 The Android Open Source Project
+
+androidx.compose.ui:ui-geometry-android:1.8.3
+---------------------------------------------
+Copyright 2019 The Android Open Source Project
+Copyright 2020 The Android Open Source Project
+Copyright 2023 The Android Open Source Project
+
+androidx.compose.ui:ui-graphics-android:1.8.3
+---------------------------------------------
+Copyright 2018 The Android Open Source Project
+Copyright 2019 The Android Open Source Project
+Copyright 2020 The Android Open Source Project
+Copyright 2021 The Android Open Source Project
+Copyright 2022 The Android Open Source Project
+Copyright 2023 The Android Open Source Project
+Copyright 2024 The Android Open Source Project
+
+androidx.compose.ui:ui-text-android:1.8.3
+-----------------------------------------
+Copyright 2018 The Android Open Source Project
+Copyright 2019 The Android Open Source Project
+Copyright 2020 The Android Open Source Project
+Copyright 2021 The Android Open Source Project
+Copyright 2022 The Android Open Source Project
+Copyright 2023 The Android Open Source Project
+Copyright 2024 The Android Open Source Project
+
+androidx.compose.ui:ui-tooling-android:1.8.3
+--------------------------------------------
+Copyright 2019 The Android Open Source Project
+Copyright 2020 The Android Open Source Project
+Copyright 2021 The Android Open Source Project
+Copyright 2022 The Android Open Source Project
+
+androidx.compose.ui:ui-tooling-data-android:1.8.3
+-------------------------------------------------
+Copyright 2020 The Android Open Source Project
+Copyright 2021 The Android Open Source Project
+
+androidx.compose.ui:ui-tooling-preview-android:1.8.3
+----------------------------------------------------
+Copyright 2019 The Android Open Source Project
+Copyright 2020 The Android Open Source Project
+Copyright 2021 The Android Open Source Project
+Copyright 2022 The Android Open Source Project
+Copyright 2023 The Android Open Source Project
+
+androidx.compose.ui:ui-unit-android:1.8.3
+-----------------------------------------
+Copyright 2018 The Android Open Source Project
+Copyright 2019 The Android Open Source Project
+Copyright 2020 The Android Open Source Project
+Copyright 2022 The Android Open Source Project
+Copyright 2023 The Android Open Source Project
+
+androidx.compose.ui:ui-util-android:1.8.3
+-----------------------------------------
+Copyright 2019 The Android Open Source Project
+Copyright 2020 The Android Open Source Project
+Copyright 2023 The Android Open Source Project
+
+androidx.concurrent:concurrent-futures-ktx:1.1.0
+------------------------------------------------
+Copyright 2019 The Android Open Source Project
+
+androidx.core:core-ktx:1.16.0
+-----------------------------
+Copyright (C) 2017 The Android Open Source Project
+Copyright (C) 2018 The Android Open Source Project
+Copyright (C) 2019 The Android Open Source Project
+Copyright 2018 The Android Open Source Project
+Copyright 2022 The Android Open Source Project
+
+androidx.core:core-viewtree:1.0.0
+---------------------------------
+Copyright 2024 The Android Open Source Project
+
+androidx.core:core:1.16.0
+-------------------------
+Copyright (C) 2009 The Android Open Source Project
+Copyright (C) 2011 The Android Open Source Project
+Copyright (C) 2012 The Android Open Source Project
+Copyright (C) 2013 The Android Open Source Project
+Copyright (C) 2014 The Android Open Source Project
+Copyright (C) 2015 The Android Open Source Project
+Copyright (C) 2016 The Android Open Source Project
+Copyright (C) 2017 The Android Open Source Project
+Copyright (C) 2018 The Android Open Source Project
+Copyright (C) 2019 The Android Open Source Project
+Copyright (C) 2021 The Android Open Source Project
+Copyright (C) 2022 The Android Open Source Project
+Copyright (C) 2023 The Android Open Source Project
+Copyright (C) 2024 The Android Open Source Project
+Copyright 2015 The Android Open Source Project
+Copyright 2017 The Android Open Source Project
+Copyright 2018 The Android Open Source Project
+Copyright 2019 The Android Open Source Project
+Copyright 2020 The Android Open Source Project
+Copyright 2021 The Android Open Source Project
+Copyright 2022 The Android Open Source Project
+Copyright 2023 The Android Open Source Project
+Copyright 2024 The Android Open Source Project
+Copyright 2025 The Android Open Source Project
+
+androidx.customview:customview-poolingcontainer:1.0.0
+-----------------------------------------------------
+Copyright 2021 The Android Open Source Project
+
+androidx.datastore:datastore-android:1.1.7
+------------------------------------------
+Copyright 2020 The Android Open Source Project
+Copyright 2021 The Android Open Source Project
+Copyright 2022 The Android Open Source Project
+
+androidx.datastore:datastore-core-android:1.1.7
+-----------------------------------------------
+Copyright 2020 The Android Open Source Project
+Copyright 2022 The Android Open Source Project
+Copyright 2023 The Android Open Source Project
+Copyright 2024 The Android Open Source Project
+
+androidx.datastore:datastore-core-okio-jvm:1.1.7
+------------------------------------------------
+Copyright 2022 The Android Open Source Project
+
+androidx.datastore:datastore-preferences-android:1.1.7
+------------------------------------------------------
+Copyright 2020 The Android Open Source Project
+Copyright 2021 The Android Open Source Project
+Copyright 2022 The Android Open Source Project
+
+androidx.datastore:datastore-preferences-core-android:1.1.7
+-----------------------------------------------------------
+Copyright 2020 The Android Open Source Project
+Copyright 2022 The Android Open Source Project
+Copyright 2024 The Android Open Source Project
+
+androidx.datastore:datastore-preferences-proto:1.1.7
+----------------------------------------------------
+Copyright 2020 The Android Open Source Project
+
+androidx.emoji2:emoji2-views-helper:1.4.0
+-----------------------------------------
+Copyright 2021 The Android Open Source Project
+
+androidx.emoji2:emoji2:1.4.0
+----------------------------
+Copyright 2021 The Android Open Source Project
+Copyright 2022 The Android Open Source Project
+
+androidx.graphics:graphics-path:1.0.1
+-------------------------------------
+Copyright 2022 The Android Open Source Project
+
+androidx.lifecycle:lifecycle-common-jvm:2.8.7
+---------------------------------------------
+Copyright (C) 2017 The Android Open Source Project
+Copyright 2018 The Android Open Source Project
+Copyright 2019 The Android Open Source Project
+
+androidx.lifecycle:lifecycle-livedata-core:2.8.7
+------------------------------------------------
+Copyright (C) 2017 The Android Open Source Project
+Copyright 2018 The Android Open Source Project
+
+androidx.lifecycle:lifecycle-livedata:2.8.7
+-------------------------------------------
+Copyright (C) 2017 The Android Open Source Project
+Copyright 2019 The Android Open Source Project
+
+androidx.lifecycle:lifecycle-process:2.8.7
+------------------------------------------
+Copyright (C) 2017 The Android Open Source Project
+Copyright 2021 The Android Open Source Project
+
+androidx.lifecycle:lifecycle-runtime-android:2.8.7
+--------------------------------------------------
+Copyright (C) 2017 The Android Open Source Project
+Copyright (C) 2024 The Android Open Source Project
+Copyright 2019 The Android Open Source Project
+Copyright 2020 The Android Open Source Project
+Copyright 2021 The Android Open Source Project
+Copyright 2024 The Android Open Source Project
+
+androidx.lifecycle:lifecycle-runtime-compose-android:2.8.7
+----------------------------------------------------------
+Copyright 2022 The Android Open Source Project
+Copyright 2023 The Android Open Source Project
+Copyright 2024 The Android Open Source Project
+
+androidx.lifecycle:lifecycle-service:2.8.7
+------------------------------------------
+Copyright (C) 2017 The Android Open Source Project
+
+androidx.lifecycle:lifecycle-viewmodel-android:2.8.7
+----------------------------------------------------
+Copyright (C) 2017 The Android Open Source Project
+Copyright (C) 2024 The Android Open Source Project
+Copyright 2017 The Android Open Source Project
+Copyright 2019 The Android Open Source Project
+Copyright 2020 The Android Open Source Project
+Copyright 2021 The Android Open Source Project
+Copyright 2023 The Android Open Source Project
+Copyright 2024 The Android Open Source Project
+
+androidx.lifecycle:lifecycle-viewmodel-compose-android:2.8.7
+------------------------------------------------------------
+Copyright 2021 The Android Open Source Project
+Copyright 2022 The Android Open Source Project
+Copyright 2024 The Android Open Source Project
+
+androidx.lifecycle:lifecycle-viewmodel-savedstate:2.8.7
+-------------------------------------------------------
+Copyright 2018 The Android Open Source Project
+Copyright 2019 The Android Open Source Project
+Copyright 2021 The Android Open Source Project
+
+androidx.lifecycle:lifecycle-viewmodel:2.8.7
+--------------------------------------------
+Copyright (C) 2017 The Android Open Source Project
+Copyright (C) 2024 The Android Open Source Project
+Copyright 2017 The Android Open Source Project
+Copyright 2019 The Android Open Source Project
+Copyright 2021 The Android Open Source Project
+Copyright 2024 The Android Open Source Project
+
+androidx.profileinstaller:profileinstaller:1.4.0
+------------------------------------------------
+Copyright (C) 2021 The Android Open Source Project
+Copyright 2021 The Android Open Source Project
+Copyright 2022 The Android Open Source Project
+
+androidx.room:room-common:2.6.1
+-------------------------------
+Copyright (C) 2016 The Android Open Source Project
+Copyright (C) 2017 The Android Open Source Project
+Copyright (C) 2022 The Android Open Source Project
+Copyright 2018 The Android Open Source Project
+Copyright 2019 The Android Open Source Project
+Copyright 2020 The Android Open Source Project
+Copyright 2021 The Android Open Source Project
+Copyright 2022 The Android Open Source Project
+
+androidx.room:room-ktx:2.6.1
+----------------------------
+Copyright 2018 The Android Open Source Project
+Copyright 2019 The Android Open Source Project
+Copyright 2021 The Android Open Source Project
+
+androidx.room:room-runtime:2.6.1
+--------------------------------
+Copyright (C) 2016 The Android Open Source Project
+Copyright (C) 2017 The Android Open Source Project
+Copyright (C) 2018 The Android Open Source Project
+Copyright (C) 2020 The Android Open Source Project
+Copyright 2018 The Android Open Source Project
+Copyright 2019 The Android Open Source Project
+Copyright 2020 The Android Open Source Project
+Copyright 2021 The Android Open Source Project
+Copyright 2022 The Android Open Source Project
+
+androidx.savedstate:savedstate-ktx:1.2.1
+----------------------------------------
+Copyright 2020 The Android Open Source Project
+
+androidx.sqlite:sqlite-framework:2.4.0
+--------------------------------------
+Copyright (C) 2016 The Android Open Source Project
+Copyright (C) 2017 The Android Open Source Project
+Copyright 2019 The Android Open Source Project
+
+androidx.sqlite:sqlite:2.4.0
+----------------------------
+Copyright (C) 2016 The Android Open Source Project
+Copyright (C) 2017 The Android Open Source Project
+Copyright 2021 The Android Open Source Project
+
+androidx.tracing:tracing-ktx:1.2.0
+----------------------------------
+Copyright 2020 The Android Open Source Project
+
+androidx.tracing:tracing:1.2.0
+------------------------------
+Copyright 2020 The Android Open Source Project
+
+androidx.work:work-runtime:2.10.5
+---------------------------------
+Copyright (C) 2017 The Android Open Source Project
+Copyright 2017 The Android Open Source Project
+Copyright 2018 The Android Open Source Project
+Copyright 2019 The Android Open Source Project
+Copyright 2020 The Android Open Source Project
+Copyright 2021 The Android Open Source Project
+Copyright 2022 The Android Open Source Project
+Copyright 2023 The Android Open Source Project
+Copyright 2024 The Android Open Source Project
+
+com.google.code.findbugs:jsr305:3.0.2
+-------------------------------------
+Copyright (c) 2005 Brian Goetz
+
+com.google.dagger:dagger:2.52
+-----------------------------
+Copyright (C) 2007 The Dagger Authors.
+Copyright (C) 2012 The Dagger Authors.
+Copyright (C) 2014 The Dagger Authors.
+Copyright (C) 2015 The Dagger Authors.
+Copyright (C) 2016 The Dagger Authors.
+Copyright (C) 2017 The Dagger Authors.
+Copyright (C) 2019 The Dagger Authors.
+Copyright (C) 2020 The Dagger Authors.
+Copyright (C) 2021 The Dagger Authors.
+Copyright (C) 2022 The Dagger Authors.
+Copyright (C) 2023 The Dagger Authors.
+Copyright (C) 2024 The Dagger Authors.
+
+com.google.dagger:hilt-android:2.52
+-----------------------------------
+Copyright (C) 2019 The Dagger Authors.
+Copyright (C) 2020 The Dagger Authors.
+Copyright (C) 2021 The Dagger Authors.
+Copyright (C) 2022 The Dagger Authors.
+Copyright (C) 2023 The Dagger Authors.
+
+com.google.dagger:hilt-core:2.52
+--------------------------------
+Copyright (C) 2019 The Dagger Authors.
+Copyright (C) 2020 The Dagger Authors.
+Copyright (C) 2021 The Dagger Authors.
+
+com.squareup.okhttp3:logging-interceptor:4.12.0
+-----------------------------------------------
+Copyright (C) 2015 Square, Inc.
+Copyright (C) 2018 Square, Inc.
+
+com.squareup.okhttp3:okhttp:4.12.0
+----------------------------------
+Copyright (C) 2010 The Android Open Source Project
+Copyright (C) 2011 The Android Open Source Project
+Copyright (C) 2012 Square, Inc.
+Copyright (C) 2012 The Android Open Source Project
+Copyright (C) 2013 Square, Inc.
+Copyright (C) 2014 Square, Inc.
+Copyright (C) 2015 Square, Inc.
+Copyright (C) 2016 Square, Inc.
+Copyright (C) 2017 Square, Inc.
+Copyright (C) 2018 Square, Inc.
+Copyright (C) 2019 Square, Inc.
+Copyright (C) 2020 Square, Inc.
+Copyright 2013 Twitter, Inc.
+
+com.squareup.okio:okio-jvm:3.6.0
+--------------------------------
+Copyright (C) 2014 Square, Inc.
+Copyright (C) 2015 Square, Inc.
+Copyright (C) 2016 Square, Inc.
+Copyright (C) 2017 Square, Inc.
+Copyright (C) 2018 Square, Inc.
+Copyright (C) 2019 Square, Inc.
+Copyright (C) 2020 Square, Inc.
+Copyright (C) 2020 Square, Inc. and others.
+Copyright (C) 2021 Square, Inc.
+Copyright (C) 2023 Square, Inc.
+Copyright 2014 Square Inc.
+
+com.squareup.retrofit2:retrofit:2.11.0
+--------------------------------------
+Copyright (C) 2008 Google Inc.
+Copyright (C) 2011 Square, Inc.
+Copyright (C) 2012 Square, Inc.
+Copyright (C) 2013 Square, Inc.
+Copyright (C) 2014 Square, Inc.
+Copyright (C) 2015 Square, Inc.
+Copyright (C) 2016 Square, Inc.
+Copyright (C) 2017 Square, Inc.
+Copyright (C) 2018 Square, Inc.
+Copyright (C) 2019 Square, Inc.
+Copyright (C) 2024 Square, Inc.
+Copyright 2014 Square, Inc.
+
+jakarta.inject:jakarta.inject-api:2.0.1
+---------------------------------------
+Copyright (C) 2009 The JSR-330 Expert Group
+
+javax.inject:javax.inject:1
+---------------------------
+Copyright (C) 2009 The JSR-330 Expert Group
+
+org.jetbrains.kotlin:kotlin-android-extensions-runtime:1.9.22
+-------------------------------------------------------------
+Copyright 2010-2017 JetBrains s.r.o.
+
+org.jetbrains.kotlin:kotlin-parcelize-runtime:1.9.22
+----------------------------------------------------
+Copyright 2010-2017 JetBrains s.r.o.
+Copyright 2010-2021 JetBrains s.r.o. and Kotlin Programming Language contributors.
+
+org.jetbrains.kotlinx:kotlinx-datetime-jvm:0.6.2
+------------------------------------------------
+Copyright 2019-2020 JetBrains s.r.o.
+Copyright 2019-2021 JetBrains s.r.o.
+Copyright 2019-2022 JetBrains s.r.o. and contributors.
+Copyright 2019-2023 JetBrains s.r.o.
+Copyright 2019-2023 JetBrains s.r.o. and contributors.
+Copyright 2019-2024 JetBrains s.r.o. and contributors.
+Copyright 2023 JetBrains s.r.o. and contributors.
+
+org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:1.6.3
+----------------------------------------------------------
+Copyright 2017-2019 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license.
+Copyright 2017-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license.
+Copyright 2017-2021 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license.
+Copyright 2017-2022 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license.
+Copyright 2017-2023 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license.
+
+org.jetbrains.kotlinx:kotlinx-serialization-json-jvm:1.6.3
+----------------------------------------------------------
+Copyright 2017-2019 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license.
+Copyright 2017-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license.
+Copyright 2017-2021 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license.
+Copyright 2017-2022 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license.
+Copyright 2017-2023 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license.
+
+org.jetbrains:annotations:23.0.0
+--------------------------------
+Copyright 2000-2020 JetBrains s.r.o.
+Copyright 2000-2021 JetBrains s.r.o.
+
+org.jspecify:jspecify:1.0.0
+---------------------------
+Copyright 2018-2020 The JSpecify Authors.
+Copyright 2022 The JSpecify Authors.
+
+
+JSR-305 concurrent annotations
+==============================
+
+javax.annotation.concurrent.GuardedBy, Immutable, NotThreadSafe and ThreadSafe
+Copyright (c) 2005 Brian Goetz
+Released under the Creative Commons Attribution License
+(http://creativecommons.org/licenses/by/2.5)
+Official home: http://www.jcip.net
+
+The selected source JAR preserves these headers. The source code was not
+modified. See CC-BY-2.5.txt for the license text and runtime.json for the
+source archive URL and SHA-256.

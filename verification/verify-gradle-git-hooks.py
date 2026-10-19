@@ -1,10 +1,13 @@
 """Exercises the real Kotlin DSL hook in disposable repositories. No Git/Detekt CLI or local tool JAR is used."""
 from pathlib import Path
+from html.parser import HTMLParser
+from urllib.parse import unquote, urlparse
 import argparse
 import hashlib
 import json
 import os
 import subprocess
+import sys
 import tempfile
 
 workspace = Path(__file__).resolve().parent.parent
@@ -22,15 +25,35 @@ cases = {
     'staged-formatting-without-working-file': (False, 'detektPreCommitStagedFormatCheck FAILED'),
     'staged-formatting-spaces-and-unicode': (False, 'detektPreCommitStagedFormatCheck FAILED'),
     'alternate-index-formatting-only': (False, 'detektPreCommitStagedFormatCheck FAILED'),
+    'staged-formatting-html-name': (False, 'detektPreCommitStagedFormatCheck FAILED'),
+    'data-class-mutable': (False, 'DataClassShouldBeImmutable'),
+    'data-class-immutable': (True, 'preCommit passed'),
+    'compose-list': (False, 'UnstableCollections'),
+    'compose-set': (False, 'UnstableCollections'),
+    'compose-map': (False, 'UnstableCollections'),
+    'compose-mutable-list': (False, 'MutableParams'),
+    'compose-immutable-collections': (True, 'preCommit passed'),
 }
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--output-dir', type=Path, default=workspace / 'docs/git-hook-tests')
-logs = parser.parse_args().output_dir.resolve()
+parser.add_argument('--scenario', action='append', choices=cases)
+options = parser.parse_args()
+logs = options.output_dir.resolve()
 logs.mkdir(parents=True, exist_ok=True)
 results = []
 
 
-def run_case(fixture, scenario, should_pass, expected, label=None, properties=()):
+class ReportLinks(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.links = []
+
+    def handle_starttag(self, tag, attrs):
+        if tag == 'a':
+            self.links.extend(value for name, value in attrs if name == 'href')
+
+
+def run_case(fixture, scenario, should_pass, expected, label=None, properties=(), ci=False, browser_exit=0, safari_fallback=False):
     label = label or scenario
     native = fixture / 'native'
     task = 'detektFormatCheck' if scenario == 'check-does-not-format' else 'preCommit'
@@ -38,13 +61,30 @@ def run_case(fixture, scenario, should_pass, expected, label=None, properties=()
                '-p', str(native), f'-Pscenario={scenario}', *properties, task,
                '--console=plain', '--no-watch-fs', '--build-cache']
     environment = dict(os.environ)
+    environment['PATH'] = str(fixture / 'browser-bin') + os.pathsep + environment.get('PATH', '')
+    environment['CI'] = 'true' if ci else 'false'
+    environment['DISPLAY'] = ':fixture-browser'
+    environment['PRECOMMIT_BROWSER_LOG'] = str(fixture / 'browser-open.log')
+    environment['PRECOMMIT_BROWSER_EXIT'] = str(browser_exit)
+    environment['PRECOMMIT_BROWSER_FALLBACK_EXIT'] = str(0 if safari_fallback else browser_exit)
+    browser_log = fixture / 'browser-open.log'
+    browser_log.unlink(missing_ok=True)
+    report = native / 'build/reports/git-hooks/preCommit.html'
+    report.parent.mkdir(parents=True, exist_ok=True)
+    if task == 'preCommit':
+        report.write_text('STALE REPORT')
+        old_reports = native / 'build/reports/detekt'
+        old_reports.mkdir(parents=True, exist_ok=True)
+        for name in ['detektPreCommitFormat', 'detektPreCommitFormatCheck', 'detektPreCommit', 'detektPreCommitStagedFormatCheck']:
+            (old_reports / f'{name}.html').write_text('STALE REPORT')
     if scenario == 'alternate-index-formatting-only':
         environment['GIT_INDEX_FILE'] = str(fixture / 'alternate-index')
     result = subprocess.run(command, cwd=workspace, env=environment, text=True, stdout=subprocess.PIPE,
                             stderr=subprocess.STDOUT, timeout=240)
     (logs / f'{label}.log').write_text(result.stdout)
-    relative = 'native/data/src/main/kotlin/fixture/' + (
-        '日本語 Probe.kt' if scenario == 'staged-formatting-spaces-and-unicode' else 'Answer.kt')
+    filename = {'staged-formatting-spaces-and-unicode': '日本語 Probe.kt',
+                'staged-formatting-html-name': 'Probe <unsafe>&.kt'}.get(scenario, 'Answer.kt')
+    relative = 'native/data/src/main/kotlin/fixture/' + filename
     target = fixture / relative
     snapshot = native / 'build/tmp/git-hooks/staged' / relative
     sources = {}
@@ -74,19 +114,57 @@ def run_case(fixture, scenario, should_pass, expected, label=None, properties=()
             fixture / 'default-index-before.sha256').read_text()
     if label == 'retry-after-restaging':
         passed = passed and sources.get('working_tree_source') == sources.get('staged_source_snapshot')
+    expects_report = scenario not in ['no-staged-kotlin', 'deletion-only', 'check-does-not-format']
+    expects_browser = expects_report and not ci and '-PopenPreCommitReport=false' not in properties
+    calls = browser_log.read_text().splitlines() if browser_log.is_file() else []
+    passed = passed and report.exists() == expects_report and bool(calls) == expects_browser
+    if expects_report and report.is_file():
+        contents = report.read_text()
+        passed = passed and f'preCommit: {"成功" if should_pass else "コミットを中止"}' in contents
+        parsed = ReportLinks()
+        parsed.feed(contents)
+        passed = passed and bool(parsed.links)
+        for href in parsed.links:
+            target = Path(unquote(urlparse(href).path))
+            passed = passed and target.is_file() and 'STALE REPORT' not in target.read_text()
+        if scenario == 'staged-formatting-html-name':
+            passed = passed and '&lt;unsafe&gt;&amp;' in contents and '<unsafe>' not in contents
+        if expects_browser:
+            expected_calls = 2 if browser_exit and sys.platform == 'darwin' else 1
+            passed = passed and len(calls) == expected_calls and all(Path(call).resolve() == report.resolve() for call in calls)
+        passed = passed and result.stdout.rfind('> Task :showPreCommitReport') > result.stdout.rfind('> Task :detektPreCommit')
+    if browser_exit and not safari_fallback:
+        passed = passed and f'Could not open preCommit HTML report (exit {browser_exit})' in result.stdout
+    if safari_fallback:
+        passed = passed and 'trying Safari.' in result.stdout and 'Opened preCommit HTML report.' in result.stdout
     results.append({'scenario': label, 'passed': passed, 'exit_code': result.returncode,
-                    'expected_success': should_pass, 'git_index_unchanged': unchanged})
+                    'expected_success': should_pass, 'git_index_unchanged': unchanged,
+                    'html_report': report.exists(), 'browser_calls': len(calls)})
     print(f'{"PASS" if passed else "FAIL"}: {label} (exit {result.returncode}, index unchanged={unchanged})', flush=True)
     if not passed:
         print(result.stdout[-8000:], flush=True)
 
 
 with tempfile.TemporaryDirectory(prefix='gradle-git-hook-tests-') as temporary:
-    for scenario, (should_pass, expected) in cases.items():
-        fixture = Path(temporary) / scenario
+    for scenario in options.scenario or cases:
+        should_pass, expected = cases[scenario]
+        fixture = Path(temporary) / scenario / '日本語 workspace'
         native = fixture / 'native'
         native.mkdir(parents=True)
         (fixture / '.git-hook-functional-fixture').touch()
+        browser_bin = fixture / 'browser-bin'
+        browser_bin.mkdir()
+        for name in ['open', 'xdg-open']:
+            opener = browser_bin / name
+            opener.write_text('''#!/bin/sh
+set -eu
+for argument do report=$argument; done
+[ -f "$report" ] || exit 90
+printf '%s\\n' "$report" >>"$PRECOMMIT_BROWSER_LOG"
+if [ "$1" = '-a' ]; then exit "$PRECOMMIT_BROWSER_FALLBACK_EXIT"; fi
+exit "${PRECOMMIT_BROWSER_EXIT:-0}"
+''')
+            opener.chmod(0o755)
         config = fixture / 'config/detekt'
         config.mkdir(parents=True)
         for name in ['detekt.yml', 'formatting.yml', 'autocorrect.yml']:
@@ -110,6 +188,19 @@ with tempfile.TemporaryDirectory(prefix='gradle-git-hook-tests-') as temporary:
                      label='retry-without-restaging', properties=('-PreuseFixture=true',))
             run_case(fixture, scenario, True, 'preCommit passed', label='retry-after-restaging',
                      properties=('-PreuseFixture=true', '-PrestageFixture=true'))
+        if scenario == 'clean-staged':
+            run_case(fixture, scenario, True, 'preCommit passed', label='browser-disabled',
+                     properties=('-PreuseFixture=true', '-PopenPreCommitReport=false'))
+            run_case(fixture, scenario, True, 'preCommit passed', label='ci-skips-browser',
+                     properties=('-PreuseFixture=true',), ci=True)
+            run_case(fixture, scenario, True, 'preCommit passed', label='browser-command-fails',
+                     properties=('-PreuseFixture=true',), browser_exit=7)
+            if sys.platform == 'darwin':
+                run_case(fixture, scenario, True, 'preCommit passed', label='browser-fallback-succeeds',
+                         properties=('-PreuseFixture=true',), browser_exit=7, safari_fallback=True)
+        if scenario == 'analysis-failed':
+            run_case(fixture, scenario, False, expected, label='browser-failure-preserves-analysis-failure',
+                     properties=('-PreuseFixture=true',), browser_exit=7)
 summary = {'passed': sum(r['passed'] for r in results), 'total': len(results), 'results': results}
 (logs / 'results.json').write_text(json.dumps(summary, indent=2) + '\n')
 if not all(r['passed'] for r in results):

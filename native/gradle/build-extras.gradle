@@ -18,6 +18,13 @@ dependencies {
     implementation(project(':data'))
 }
 
+// Cordova assigns abortOnError=false AFTER loading build-extras.gradle.
+// Finalize the DSL after those defaults and any other plugin extras are applied.
+androidComponents.finalizeDsl { androidDsl ->
+    androidDsl.lint.abortOnError = true
+    androidDsl.lint.checkDependencies = true
+}
+
 apply from: new File(rootDir, '../../../native/gradle/licenses.gradle')
 
 if (!rootProject.ext.has('nativeCatalogVerificationConfigured')) {

@@ -26,43 +26,24 @@ Project Statistics:
 	- number of packages: 1
 	- number of kt files: 1
 
-File /private/var/folders/_z/0psds5k51gnfc1k9rs6mtjnc0000gn/T/gradle-git-hook-tests-wuhmmb1x/formatting-changed/native/data/src/main/kotlin/fixture/Answer.kt was modified.
-Successfully generated HTML report at file:///private/var/folders/_z/0psds5k51gnfc1k9rs6mtjnc0000gn/T/gradle-git-hook-tests-wuhmmb1x/formatting-changed/native/build/reports/detekt/detektPreCommitFormat.html
+File /private/var/folders/_z/0psds5k51gnfc1k9rs6mtjnc0000gn/T/gradle-git-hook-tests-yxo6irs1/formatting-changed/日本語 workspace/native/data/src/main/kotlin/fixture/Answer.kt was modified.
+Successfully generated HTML report at file:///private/var/folders/_z/0psds5k51gnfc1k9rs6mtjnc0000gn/T/gradle-git-hook-tests-yxo6irs1/formatting-changed/%E6%97%A5%E6%9C%AC%E8%AA%9E%20workspace/native/build/reports/detekt/detektPreCommitFormat.html
 
-> Task :detektPreCommitFormatCheck
-.
+> Task :checkPreCommitFormattingChanges FAILED
 
-1 kotlin file was analyzed.
-Complexity Report:
-	- 4 lines of code (loc)
-	- 2 source lines of code (sloc)
-	- 1 logical lines of code (lloc)
-	- 0 comment lines of code (cloc)
-	- 1 cyclomatic complexity (mcc)
-	- 0 cognitive complexity
-	- 0 number of total code smells
-	- 0% comment source ratio
-	- 1,000 mcc per 1,000 lloc
-	- 0 code smells per 1,000 lloc
-
-Project Statistics:
-	- number of properties: 0
-	- number of functions: 1
-	- number of classes: 0
-	- number of packages: 1
-	- number of kt files: 1
-
-Successfully generated HTML report at file:///private/var/folders/_z/0psds5k51gnfc1k9rs6mtjnc0000gn/T/gradle-git-hook-tests-wuhmmb1x/formatting-changed/native/build/reports/detekt/detektPreCommitFormatCheck.html
-
-> Task :detektPreCommit
-> Task :preCommit FAILED
+> Task :showPreCommitReport
+preCommit HTML report: file:/private/var/folders/_z/0psds5k51gnfc1k9rs6mtjnc0000gn/T/gradle-git-hook-tests-yxo6irs1/formatting-changed/%E6%97%A5%E6%9C%AC%E8%AA%9E%20workspace/native/build/reports/git-hooks/preCommit.html
+Opened preCommit HTML report.
 
 FAILURE: Build failed with an exception.
 
 * What went wrong:
-Execution failed for task ':preCommit'.
-> Formatting changed files. Review and stage the formatted changes before committing:
+Execution failed for task ':checkPreCommitFormattingChanges'.
+> Formatting changed files. 以下のファイルを自動整形したため、コミットを中止しました。
   native/data/src/main/kotlin/fixture/Answer.kt
+  差分を確認し、コミットに含める内容を再ステージしてください。
+    git diff -- <file>
+    git add -- <file>
 
 * Try:
 > Run with --stacktrace option to get the stack trace.
@@ -70,5 +51,5 @@ Execution failed for task ':preCommit'.
 > Run with --scan to get full insights.
 > Get more help at https://help.gradle.org.
 
-BUILD FAILED in 293ms
-6 actionable tasks: 6 executed
+BUILD FAILED in 444ms
+5 actionable tasks: 5 executed

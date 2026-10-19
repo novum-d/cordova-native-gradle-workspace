@@ -4,15 +4,15 @@
 .
 
 1 kotlin file was analyzed.
-/private/var/folders/_z/0psds5k51gnfc1k9rs6mtjnc0000gn/T/gradle-git-hook-tests-wuhmmb1x/check-does-not-format/native/data/src/main/kotlin/fixture/Answer.kt:3:50: Trailing space(s) [NoTrailingSpaces]
+/private/var/folders/_z/0psds5k51gnfc1k9rs6mtjnc0000gn/T/gradle-git-hook-tests-yxo6irs1/check-does-not-format/日本語 workspace/native/data/src/main/kotlin/fixture/Answer.kt:3:50: Trailing space(s) [NoTrailingSpaces]
 
-/private/var/folders/_z/0psds5k51gnfc1k9rs6mtjnc0000gn/T/gradle-git-hook-tests-wuhmmb1x/check-does-not-format/native/data/src/main/kotlin/fixture/Answer.kt - 5min debt
-	NoTrailingSpaces - [Trailing space(s)] at /private/var/folders/_z/0psds5k51gnfc1k9rs6mtjnc0000gn/T/gradle-git-hook-tests-wuhmmb1x/check-does-not-format/native/data/src/main/kotlin/fixture/Answer.kt:3:50
+/private/var/folders/_z/0psds5k51gnfc1k9rs6mtjnc0000gn/T/gradle-git-hook-tests-yxo6irs1/check-does-not-format/日本語 workspace/native/data/src/main/kotlin/fixture/Answer.kt - 5min debt
+	[33mNoTrailingSpaces - [Trailing space(s)] at /private/var/folders/_z/0psds5k51gnfc1k9rs6mtjnc0000gn/T/gradle-git-hook-tests-yxo6irs1/check-does-not-format/日本語 workspace/native/data/src/main/kotlin/fixture/Answer.kt:3:50[0m
 
 Overall debt: 5min
 
 formatting - 5min debt
-	NoTrailingSpaces - [Trailing space(s)] at /private/var/folders/_z/0psds5k51gnfc1k9rs6mtjnc0000gn/T/gradle-git-hook-tests-wuhmmb1x/check-does-not-format/native/data/src/main/kotlin/fixture/Answer.kt:3:50
+	[33mNoTrailingSpaces - [Trailing space(s)] at /private/var/folders/_z/0psds5k51gnfc1k9rs6mtjnc0000gn/T/gradle-git-hook-tests-yxo6irs1/check-does-not-format/日本語 workspace/native/data/src/main/kotlin/fixture/Answer.kt:3:50[0m
 
 Overall debt: 5min
 
@@ -35,7 +35,7 @@ Project Statistics:
 	- number of packages: 1
 	- number of kt files: 1
 
-Successfully generated HTML report at file:///private/var/folders/_z/0psds5k51gnfc1k9rs6mtjnc0000gn/T/gradle-git-hook-tests-wuhmmb1x/check-does-not-format/native/build/reports/detekt/detektFormatCheck.html
+Successfully generated HTML report at file:///private/var/folders/_z/0psds5k51gnfc1k9rs6mtjnc0000gn/T/gradle-git-hook-tests-yxo6irs1/check-does-not-format/%E6%97%A5%E6%9C%AC%E8%AA%9E%20workspace/native/build/reports/detekt/detektFormatCheck.html
 
 FAILURE: Build failed with an exception.
 
@@ -49,5 +49,5 @@ Execution failed for task ':detektFormatCheck'.
 > Run with --scan to get full insights.
 > Get more help at https://help.gradle.org.
 
-BUILD FAILED in 265ms
+BUILD FAILED in 254ms
 2 actionable tasks: 2 executed

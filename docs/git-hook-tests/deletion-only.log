@@ -4,9 +4,12 @@
 No staged Kotlin files; skipping pre-commit detekt.
 
 > Task :detektPreCommitFormat SKIPPED
+> Task :checkPreCommitFormattingChanges SKIPPED
 > Task :detektPreCommitFormatCheck SKIPPED
 > Task :detektPreCommit SKIPPED
+> Task :detektPreCommitStagedFormatCheck SKIPPED
 > Task :preCommit
+> Task :showPreCommitReport SKIPPED
 
-BUILD SUCCESSFUL in 250ms
+BUILD SUCCESSFUL in 244ms
 3 actionable tasks: 3 executed

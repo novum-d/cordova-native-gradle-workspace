@@ -5,5 +5,15 @@
   "kotlin-boost-LICENSE.txt": "https://raw.githubusercontent.com/JetBrains/kotlin/v1.9.24/license/third_party/boost_LICENSE.txt",
   "kotlin-gwt-LICENSE.txt": "https://raw.githubusercontent.com/JetBrains/kotlin/v1.9.24/license/third_party/gwt_license.txt",
   "kotlin-guava-LICENSE.txt": "https://raw.githubusercontent.com/JetBrains/kotlin/v1.9.24/license/third_party/guava_license.txt",
-  "coroutines-NOTICE.txt": "https://raw.githubusercontent.com/Kotlin/kotlinx.coroutines/1.6.4/license/NOTICE.txt"
+  "coroutines-NOTICE.txt": "https://raw.githubusercontent.com/Kotlin/kotlinx.coroutines/1.6.4/license/NOTICE.txt",
+  "kotlin-result-LICENSE.txt": "https://repo.maven.apache.org/maven2/com/michael-bull/kotlin-result/kotlin-result-jvm/2.0.1/kotlin-result-jvm-2.0.1.jar!/META-INF/LICENSE",
+  "jakarta-inject-NOTICE.md": "https://repo.maven.apache.org/maven2/jakarta/inject/jakarta.inject-api/2.0.1/jakarta.inject-api-2.0.1.jar!/META-INF/NOTICE.md",
+  "okhttp-public-suffix-NOTICE.txt": "https://repo.maven.apache.org/maven2/com/squareup/okhttp3/okhttp/4.12.0/okhttp-4.12.0.jar!/okhttp3/internal/publicsuffix/NOTICE",
+  "protobuf-LICENSE.txt": "https://raw.githubusercontent.com/protocolbuffers/protobuf/v28.2/LICENSE",
+  "MPL-2.0.txt": "https://www.mozilla.org/media/MPL/2.0/index.815ca599c9df.txt",
+  "datetime-LICENSE.txt": "https://raw.githubusercontent.com/Kotlin/kotlinx-datetime/v0.6.2/LICENSE.txt",
+  "coroutines-1.8.1-NOTICE.txt": "https://raw.githubusercontent.com/Kotlin/kotlinx.coroutines/1.8.1/license/NOTICE.txt",
+  "okhttp-public-suffix-list.txt": "https://raw.githubusercontent.com/square/okhttp/parent-4.12.0/okhttp/src/main/resources/okhttp3/internal/publicsuffix/publicsuffixes.gz",
+  "CC-BY-2.5.html": "https://raw.githubusercontent.com/creativecommons/creativecommons.org/main/docroot/legalcode/by_2.5.html",
+  "CC-BY-2.5.txt": "https://raw.githubusercontent.com/creativecommons/creativecommons.org/main/docroot/legalcode/by_2.5.html"
 }

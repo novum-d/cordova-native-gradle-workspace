@@ -43,16 +43,20 @@ val setup = tasks.register("setupHookFixture") {
                         put(target, "package fixture\n\ninternal fun answer(value: Int): Int = value + 42    \n")
                         git.add().addFilepattern(target).call()
                     }
-                    "staged-formatting-only", "staged-formatting-without-working-file", "staged-formatting-spaces-and-unicode" -> {
-                        val stagedTarget = if (scenario == "staged-formatting-spaces-and-unicode") {
-                            "native/data/src/main/kotlin/fixture/日本語 Probe.kt"
-                        } else target
-                        put(stagedTarget, good.replace("42\n", "42    \n"))
+                    "staged-formatting-only", "staged-formatting-without-working-file", "staged-formatting-spaces-and-unicode", "staged-formatting-html-name" -> {
+                        val stagedTarget = when (scenario) {
+                            "staged-formatting-spaces-and-unicode" -> "native/data/src/main/kotlin/fixture/日本語 Probe.kt"
+                            "staged-formatting-html-name" -> "native/data/src/main/kotlin/fixture/Probe <unsafe>&.kt"
+                            else -> target
+                        }
+                        // These cases exercise path handling, independently of the Filename naming rule.
+                        val pathGood = if (stagedTarget == target) good else "@file:Suppress(\"Filename\")\n\n$good"
+                        put(stagedTarget, pathGood.replace("42\n", "42    \n"))
                         git.add().addFilepattern(stagedTarget).call()
                         if (scenario == "staged-formatting-without-working-file") {
                             check(fixtureDir.resolve(stagedTarget).delete())
                         } else {
-                            put(stagedTarget, good)
+                            put(stagedTarget, pathGood)
                         }
                     }
                     "alternate-index-formatting-only" -> {
@@ -78,6 +82,34 @@ val setup = tasks.register("setupHookFixture") {
                         put(target, "package fixture\n\ninternal fun first(): Nothing {\n    throw Exception(\"first\")\n}\n\ninternal fun second(): Nothing {\n    throw Exception(\"second\")\n}\n")
                         git.add().addFilepattern(target).call()
                     }
+                    "data-class-mutable", "data-class-immutable" -> {
+                        val declaration = if (scenario == "data-class-mutable") "var" else "val"
+                        put(target, "package fixture\n\ninternal data class Answer($declaration count: Int)\n")
+                        git.add().addFilepattern(target).call()
+                    }
+                    "compose-list", "compose-set", "compose-map", "compose-mutable-list", "compose-immutable-collections" -> {
+                        val collection = when (scenario) {
+                            "compose-set" -> "Set<String>"
+                            "compose-map" -> "Map<String, String>"
+                            "compose-mutable-list" -> "MutableList<String>"
+                            "compose-immutable-collections" -> "ImmutableList<String>"
+                            else -> "List<String>"
+                        }
+                        val source = if (scenario == "compose-immutable-collections") {
+                            "package fixture\n\nimport androidx.compose.runtime.Composable\n" +
+                                "import kotlinx.collections.immutable.ImmutableList\n" +
+                                "import kotlinx.collections.immutable.ImmutableMap\n" +
+                                "import kotlinx.collections.immutable.ImmutableSet\n\n" +
+                                "@Composable\ninternal fun Items(\n    items: ImmutableList<String>,\n" +
+                                "    keys: ImmutableSet<String>,\n    counts: ImmutableMap<String, Int>,\n) {\n" +
+                                "    check(items.isNotEmpty() && keys.isNotEmpty() && counts.isNotEmpty())\n}\n"
+                        } else {
+                            "package fixture\n\nimport androidx.compose.runtime.Composable\n\n" +
+                                "@Composable\ninternal fun Items(items: $collection) {\n    check(items.isNotEmpty())\n}\n"
+                        }
+                        put(target, source)
+                        git.add().addFilepattern(target).call()
+                    }
                     "deletion-only" -> {
                         put(target, good)
                         git.add().addFilepattern(target).call()
@@ -87,7 +119,7 @@ val setup = tasks.register("setupHookFixture") {
                     }
                     "spaces-and-unicode" -> {
                         val special = "native/data/src/main/kotlin/fixture/日本語 Probe.kt"
-                        put(special, good)
+                        put(special, "@file:Suppress(\"Filename\")\n\n$good")
                         git.add().addFilepattern(special).call()
                     }
                     "unstaged-formatting-changed" -> {

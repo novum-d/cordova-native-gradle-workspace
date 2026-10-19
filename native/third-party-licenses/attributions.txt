@@ -15,3 +15,16 @@ The upstream license texts are retained in kotlin-gwt-LICENSE.txt,
 kotlin-guava-LICENSE.txt and kotlin-boost-LICENSE.txt. The full upstream
 licensing README is retained as source evidence, not as a statement that
 the Kotlin compiler, JS/Native/Wasm libraries or its test data are shipped.
+
+Kotlinx Immutable Collections 0.3.8
+=================================
+
+The upstream JVM sources include these copyright notices:
+
+Copyright 2016-2019 JetBrains s.r.o.
+Copyright 2016-2020 JetBrains s.r.o.
+Copyright 2016-2021 JetBrains s.r.o.
+
+License: Apache License 2.0. The upstream v0.3.8 LICENSE.txt is byte-identical
+to Apache-2.0.txt retained in this directory. The source JAR and upstream
+license hashes and URLs are recorded in runtime.json.

@@ -1,0 +1,4 @@
+{
+  "working_tree_source": "package fixture\n\nimport androidx.compose.runtime.Composable\nimport kotlinx.collections.immutable.ImmutableList\nimport kotlinx.collections.immutable.ImmutableMap\nimport kotlinx.collections.immutable.ImmutableSet\n\n@Composable\ninternal fun Items(\n    items: ImmutableList<String>,\n    keys: ImmutableSet<String>,\n    counts: ImmutableMap<String, Int>,\n) {\n    check(items.isNotEmpty() && keys.isNotEmpty() && counts.isNotEmpty())\n}\n",
+  "staged_source_snapshot": "package fixture\n\nimport androidx.compose.runtime.Composable\nimport kotlinx.collections.immutable.ImmutableList\nimport kotlinx.collections.immutable.ImmutableMap\nimport kotlinx.collections.immutable.ImmutableSet\n\n@Composable\ninternal fun Items(\n    items: ImmutableList<String>,\n    keys: ImmutableSet<String>,\n    counts: ImmutableMap<String, Int>,\n) {\n    check(items.isNotEmpty() && keys.isNotEmpty() && counts.isNotEmpty())\n}\n"
+}

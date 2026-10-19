@@ -1,0 +1,83 @@
+> Task :setupHookFixture
+
+> Task :preparePreCommit
+Staged Kotlin: native/data/src/main/kotlin/fixture/Answer.kt; checking all native Kotlin sources.
+
+> Task :detektPreCommitFormat
+.
+
+1 kotlin file was analyzed.
+Complexity Report:
+	- 9 lines of code (loc)
+	- 6 source lines of code (sloc)
+	- 3 logical lines of code (lloc)
+	- 0 comment lines of code (cloc)
+	- 1 cyclomatic complexity (mcc)
+	- 0 cognitive complexity
+	- 0 number of total code smells
+	- 0% comment source ratio
+	- 333 mcc per 1,000 lloc
+	- 0 code smells per 1,000 lloc
+
+Project Statistics:
+	- number of properties: 0
+	- number of functions: 1
+	- number of classes: 0
+	- number of packages: 1
+	- number of kt files: 1
+
+Successfully generated HTML report at file:///private/var/folders/_z/0psds5k51gnfc1k9rs6mtjnc0000gn/T/gradle-git-hook-tests-yxo6irs1/compose-mutable-list/%E6%97%A5%E6%9C%AC%E8%AA%9E%20workspace/native/build/reports/detekt/detektPreCommitFormat.html
+
+> Task :checkPreCommitFormattingChanges
+
+> Task :detektPreCommitFormatCheck
+.
+
+1 kotlin file was analyzed.
+Complexity Report:
+	- 9 lines of code (loc)
+	- 6 source lines of code (sloc)
+	- 3 logical lines of code (lloc)
+	- 0 comment lines of code (cloc)
+	- 1 cyclomatic complexity (mcc)
+	- 0 cognitive complexity
+	- 0 number of total code smells
+	- 0% comment source ratio
+	- 333 mcc per 1,000 lloc
+	- 0 code smells per 1,000 lloc
+
+Project Statistics:
+	- number of properties: 0
+	- number of functions: 1
+	- number of classes: 0
+	- number of packages: 1
+	- number of kt files: 1
+
+Successfully generated HTML report at file:///private/var/folders/_z/0psds5k51gnfc1k9rs6mtjnc0000gn/T/gradle-git-hook-tests-yxo6irs1/compose-mutable-list/%E6%97%A5%E6%9C%AC%E8%AA%9E%20workspace/native/build/reports/detekt/detektPreCommitFormatCheck.html
+
+> Task :detektPreCommit FAILED
+/private/var/folders/_z/0psds5k51gnfc1k9rs6mtjnc0000gn/T/gradle-git-hook-tests-yxo6irs1/compose-mutable-list/日本語 workspace/native/data/src/main/kotlin/fixture/Answer.kt:6:20: Using mutable objects as state in Compose will cause your users to see incorrect or stale data in your app.
+Mutable objects that are not observable, such as ArrayList<T> or a mutable data class, cannot be observed by
+Compose to trigger recomposition when they change.
+
+See https://twitter.github.io/compose-rules/rules/#do-not-use-inherently-mutable-types-as-parameters for more information. [MutableParams]
+
+
+> Task :showPreCommitReport
+preCommit HTML report: file:/private/var/folders/_z/0psds5k51gnfc1k9rs6mtjnc0000gn/T/gradle-git-hook-tests-yxo6irs1/compose-mutable-list/%E6%97%A5%E6%9C%AC%E8%AA%9E%20workspace/native/build/reports/git-hooks/preCommit.html
+Opened preCommit HTML report.
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':detektPreCommit'.
+> Analysis failed with 1 weighted issues.
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 442ms
+7 actionable tasks: 7 executed

@@ -26,7 +26,9 @@ Project Statistics:
 	- number of packages: 1
 	- number of kt files: 1
 
-Successfully generated HTML report at file:///private/var/folders/_z/0psds5k51gnfc1k9rs6mtjnc0000gn/T/gradle-git-hook-tests-wuhmmb1x/analysis-failed/native/build/reports/detekt/detektPreCommitFormat.html
+Successfully generated HTML report at file:///private/var/folders/_z/0psds5k51gnfc1k9rs6mtjnc0000gn/T/gradle-git-hook-tests-yxo6irs1/analysis-failed/%E6%97%A5%E6%9C%AC%E8%AA%9E%20workspace/native/build/reports/detekt/detektPreCommitFormat.html
+
+> Task :checkPreCommitFormattingChanges
 
 > Task :detektPreCommitFormatCheck
 .
@@ -51,12 +53,16 @@ Project Statistics:
 	- number of packages: 1
 	- number of kt files: 1
 
-Successfully generated HTML report at file:///private/var/folders/_z/0psds5k51gnfc1k9rs6mtjnc0000gn/T/gradle-git-hook-tests-wuhmmb1x/analysis-failed/native/build/reports/detekt/detektPreCommitFormatCheck.html
+Successfully generated HTML report at file:///private/var/folders/_z/0psds5k51gnfc1k9rs6mtjnc0000gn/T/gradle-git-hook-tests-yxo6irs1/analysis-failed/%E6%97%A5%E6%9C%AC%E8%AA%9E%20workspace/native/build/reports/detekt/detektPreCommitFormatCheck.html
 
 > Task :detektPreCommit FAILED
-/private/var/folders/_z/0psds5k51gnfc1k9rs6mtjnc0000gn/T/gradle-git-hook-tests-wuhmmb1x/analysis-failed/native/data/src/main/kotlin/fixture/Answer.kt:4:5: Exception is a too generic Exception. Prefer throwing specific exceptions that indicate a specific error case. [TooGenericExceptionThrown]
-/private/var/folders/_z/0psds5k51gnfc1k9rs6mtjnc0000gn/T/gradle-git-hook-tests-wuhmmb1x/analysis-failed/native/data/src/main/kotlin/fixture/Answer.kt:8:5: Exception is a too generic Exception. Prefer throwing specific exceptions that indicate a specific error case. [TooGenericExceptionThrown]
+/private/var/folders/_z/0psds5k51gnfc1k9rs6mtjnc0000gn/T/gradle-git-hook-tests-yxo6irs1/analysis-failed/日本語 workspace/native/data/src/main/kotlin/fixture/Answer.kt:4:5: Exception is a too generic Exception. Prefer throwing specific exceptions that indicate a specific error case. [TooGenericExceptionThrown]
+/private/var/folders/_z/0psds5k51gnfc1k9rs6mtjnc0000gn/T/gradle-git-hook-tests-yxo6irs1/analysis-failed/日本語 workspace/native/data/src/main/kotlin/fixture/Answer.kt:8:5: Exception is a too generic Exception. Prefer throwing specific exceptions that indicate a specific error case. [TooGenericExceptionThrown]
 
+
+> Task :showPreCommitReport
+preCommit HTML report: file:/private/var/folders/_z/0psds5k51gnfc1k9rs6mtjnc0000gn/T/gradle-git-hook-tests-yxo6irs1/analysis-failed/%E6%97%A5%E6%9C%AC%E8%AA%9E%20workspace/native/build/reports/git-hooks/preCommit.html
+Opened preCommit HTML report.
 
 FAILURE: Build failed with an exception.
 
@@ -70,5 +76,5 @@ Execution failed for task ':detektPreCommit'.
 > Run with --scan to get full insights.
 > Get more help at https://help.gradle.org.
 
-BUILD FAILED in 292ms
-5 actionable tasks: 5 executed
+BUILD FAILED in 464ms
+7 actionable tasks: 7 executed

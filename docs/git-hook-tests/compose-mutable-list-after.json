@@ -1,0 +1,4 @@
+{
+  "working_tree_source": "package fixture\n\nimport androidx.compose.runtime.Composable\n\n@Composable\ninternal fun Items(items: MutableList<String>) {\n    check(items.isNotEmpty())\n}\n",
+  "staged_source_snapshot": "package fixture\n\nimport androidx.compose.runtime.Composable\n\n@Composable\ninternal fun Items(items: MutableList<String>) {\n    check(items.isNotEmpty())\n}\n"
+}

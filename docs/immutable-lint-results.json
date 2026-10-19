@@ -1,0 +1,85 @@
+{
+  "checkedOn": "2026-10-19",
+  "command": "npm run check:android",
+  "countsIncludeRepeatedFindings": true,
+  "reports": [
+    {
+      "module": "native/feature",
+      "variant": "debug",
+      "report": "native/feature/build/reports/lint-results-debug.xml",
+      "errors": 0,
+      "warnings": 0,
+      "issuesById": {}
+    },
+    {
+      "module": "native/feature",
+      "variant": "release",
+      "report": "native/feature/build/reports/lint-results-release.xml",
+      "errors": 0,
+      "warnings": 0,
+      "issuesById": {}
+    },
+    {
+      "module": "native/data",
+      "variant": "debug",
+      "report": "native/data/build/reports/lint-results-debug.xml",
+      "errors": 0,
+      "warnings": 42,
+      "issuesById": {
+        "AndroidGradlePluginVersion": 6,
+        "GradleDependency": 36
+      }
+    },
+    {
+      "module": "native/data",
+      "variant": "release",
+      "report": "native/data/build/reports/lint-results-release.xml",
+      "errors": 0,
+      "warnings": 28,
+      "issuesById": {
+        "AndroidGradlePluginVersion": 4,
+        "GradleDependency": 24
+      }
+    },
+    {
+      "module": "cordova/app",
+      "variant": "debug",
+      "report": "CordovaComposeApp/platforms/android/app/build/reports/lint-results-debug.xml",
+      "errors": 0,
+      "warnings": 61,
+      "issuesById": {
+        "AndroidGradlePluginVersion": 6,
+        "DefaultLocale": 5,
+        "DiscouragedApi": 2,
+        "GradleDependency": 39,
+        "IconDipSize": 2,
+        "IconDuplicates": 1,
+        "IconLauncherShape": 2,
+        "UnusedResources": 1,
+        "VectorRaster": 1,
+        "WebViewClientOnReceivedSslError": 1,
+        "WrongCommentType": 1
+      }
+    },
+    {
+      "module": "cordova/app",
+      "variant": "release",
+      "report": "CordovaComposeApp/platforms/android/app/build/reports/lint-results-release.xml",
+      "errors": 0,
+      "warnings": 47,
+      "issuesById": {
+        "AndroidGradlePluginVersion": 4,
+        "DefaultLocale": 5,
+        "DiscouragedApi": 2,
+        "GradleDependency": 27,
+        "IconDipSize": 2,
+        "IconDuplicates": 1,
+        "IconLauncherShape": 2,
+        "UnusedResources": 1,
+        "VectorRaster": 1,
+        "WebViewClientOnReceivedSslError": 1,
+        "WrongCommentType": 1
+      }
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+{
+  "working_tree_source": "@file:Suppress(\"Filename\")\n\npackage fixture\n\ninternal fun answer(value: Int): Int = value + 42\n",
+  "staged_source_snapshot": "@file:Suppress(\"Filename\")\n\npackage fixture\n\ninternal fun answer(value: Int): Int = value + 42    \n"
+}

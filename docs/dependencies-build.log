@@ -1,0 +1,375 @@
+
+> Configure project :app
+Build file '/Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/app/build.gradle': line 186
+Properties should be assigned using the 'propName = value' syntax. Setting a property via the Gradle-generated 'propName value' or 'propName(value)' syntax in Groovy DSL has been deprecated. This is scheduled to be removed in Gradle 10.0. Use assignment ('namespace = <value>') instead. Consult the upgrading guide for further information: https://docs.gradle.org/8.13/userguide/upgrading_version_8.html#groovy_space_assignment_syntax
+	at build_qi462y6dpvbq2hbbe2zdml7k$_run_closure7.doCall$original(/Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/app/build.gradle:186)
+	(Run with --stacktrace to get the full stack trace of this deprecation warning.)
+	at build_qi462y6dpvbq2hbbe2zdml7k.run(/Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/app/build.gradle:185)
+	(Run with --stacktrace to get the full stack trace of this deprecation warning.)
+Build file '/Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/app/build.gradle': line 189
+Properties should be assigned using the 'propName = value' syntax. Setting a property via the Gradle-generated 'propName value' or 'propName(value)' syntax in Groovy DSL has been deprecated. This is scheduled to be removed in Gradle 10.0. Use assignment ('buildConfig = <value>') instead. Consult the upgrading guide for further information: https://docs.gradle.org/8.13/userguide/upgrading_version_8.html#groovy_space_assignment_syntax
+	at build_qi462y6dpvbq2hbbe2zdml7k$_run_closure7$_closure12.doCall$original(/Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/app/build.gradle:189)
+	(Run with --stacktrace to get the full stack trace of this deprecation warning.)
+	at build_qi462y6dpvbq2hbbe2zdml7k$_run_closure7.doCall$original(/Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/app/build.gradle:188)
+	(Run with --stacktrace to get the full stack trace of this deprecation warning.)
+Build file '/Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/app/build.gradle': line 205
+Properties should be assigned using the 'propName = value' syntax. Setting a property via the Gradle-generated 'propName value' or 'propName(value)' syntax in Groovy DSL has been deprecated. This is scheduled to be removed in Gradle 10.0. Use assignment ('abortOnError = <value>') instead. Consult the upgrading guide for further information: https://docs.gradle.org/8.13/userguide/upgrading_version_8.html#groovy_space_assignment_syntax
+	at build_qi462y6dpvbq2hbbe2zdml7k$_run_closure7$_closure14.doCall$original(/Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/app/build.gradle:205)
+	(Run with --stacktrace to get the full stack trace of this deprecation warning.)
+	at build_qi462y6dpvbq2hbbe2zdml7k$_run_closure7.doCall$original(/Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/app/build.gradle:204)
+	(Run with --stacktrace to get the full stack trace of this deprecation warning.)
+
+> Configure project :CordovaLib
+Build file '/Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/CordovaLib/build.gradle': line 47
+Properties should be assigned using the 'propName = value' syntax. Setting a property via the Gradle-generated 'propName value' or 'propName(value)' syntax in Groovy DSL has been deprecated. This is scheduled to be removed in Gradle 10.0. Use assignment ('namespace = <value>') instead. Consult the upgrading guide for further information: https://docs.gradle.org/8.13/userguide/upgrading_version_8.html#groovy_space_assignment_syntax
+	at build_4ukbrzng19194dcy8id6l8b61$_run_closure2.doCall$original(/Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/CordovaLib/build.gradle:47)
+	(Run with --stacktrace to get the full stack trace of this deprecation warning.)
+	at build_4ukbrzng19194dcy8id6l8b61.run(/Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/CordovaLib/build.gradle:46)
+	(Run with --stacktrace to get the full stack trace of this deprecation warning.)
+
+> Task :app:exportThirdPartyInventory
+License inventory: /Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/app/build/reports/licenses/runtime-artifacts.json
+
+> Task :app:verifyThirdPartyLicenses
+License checks passed for resolved Android runtime artifacts
+
+> Task :app:preBuild
+> Task :app:preDebugBuild
+> Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :app:checkKotlinGradlePluginConfigurationErrors
+> Task :app:generateDebugBuildConfig UP-TO-DATE
+> Task :CordovaLib:preBuild UP-TO-DATE
+> Task :CordovaLib:preDebugBuild UP-TO-DATE
+> Task :CordovaLib:writeDebugAarMetadata UP-TO-DATE
+> Task :data:preBuild UP-TO-DATE
+> Task :data:preDebugBuild UP-TO-DATE
+> Task :data:writeDebugAarMetadata UP-TO-DATE
+> Task :feature:preBuild UP-TO-DATE
+> Task :feature:preDebugBuild UP-TO-DATE
+> Task :feature:writeDebugAarMetadata UP-TO-DATE
+> Task :app:checkDebugAarMetadata UP-TO-DATE
+> Task :app:generateDebugResValues UP-TO-DATE
+> Task :CordovaLib:generateDebugResValues UP-TO-DATE
+> Task :CordovaLib:generateDebugResources UP-TO-DATE
+> Task :CordovaLib:packageDebugResources UP-TO-DATE
+> Task :data:generateDebugResValues UP-TO-DATE
+> Task :data:generateDebugResources UP-TO-DATE
+> Task :data:packageDebugResources UP-TO-DATE
+> Task :feature:generateDebugResValues UP-TO-DATE
+> Task :feature:generateDebugResources UP-TO-DATE
+> Task :feature:packageDebugResources UP-TO-DATE
+> Task :app:mapDebugSourceSetPaths UP-TO-DATE
+> Task :app:generateDebugResources UP-TO-DATE
+> Task :app:mergeDebugResources UP-TO-DATE
+> Task :app:packageDebugResources UP-TO-DATE
+> Task :app:parseDebugLocalResources UP-TO-DATE
+> Task :app:createDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksDebug UP-TO-DATE
+> Task :CordovaLib:extractDeepLinksDebug UP-TO-DATE
+> Task :CordovaLib:processDebugManifest UP-TO-DATE
+> Task :data:extractDeepLinksDebug UP-TO-DATE
+> Task :data:processDebugManifest UP-TO-DATE
+> Task :feature:extractDeepLinksDebug UP-TO-DATE
+> Task :feature:processDebugManifest UP-TO-DATE
+> Task :app:processDebugMainManifest UP-TO-DATE
+> Task :app:processDebugManifest UP-TO-DATE
+> Task :app:processDebugManifestForPackage UP-TO-DATE
+> Task :CordovaLib:compileDebugLibraryResources UP-TO-DATE
+> Task :CordovaLib:parseDebugLocalResources UP-TO-DATE
+> Task :CordovaLib:generateDebugRFile UP-TO-DATE
+> Task :data:compileDebugLibraryResources UP-TO-DATE
+> Task :data:parseDebugLocalResources UP-TO-DATE
+> Task :data:generateDebugRFile UP-TO-DATE
+> Task :feature:compileDebugLibraryResources UP-TO-DATE
+> Task :feature:parseDebugLocalResources UP-TO-DATE
+> Task :feature:generateDebugRFile UP-TO-DATE
+> Task :app:processDebugResources UP-TO-DATE
+> Task :CordovaLib:javaPreCompileDebug UP-TO-DATE
+> Task :CordovaLib:compileDebugJavaWithJavac UP-TO-DATE
+> Task :CordovaLib:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :data:checkKotlinGradlePluginConfigurationErrors
+> Task :data:kspDebugKotlin NO-SOURCE
+> Task :data:compileDebugKotlin NO-SOURCE
+> Task :data:javaPreCompileDebug UP-TO-DATE
+> Task :data:compileDebugJavaWithJavac NO-SOURCE
+> Task :data:transformDebugClassesWithAsm UP-TO-DATE
+> Task :data:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :data:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :feature:checkKotlinGradlePluginConfigurationErrors
+> Task :feature:kspDebugKotlin UP-TO-DATE
+> Task :feature:compileDebugKotlin UP-TO-DATE
+> Task :feature:javaPreCompileDebug UP-TO-DATE
+> Task :feature:compileDebugJavaWithJavac NO-SOURCE
+> Task :feature:transformDebugClassesWithAsm UP-TO-DATE
+> Task :feature:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :app:compileDebugKotlin NO-SOURCE
+> Task :app:javaPreCompileDebug UP-TO-DATE
+> Task :app:compileDebugJavaWithJavac UP-TO-DATE
+> Task :app:mergeDebugShaders UP-TO-DATE
+> Task :app:compileDebugShaders NO-SOURCE
+> Task :app:generateDebugAssets UP-TO-DATE
+> Task :CordovaLib:mergeDebugShaders UP-TO-DATE
+> Task :CordovaLib:compileDebugShaders NO-SOURCE
+> Task :CordovaLib:generateDebugAssets UP-TO-DATE
+> Task :CordovaLib:packageDebugAssets UP-TO-DATE
+> Task :data:mergeDebugShaders UP-TO-DATE
+> Task :data:compileDebugShaders NO-SOURCE
+> Task :data:generateDebugAssets UP-TO-DATE
+> Task :data:packageDebugAssets UP-TO-DATE
+> Task :feature:mergeDebugShaders UP-TO-DATE
+> Task :feature:compileDebugShaders NO-SOURCE
+> Task :feature:generateDebugAssets UP-TO-DATE
+> Task :feature:packageDebugAssets UP-TO-DATE
+> Task :app:mergeDebugAssets
+> Task :app:processDebugJavaRes NO-SOURCE
+> Task :CordovaLib:processDebugJavaRes UP-TO-DATE
+> Task :data:processDebugJavaRes NO-SOURCE
+> Task :app:compressDebugAssets
+> Task :feature:processDebugJavaRes UP-TO-DATE
+> Task :app:mergeDebugJavaResource UP-TO-DATE
+> Task :app:checkDebugDuplicateClasses UP-TO-DATE
+> Task :app:desugarDebugFileDependencies UP-TO-DATE
+> Task :app:mergeExtDexDebug UP-TO-DATE
+> Task :feature:bundleLibRuntimeToDirDebug UP-TO-DATE
+> Task :data:bundleLibRuntimeToDirDebug UP-TO-DATE
+> Task :CordovaLib:bundleLibRuntimeToDirDebug UP-TO-DATE
+> Task :app:dexBuilderDebug UP-TO-DATE
+> Task :app:mergeProjectDexDebug UP-TO-DATE
+> Task :app:mergeLibDexDebug UP-TO-DATE
+> Task :app:mergeDebugJniLibFolders UP-TO-DATE
+> Task :CordovaLib:mergeDebugJniLibFolders UP-TO-DATE
+> Task :CordovaLib:mergeDebugNativeLibs NO-SOURCE
+> Task :CordovaLib:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :data:mergeDebugJniLibFolders UP-TO-DATE
+> Task :data:mergeDebugNativeLibs NO-SOURCE
+> Task :data:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :feature:mergeDebugJniLibFolders UP-TO-DATE
+> Task :feature:mergeDebugNativeLibs NO-SOURCE
+> Task :feature:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :app:mergeDebugNativeLibs UP-TO-DATE
+> Task :app:stripDebugDebugSymbols UP-TO-DATE
+> Task :app:validateSigningDebug UP-TO-DATE
+> Task :app:writeDebugAppMetadata UP-TO-DATE
+> Task :app:writeDebugSigningConfigVersions UP-TO-DATE
+> Task :app:buildKotlinToolingMetadata UP-TO-DATE
+> Task :app:preReleaseBuild
+> Task :app:generateReleaseBuildConfig UP-TO-DATE
+> Task :CordovaLib:preReleaseBuild UP-TO-DATE
+> Task :CordovaLib:writeReleaseAarMetadata UP-TO-DATE
+> Task :data:preReleaseBuild UP-TO-DATE
+> Task :data:writeReleaseAarMetadata UP-TO-DATE
+> Task :feature:preReleaseBuild UP-TO-DATE
+> Task :feature:writeReleaseAarMetadata UP-TO-DATE
+> Task :app:checkReleaseAarMetadata UP-TO-DATE
+> Task :app:generateReleaseResValues UP-TO-DATE
+> Task :CordovaLib:generateReleaseResValues UP-TO-DATE
+> Task :CordovaLib:generateReleaseResources UP-TO-DATE
+> Task :CordovaLib:packageReleaseResources UP-TO-DATE
+> Task :data:generateReleaseResValues UP-TO-DATE
+> Task :data:generateReleaseResources UP-TO-DATE
+> Task :data:packageReleaseResources UP-TO-DATE
+> Task :feature:generateReleaseResValues UP-TO-DATE
+> Task :feature:generateReleaseResources UP-TO-DATE
+> Task :feature:packageReleaseResources UP-TO-DATE
+> Task :app:mapReleaseSourceSetPaths UP-TO-DATE
+> Task :app:generateReleaseResources UP-TO-DATE
+> Task :app:mergeReleaseResources UP-TO-DATE
+> Task :app:packageReleaseResources UP-TO-DATE
+> Task :app:parseReleaseLocalResources UP-TO-DATE
+> Task :app:createReleaseCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksRelease UP-TO-DATE
+> Task :CordovaLib:extractDeepLinksRelease UP-TO-DATE
+> Task :CordovaLib:processReleaseManifest UP-TO-DATE
+> Task :data:extractDeepLinksRelease UP-TO-DATE
+> Task :data:processReleaseManifest UP-TO-DATE
+> Task :feature:extractDeepLinksRelease UP-TO-DATE
+> Task :feature:processReleaseManifest UP-TO-DATE
+> Task :app:processReleaseMainManifest UP-TO-DATE
+> Task :app:processReleaseManifest UP-TO-DATE
+> Task :app:processReleaseManifestForPackage UP-TO-DATE
+> Task :CordovaLib:compileReleaseLibraryResources UP-TO-DATE
+> Task :CordovaLib:parseReleaseLocalResources UP-TO-DATE
+> Task :CordovaLib:generateReleaseRFile UP-TO-DATE
+> Task :data:compileReleaseLibraryResources UP-TO-DATE
+> Task :data:parseReleaseLocalResources UP-TO-DATE
+> Task :data:generateReleaseRFile UP-TO-DATE
+> Task :feature:compileReleaseLibraryResources UP-TO-DATE
+> Task :feature:parseReleaseLocalResources UP-TO-DATE
+> Task :feature:generateReleaseRFile UP-TO-DATE
+> Task :app:processReleaseResources UP-TO-DATE
+> Task :CordovaLib:javaPreCompileRelease UP-TO-DATE
+> Task :CordovaLib:compileReleaseJavaWithJavac UP-TO-DATE
+> Task :CordovaLib:bundleLibCompileToJarRelease UP-TO-DATE
+> Task :data:kspReleaseKotlin NO-SOURCE
+> Task :data:compileReleaseKotlin NO-SOURCE
+> Task :data:javaPreCompileRelease UP-TO-DATE
+> Task :data:compileReleaseJavaWithJavac NO-SOURCE
+> Task :data:transformReleaseClassesWithAsm UP-TO-DATE
+> Task :data:bundleLibCompileToJarRelease UP-TO-DATE
+> Task :data:bundleLibRuntimeToJarRelease UP-TO-DATE
+> Task :feature:kspReleaseKotlin UP-TO-DATE
+> Task :feature:compileReleaseKotlin UP-TO-DATE
+> Task :feature:javaPreCompileRelease UP-TO-DATE
+> Task :feature:compileReleaseJavaWithJavac NO-SOURCE
+> Task :feature:transformReleaseClassesWithAsm UP-TO-DATE
+> Task :feature:bundleLibCompileToJarRelease UP-TO-DATE
+> Task :app:compileReleaseKotlin NO-SOURCE
+> Task :app:javaPreCompileRelease UP-TO-DATE
+> Task :app:compileReleaseJavaWithJavac UP-TO-DATE
+> Task :app:extractProguardFiles UP-TO-DATE
+> Task :CordovaLib:bundleLibRuntimeToJarRelease UP-TO-DATE
+> Task :CordovaLib:processReleaseJavaRes UP-TO-DATE
+> Task :CordovaLib:createFullJarRelease UP-TO-DATE
+> Task :CordovaLib:extractProguardFiles UP-TO-DATE
+> Task :CordovaLib:generateReleaseLintModel UP-TO-DATE
+> Task :CordovaLib:prepareLintJarForPublish UP-TO-DATE
+> Task :data:processReleaseJavaRes NO-SOURCE
+> Task :data:createFullJarRelease UP-TO-DATE
+> Task :data:extractProguardFiles UP-TO-DATE
+> Task :data:generateReleaseLintModel UP-TO-DATE
+> Task :data:prepareLintJarForPublish UP-TO-DATE
+> Task :feature:bundleLibRuntimeToJarRelease UP-TO-DATE
+> Task :feature:processReleaseJavaRes UP-TO-DATE
+> Task :feature:createFullJarRelease UP-TO-DATE
+> Task :feature:extractProguardFiles UP-TO-DATE
+> Task :feature:generateReleaseLintModel UP-TO-DATE
+> Task :feature:prepareLintJarForPublish UP-TO-DATE
+> Task :app:generateReleaseLintVitalReportModel
+> Task :feature:mergeReleaseJniLibFolders UP-TO-DATE
+> Task :feature:mergeReleaseNativeLibs NO-SOURCE
+> Task :feature:stripReleaseDebugSymbols NO-SOURCE
+> Task :feature:copyReleaseJniLibsProjectAndLocalJars UP-TO-DATE
+> Task :feature:extractDeepLinksForAarRelease UP-TO-DATE
+> Task :feature:extractReleaseAnnotations UP-TO-DATE
+> Task :feature:mergeReleaseGeneratedProguardFiles UP-TO-DATE
+> Task :feature:mergeReleaseConsumerProguardFiles UP-TO-DATE
+> Task :feature:mergeReleaseShaders UP-TO-DATE
+> Task :feature:compileReleaseShaders NO-SOURCE
+> Task :feature:generateReleaseAssets UP-TO-DATE
+> Task :feature:packageReleaseAssets UP-TO-DATE
+> Task :feature:prepareReleaseArtProfile UP-TO-DATE
+> Task :feature:mergeReleaseJavaResource UP-TO-DATE
+> Task :feature:syncReleaseLibJars UP-TO-DATE
+> Task :feature:bundleReleaseLocalLintAar UP-TO-DATE
+> Task :data:mergeReleaseJniLibFolders UP-TO-DATE
+> Task :data:mergeReleaseNativeLibs NO-SOURCE
+> Task :data:stripReleaseDebugSymbols NO-SOURCE
+> Task :data:copyReleaseJniLibsProjectAndLocalJars UP-TO-DATE
+> Task :data:extractDeepLinksForAarRelease UP-TO-DATE
+> Task :data:extractReleaseAnnotations UP-TO-DATE
+> Task :data:mergeReleaseGeneratedProguardFiles UP-TO-DATE
+> Task :data:mergeReleaseConsumerProguardFiles UP-TO-DATE
+> Task :data:mergeReleaseShaders UP-TO-DATE
+> Task :data:compileReleaseShaders NO-SOURCE
+> Task :data:generateReleaseAssets UP-TO-DATE
+> Task :data:packageReleaseAssets UP-TO-DATE
+> Task :app:packageDebug
+> Task :app:createDebugApkListingFileRedirect UP-TO-DATE
+> Task :app:assembleDebug
+> Task :data:prepareReleaseArtProfile UP-TO-DATE
+> Task :data:mergeReleaseJavaResource UP-TO-DATE
+> Task :data:syncReleaseLibJars UP-TO-DATE
+> Task :data:bundleReleaseLocalLintAar UP-TO-DATE
+> Task :CordovaLib:mergeReleaseJniLibFolders UP-TO-DATE
+> Task :CordovaLib:mergeReleaseNativeLibs NO-SOURCE
+> Task :CordovaLib:stripReleaseDebugSymbols NO-SOURCE
+> Task :CordovaLib:copyReleaseJniLibsProjectAndLocalJars UP-TO-DATE
+> Task :CordovaLib:extractDeepLinksForAarRelease UP-TO-DATE
+> Task :CordovaLib:extractReleaseAnnotations UP-TO-DATE
+> Task :CordovaLib:mergeReleaseGeneratedProguardFiles UP-TO-DATE
+> Task :CordovaLib:mergeReleaseConsumerProguardFiles UP-TO-DATE
+> Task :CordovaLib:mergeReleaseShaders UP-TO-DATE
+> Task :CordovaLib:compileReleaseShaders NO-SOURCE
+> Task :CordovaLib:generateReleaseAssets UP-TO-DATE
+> Task :CordovaLib:packageReleaseAssets UP-TO-DATE
+> Task :CordovaLib:prepareReleaseArtProfile UP-TO-DATE
+> Task :CordovaLib:mergeReleaseJavaResource UP-TO-DATE
+> Task :CordovaLib:syncReleaseLibJars UP-TO-DATE
+> Task :CordovaLib:bundleReleaseLocalLintAar UP-TO-DATE
+> Task :CordovaLib:lintVitalAnalyzeRelease UP-TO-DATE
+> Task :CordovaLib:writeReleaseLintModelMetadata UP-TO-DATE
+> Task :data:lintVitalAnalyzeRelease UP-TO-DATE
+> Task :data:writeReleaseLintModelMetadata UP-TO-DATE
+> Task :feature:lintVitalAnalyzeRelease UP-TO-DATE
+> Task :feature:writeReleaseLintModelMetadata UP-TO-DATE
+> Task :CordovaLib:generateReleaseLintVitalModel UP-TO-DATE
+> Task :data:generateReleaseLintVitalModel UP-TO-DATE
+> Task :feature:generateReleaseLintVitalModel UP-TO-DATE
+> Task :app:mergeReleaseJniLibFolders UP-TO-DATE
+> Task :CordovaLib:copyReleaseJniLibsProjectOnly UP-TO-DATE
+> Task :data:copyReleaseJniLibsProjectOnly UP-TO-DATE
+> Task :feature:copyReleaseJniLibsProjectOnly UP-TO-DATE
+> Task :app:mergeReleaseNativeLibs UP-TO-DATE
+> Task :app:stripReleaseDebugSymbols UP-TO-DATE
+> Task :app:extractReleaseNativeSymbolTables UP-TO-DATE
+> Task :app:mergeReleaseNativeDebugMetadata NO-SOURCE
+> Task :feature:bundleLibRuntimeToDirRelease UP-TO-DATE
+> Task :data:bundleLibRuntimeToDirRelease UP-TO-DATE
+> Task :CordovaLib:bundleLibRuntimeToDirRelease UP-TO-DATE
+> Task :app:checkReleaseDuplicateClasses UP-TO-DATE
+> Task :app:dexBuilderRelease UP-TO-DATE
+> Task :app:desugarReleaseFileDependencies UP-TO-DATE
+> Task :app:mergeReleaseStartupProfile UP-TO-DATE
+> Task :app:mergeExtDexRelease UP-TO-DATE
+> Task :app:mergeDexRelease UP-TO-DATE
+> Task :app:mergeReleaseArtProfile UP-TO-DATE
+> Task :app:mergeReleaseGlobalSynthetics UP-TO-DATE
+> Task :app:compileReleaseArtProfile UP-TO-DATE
+> Task :app:mergeReleaseShaders UP-TO-DATE
+> Task :app:compileReleaseShaders NO-SOURCE
+> Task :app:generateReleaseAssets UP-TO-DATE
+> Task :app:mergeReleaseAssets
+> Task :app:extractReleaseVersionControlInfo UP-TO-DATE
+> Task :app:processReleaseJavaRes UP-TO-DATE
+> Task :app:mergeReleaseJavaResource UP-TO-DATE
+> Task :app:compressReleaseAssets
+> Task :app:optimizeReleaseResources UP-TO-DATE
+> Task :app:collectReleaseDependencies UP-TO-DATE
+> Task :app:sdkReleaseDependencyData UP-TO-DATE
+> Task :app:writeReleaseAppMetadata UP-TO-DATE
+> Task :app:writeReleaseSigningConfigVersions UP-TO-DATE
+
+> Task :verifyModuleDependencies
+Resolved :feature:debugAndroidTestCompileClasspath: 77 external artifacts
+Resolved :feature:debugAndroidTestRuntimeClasspath: 114 external artifacts
+Resolved :feature:debugCompileClasspath: 65 external artifacts
+Resolved :feature:debugRuntimeClasspath: 106 external artifacts
+Resolved :feature:debugUnitTestCompileClasspath: 67 external artifacts
+Resolved :feature:debugUnitTestRuntimeClasspath: 108 external artifacts
+Resolved :feature:kspDebugAndroidTestKotlinProcessorClasspath: 24 external artifacts
+Resolved :feature:kspDebugKotlinProcessorClasspath: 24 external artifacts
+Resolved :feature:kspDebugUnitTestKotlinProcessorClasspath: 24 external artifacts
+Resolved :feature:kspReleaseKotlinProcessorClasspath: 24 external artifacts
+Resolved :feature:kspReleaseUnitTestKotlinProcessorClasspath: 24 external artifacts
+Resolved :feature:releaseCompileClasspath: 63 external artifacts
+Resolved :feature:releaseRuntimeClasspath: 103 external artifacts
+Resolved :feature:releaseUnitTestCompileClasspath: 65 external artifacts
+Resolved :feature:releaseUnitTestRuntimeClasspath: 105 external artifacts
+Resolved :data:debugAndroidTestCompileClasspath: 63 external artifacts
+Resolved :data:debugAndroidTestRuntimeClasspath: 76 external artifacts
+Resolved :data:debugCompileClasspath: 52 external artifacts
+Resolved :data:debugRuntimeClasspath: 68 external artifacts
+Resolved :data:debugUnitTestCompileClasspath: 54 external artifacts
+Resolved :data:debugUnitTestRuntimeClasspath: 70 external artifacts
+Resolved :data:kspDebugAndroidTestKotlinProcessorClasspath: 24 external artifacts
+Resolved :data:kspDebugKotlinProcessorClasspath: 24 external artifacts
+Resolved :data:kspDebugUnitTestKotlinProcessorClasspath: 24 external artifacts
+Resolved :data:kspReleaseKotlinProcessorClasspath: 24 external artifacts
+Resolved :data:kspReleaseUnitTestKotlinProcessorClasspath: 24 external artifacts
+Resolved :data:releaseCompileClasspath: 52 external artifacts
+Resolved :data:releaseRuntimeClasspath: 68 external artifacts
+Resolved :data:releaseUnitTestCompileClasspath: 54 external artifacts
+Resolved :data:releaseUnitTestRuntimeClasspath: 70 external artifacts
+Module dependency report: /Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/build/reports/catalog/module-dependencies.json
+
+> Task :app:lintVitalAnalyzeRelease
+> Task :app:lintVitalReportRelease UP-TO-DATE
+> Task :app:lintVitalRelease
+> Task :app:packageRelease
+> Task :app:createReleaseApkListingFileRedirect UP-TO-DATE
+> Task :app:assembleRelease
+
+[Incubating] Problems report is available at: file:///Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/build/reports/problems/problems-report.html
+
+BUILD SUCCESSFUL in 4s
+250 actionable tasks: 15 executed, 235 up-to-date

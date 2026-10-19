@@ -1,5 +1,5 @@
 build:
-  maxIssues: 1
+  maxIssues: 0
   excludeCorrectable: false
   weights:
     complexity: 1
@@ -133,6 +133,8 @@ style:
     negativeFunctionNameParts:
       - "not"
       - "non"
+  DataClassShouldBeImmutable:
+    active: true
   EqualsOnSignatureLine:
     active: true
   ExplicitCollectionElementAccessMethod:
@@ -216,7 +218,7 @@ TwitterCompose:
     active: true
 
   UnstableCollections:
-    active: false
+    active: true
   ViewModelForwarding:
     active: true
   ViewModelInjection:
