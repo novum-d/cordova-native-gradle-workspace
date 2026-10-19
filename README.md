@@ -169,7 +169,7 @@ Android Studioでは`native/`を開き、GradleをWrapper、Gradle JDKを17に�
 | native/gradlew・gradlew.bat・gradle/wrapper配下 | Gradle 8.13で単独ビルドする標準Wrapper |
 | native/gradle/settings-extras.gradle | CordovaのSettingsへ共有Catalogと物理モジュールを登録 |
 | native/gradle/build-extras.gradle | 既存appへLibrary依存を追加、Cordova基盤とCatalogを照合、共有Kotlin DSL品質設定を適用 |
-| native/gradle/git-hooks.gradle.kts・config/detekt/配下 | TvAppを参照したdetekt・整形・preCommitの実装と設定 |
+| native/gradle/git-hooks.gradle.kts・native/gradle/config/detekt/配下 | TvAppを参照したdetekt・整形・preCommitの実装と設定 |
 | verification/git-hooks-fixture.gradle.kts・verify-gradle-git-hooks.py | 一時Git repositoryでの品質ゲート・index保持の実行検証 |
 | native/feature・dataのbuild.gradle.kts | Library化、Java/Kotlin 11、SDK、feature→dataの設定 |
 | native/feature・dataのManifest | 通常のLibrary Manifestは空。featureのDebug ManifestだけにCompose確認用Activityを登録 |

@@ -37,10 +37,10 @@ apply<DetektPlugin>()
 // configファイルの存在確認
 val catalog = extensions.getByType<VersionCatalogsExtension>().named("libs")
 val workspaceDir = if (rootDir.name == "android") rootDir.resolve("../../..").canonicalFile else rootDir.parentFile
-val detektConfig = workspaceDir.resolve("config/detekt/detekt.yml")
-val formattingConfig = workspaceDir.resolve("config/detekt/formatting.yml")
-val autoCorrectConfig = workspaceDir.resolve("config/detekt/autocorrect.yml")
-check(detektConfig.isFile && formattingConfig.isFile && autoCorrectConfig.isFile) { "Missing config/detekt YAML in $workspaceDir" }
+val detektConfig = workspaceDir.resolve("native/gradle/config/detekt/detekt.yml")
+val formattingConfig = workspaceDir.resolve("native/gradle/config/detekt/formatting.yml")
+val autoCorrectConfig = workspaceDir.resolve("native/gradle/config/detekt/autocorrect.yml")
+check(detektConfig.isFile && formattingConfig.isFile && autoCorrectConfig.isFile) { "Missing native/gradle/config/detekt YAML in $workspaceDir" }
 
 // 各モジュールsrcのファイルツリーを作成
 val nativeModules = listOf("feature", "data")

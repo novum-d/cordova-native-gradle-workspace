@@ -123,6 +123,8 @@ TvApp同様に「stagedの`.kt`は実行のトリガー」であり、自動整�
 
 ## 検証結果
 
+このworkspaceで利用する設定は`native/gradle/config/detekt/`へ集約しています。`detekt.yml`・`formatting.yml`・`autocorrect.yml`をnative・Cordovaで共用し、上記の参照元TvAppのパスとは分けて管理します。移動後もnative・Cordovaの品質チェック、Cordova prepare、Git hookの28ケースが成功しました。追加で、意図的な末尾空白の自動削除、再ステージなしの再試行の拒否、再ステージ後の成功と、読み取り専用チェックが元ファイルを整形しないことを再確認しています。
+
 一時的なGit repositoryをJGitで作成し、実際のKotlin DSL・detektを実行した28ケースがすべて成功しました。ビルドキャッシュを有効にした状態で、同じリポジトリの再試行・再ステージまで確認しています。fixtureのGit操作も既存GitコマンドではなくJGit APIで行います。workspaceのindexへテストファイルをstageしていません。
 
 | ケース | 期待する結果 | 実測 |

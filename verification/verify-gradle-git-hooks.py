@@ -165,10 +165,10 @@ if [ "$1" = '-a' ]; then exit "$PRECOMMIT_BROWSER_FALLBACK_EXIT"; fi
 exit "${PRECOMMIT_BROWSER_EXIT:-0}"
 ''')
             opener.chmod(0o755)
-        config = fixture / 'config/detekt'
+        config = fixture / 'native/gradle/config/detekt'
         config.mkdir(parents=True)
         for name in ['detekt.yml', 'formatting.yml', 'autocorrect.yml']:
-            (config / name).write_text((workspace / 'config/detekt' / name).read_text())
+            (config / name).write_text((workspace / 'native/gradle/config/detekt' / name).read_text())
         (native / 'settings.gradle.kts').write_text('''
             dependencyResolutionManagement {
                 repositories { mavenCentral() }

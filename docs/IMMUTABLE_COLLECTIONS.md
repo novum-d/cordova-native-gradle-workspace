@@ -28,7 +28,7 @@ val after = before.add("second")
 
 ## detekt・ktlint
 
-[`config/detekt/detekt.yml`](../config/detekt/detekt.yml)で以下を設定しました。native・Cordovaで共通の設定です。
+[`native/gradle/config/detekt/detekt.yml`](../native/gradle/config/detekt/detekt.yml)で以下を設定しました。native・Cordovaで共通の設定です。
 
 | ルール・設定 | 対応と範囲 |
 | --- | --- |
