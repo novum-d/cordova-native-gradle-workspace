@@ -1,0 +1,7 @@
+Starting: Intent { cmp=dev.example.cordovanative/dev.example.nativefeature.MainActivity }
+Status: ok
+LaunchState: WARM
+Activity: dev.example.cordovanative/dev.example.nativefeature.MainActivity
+TotalTime: 2940
+WaitTime: 2992
+Complete

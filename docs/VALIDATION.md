@@ -1,5 +1,7 @@
 # 検証結果（2026-10-17）
 
+2026-10-19に、Cordova CLIによるエミュレーター実行とComposeの表示・操作も確認しました。[実行記録](COMPOSE_RUNTIME.md)を参照してください。以下は初回からの検証記録です。
+
 `~/repos/cordova-native-gradle-workspace`で、Cordova Android 14の基盤を維持したビルドを確認しました。
 
 2026-10-19のGradle非推奨APIの修正、Debug／ReleaseのAndroid Lint、継続確認用コマンドは[追加の品質チェック結果](ANDROID_CHECKS.md)を参照してください。

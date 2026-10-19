@@ -1,0 +1,209 @@
+No scripts found for hook "before_run".
+No scripts found for hook "before_prepare".
+Checking for saved platforms that haven't been added to the project
+Loaded API for android project /Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/cordova/Api.js
+Checking for saved plugins that haven't been added to the project
+Generating platform-specific config.xml from defaults for android at /Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/app/src/main/res/xml/config.xml
+Merging project's config.xml into platform-specific android config.xml
+[Gradle Properties] Preparing Configuration
+[Gradle Properties] Appending default configuration properties
+[Gradle Properties] Appending custom configuration properties
+[Gradle Properties] Updating and Saving File
+Merging and updating files from [www, platforms/android/platform_www] to platforms/android/app/src/main/assets/www
+Wrote out android application name "CordovaComposeApp" to /Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/app/src/main/res/values/strings.xml
+The preference name "AndroidEdgeToEdge" was not set. Defaulting to "false".
+Updating theme item "android:windowOptOutEdgeToEdgeEnforcement" with value "true"
+Wrote out Android application SplashScreen Color to /Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/app/src/main/res/values/colors.xml
+The "AndroidWindowSplashScreenAnimatedIcon" is undefined. Cordova's default will be used.
+The "AndroidWindowSplashScreenBrandingImage" is undefined. Cordova's default will be used.
+Wrote out Android application SplashScreen Icon Color to /Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/app/src/main/res/values/colors.xml
+Wrote out Android application themes to /Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/app/src/main/res/values/themes.xml
+[Cordova Gradle Config] Setting "PACKAGE_NAMESPACE" to dev.example.cordovanative
+[Cordova Gradle Config] Saving File
+android-versionCode not found in config.xml. Generating a code based on version in config.xml (1.0.0): 10000
+This app does not have launcher icons defined
+This app does not have additional resource files defined
+Prepared android project successfully
+Executing script found in config.xml for hook "after_prepare": hooks/copy-gradle-extras.js
+[native-gradle] integration restored (after_prepare)
+Checking Java JDK and Android SDK versions
+ANDROID_HOME=/Users/novumd/Library/Android/sdk (recommended setting)
+ANDROID_SDK_ROOT=/Users/novumd/Library/Android/sdk (DEPRECATED)
+Using Android SDK: /Users/novumd/Library/Android/sdk
+Using Gradle: 8.13
+> Task :wrapper UP-TO-DATE
+
+BUILD SUCCESSFUL in 321ms
+1 actionable task: 1 up-to-date
+Subproject Path: CordovaLib
+Subproject Path: app
+Running Gradle Build: /Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/tools/gradlew cdvBuildDebug
+
+> Task :app:exportThirdPartyInventory
+License inventory: /Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/app/build/reports/licenses/runtime-artifacts.json
+
+> Task :app:verifyThirdPartyLicenses
+License checks passed for resolved Android runtime artifacts
+
+> Task :app:preBuild
+> Task :app:preDebugBuild
+> Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :app:checkKotlinGradlePluginConfigurationErrors
+> Task :app:generateDebugBuildConfig
+> Task :CordovaLib:preBuild UP-TO-DATE
+> Task :CordovaLib:preDebugBuild UP-TO-DATE
+> Task :data:preBuild UP-TO-DATE
+> Task :data:preDebugBuild UP-TO-DATE
+> Task :CordovaLib:writeDebugAarMetadata
+> Task :feature:preBuild UP-TO-DATE
+> Task :feature:preDebugBuild UP-TO-DATE
+> Task :data:writeDebugAarMetadata
+> Task :feature:writeDebugAarMetadata
+> Task :app:generateDebugResValues
+> Task :CordovaLib:generateDebugResValues
+> Task :CordovaLib:generateDebugResources
+> Task :app:checkDebugAarMetadata
+> Task :CordovaLib:packageDebugResources
+> Task :data:generateDebugResValues
+> Task :data:generateDebugResources
+> Task :data:packageDebugResources
+> Task :feature:generateDebugResValues
+> Task :feature:generateDebugResources
+> Task :feature:packageDebugResources
+> Task :app:mapDebugSourceSetPaths
+> Task :app:generateDebugResources
+> Task :app:packageDebugResources
+> Task :app:createDebugCompatibleScreenManifests
+> Task :app:parseDebugLocalResources
+> Task :app:extractDeepLinksDebug
+> Task :CordovaLib:extractDeepLinksDebug
+> Task :data:extractDeepLinksDebug
+> Task :CordovaLib:processDebugManifest
+> Task :feature:extractDeepLinksDebug
+> Task :data:processDebugManifest
+> Task :CordovaLib:compileDebugLibraryResources
+> Task :feature:processDebugManifest
+> Task :CordovaLib:parseDebugLocalResources
+> Task :app:mergeDebugResources
+> Task :app:processDebugMainManifest
+> Task :app:processDebugManifest
+> Task :data:compileDebugLibraryResources
+> Task :CordovaLib:generateDebugRFile
+> Task :data:parseDebugLocalResources
+> Task :feature:compileDebugLibraryResources
+> Task :feature:parseDebugLocalResources
+> Task :CordovaLib:javaPreCompileDebug
+> Task :data:generateDebugRFile
+> Task :feature:generateDebugRFile
+
+> Task :CordovaLib:compileDebugJavaWithJavac
+ノート:一部の入力ファイルは推奨されないAPIを使用またはオーバーライドしています。
+ノート:詳細は、-Xlint:deprecationオプションを指定して再コンパイルしてください。
+
+> Task :data:checkKotlinGradlePluginConfigurationErrors
+> Task :data:kspDebugKotlin NO-SOURCE
+> Task :data:compileDebugKotlin NO-SOURCE
+> Task :CordovaLib:bundleLibCompileToJarDebug
+> Task :feature:checkKotlinGradlePluginConfigurationErrors
+> Task :data:javaPreCompileDebug
+> Task :data:compileDebugJavaWithJavac NO-SOURCE
+> Task :feature:javaPreCompileDebug
+> Task :app:javaPreCompileDebug
+> Task :data:transformDebugClassesWithAsm
+> Task :app:mergeDebugShaders
+> Task :data:bundleLibCompileToJarDebug
+> Task :data:bundleLibRuntimeToJarDebug
+> Task :app:compileDebugShaders NO-SOURCE
+> Task :app:generateDebugAssets UP-TO-DATE
+> Task :CordovaLib:mergeDebugShaders
+> Task :CordovaLib:compileDebugShaders NO-SOURCE
+> Task :CordovaLib:generateDebugAssets UP-TO-DATE
+> Task :CordovaLib:packageDebugAssets
+> Task :data:mergeDebugShaders
+> Task :data:compileDebugShaders NO-SOURCE
+> Task :data:generateDebugAssets UP-TO-DATE
+> Task :data:packageDebugAssets
+> Task :feature:mergeDebugShaders
+> Task :feature:compileDebugShaders NO-SOURCE
+> Task :feature:generateDebugAssets UP-TO-DATE
+> Task :feature:packageDebugAssets
+> Task :app:mergeDebugAssets
+> Task :app:compressDebugAssets
+> Task :CordovaLib:processDebugJavaRes
+> Task :data:processDebugJavaRes NO-SOURCE
+> Task :app:desugarDebugFileDependencies
+> Task :data:bundleLibRuntimeToDirDebug
+> Task :app:checkDebugDuplicateClasses
+> Task :app:mergeDebugJniLibFolders
+> Task :CordovaLib:mergeDebugJniLibFolders
+> Task :CordovaLib:mergeDebugNativeLibs NO-SOURCE
+> Task :CordovaLib:copyDebugJniLibsProjectOnly
+> Task :data:mergeDebugJniLibFolders
+> Task :data:mergeDebugNativeLibs NO-SOURCE
+> Task :data:copyDebugJniLibsProjectOnly
+> Task :feature:mergeDebugJniLibFolders
+> Task :feature:mergeDebugNativeLibs NO-SOURCE
+> Task :feature:copyDebugJniLibsProjectOnly
+> Task :app:validateSigningDebug
+> Task :CordovaLib:bundleLibRuntimeToDirDebug
+> Task :app:writeDebugAppMetadata
+> Task :app:writeDebugSigningConfigVersions
+> Task :app:mergeDebugNativeLibs
+> Task :app:processDebugManifestForPackage
+
+> Task :app:stripDebugDebugSymbols
+Unable to strip the following libraries, packaging them as they are: libandroidx.graphics.path.so, libdatastore_shared_counter.so.
+
+> Task :feature:kspDebugKotlin
+> Task :app:processDebugResources
+> Task :feature:compileDebugKotlin
+> Task :feature:compileDebugJavaWithJavac NO-SOURCE
+> Task :feature:processDebugJavaRes
+> Task :feature:transformDebugClassesWithAsm
+> Task :feature:bundleLibCompileToJarDebug
+> Task :app:compileDebugKotlin NO-SOURCE
+> Task :feature:bundleLibRuntimeToDirDebug
+> Task :app:compileDebugJavaWithJavac
+> Task :app:processDebugJavaRes NO-SOURCE
+> Task :app:dexBuilderDebug
+> Task :app:mergeProjectDexDebug
+> Task :app:mergeLibDexDebug
+> Task :app:mergeDebugJavaResource
+> Task :app:mergeExtDexDebug
+> Task :app:packageDebug
+> Task :app:createDebugApkListingFileRedirect
+> Task :app:assembleDebug
+> Task :app:cdvBuildDebug
+
+[Incubating] Problems report is available at: file:///Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/build/reports/problems/problems-report.html
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/8.13/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD SUCCESSFUL in 4s
+95 actionable tasks: 95 executed
+Built the following apk(s): 
+	/Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/app/build/outputs/apk/debug/app-debug.apk
+No scripts found for hook "before_deploy".
+Checking Java JDK and Android SDK versions
+ANDROID_HOME=/Users/novumd/Library/Android/sdk (recommended setting)
+ANDROID_SDK_ROOT=/Users/novumd/Library/Android/sdk (DEPRECATED)
+Using Android SDK: /Users/novumd/Library/Android/sdk
+Trying to find target matching { id: 'emulator-5556' }
+Running adb shell command "cat /proc/cpuinfo" on target emulator-5556...
+Deploying to emulator emulator-5556
+Running adb shell command "getprop sys.boot_completed" on target emulator-5556...
+Using apk: /Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/app/build/outputs/apk/debug/app-debug.apk
+Package name: dev.example.cordovanative
+Installing app on target emulator-5556
+Installing apk /Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/app/build/outputs/apk/debug/app-debug.apk on target emulator-5556...
+INSTALL SUCCESS
+Unlocking screen...
+Running adb shell command "input keyevent 82" on target emulator-5556...
+Starting application "dev.example.cordovanative/.MainActivity" on target emulator-5556...
+Running adb shell command "am start -W -a android.intent.action.MAIN -ndev.example.cordovanative/.MainActivity" on target emulator-5556...
+LAUNCH SUCCESS
+No scripts found for hook "after_run".

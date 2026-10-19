@@ -1,0 +1,18 @@
+[
+  {
+    "variant": "debug",
+    "manifest": "CordovaComposeApp/platforms/android/app/build/intermediates/merged_manifest/debug/processDebugMainManifest/AndroidManifest.xml",
+    "composeActivityRegistered": true,
+    "launcherActivities": [
+      "dev.example.cordovanative.MainActivity"
+    ]
+  },
+  {
+    "variant": "release",
+    "manifest": "CordovaComposeApp/platforms/android/app/build/intermediates/merged_manifest/release/processReleaseMainManifest/AndroidManifest.xml",
+    "composeActivityRegistered": false,
+    "launcherActivities": [
+      "dev.example.cordovanative.MainActivity"
+    ]
+  }
+]

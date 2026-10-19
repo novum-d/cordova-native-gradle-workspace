@@ -2,7 +2,8 @@
 def catalog = extensions.getByType(org.gradle.api.artifacts.VersionCatalogsExtension).named('libs')
 def requiredVersions = [MIN_BUILD_TOOLS_VERSION: 'build-tools', AGP_VERSION: 'agp', GRADLE_VERSION: 'gradle', KOTLIN_VERSION: 'kotlin',
                         ANDROIDX_WEBKIT_VERSION: 'webkit', JAVA_SOURCE_COMPATIBILITY: 'jvm-target',
-                        JAVA_TARGET_COMPATIBILITY: 'jvm-target', MIN_SDK_VERSION: 'min-sdk', SDK_VERSION: 'compile-sdk']
+                        JAVA_TARGET_COMPATIBILITY: 'jvm-target', MIN_SDK_VERSION: 'min-sdk',
+                        SDK_VERSION: 'target-sdk', COMPILE_SDK_VERSION: 'compile-sdk']
 requiredVersions.each { key, alias ->
     def expected = catalog.findVersion(alias).get().requiredVersion
     if (cordovaConfig[key].toString() != expected) {

@@ -172,7 +172,7 @@ Android Studioでは`native/`を開き、GradleをWrapper、Gradle JDKを17に�
 | native/gradle/git-hooks.gradle.kts・config/detekt/配下 | TvAppを参照したdetekt・整形・preCommitの実装と設定 |
 | verification/git-hooks-fixture.gradle.kts・verify-gradle-git-hooks.py | 一時Git repositoryでの品質ゲート・index保持の実行検証 |
 | native/feature・dataのbuild.gradle.kts | Library化、Java/Kotlin 11、SDK、feature→dataの設定 |
-| native/feature・dataのManifest | Activityを追加しない空のLibrary Manifest |
+| native/feature・dataのManifest | 通常のLibrary Manifestは空。featureのDebug ManifestだけにCompose確認用Activityを登録 |
 | scripts/bootstrap.sh | 再現用依存・Gradle取得・platform復元 |
 | scripts/setup-git-hooks.sh | Gitのpre-commitからGradleの:preCommitを呼ぶhookを初回登録。既存hookは上書きしない |
 | scripts/with-env.sh・cordova.sh | JDK 17とローカルGradleを使う実行環境 |
@@ -188,6 +188,8 @@ Android Studioでは`native/`を開き、GradleをWrapper、Gradle JDKを17に�
 `platforms/android`内の変更はすべて再生成またはhookによる復元です。恒久的な手動パッチやnode_modulesの書き換えはありません。
 
 ## 検証結果と未対応事項
+
+Cordova CLIによるエミュレーターへのインストール・起動と、同じAPK内でのCompose表示・状態更新・Cordovaへの復帰も確認しました。確認後のエミュレーター終了を含め、[実行記録とスクリーンショット](docs/COMPOSE_RUNTIME.md)を参照してください。
 
 実測結果、APK、コマンド、残存事項は[検証レポート](docs/VALIDATION.md)に記載しています。追加したdetekt・preCommit環境、TvAppとの差異、28ケースの実行検証は[Git hookのKotlin DSL実装](docs/GIT_HOOKS.md)を参照してください。
 

@@ -1,0 +1,8 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application>
+        <!-- Debug-only entry point for the emulator runtime check; Cordova remains the launcher. -->
+        <activity
+            android:name="dev.example.nativefeature.MainActivity"
+            android:exported="true" />
+    </application>
+</manifest>

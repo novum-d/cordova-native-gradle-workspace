@@ -150,7 +150,7 @@ tasks.register('verifyNativeIntegration') {
         def hosts = allAndroidProjects.findAll { it.plugins.hasPlugin('com.android.application') }*.path
         if (app != null) {
             assert hosts == [':app']
-            assert app.android.defaultConfig.targetSdk == 35
+            assert app.android.defaultConfig.targetSdk == catalog.findVersion('target-sdk').get().requiredVersion.toInteger()
             assert app.android.defaultConfig.minSdk == 24
             assert app.android.compileSdk == 35
             assert app.android.lint.abortOnError
@@ -158,6 +158,7 @@ tasks.register('verifyNativeIntegration') {
             def config = new groovy.json.JsonSlurper().parse(cordovaConfigFile)
             assert config.AGP_VERSION == '8.7.3' && config.KOTLIN_VERSION == '1.9.24' && config.GRADLE_VERSION == '8.13'
             assert config.JAVA_SOURCE_COMPATIBILITY == 11 && config.JAVA_TARGET_COMPATIBILITY == 11
+            assert config.SDK_VERSION == 35 && config.COMPILE_SDK_VERSION == 35
             assert app.configurations.implementation.dependencies.any {
                 it instanceof ProjectDependency && it.path == ':feature'
             }

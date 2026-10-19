@@ -1,0 +1,20 @@
+{
+  "avd": "Cordova_Compose_API_35",
+  "serial": "emulator-5556",
+  "package": "dev.example.cordovanative",
+  "passed": true,
+  "emulatorClosed": true,
+  "api": "35",
+  "abi": "arm64-v8a",
+  "command": "./scripts/cordova.sh run android --debug --emulator --target=emulator-5556 --verbose",
+  "cordovaCliExitCode": 0,
+  "cordovaDeviceReady": true,
+  "composeRendered": true,
+  "counterBefore": 0,
+  "counterAfter": 1,
+  "backToCordova": true,
+  "applicationCrashObserved": false,
+  "apkSha256": "98027529c3e2fd7a60104d2196836169959c44a396b627d5037b96bf5baa0561",
+  "targetSdk": 35,
+  "compileSdk": 35
+}
