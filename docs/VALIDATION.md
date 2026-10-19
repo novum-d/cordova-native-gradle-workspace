@@ -74,7 +74,7 @@ sh verification/hook.test.sh
 ## 今回適用していないもの・未検証
 
 - Hilt・KSPはCatalogへの定義とArtifact解決だけ。Application/Activity/Processor/DI生成を変更していません。
-- ktlint PluginはCatalogへの定義だけです。detektは後続の追加作業で適用済みです。TvAppを参照したKotlin DSL品質タスクと15ケースの実行検証は[Git hook検証](GIT_HOOKS.md)を参照してください。
+- ktlint Pluginは通常ビルドには適用していません。後続の[追加検証](VERSION_CHECKS.md)でPlugin 14.2.0・本体1.8.0を一時プロジェクトへ適用し、チェック・整形を実行しました。detektは適用済みです。TvAppを参照したKotlin DSL品質タスクと15ケースの実行検証は[Git hook検証](GIT_HOOKS.md)を参照してください。
 - JUnit/AndroidX TestはCatalogへの定義と解決だけ。JUnit・Instrumentationのテストコードと実行環境は追加していません。Cordova hook検証の4件はシェルテストで、対象のJavaScript関数を呼ぶ部分だけNode.jsを使います。
 - 既存業務コード・既存CordovaPluginは提供されていません。このworkspaceに追加Pluginはなく、実案件固有のMainActivity・Pluginとの統合は未検証です。[Plugin一覧](cordova-plugins.log)
 - 端末・エミュレーターへのインストールや起動、画面遷移、カメラ・NFC、WebView通信の実行試験は今回の対象外です。

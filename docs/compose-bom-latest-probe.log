@@ -1,0 +1,172 @@
+Warning: SDK processing. This version only understands SDK XML versions up to 3 but an SDK XML file of version 4 was encountered. This can happen if you use versions of Android Studio and the command-line tools that were released at different times.
+> Task :feature:preBuild UP-TO-DATE
+> Task :feature:preDebugBuild UP-TO-DATE
+> Task :feature:mergeDebugJniLibFolders
+> Task :feature:mergeDebugNativeLibs NO-SOURCE
+> Task :feature:stripDebugDebugSymbols NO-SOURCE
+> Task :data:checkKotlinGradlePluginConfigurationErrors
+> Task :feature:copyDebugJniLibsProjectAndLocalJars
+> Task :data:generateCatalogCompileProbe
+> Task :data:preBuild UP-TO-DATE
+> Task :data:preDebugBuild UP-TO-DATE
+> Task :data:generateDebugResValues
+> Task :data:generateDebugResources
+> Task :data:packageDebugResources
+> Task :feature:checkKotlinGradlePluginConfigurationErrors
+> Task :data:javaPreCompileDebug
+> Task :feature:generateCatalogCompileProbe
+> Task :feature:generateDebugResValues
+> Task :feature:generateDebugResources
+> Task :feature:packageDebugResources
+> Task :data:parseDebugLocalResources
+> Task :feature:parseDebugLocalResources
+
+> Task :feature:reportComposeBomProbe
+BOM probe resolved: androidx.compose.animation:animation-android:1.12.1
+BOM probe resolved: androidx.compose.animation:animation-core-android:1.12.1
+BOM probe resolved: androidx.compose.animation:animation-core:1.12.1
+BOM probe resolved: androidx.compose.animation:animation:1.12.1
+BOM probe resolved: androidx.compose.foundation:foundation-android:1.12.1
+BOM probe resolved: androidx.compose.foundation:foundation-layout-android:1.12.1
+BOM probe resolved: androidx.compose.foundation:foundation-layout:1.12.1
+BOM probe resolved: androidx.compose.foundation:foundation:1.12.1
+BOM probe resolved: androidx.compose.material3:material3-android:1.4.0
+BOM probe resolved: androidx.compose.material3:material3:1.4.0
+BOM probe resolved: androidx.compose.material:material-ripple-android:1.12.1
+BOM probe resolved: androidx.compose.material:material-ripple:1.12.1
+BOM probe resolved: androidx.compose.runtime:runtime-android:1.12.1
+BOM probe resolved: androidx.compose.runtime:runtime-annotation-android:1.12.1
+BOM probe resolved: androidx.compose.runtime:runtime-annotation:1.12.1
+BOM probe resolved: androidx.compose.runtime:runtime-retain-android:1.12.1
+BOM probe resolved: androidx.compose.runtime:runtime-retain:1.12.1
+BOM probe resolved: androidx.compose.runtime:runtime-saveable-android:1.12.1
+BOM probe resolved: androidx.compose.runtime:runtime-saveable:1.12.1
+BOM probe resolved: androidx.compose.runtime:runtime:1.12.1
+BOM probe resolved: androidx.compose.ui:ui-android:1.12.1
+BOM probe resolved: androidx.compose.ui:ui-geometry-android:1.12.1
+BOM probe resolved: androidx.compose.ui:ui-geometry:1.12.1
+BOM probe resolved: androidx.compose.ui:ui-graphics-android:1.12.1
+BOM probe resolved: androidx.compose.ui:ui-graphics:1.12.1
+BOM probe resolved: androidx.compose.ui:ui-text-android:1.12.1
+BOM probe resolved: androidx.compose.ui:ui-text:1.12.1
+BOM probe resolved: androidx.compose.ui:ui-tooling-android:1.12.1
+BOM probe resolved: androidx.compose.ui:ui-tooling-data-android:1.12.1
+BOM probe resolved: androidx.compose.ui:ui-tooling-data:1.12.1
+BOM probe resolved: androidx.compose.ui:ui-tooling-preview-android:1.12.1
+BOM probe resolved: androidx.compose.ui:ui-tooling-preview:1.12.1
+BOM probe resolved: androidx.compose.ui:ui-tooling:1.12.1
+BOM probe resolved: androidx.compose.ui:ui-unit-android:1.12.1
+BOM probe resolved: androidx.compose.ui:ui-unit:1.12.1
+BOM probe resolved: androidx.compose.ui:ui-util-android:1.12.1
+BOM probe resolved: androidx.compose.ui:ui-util:1.12.1
+BOM probe resolved: androidx.compose.ui:ui:1.12.1
+BOM probe resolved: androidx.compose:compose-bom:2026.09.00
+BOM probe resolved: org.jetbrains.kotlin:kotlin-stdlib:2.1.20
+
+> Task :feature:extractDeepLinksForAarDebug
+> Task :feature:javaPreCompileDebug
+> Task :feature:mergeDebugShaders
+> Task :feature:compileDebugShaders NO-SOURCE
+> Task :feature:generateDebugAssets
+> Task :feature:packageDebugAssets
+> Task :feature:generateDebugRFile
+> Task :data:generateDebugRFile
+> Task :feature:prepareDebugArtProfile
+> Task :feature:prepareLintJarForPublish
+> Task :data:mergeDebugJniLibFolders
+> Task :data:mergeDebugNativeLibs NO-SOURCE
+> Task :data:stripDebugDebugSymbols NO-SOURCE
+> Task :feature:writeDebugAarMetadata
+> Task :data:copyDebugJniLibsProjectAndLocalJars
+> Task :data:extractDeepLinksForAarDebug
+> Task :data:mergeDebugShaders
+> Task :data:compileDebugShaders NO-SOURCE
+> Task :data:generateDebugAssets
+> Task :data:packageDebugAssets
+> Task :data:prepareDebugArtProfile
+> Task :data:prepareLintJarForPublish
+> Task :data:writeDebugAarMetadata
+> Task :data:processDebugManifest
+> Task :feature:processDebugManifest
+> Task :data:compileDebugKotlin
+> Task :data:compileDebugJavaWithJavac NO-SOURCE
+> Task :data:extractDebugAnnotations
+> Task :data:mergeDebugGeneratedProguardFiles
+> Task :data:bundleLibCompileToJarDebug
+> Task :data:mergeDebugConsumerProguardFiles
+> Task :data:processDebugJavaRes
+> Task :data:mergeDebugJavaResource
+> Task :data:syncDebugLibJars
+> Task :data:bundleDebugAar
+> Task :data:assembleDebug
+
+> Task :feature:compileDebugKotlin FAILED
+e: Incompatible classes were found in dependencies. Remove them from the classpath or use '-Xskip-metadata-version-check' to suppress errors
+e: file:///Users/novumd/.gradle/caches/8.13/transforms/04ddadcf70a5c1278c79f644452ce8c9/transformed/animation-core-api.jar!/META-INF/animation-core.kotlin_moduleModule was compiled with an incompatible version of Kotlin. The binary version of its metadata is 2.1.0, expected version is 1.9.0.
+e: file:///Users/novumd/.gradle/caches/8.13/transforms/0b368984e46e2d8613ceb953accfb54e/transformed/ui-unit-api.jar!/META-INF/ui-unit.kotlin_moduleModule was compiled with an incompatible version of Kotlin. The binary version of its metadata is 2.1.0, expected version is 1.9.0.
+e: file:///Users/novumd/.gradle/caches/8.13/transforms/0c5062e3119ac6ddf504b68c7320241b/transformed/ui-api.jar!/META-INF/ui.kotlin_moduleModule was compiled with an incompatible version of Kotlin. The binary version of its metadata is 2.1.0, expected version is 1.9.0.
+e: file:///Users/novumd/.gradle/caches/8.13/transforms/19577d54cd163afd753506ebb8d7037c/transformed/foundation-layout-api.jar!/META-INF/foundation-layout.kotlin_moduleModule was compiled with an incompatible version of Kotlin. The binary version of its metadata is 2.1.0, expected version is 1.9.0.
+e: file:///Users/novumd/.gradle/caches/8.13/transforms/1fb8ae641084b15b8692f373eb554087/transformed/ui-tooling-data-api.jar!/META-INF/ui-tooling-data.kotlin_moduleModule was compiled with an incompatible version of Kotlin. The binary version of its metadata is 2.1.0, expected version is 1.9.0.
+e: file:///Users/novumd/.gradle/caches/8.13/transforms/2224fdc47630dcdd751b025cbb416b49/transformed/ui-graphics-api.jar!/META-INF/ui-graphics.kotlin_moduleModule was compiled with an incompatible version of Kotlin. The binary version of its metadata is 2.1.0, expected version is 1.9.0.
+e: file:///Users/novumd/.gradle/caches/8.13/transforms/2a812ba9af28d5f00767e12db93fa192/transformed/ui-text-api.jar!/META-INF/ui-text.kotlin_moduleModule was compiled with an incompatible version of Kotlin. The binary version of its metadata is 2.1.0, expected version is 1.9.0.
+e: file:///Users/novumd/.gradle/caches/8.13/transforms/3030947b69bcd25d8756d418680776e3/transformed/ui-geometry-api.jar!/META-INF/ui-geometry.kotlin_moduleModule was compiled with an incompatible version of Kotlin. The binary version of its metadata is 2.1.0, expected version is 1.9.0.
+e: file:///Users/novumd/.gradle/caches/8.13/transforms/60263e751c8dc50a843e5ee65e88cc90/transformed/foundation-api.jar!/META-INF/foundation.kotlin_moduleModule was compiled with an incompatible version of Kotlin. The binary version of its metadata is 2.1.0, expected version is 1.9.0.
+e: file:///Users/novumd/.gradle/caches/8.13/transforms/896d54b870fb606c4391e68fbfd2433b/transformed/material-ripple-api.jar!/META-INF/material-ripple.kotlin_moduleModule was compiled with an incompatible version of Kotlin. The binary version of its metadata is 2.1.0, expected version is 1.9.0.
+e: file:///Users/novumd/.gradle/caches/8.13/transforms/ac2dfee2ce6ed1568b431a4871536295/transformed/runtime-api.jar!/META-INF/runtime.kotlin_moduleModule was compiled with an incompatible version of Kotlin. The binary version of its metadata is 2.1.0, expected version is 1.9.0.
+e: file:///Users/novumd/.gradle/caches/8.13/transforms/baf5ba6b1db60e62af254a879cee65bf/transformed/runtime-saveable-api.jar!/META-INF/runtime-saveable.kotlin_moduleModule was compiled with an incompatible version of Kotlin. The binary version of its metadata is 2.1.0, expected version is 1.9.0.
+e: file:///Users/novumd/.gradle/caches/8.13/transforms/bd05f4695aabbfa406dd24dc0b79c289/transformed/runtime-retain-api.jar!/META-INF/runtime-retain.kotlin_moduleModule was compiled with an incompatible version of Kotlin. The binary version of its metadata is 2.1.0, expected version is 1.9.0.
+e: file:///Users/novumd/.gradle/caches/8.13/transforms/c5a498d18279fdfc2a987c71627f7474/transformed/ui-tooling-api.jar!/META-INF/ui-tooling.kotlin_moduleModule was compiled with an incompatible version of Kotlin. The binary version of its metadata is 2.1.0, expected version is 1.9.0.
+e: file:///Users/novumd/.gradle/caches/8.13/transforms/c5efec0aeb6133a01b4a3656711cf269/transformed/runtime-annotation-api.jar!/META-INF/runtime-annotation.kotlin_moduleModule was compiled with an incompatible version of Kotlin. The binary version of its metadata is 2.1.0, expected version is 1.9.0.
+e: file:///Users/novumd/.gradle/caches/8.13/transforms/e0d6866e0c5757066f74ff1834071105/transformed/ui-tooling-preview-api.jar!/META-INF/ui-tooling-preview.kotlin_moduleModule was compiled with an incompatible version of Kotlin. The binary version of its metadata is 2.1.0, expected version is 1.9.0.
+e: file:///Users/novumd/.gradle/caches/8.13/transforms/f1017a501ab4dd863729b5b14560ee01/transformed/animation-api.jar!/META-INF/animation.kotlin_moduleModule was compiled with an incompatible version of Kotlin. The binary version of its metadata is 2.1.0, expected version is 1.9.0.
+e: file:///Users/novumd/.gradle/caches/8.13/transforms/f22536c719ab105db093905eebfbb070/transformed/ui-util-api.jar!/META-INF/ui-util.kotlin_moduleModule was compiled with an incompatible version of Kotlin. The binary version of its metadata is 2.1.0, expected version is 1.9.0.
+e: file:///Users/novumd/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/2.1.20/aa8ca79cd50578314f6d1180c47cbe14c0fee567/kotlin-stdlib-2.1.20.jar!/META-INF/kotlin-stdlib-jdk7.kotlin_moduleModule was compiled with an incompatible version of Kotlin. The binary version of its metadata is 2.1.0, expected version is 1.9.0.
+e: file:///Users/novumd/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/2.1.20/aa8ca79cd50578314f6d1180c47cbe14c0fee567/kotlin-stdlib-2.1.20.jar!/META-INF/kotlin-stdlib-jdk8.kotlin_moduleModule was compiled with an incompatible version of Kotlin. The binary version of its metadata is 2.1.0, expected version is 1.9.0.
+e: file:///Users/novumd/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/2.1.20/aa8ca79cd50578314f6d1180c47cbe14c0fee567/kotlin-stdlib-2.1.20.jar!/META-INF/kotlin-stdlib.kotlin_moduleModule was compiled with an incompatible version of Kotlin. The binary version of its metadata is 2.1.0, expected version is 1.9.0.
+e: file:///Users/novumd/repos/cordova-native-gradle-workspace/native/feature/build/generated/catalogProbe/kotlin/CatalogCompileProbe.kt:5:33 Class 'androidx.compose.runtime.Composable' was compiled with an incompatible version of Kotlin. The actual metadata version is 2.1.0, but the compiler version 1.9.0 can read versions up to 2.0.0.
+The class is loaded from /Users/novumd/.gradle/caches/8.13/transforms/ac2dfee2ce6ed1568b431a4871536295/transformed/runtime-api.jar!/androidx/compose/runtime/Composable.class
+e: file:///Users/novumd/repos/cordova-native-gradle-workspace/native/feature/build/generated/catalogProbe/kotlin/CatalogCompileProbe.kt:6:33 Unresolved reference: SideEffect
+e: file:///Users/novumd/repos/cordova-native-gradle-workspace/native/feature/build/generated/catalogProbe/kotlin/CatalogCompileProbe.kt:7:28 Class 'androidx.compose.ui.Modifier' was compiled with an incompatible version of Kotlin. The actual metadata version is 2.1.0, but the compiler version 1.9.0 can read versions up to 2.0.0.
+The class is loaded from /Users/novumd/.gradle/caches/8.13/transforms/0c5062e3119ac6ddf504b68c7320241b/transformed/ui-api.jar!/androidx/compose/ui/Modifier.class
+e: file:///Users/novumd/repos/cordova-native-gradle-workspace/native/feature/build/generated/catalogProbe/kotlin/CatalogCompileProbe.kt:8:43 Class 'androidx.compose.foundation.layout.PaddingValues' was compiled with an incompatible version of Kotlin. The actual metadata version is 2.1.0, but the compiler version 1.9.0 can read versions up to 2.0.0.
+The class is loaded from /Users/novumd/.gradle/caches/8.13/transforms/19577d54cd163afd753506ebb8d7037c/transformed/foundation-layout-api.jar!/androidx/compose/foundation/layout/PaddingValues.class
+e: file:///Users/novumd/repos/cordova-native-gradle-workspace/native/feature/build/generated/catalogProbe/kotlin/CatalogCompileProbe.kt:14:2 Class 'androidx.compose.runtime.Composable' was compiled with an incompatible version of Kotlin. The actual metadata version is 2.1.0, but the compiler version 1.9.0 can read versions up to 2.0.0.
+The class is loaded from /Users/novumd/.gradle/caches/8.13/transforms/ac2dfee2ce6ed1568b431a4871536295/transformed/runtime-api.jar!/androidx/compose/runtime/Composable.class
+e: file:///Users/novumd/repos/cordova-native-gradle-workspace/native/feature/build/generated/catalogProbe/kotlin/CatalogCompileProbe.kt:15:53 Class 'kotlin.Unit' was compiled with an incompatible version of Kotlin. The actual metadata version is 2.1.0, but the compiler version 1.9.0 can read versions up to 2.0.0.
+The class is loaded from /Users/novumd/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/2.1.20/aa8ca79cd50578314f6d1180c47cbe14c0fee567/kotlin-stdlib-2.1.20.jar!/kotlin/Unit.class
+e: file:///Users/novumd/repos/cordova-native-gradle-workspace/native/feature/build/generated/catalogProbe/kotlin/CatalogCompileProbe.kt:16:5 Unresolved reference: SideEffect
+e: file:///Users/novumd/repos/cordova-native-gradle-workspace/native/feature/build/generated/catalogProbe/kotlin/CatalogCompileProbe.kt:24:15 Class 'androidx.compose.ui.Modifier' was compiled with an incompatible version of Kotlin. The actual metadata version is 2.1.0, but the compiler version 1.9.0 can read versions up to 2.0.0.
+The class is loaded from /Users/novumd/.gradle/caches/8.13/transforms/0c5062e3119ac6ddf504b68c7320241b/transformed/ui-api.jar!/androidx/compose/ui/Modifier.class
+e: file:///Users/novumd/repos/cordova-native-gradle-workspace/native/feature/build/generated/catalogProbe/kotlin/CatalogCompileProbe.kt:25:14 Class 'androidx.compose.foundation.layout.PaddingValues' was compiled with an incompatible version of Kotlin. The actual metadata version is 2.1.0, but the compiler version 1.9.0 can read versions up to 2.0.0.
+The class is loaded from /Users/novumd/.gradle/caches/8.13/transforms/19577d54cd163afd753506ebb8d7037c/transformed/foundation-layout-api.jar!/androidx/compose/foundation/layout/PaddingValues.class
+e: file:///Users/novumd/repos/cordova-native-gradle-workspace/native/feature/build/generated/catalogProbe/kotlin/CatalogCompileProbe.kt:27:16 Unresolved reference: listOf
+e: file:///Users/novumd/repos/cordova-native-gradle-workspace/native/feature/build/generated/catalogProbe/kotlin/CatalogCompileProbe.kt:27:60 Class 'androidx.compose.ui.Modifier' was compiled with an incompatible version of Kotlin. The actual metadata version is 2.1.0, but the compiler version 1.9.0 can read versions up to 2.0.0.
+The class is loaded from /Users/novumd/.gradle/caches/8.13/transforms/0c5062e3119ac6ddf504b68c7320241b/transformed/ui-api.jar!/androidx/compose/ui/Modifier.class
+e: file:///Users/novumd/repos/cordova-native-gradle-workspace/native/feature/build/generated/catalogProbe/kotlin/CatalogCompileProbe.kt:27:70 Class 'androidx.compose.foundation.layout.PaddingValues' was compiled with an incompatible version of Kotlin. The actual metadata version is 2.1.0, but the compiler version 1.9.0 can read versions up to 2.0.0.
+The class is loaded from /Users/novumd/.gradle/caches/8.13/transforms/19577d54cd163afd753506ebb8d7037c/transformed/foundation-layout-api.jar!/androidx/compose/foundation/layout/PaddingValues.class
+e: file:///Users/novumd/repos/cordova-native-gradle-workspace/native/feature/src/main/kotlin/dev/example/nativefeature/MainActivity.kt:8:15 Class 'kotlin.Unit' was compiled with an incompatible version of Kotlin. The actual metadata version is 2.1.0, but the compiler version 1.9.0 can read versions up to 2.0.0.
+The class is loaded from /Users/novumd/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/2.1.20/aa8ca79cd50578314f6d1180c47cbe14c0fee567/kotlin-stdlib-2.1.20.jar!/kotlin/Unit.class
+
+[Incubating] Problems report is available at: file:///Users/novumd/repos/cordova-native-gradle-workspace/native/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':feature:compileDebugKotlin'.
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
+   > Compilation error. See log for more details
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/8.13/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD FAILED in 21s
+45 actionable tasks: 45 executed

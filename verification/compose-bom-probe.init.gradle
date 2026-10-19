@@ -1,0 +1,17 @@
+// Optional comparison only: does not change the catalog or production dependencies.
+gradle.beforeProject { candidate ->
+    if (candidate.path != ':feature') return
+    candidate.afterEvaluate {
+        def version = candidate.providers.gradleProperty('composeBomProbe').get()
+        candidate.dependencies.add('implementation', candidate.dependencies.platform("androidx.compose:compose-bom:$version"))
+        def report = candidate.tasks.register('reportComposeBomProbe') {
+            doLast {
+                def modules = candidate.configurations.debugCompileClasspath.incoming.resolutionResult.allComponents
+                    .findAll { it.moduleVersion != null }*.moduleVersion
+                modules.findAll { it.group.startsWith('androidx.compose') || it.group == 'org.jetbrains.kotlin' }
+                    .sort { it.toString() }.each { println "BOM probe resolved: $it" }
+            }
+        }
+        candidate.tasks.matching { it.name == 'compileDebugKotlin' }.configureEach { dependsOn(report) }
+    }
+}

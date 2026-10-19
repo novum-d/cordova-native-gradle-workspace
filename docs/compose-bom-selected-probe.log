@@ -1,0 +1,70 @@
+> Task :feature:preBuild UP-TO-DATE
+> Task :feature:preDebugBuild UP-TO-DATE
+> Task :feature:mergeDebugJniLibFolders UP-TO-DATE
+> Task :feature:mergeDebugNativeLibs NO-SOURCE
+> Task :feature:stripDebugDebugSymbols NO-SOURCE
+> Task :feature:copyDebugJniLibsProjectAndLocalJars UP-TO-DATE
+> Task :data:checkKotlinGradlePluginConfigurationErrors
+> Task :data:generateCatalogCompileProbe UP-TO-DATE
+> Task :data:preBuild UP-TO-DATE
+> Task :data:preDebugBuild UP-TO-DATE
+> Task :data:generateDebugResValues UP-TO-DATE
+> Task :data:generateDebugResources UP-TO-DATE
+> Task :data:packageDebugResources UP-TO-DATE
+> Task :data:parseDebugLocalResources UP-TO-DATE
+> Task :data:generateDebugRFile UP-TO-DATE
+> Task :data:compileDebugKotlin UP-TO-DATE
+> Task :data:javaPreCompileDebug UP-TO-DATE
+> Task :data:compileDebugJavaWithJavac NO-SOURCE
+> Task :data:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :feature:checkKotlinGradlePluginConfigurationErrors
+> Task :feature:generateCatalogCompileProbe UP-TO-DATE
+> Task :feature:generateDebugResValues UP-TO-DATE
+> Task :feature:generateDebugResources UP-TO-DATE
+> Task :feature:packageDebugResources UP-TO-DATE
+> Task :feature:parseDebugLocalResources UP-TO-DATE
+> Task :feature:generateDebugRFile UP-TO-DATE
+> Task :feature:extractDeepLinksForAarDebug UP-TO-DATE
+> Task :feature:javaPreCompileDebug UP-TO-DATE
+> Task :feature:mergeDebugShaders UP-TO-DATE
+> Task :feature:compileDebugShaders NO-SOURCE
+> Task :feature:generateDebugAssets UP-TO-DATE
+> Task :feature:packageDebugAssets UP-TO-DATE
+> Task :feature:prepareDebugArtProfile UP-TO-DATE
+> Task :feature:prepareLintJarForPublish UP-TO-DATE
+> Task :feature:processDebugManifest UP-TO-DATE
+> Task :feature:writeDebugAarMetadata UP-TO-DATE
+> Task :data:mergeDebugJniLibFolders UP-TO-DATE
+> Task :data:mergeDebugNativeLibs NO-SOURCE
+> Task :data:stripDebugDebugSymbols NO-SOURCE
+> Task :data:copyDebugJniLibsProjectAndLocalJars UP-TO-DATE
+> Task :data:extractDebugAnnotations UP-TO-DATE
+> Task :data:extractDeepLinksForAarDebug UP-TO-DATE
+> Task :data:mergeDebugGeneratedProguardFiles UP-TO-DATE
+> Task :data:mergeDebugConsumerProguardFiles UP-TO-DATE
+> Task :data:mergeDebugShaders UP-TO-DATE
+> Task :data:compileDebugShaders NO-SOURCE
+> Task :data:generateDebugAssets UP-TO-DATE
+> Task :data:packageDebugAssets UP-TO-DATE
+> Task :data:prepareDebugArtProfile UP-TO-DATE
+> Task :data:prepareLintJarForPublish UP-TO-DATE
+> Task :data:processDebugManifest UP-TO-DATE
+> Task :data:processDebugJavaRes UP-TO-DATE
+> Task :data:mergeDebugJavaResource UP-TO-DATE
+> Task :data:syncDebugLibJars UP-TO-DATE
+> Task :data:writeDebugAarMetadata UP-TO-DATE
+> Task :data:bundleDebugAar UP-TO-DATE
+> Task :data:assembleDebug UP-TO-DATE
+> Task :feature:compileDebugKotlin
+> Task :feature:extractDebugAnnotations
+> Task :feature:compileDebugJavaWithJavac NO-SOURCE
+> Task :feature:mergeDebugGeneratedProguardFiles
+> Task :feature:mergeDebugConsumerProguardFiles
+> Task :feature:processDebugJavaRes
+> Task :feature:mergeDebugJavaResource
+> Task :feature:syncDebugLibJars
+> Task :feature:bundleDebugAar
+> Task :feature:assembleDebug
+
+BUILD SUCCESSFUL in 1s
+51 actionable tasks: 10 executed, 41 up-to-date

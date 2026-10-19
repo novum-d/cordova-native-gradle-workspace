@@ -1,0 +1,62 @@
+ktlint Gradle Plugin 14.2.0 / ktlint engine 1.8.0 / Kotlin 1.9.24
+> Task :loadKtlintReporters
+> Task :runKtlintCheckOverKotlinScripts NO-SOURCE
+> Task :ktlintKotlinScriptCheck SKIPPED
+> Task :runKtlintCheckOverTestSourceSet NO-SOURCE
+> Task :ktlintTestSourceSetCheck SKIPPED
+> Task :runKtlintCheckOverMainSourceSet
+> Task :ktlintMainSourceSetCheck
+> Task :ktlintCheck
+
+BUILD SUCCESSFUL in 818ms
+3 actionable tasks: 3 executed
+> Task :loadKtlintReporters UP-TO-DATE
+> Task :runKtlintCheckOverKotlinScripts NO-SOURCE
+> Task :ktlintKotlinScriptCheck SKIPPED
+> Task :runKtlintCheckOverTestSourceSet NO-SOURCE
+> Task :ktlintTestSourceSetCheck SKIPPED
+> Task :runKtlintCheckOverMainSourceSet
+
+> Task :ktlintMainSourceSetCheck FAILED
+/private/var/folders/_z/0psds5k51gnfc1k9rs6mtjnc0000gn/T/workspace-ktlint.y0SVT6/src/main/kotlin/Answer.kt:7:1 Needless blank line(s)
+/private/var/folders/_z/0psds5k51gnfc1k9rs6mtjnc0000gn/T/workspace-ktlint.y0SVT6/src/main/kotlin/Answer.kt:7:1 Trailing space(s)
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':ktlintMainSourceSetCheck'.
+> A failure occurred while executing org.jlleitschuh.gradle.ktlint.worker.ConsoleReportWorkAction
+   > KtLint found code style violations. Please see the following reports:
+     - /private/var/folders/_z/0psds5k51gnfc1k9rs6mtjnc0000gn/T/workspace-ktlint.y0SVT6/build/reports/ktlint/ktlintMainSourceSetCheck/ktlintMainSourceSetCheck.txt
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 794ms
+3 actionable tasks: 2 executed, 1 up-to-date
+> Task :loadKtlintReporters UP-TO-DATE
+> Task :runKtlintFormatOverKotlinScripts NO-SOURCE
+> Task :ktlintKotlinScriptFormat SKIPPED
+> Task :runKtlintFormatOverTestSourceSet NO-SOURCE
+> Task :ktlintTestSourceSetFormat SKIPPED
+> Task :runKtlintFormatOverMainSourceSet
+> Task :ktlintMainSourceSetFormat
+> Task :ktlintFormat
+
+BUILD SUCCESSFUL in 790ms
+3 actionable tasks: 2 executed, 1 up-to-date
+> Task :loadKtlintReporters UP-TO-DATE
+> Task :runKtlintCheckOverKotlinScripts NO-SOURCE
+> Task :ktlintKotlinScriptCheck SKIPPED
+> Task :runKtlintCheckOverTestSourceSet NO-SOURCE
+> Task :ktlintTestSourceSetCheck SKIPPED
+> Task :runKtlintCheckOverMainSourceSet
+> Task :ktlintMainSourceSetCheck
+> Task :ktlintCheck
+
+BUILD SUCCESSFUL in 795ms
+3 actionable tasks: 2 executed, 1 up-to-date
+PASS: clean Kotlin accepted, malformed Kotlin rejected, formatted Kotlin accepted.
