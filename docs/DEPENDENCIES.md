@@ -10,12 +10,14 @@ Version Catalogで想定していたライブラリを、通常の`feature`・`d
 | featureのDebugのみ | Compose UI Tooling。Releaseへは追加しない |
 | data | DataStore Preferences・Core、Serialization JSON、WorkManager、Retrofit、OkHttp・Logging Interceptor |
 | 両方 | Coroutines Core・Android、Immutable Collections、Kotlinx Datetime、kotlin-result、Hilt Android、Timber |
-| 両方の単体テスト | JUnit 4 |
+| 両方の単体テスト | JUnit 4、Coroutines Test（本体と同じ1.8.1） |
 | 両方のAndroidテスト | AndroidX Test Core KTX・Ext JUnit KTX |
 | 両方のコード生成 | Hilt Plugin・KSP Pluginと`ksp(libs.hilt.compiler)` |
 | dataのコード生成 | Kotlin Serialization Plugin |
 
 通常依存は`implementation`、Toolingは`debugImplementation`、テストは`testImplementation`・`androidTestImplementation`で宣言しています。detekt・ktlint・JGitなどの開発ツールはAndroidの依存へ追加していません。
+
+2026-10-20に[単体テスト環境](UNIT_TESTS.md)を整備しました。両モジュールの`src/test/`に環境確認テストを追加し、JUnit 4・Coroutines TestとAGPのJaCoCo連携で実行・レポート生成を行います。Coroutines Testは`testImplementation`で、JaCoCoはビルド時ツールです。
 
 featureのCompose Compilerを常時有効にしました。AGP・Kotlinは従来のnative／Cordova基盤を使い、Hilt・KSP・Serializationは利用するモジュールのCatalog aliasで適用します。Hilt用にCordovaの生成GradleやApplicationを書き換える処理は追加していません。
 

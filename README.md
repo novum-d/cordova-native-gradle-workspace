@@ -93,9 +93,9 @@ Immutable Collectionsに合わせて、detektの`DataClassShouldBeImmutable`と`
 
 最新版との比較方法と結果は[バージョンの追加検証](docs/VERSION_CHECKS.md)を参照してください。Compose BOM 2025.07.00はビルド成功を確認した採用版であり、互換性のある最新版の上限を特定したものではありません。
 
-AppCompat、Truth、MockK、Turbine、coroutines-test、MockWebServer、KAPTのaliasや新規依存宣言はありません。Cordova由来の既存AppCompatは削除していません。
+単体テストにはJUnit 4と`kotlinx-coroutines-test:1.8.1`を使用します。Coroutines本体とテスト支援の版をそろえ、JaCoCo 0.8.14でカバレッジを収集します。AppCompat、Truth、MockK、Turbine、MockWebServer、KAPTのaliasや新規依存宣言はありません。Cordova由来の既存AppCompatは削除していません。
 
-Hilt・KSPをfeature・dataへ適用し、`ksp(libs.hilt.compiler)`を設定しました。dataにはKotlin Serialization Pluginも適用し、検証コードでRepositoryのFactory、Hilt ViewModelのModule／Factory、日時を含むSerializerの生成とコンパイルを確認しています。CordovaのApplicationをHilt化した実機での注入は、この検証には含めていません。ktlint Pluginは検証用の一時プロジェクトだけに適用し、`sh verification/verify-ktlint.sh`で再実行できます。通常のnative・Cordovaプロジェクトではdetektを適用し、読み取り専用checkとpreCommitを実行できます。この2つのルートにあるktlintCheckはdetektFormatCheckへの互換名です。詳細は[Git hookのKotlin DSL実装](docs/GIT_HOOKS.md)を参照してください。JUnitテストコードは追加していません。
+Hilt・KSPをfeature・dataへ適用し、`ksp(libs.hilt.compiler)`を設定しました。dataにはKotlin Serialization Pluginも適用し、検証コードでRepositoryのFactory、Hilt ViewModelのModule／Factory、日時を含むSerializerの生成とコンパイルを確認しています。CordovaのApplicationをHilt化した実機での注入は、この検証には含めていません。ktlint Pluginは検証用の一時プロジェクトだけに適用し、`sh verification/verify-ktlint.sh`で再実行できます。通常のnative・Cordovaプロジェクトではdetektを適用し、読み取り専用checkとpreCommitを実行できます。この2つのルートにあるktlintCheckはdetektFormatCheckへの互換名です。詳細は[Git hookのKotlin DSL実装](docs/GIT_HOOKS.md)を参照してください。両モジュールにJUnitの環境確認テストを追加しており、配置・実行方法は[単体テスト環境](docs/UNIT_TESTS.md)を参照してください。
 
 選定根拠: [Cordova公式対応表](https://cordova.apache.org/docs/en/latest/guide/platforms/android/index.html)、[14.0.1既定値](https://github.com/apache/cordova-android/blob/14.0.1/framework/cdv-gradle-config-defaults.json)、[Compose BOM POM](https://dl.google.com/dl/android/maven2/androidx/compose/compose-bom/2025.07.00/compose-bom-2025.07.00.pom)、[Core](https://developer.android.com/jetpack/androidx/releases/core)、[Activity](https://developer.android.com/jetpack/androidx/releases/activity)、[DataStore](https://developer.android.com/jetpack/androidx/releases/datastore)、[WorkManager](https://developer.android.com/jetpack/androidx/releases/work)、[Hilt 2.52 POM](https://repo.maven.apache.org/maven2/com/google/dagger/hilt-android/2.52/hilt-android-2.52.pom)、[kotlin-result移行説明](https://github.com/michaelbull/kotlin-result/releases/tag/2.0.0)。最終的な解決座標は[ライブラリ](docs/resolved-catalog-libraries.txt)・[プラグイン](docs/resolved-catalog-plugins.txt)を参照してください。
 
@@ -133,6 +133,8 @@ npm run cordova:build
 npm run test:hooks
 npm run test:bootstrap
 npm run test:git-hooks
+npm run test:unit
+npm run test:unit:coverage
 npm run check:android
 
 # Catalog全Artifactの解決と、検証用Kotlinコードのコンパイル。

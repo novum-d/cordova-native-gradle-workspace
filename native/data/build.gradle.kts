@@ -14,6 +14,8 @@ android {
     buildToolsVersion = libs.versions.build.tools.get()
     compileSdk = libs.versions.compile.sdk.get().toInt()
     defaultConfig { minSdk = libs.versions.min.sdk.get().toInt() }
+    testCoverage { jacocoVersion = libs.versions.jacoco.get() }
+    buildTypes.configureEach { enableUnitTestCoverage = true }
     compileOptions {
         sourceCompatibility = JavaVersion.toVersion(libs.versions.jvm.target.get())
         targetCompatibility = JavaVersion.toVersion(libs.versions.jvm.target.get())
@@ -42,6 +44,7 @@ dependencies {
     implementation(libs.timber)
 
     testImplementation(libs.junit)
+    testImplementation(libs.kotlinx.coroutines.test)
     androidTestImplementation(libs.androidx.test.core.ktx)
     androidTestImplementation(libs.androidx.test.ext.junit.ktx)
 }

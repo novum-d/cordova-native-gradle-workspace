@@ -20,6 +20,9 @@
     "test:hooks": "sh verification/hook.test.sh",
     "test:bootstrap": "sh verification/bootstrap.test.sh",
     "test:git-hooks": "sh verification/git-hooks-setup.test.sh",
+    "test:unit": "./scripts/with-env.sh ./native/gradlew -p native :feature:testDebugUnitTest :feature:testReleaseUnitTest :data:testDebugUnitTest :data:testReleaseUnitTest",
+    "test:unit:cordova": "./scripts/cordova.sh prepare android && ./scripts/with-env.sh ./native/gradlew -p CordovaComposeApp/platforms/android :feature:testDebugUnitTest :feature:testReleaseUnitTest :data:testDebugUnitTest :data:testReleaseUnitTest",
+    "test:unit:coverage": "./scripts/with-env.sh ./native/gradlew -p native :feature:createDebugUnitTestCoverageReport :data:createDebugUnitTestCoverageReport",
     "check:android": "sh scripts/check-android.sh",
     "verify:structure": "./scripts/with-env.sh ./native/gradlew -p native verifyNativeIntegration",
     "verify:sync": "./scripts/tooling-sync.sh native"
