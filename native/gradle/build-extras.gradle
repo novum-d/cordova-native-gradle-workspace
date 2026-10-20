@@ -1,5 +1,13 @@
 // Applied ONLY to the existing Cordova :app via its supported build-extras.gradle.
-def catalog = extensions.getByType(org.gradle.api.artifacts.VersionCatalogsExtension).named('libs')
+def catalogs = extensions.getByType(org.gradle.api.artifacts.VersionCatalogsExtension)
+if (!catalogs.find('libs').isPresent()) {
+    throw new GradleException("""Shared Version Catalog 'libs' was not registered during Settings evaluation.
+Run ./scripts/cordova.sh prepare android from the workspace root, then retry the Gradle build or sync.
+The Cordova after_prepare hook must add the settings-extras.gradle reference to:
+${new File(rootDir, 'cdv-gradle-name.gradle')}
+Check CordovaComposeApp/config.xml for the after_prepare hook if the reference is still missing.""")
+}
+def catalog = catalogs.named('libs')
 def requiredVersions = [MIN_BUILD_TOOLS_VERSION: 'build-tools', AGP_VERSION: 'agp', GRADLE_VERSION: 'gradle', KOTLIN_VERSION: 'kotlin',
                         ANDROIDX_WEBKIT_VERSION: 'webkit', JAVA_SOURCE_COMPATIBILITY: 'jvm-target',
                         JAVA_TARGET_COMPATIBILITY: 'jvm-target', MIN_SDK_VERSION: 'min-sdk',

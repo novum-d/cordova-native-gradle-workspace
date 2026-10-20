@@ -148,6 +148,25 @@ npm ci --include=dev
 ./scripts/cordova.sh --version
 ```
 
+`platforms/android/cordova/Api.js`は、Cordova CLIによるplatform作成時の生成物で、Gitには含めません。`npm ci`だけでは生成されません。ファイルが存在しない場合は`./scripts/bootstrap.sh`を再実行してください。platformが未作成なら新規作成し、フォルダだけが残って主要ファイルが欠けていれば、`.tools/cordova-platform-backups/`へ退避してから再生成します。正常なplatformは置き換えずprepareします。
+
+`Api.js`があるのに`Could not load API`が出る場合は、そこから読み込む`cordova-android`や依存の不足も考えられます。リポジトリ直下で以下を実行してください。
+
+```sh
+npm --prefix CordovaComposeApp ci --include=dev
+./scripts/cordova.sh prepare android --verbose
+```
+
+続く場合は`node -e 'require("./CordovaComposeApp/platforms/android/cordova/Api.js")'`で元の読み込みエラーを確認します。bootstrapも、ルートとアプリそれぞれの依存宣言とAndroid APIの読み込みを検査します。
+
+`build-extras.gradle`で`Catalog named libs doesn't exist`が出る場合は、Settingsでの共有Catalog登録が実行されていません。リポジトリ直下で`./scripts/cordova.sh prepare android`を実行してから、ビルドまたはGradle Syncを再実行してください。`platforms/android/cdv-gradle-name.gradle`に以下の行が復元されます。
+
+```groovy
+apply from: new File(settingsDir, "../../../native/gradle/settings-extras.gradle")
+```
+
+Cordovaのprepareはこのファイルを再生成するため、手動追記だけでは次回に消えます。復元されない場合は、`CordovaComposeApp/config.xml`のAndroid設定に`<hook type="after_prepare" src="hooks/copy-gradle-extras.js" />`があるか確認してください。`--nohooks=after_prepare`などで復元hookを省略した場合も参照が消えるため、通常のprepareで復元してください。
+
 Git hookがKotlinを検査した場合は、最後にHTMLの結果一覧を自動表示します。違反で停止した場合も同様です。出力先は`native/build/reports/git-hooks/preCommit.html`で、詳細レポートへのリンクを含みます。CIでは自動表示せず、`-PopenPreCommitReport=false`でも無効化できます。[動作と検証結果](docs/GIT_HOOKS.md#最後にhtmlレポートを開く)
 
 `npm run check:android`はCordova prepare後、nativeとCordovaのdetekt・整形チェック、Debug／ReleaseのAndroid Lint、基盤・依存方向・ライセンスの検証を順番に実行します。Lintエラーはビルドを失敗させ、ライブラリの指摘もアプリのレポートに含めます。修正した非推奨APIと残る警告は[Gradle・Android Lintの確認結果](docs/ANDROID_CHECKS.md)を参照してください。
@@ -202,6 +221,8 @@ Cordova CLIによるエミュレーターへのインストール・起動と、
 実測結果、APK、コマンド、残存事項は[検証レポート](docs/VALIDATION.md)に記載しています。追加したdetekt・preCommit環境、TvAppとの差異、28ケースの実行検証は[Git hookのKotlin DSL実装](docs/GIT_HOOKS.md)を参照してください。
 
 ## ライセンス
+
+利用中の6種類について、対象・対応・対応判断・根拠となる原文とリンクを[ライセンス対応表](docs/LICENSE_RESPONSE_MATRIX.md)にまとめています。
 
 適用範囲は[LICENSE](LICENSE)、帰属表示は[NOTICE](NOTICE)を参照してください。ライセンス全文と必要な帰属表示は、APK内の`assets/www/licenses/THIRD_PARTY_NOTICES.txt`に同梱します。アプリ内のライセンス画面は設けていません。
 

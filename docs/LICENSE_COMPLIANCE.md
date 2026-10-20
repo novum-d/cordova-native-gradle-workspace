@@ -1,5 +1,7 @@
 # ライセンス遵守の確認と維持
 
+各ライセンスの対応、対応判断、根拠となる条文の抜粋と原文リンクは[ライセンス対応表](LICENSE_RESPONSE_MATRIX.md)を参照してください。
+
 2026-10-18に、通常のCordova Androidアプリのdebug/release構成と、Git管理されたソース配布物を確認しました。
 
 2026-10-19にImmutable Collections 0.3.8を追加し、この時点の外部実行時依存は45件です。追加したJVM ArtifactはApache-2.0で、上流のLICENSE全文が保存済みの`Apache-2.0.txt`とバイト単位で一致することを確認しました。ソースのJetBrains著作権表示を`attributions.txt`へ追加し、出典・ハッシュを`runtime.json`へ記録しています。既存44件のArtifactハッシュは変わっていません。再ビルドした両APKの通知が管理元と一致し、45件すべての座標を含むことを確認しました。[当時の追加内容](IMMUTABLE_COLLECTIONS.md)
