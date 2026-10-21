@@ -65,7 +65,7 @@ Releaseのカバレッジは、各モジュールの`createReleaseUnitTestCovera
 
 カバレッジは本体コードを対象にします。環境確認テストが成功しても業務ロジックをカバーしたことにはならず、現在のfeatureではActivityを実行しないため未カバーになり、dataは業務クラスがないため空のレポートになります。現段階でカバレッジ率の下限は設定していません。
 
-Coroutines Testはテスト専用、JaCoCoはテスト実行・レポート用です。通常APKの実行時依存とライセンス台帳は別途照合します。
+Coroutines Testはテスト専用、JaCoCoはテスト実行・レポート用です。
 
 ## 実行確認（2026-10-20）
 
@@ -73,7 +73,6 @@ Coroutines Testはテスト専用、JaCoCoはテスト実行・レポート用�
 - 一時ディレクトリの失敗用テストをinit scriptでdataのテストソースへ追加し、アサーション失敗がJUnit XMLに記録され、`npm run test:unit`が非ゼロ終了することを確認しました。失敗用テストは削除し、通常構成のテストを再実行しています。
 - 両モジュールのDebugカバレッジHTML／XMLを生成しました。
 - nativeの`detektFormat check`が成功し、整形・静的解析、単体テストと既定のDebug Android Lintを通過しました。
-- Cordovaホストの`:app:verifyThirdPartyLicenses`が成功し、通常APK向けの実行時依存は既存台帳（Debug 115件／Release 112件）と一致しました。
 
 ## 設定の根拠
 

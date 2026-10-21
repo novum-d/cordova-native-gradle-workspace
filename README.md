@@ -26,7 +26,6 @@ cordova-native-gradle-workspace/
 │   ├── gradle/libs.versions.toml           共有Catalogの管理元
 │   ├── gradle/settings-extras.gradle       CordovaへCatalog・モジュールを登録
 │   ├── gradle/build-extras.gradle          app依存と基盤版の照合
-│   ├── third-party-licenses/               ライセンス原文・出典・依存台帳
 │   ├── feature/build.gradle.kts / src/main/AndroidManifest.xml
 │   └── data/build.gradle.kts / src/main/AndroidManifest.xml
 ├── scripts/                               環境設定・再現用コマンド
@@ -115,7 +114,7 @@ Cordova 14.0.1の`ProjectBuilder.prepBuildFiles()`は**build時にsettings.gradl
 
 ## 再実行
 
-Node.js、JDK 17、SDK 35とBuild Tools 35.0.0、ライセンス検証用の`jq`と`shasum`または`sha256sum`を用意します。このマシンではmiseの17.0.2を利用します。miseを使わない場合は`CORDOVA_JAVA_HOME`を指定してください。環境スクリプトは既存のグローバルGradleやJDK設定を書き換えません。
+Node.js、JDK 17、SDK 35とBuild Tools 35.0.0を用意します。このマシンではmiseの17.0.2を利用します。miseを使わない場合は`CORDOVA_JAVA_HOME`を指定してください。環境スクリプトは既存のグローバルGradleやJDK設定を書き換えません。
 
 ```sh
 cd ~/repos/cordova-native-gradle-workspace
@@ -169,9 +168,9 @@ apply from: new File(settingsDir, "../../../native/gradle/settings-extras.gradle
 
 Cordovaのprepareはこのファイルを再生成するため、手動追記だけでは次回に消えます。復元されない場合は、`CordovaComposeApp/config.xml`のAndroid設定に`<hook type="after_prepare" src="hooks/copy-gradle-extras.js" />`があるか確認してください。`--nohooks=after_prepare`などで復元hookを省略した場合も参照が消えるため、通常のprepareで復元してください。
 
-Git hookがKotlinを検査した場合は、最後にHTMLの結果一覧を自動表示します。違反で停止した場合も同様です。出力先は`native/build/reports/git-hooks/preCommit.html`で、詳細レポートへのリンクを含みます。CIでは自動表示せず、`-PopenPreCommitReport=false`でも無効化できます。[動作と検証結果](docs/GIT_HOOKS.md#最後にhtmlレポートを開く)
+Git hookでlint・フォーマットルール違反を検出した場合だけ、検査終了後に該当タスクのdetekt標準HTMLを開きます。独自の結果一覧は生成しません。nativeから実行した場合の出力先は`native/build/reports/detekt/<task>.html`です。成功時・ルール違反以外の実行エラー・CIでは自動表示せず、`-PopenPreCommitReport=false`でも無効化できます。[動作と検証結果](docs/GIT_HOOKS.md#最後にhtmlレポートを開く)
 
-`npm run check:android`はCordova prepare後、nativeとCordovaのdetekt・整形チェック、Debug／ReleaseのAndroid Lint、基盤・依存方向・ライセンスの検証を順番に実行します。Lintエラーはビルドを失敗させ、ライブラリの指摘もアプリのレポートに含めます。修正した非推奨APIと残る警告は[Gradle・Android Lintの確認結果](docs/ANDROID_CHECKS.md)を参照してください。
+`npm run check:android`はCordova prepare後、nativeとCordovaのdetekt・整形チェック、Debug／ReleaseのAndroid Lint、基盤・依存方向の検証を順番に実行します。Lintエラーはビルドを失敗させ、ライブラリの指摘もアプリのレポートに含めます。修正した非推奨APIと残る警告は[Gradle・Android Lintの確認結果](docs/ANDROID_CHECKS.md)を参照してください。
 
 `-PverifyCatalog=true`の検証ビルドだけが`verification/fixtures/*.kt`を`build/generated`へコピーし、検証用assetsを注入します。依存は通常のbuild.gradle.ktsで宣言しており、検証時に追加しません。Compose・日時・Serialization APIとHilt/KSPコード生成の実コンパイル、両Libraryのassetsマージを確認します。通常の配布APKには含めません。検証後に通常ビルドへ戻す場合は生成物をcleanしてください。
 
@@ -221,22 +220,3 @@ Android Studioでは`native/`を開き、GradleをWrapper、Gradle JDKを17に�
 Cordova CLIによるエミュレーターへのインストール・起動と、同じAPK内でのCompose表示・状態更新・Cordovaへの復帰も確認しました。確認後のエミュレーター終了を含め、[実行記録とスクリーンショット](docs/COMPOSE_RUNTIME.md)を参照してください。
 
 実測結果、APK、コマンド、残存事項は[検証レポート](docs/VALIDATION.md)に記載しています。追加したdetekt・preCommit環境、TvAppとの差異、28ケースの実行検証は[Git hookのKotlin DSL実装](docs/GIT_HOOKS.md)を参照してください。
-
-## ライセンス
-
-利用中の6種類について、対象・対応・対応判断・根拠となる原文とリンクを[ライセンス対応表](docs/LICENSE_RESPONSE_MATRIX.md)にまとめています。
-
-適用範囲は[LICENSE](LICENSE)、帰属表示は[NOTICE](NOTICE)を参照してください。ライセンス全文と必要な帰属表示は、APK内の`assets/www/licenses/THIRD_PARTY_NOTICES.txt`に同梱します。アプリ内のライセンス画面は設けていません。
-
-ライセンス原文・出典と通常APKの実行時依存（Debug 115件・Release 112件）の[台帳](native/third-party-licenses/runtime.json)を、`native/third-party-licenses/`で管理します。Cordovaのビルド前に依存の版・ハッシュと通知の整合性を検証します。更新時の手順、確認根拠、対象範囲は[ライセンス遵守の記録](docs/LICENSE_COMPLIANCE.md)を参照してください。`npm run licenses:verify`で単独実行できます。
-
-| 用途 | 置き場所 |
-| --- | --- |
-| ライセンス原文・著作権表示の保管 | [native/third-party-licenses/](native/third-party-licenses/) |
-| 実行時依存の版・ライセンス・ハッシュの台帳 | [runtime.json](native/third-party-licenses/runtime.json) |
-| 原文の出典・照合情報 | [upstream-sources.json](native/third-party-licenses/upstream-sources.json)、[cordova-sources.json](native/third-party-licenses/cordova-sources.json) |
-| ソース配布時の適用範囲・帰属表示 | ルートの[LICENSE](LICENSE)、[NOTICE](NOTICE) |
-| APKに取り込む通知テキストの生成先 | [CordovaComposeApp/www/licenses/THIRD_PARTY_NOTICES.txt](CordovaComposeApp/www/licenses/THIRD_PARTY_NOTICES.txt) |
-| APK内の格納先 | `assets/www/licenses/THIRD_PARTY_NOTICES.txt` |
-
-生成・検証処理は[`scripts/licenses.sh`](scripts/licenses.sh)で実行します。JSONの読み取りに`jq`、ハッシュ計算に`shasum`または`sha256sum`が必要です。原文・台帳を更新した場合は、`npm run licenses:generate`で`NOTICE`とAPK同梱用テキストを再生成し、生成結果もGitで管理します。

@@ -54,7 +54,6 @@ val kotlinSources = nativeKotlinSources(workspaceDir)
 val stagedSourcesDir = layout.buildDirectory.dir("tmp/git-hooks/staged")
 val stagedSources = nativeKotlinSources(stagedSourcesDir.get().asFile)
 val hookServices = objects.newInstance<GitHookServices>()
-val hookHtmlReport = layout.buildDirectory.file("reports/git-hooks/preCommit.html")
 val detektReportsDir = layout.buildDirectory.dir("reports/detekt")
 val preCommitDetektNames = listOf(
     "detektPreCommitFormat", "detektPreCommitFormatCheck", "detektPreCommit", "detektPreCommitStagedFormatCheck",
@@ -143,6 +142,7 @@ var stagedKotlin = emptyList<String>()
 var stagedNativeKotlin = emptyList<String>()
 var beforeFormatting = emptyMap<String, String>()
 var preCommitPrepared = false
+var formattingChanged = false
 val hookReport = layout.buildDirectory.file("reports/git-hooks/preCommit.txt")
 
 val preparePreCommit = tasks.register("preparePreCommit") {
@@ -152,10 +152,11 @@ val preparePreCommit = tasks.register("preparePreCommit") {
     doLast {
         val snapshotDir = stagedSourcesDir.get().asFile
         preCommitPrepared = false
-        // Remove old results so a failed or skipped phase cannot link to a previous run.
+        formattingChanged = false
+        // Remove stale detekt reports and the discontinued summary from older versions.
         hookServices.files.delete {
             delete(
-                listOf(snapshotDir, hookHtmlReport.get().asFile) +
+                listOf(snapshotDir, layout.buildDirectory.file("reports/git-hooks/preCommit.html").get().asFile) +
                     preCommitDetektNames.map { detektReportsDir.get().file("$it.html").asFile },
             )
         }
@@ -234,6 +235,7 @@ val checkPreCommitFormattingChanges = tasks.register("checkPreCommitFormattingCh
         hookReport.get().asFile.appendText(
             "Formatting changed files: ${changedFiles.size}\n" + changedFiles.joinToString("\n") + "\n",
         )
+        formattingChanged = changedFiles.isNotEmpty()
         check(changedFiles.isEmpty()) {
             "Formatting changed files. 以下のファイルを自動整形したため、コミットを中止しました。\n" +
                 changedFiles.joinToString("\n") +
@@ -301,55 +303,38 @@ val preCommit = tasks.register("preCommit") {
     }
 }
 
-fun htmlEscape(value: String): String = value.replace("&", "&amp;")
-    .replace("<", "&lt;").replace(">", "&gt;").replace("\"", "&quot;").replace("'", "&#39;")
-
 val preCommitPhases = listOf(
     preparePreCommit, preCommitFormat, checkPreCommitFormattingChanges,
     preCommitFormatCheck, preCommitAnalysis, preCommitStagedFormatCheck, preCommit,
 )
+val preCommitDetektTasks = listOf(preCommitFormat, preCommitFormatCheck, preCommitAnalysis, preCommitStagedFormatCheck)
+
+// detekt 1.23.8 preserves this cause through its isolated CLI class loader.
+// Inspect its name so we don't add detekt-tooling to the buildscript classpath.
+fun Detekt.failedWithRuleViolations(): Boolean = generateSequence(state.failure) { it.cause }.any {
+    it.javaClass.name == "io.github.detekt.tooling.api.MaxIssuesReached"
+}
+
 val showPreCommitReport = tasks.register("showPreCommitReport") {
     group = "verification"
-    description = "Writes the current preCommit HTML summary and opens it in the desktop browser."
-    onlyIf("preCommit inspected staged Kotlin") { preCommitPrepared && stagedKotlin.isNotEmpty() }
+    description = "Opens detekt's own HTML report only when preCommit finds rule violations."
+    onlyIf("preCommit found formatting or analysis rule violations") {
+        preCommitPrepared && stagedKotlin.isNotEmpty() &&
+            (formattingChanged || preCommitDetektTasks.any { it.get().failedWithRuleViolations() })
+    }
     // The finalizer is attached to prepare, which also runs when a later dependency fails.
     // Wait until all scheduled phases finish instead of opening after prepare itself.
     mustRunAfter(preCommitPhases)
-    notCompatibleWithConfigurationCache("Summarizes live pre-commit task states and opens a desktop report")
+    notCompatibleWithConfigurationCache("Reads live pre-commit failures and opens a desktop report")
     doLast {
-        val report = hookHtmlReport.get().asFile
-        val completed = preCommit.get().state.let { it.executed && !it.skipped && it.failure == null }
-        val rows = preCommitPhases.joinToString("\n") { phase ->
-            val task = phase.get()
-            val state = task.state
-            val status = when {
-                state.failure != null -> "失敗"
-                !state.executed -> "未実行"
-                state.skipped -> "スキップ"
-                else -> "成功"
-            }
-            val detail = detektReportsDir.get().file("${task.name}.html").asFile
-            val link = if (detail.isFile) {
-                "<a href=\"${htmlEscape(detail.toURI().toASCIIString())}\">詳細</a>"
-            } else "—"
-            val error = state.failure?.message?.let { "<pre>${htmlEscape(it)}</pre>" }.orEmpty()
-            "<tr><td>${htmlEscape(task.name)}</td><td>$status</td><td>$link$error</td></tr>"
+        val failedAnalysis = preCommitDetektTasks.map { it.get() }.firstOrNull { it.failedWithRuleViolations() }
+        val reportTask = failedAnalysis ?: preCommitFormat.get()
+        val report = reportTask.reports.html.outputLocation.get().asFile
+        if (!report.isFile) {
+            logger.warn("detekt HTML report is unavailable: $report")
+            return@doLast
         }
-        report.parentFile.mkdirs()
-        report.writeText(
-            """<!doctype html>
-            <html lang="ja"><meta charset="utf-8"><title>preCommit の結果</title>
-            <style>body{font-family:system-ui,sans-serif;margin:2rem;line-height:1.6}
-            table{border-collapse:collapse}th,td{border:1px solid #888;padding:.5rem;text-align:left}
-            pre{white-space:pre-wrap;overflow-wrap:anywhere}</style>
-            <h1>preCommit: ${if (completed) "成功" else "コミットを中止"}</h1>
-            <p>今回の検査結果です。整形・解析に失敗した場合は差分を確認し、必要な内容を再ステージしてください。</p>
-            <pre>${htmlEscape(hookReport.get().asFile.readText())}</pre>
-            <table><tr><th>処理</th><th>結果</th><th>レポート・エラー</th></tr>$rows</table>
-            </html>
-            """.trimIndent(),
-        )
-        logger.lifecycle("preCommit HTML report: ${report.toURI().toASCIIString()}")
+        logger.lifecycle("detekt HTML report: ${report.toURI().toASCIIString()}")
         if (!openReport.get() || onCi.get()) return@doLast
         val command = when {
             osName.startsWith("mac") -> listOf("open", report.absolutePath)
@@ -380,10 +365,10 @@ val showPreCommitReport = tasks.register("showPreCommitReport") {
                     isIgnoreExitValue = true
                 }
             }
-            if (result.exitValue == 0) logger.lifecycle("Opened preCommit HTML report.")
-            else logger.warn("Could not open preCommit HTML report (exit ${result.exitValue}); use the link above.")
+            if (result.exitValue == 0) logger.lifecycle("Opened detekt HTML report.")
+            else logger.warn("Could not open detekt HTML report (exit ${result.exitValue}); use the link above.")
         } catch (error: Exception) {
-            logger.warn("Could not open preCommit HTML report; use the link above. ${error.message}")
+            logger.warn("Could not open detekt HTML report; use the link above. ${error.message}")
         }
     }
 }

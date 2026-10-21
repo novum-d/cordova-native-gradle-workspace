@@ -71,8 +71,8 @@ echo 'PASS: reinstalling app dependencies restores Api.js loading without deleti
 cp "$workspace_dir/CordovaComposeApp/config.xml" "$fixture_dir/CordovaComposeApp/"
 cp -R "$workspace_dir/CordovaComposeApp/www" "$workspace_dir/CordovaComposeApp/hooks" "$fixture_dir/CordovaComposeApp/"
 for relative in native/gradle/settings-extras.gradle native/gradle/build-extras.gradle \
-  native/gradle/git-hooks.gradle.kts native/gradle/licenses.gradle \
-  native/feature/build.gradle.kts native/data/build.gradle.kts scripts/licenses.sh \
+  native/gradle/git-hooks.gradle.kts \
+  native/feature/build.gradle.kts native/data/build.gradle.kts \
   native/gradle/config/detekt/detekt.yml native/gradle/config/detekt/formatting.yml \
   native/gradle/config/detekt/autocorrect.yml verification/catalog-verification.gradle; do
   mkdir -p "$(dirname -- "$fixture_dir/$relative")"

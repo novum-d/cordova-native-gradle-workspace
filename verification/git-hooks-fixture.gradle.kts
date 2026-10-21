@@ -82,6 +82,17 @@ val setup = tasks.register("setupHookFixture") {
                         put(target, "package fixture\n\ninternal fun first(): Nothing {\n    throw Exception(\"first\")\n}\n\ninternal fun second(): Nothing {\n    throw Exception(\"second\")\n}\n")
                         git.add().addFilepattern(target).call()
                     }
+                    "analysis-execution-failed", "invalid-detekt-config" -> {
+                        put(target, good)
+                        if (scenario == "invalid-detekt-config") {
+                            put("native/gradle/config/detekt/detekt.yml", "build: [invalid yaml\n")
+                        }
+                        git.add().addFilepattern(target).call()
+                    }
+                    "remaining-formatting-violation" -> {
+                        put(target, "package fixture\n\nimport kotlin.collections.*\n\ninternal fun answer(): List<Int> = emptyList()\n")
+                        git.add().addFilepattern(target).call()
+                    }
                     "data-class-mutable", "data-class-immutable" -> {
                         val declaration = if (scenario == "data-class-mutable") "var" else "val"
                         put(target, "package fixture\n\ninternal data class Answer($declaration count: Int)\n")
@@ -151,3 +162,12 @@ val setup = tasks.register("setupHookFixture") {
 
 tasks.named("preparePreCommit") { dependsOn(setup) }
 tasks.named("detektFormatCheck") { dependsOn(setup) }
+if (scenario == "analysis-execution-failed") {
+    tasks.named("detektPreCommit") {
+        doFirst {
+            // Even an existing HTML file must not be opened for execution errors.
+            put("native/build/reports/detekt/detektPreCommit.html", "STALE REPORT")
+            error("Fixture detekt execution failure")
+        }
+    }
+}

@@ -1,6 +1,6 @@
 {
-  "passed": 28,
-  "total": 28,
+  "passed": 30,
+  "total": 30,
   "results": [
     {
       "scenario": "no-staged-kotlin",
@@ -8,7 +8,8 @@
       "exit_code": 0,
       "expected_success": true,
       "git_index_unchanged": true,
-      "html_report": false,
+      "legacy_summary_removed": true,
+      "detekt_report": null,
       "browser_calls": 0
     },
     {
@@ -17,44 +18,9 @@
       "exit_code": 0,
       "expected_success": true,
       "git_index_unchanged": true,
-      "html_report": true,
-      "browser_calls": 1
-    },
-    {
-      "scenario": "browser-disabled",
-      "passed": true,
-      "exit_code": 0,
-      "expected_success": true,
-      "git_index_unchanged": true,
-      "html_report": true,
+      "legacy_summary_removed": true,
+      "detekt_report": null,
       "browser_calls": 0
-    },
-    {
-      "scenario": "ci-skips-browser",
-      "passed": true,
-      "exit_code": 0,
-      "expected_success": true,
-      "git_index_unchanged": true,
-      "html_report": true,
-      "browser_calls": 0
-    },
-    {
-      "scenario": "browser-command-fails",
-      "passed": true,
-      "exit_code": 0,
-      "expected_success": true,
-      "git_index_unchanged": true,
-      "html_report": true,
-      "browser_calls": 2
-    },
-    {
-      "scenario": "browser-fallback-succeeds",
-      "passed": true,
-      "exit_code": 0,
-      "expected_success": true,
-      "git_index_unchanged": true,
-      "html_report": true,
-      "browser_calls": 2
     },
     {
       "scenario": "formatting-changed",
@@ -62,7 +28,8 @@
       "exit_code": 1,
       "expected_success": false,
       "git_index_unchanged": true,
-      "html_report": true,
+      "legacy_summary_removed": true,
+      "detekt_report": "detektPreCommitFormat",
       "browser_calls": 1
     },
     {
@@ -71,7 +38,8 @@
       "exit_code": 1,
       "expected_success": false,
       "git_index_unchanged": true,
-      "html_report": true,
+      "legacy_summary_removed": true,
+      "detekt_report": "detektPreCommitStagedFormatCheck",
       "browser_calls": 1
     },
     {
@@ -80,8 +48,9 @@
       "exit_code": 0,
       "expected_success": true,
       "git_index_unchanged": true,
-      "html_report": true,
-      "browser_calls": 1
+      "legacy_summary_removed": true,
+      "detekt_report": null,
+      "browser_calls": 0
     },
     {
       "scenario": "existing-unstaged",
@@ -89,8 +58,9 @@
       "exit_code": 0,
       "expected_success": true,
       "git_index_unchanged": true,
-      "html_report": true,
-      "browser_calls": 1
+      "legacy_summary_removed": true,
+      "detekt_report": null,
+      "browser_calls": 0
     },
     {
       "scenario": "analysis-failed",
@@ -98,8 +68,29 @@
       "exit_code": 1,
       "expected_success": false,
       "git_index_unchanged": true,
-      "html_report": true,
+      "legacy_summary_removed": true,
+      "detekt_report": "detektPreCommit",
       "browser_calls": 1
+    },
+    {
+      "scenario": "browser-disabled",
+      "passed": true,
+      "exit_code": 1,
+      "expected_success": false,
+      "git_index_unchanged": true,
+      "legacy_summary_removed": true,
+      "detekt_report": "detektPreCommit",
+      "browser_calls": 0
+    },
+    {
+      "scenario": "ci-skips-browser",
+      "passed": true,
+      "exit_code": 1,
+      "expected_success": false,
+      "git_index_unchanged": true,
+      "legacy_summary_removed": true,
+      "detekt_report": "detektPreCommit",
+      "browser_calls": 0
     },
     {
       "scenario": "browser-failure-preserves-analysis-failure",
@@ -107,8 +98,49 @@
       "exit_code": 1,
       "expected_success": false,
       "git_index_unchanged": true,
-      "html_report": true,
+      "legacy_summary_removed": true,
+      "detekt_report": "detektPreCommit",
       "browser_calls": 2
+    },
+    {
+      "scenario": "browser-fallback-succeeds",
+      "passed": true,
+      "exit_code": 1,
+      "expected_success": false,
+      "git_index_unchanged": true,
+      "legacy_summary_removed": true,
+      "detekt_report": "detektPreCommit",
+      "browser_calls": 2
+    },
+    {
+      "scenario": "analysis-execution-failed",
+      "passed": true,
+      "exit_code": 1,
+      "expected_success": false,
+      "git_index_unchanged": true,
+      "legacy_summary_removed": true,
+      "detekt_report": null,
+      "browser_calls": 0
+    },
+    {
+      "scenario": "invalid-detekt-config",
+      "passed": true,
+      "exit_code": 1,
+      "expected_success": false,
+      "git_index_unchanged": true,
+      "legacy_summary_removed": true,
+      "detekt_report": null,
+      "browser_calls": 0
+    },
+    {
+      "scenario": "remaining-formatting-violation",
+      "passed": true,
+      "exit_code": 1,
+      "expected_success": false,
+      "git_index_unchanged": true,
+      "legacy_summary_removed": true,
+      "detekt_report": "detektPreCommitFormat",
+      "browser_calls": 1
     },
     {
       "scenario": "deletion-only",
@@ -116,7 +148,8 @@
       "exit_code": 0,
       "expected_success": true,
       "git_index_unchanged": true,
-      "html_report": false,
+      "legacy_summary_removed": true,
+      "detekt_report": null,
       "browser_calls": 0
     },
     {
@@ -125,8 +158,9 @@
       "exit_code": 0,
       "expected_success": true,
       "git_index_unchanged": true,
-      "html_report": true,
-      "browser_calls": 1
+      "legacy_summary_removed": true,
+      "detekt_report": null,
+      "browser_calls": 0
     },
     {
       "scenario": "unstaged-formatting-changed",
@@ -134,7 +168,8 @@
       "exit_code": 1,
       "expected_success": false,
       "git_index_unchanged": true,
-      "html_report": true,
+      "legacy_summary_removed": true,
+      "detekt_report": "detektPreCommitFormat",
       "browser_calls": 1
     },
     {
@@ -143,7 +178,8 @@
       "exit_code": 1,
       "expected_success": false,
       "git_index_unchanged": true,
-      "html_report": false,
+      "legacy_summary_removed": true,
+      "detekt_report": null,
       "browser_calls": 0
     },
     {
@@ -152,7 +188,8 @@
       "exit_code": 1,
       "expected_success": false,
       "git_index_unchanged": true,
-      "html_report": true,
+      "legacy_summary_removed": true,
+      "detekt_report": "detektPreCommitStagedFormatCheck",
       "browser_calls": 1
     },
     {
@@ -161,7 +198,8 @@
       "exit_code": 1,
       "expected_success": false,
       "git_index_unchanged": true,
-      "html_report": true,
+      "legacy_summary_removed": true,
+      "detekt_report": "detektPreCommitStagedFormatCheck",
       "browser_calls": 1
     },
     {
@@ -170,7 +208,8 @@
       "exit_code": 1,
       "expected_success": false,
       "git_index_unchanged": true,
-      "html_report": true,
+      "legacy_summary_removed": true,
+      "detekt_report": "detektPreCommitStagedFormatCheck",
       "browser_calls": 1
     },
     {
@@ -179,7 +218,8 @@
       "exit_code": 1,
       "expected_success": false,
       "git_index_unchanged": true,
-      "html_report": true,
+      "legacy_summary_removed": true,
+      "detekt_report": "detektPreCommitStagedFormatCheck",
       "browser_calls": 1
     },
     {
@@ -188,7 +228,8 @@
       "exit_code": 1,
       "expected_success": false,
       "git_index_unchanged": true,
-      "html_report": true,
+      "legacy_summary_removed": true,
+      "detekt_report": "detektPreCommitStagedFormatCheck",
       "browser_calls": 1
     },
     {
@@ -197,7 +238,8 @@
       "exit_code": 1,
       "expected_success": false,
       "git_index_unchanged": true,
-      "html_report": true,
+      "legacy_summary_removed": true,
+      "detekt_report": "detektPreCommit",
       "browser_calls": 1
     },
     {
@@ -206,8 +248,9 @@
       "exit_code": 0,
       "expected_success": true,
       "git_index_unchanged": true,
-      "html_report": true,
-      "browser_calls": 1
+      "legacy_summary_removed": true,
+      "detekt_report": null,
+      "browser_calls": 0
     },
     {
       "scenario": "compose-list",
@@ -215,7 +258,8 @@
       "exit_code": 1,
       "expected_success": false,
       "git_index_unchanged": true,
-      "html_report": true,
+      "legacy_summary_removed": true,
+      "detekt_report": "detektPreCommit",
       "browser_calls": 1
     },
     {
@@ -224,7 +268,8 @@
       "exit_code": 1,
       "expected_success": false,
       "git_index_unchanged": true,
-      "html_report": true,
+      "legacy_summary_removed": true,
+      "detekt_report": "detektPreCommit",
       "browser_calls": 1
     },
     {
@@ -233,7 +278,8 @@
       "exit_code": 1,
       "expected_success": false,
       "git_index_unchanged": true,
-      "html_report": true,
+      "legacy_summary_removed": true,
+      "detekt_report": "detektPreCommit",
       "browser_calls": 1
     },
     {
@@ -242,7 +288,8 @@
       "exit_code": 1,
       "expected_success": false,
       "git_index_unchanged": true,
-      "html_report": true,
+      "legacy_summary_removed": true,
+      "detekt_report": "detektPreCommit",
       "browser_calls": 1
     },
     {
@@ -251,8 +298,9 @@
       "exit_code": 0,
       "expected_success": true,
       "git_index_unchanged": true,
-      "html_report": true,
-      "browser_calls": 1
+      "legacy_summary_removed": true,
+      "detekt_report": null,
+      "browser_calls": 0
     }
   ]
 }

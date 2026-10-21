@@ -64,10 +64,8 @@ native・Cordovaそれぞれ30構成で解決に成功し、両者の座標一�
 
 Catalog全項目のライブラリ・Pluginを別構成で解決する従来の検証も成功しました。[ログ](dependencies-catalog.log)
 
-## ビルド・品質・ライセンス
+## ビルド・品質
 
 通常のDebug／Release APKビルドと、native・Cordovaのdetekt／整形チェック／Android Lintに成功しました。[ビルドログ](dependencies-build.log)、[チェックログ](dependencies-checks.log)、[Lint件数](dependencies-lint-results.json)
 
-ライセンス台帳はDebug 115件・Release 112件へ更新しました。Debug専用のTooling 3件をvariant単位で照合します。ISC・BSD・MPL・CC-BYの原文と必要な通知・帰属、OkHttpのPublic Suffix Listのルール原文もAPKに含めています。両APKの通知が管理元と一致することを確認しました。[APK照合](license-apk-check.json)、[ライセンス確認の根拠](LICENSE_COMPLIANCE.md)
-
-ライセンスの25テストとCordova hookの4テストが成功しました。ライセンス検証は未承認依存だけでなく、Debug専用依存のRelease混入、Debug側からの欠落、レビュー済み追加原文の改変も拒否します。[25テストのログ](dependencies-license-tests.log)
+Cordova hookの4テストが成功しました。

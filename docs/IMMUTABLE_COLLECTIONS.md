@@ -1,6 +1,6 @@
 # Immutable Collectionsの追加（2026-10-19）
 
-以下は追加時の記録です。その後の日時API・全モジュール依存の追加と現在のライセンス件数は[依存配置と検証](DEPENDENCIES.md)を参照してください。
+以下は追加時の記録です。その後の日時API・全モジュール依存の追加は[依存配置と検証](DEPENDENCIES.md)を参照してください。
 
 `kotlinx.collections.immutable:0.3.8`をVersion Catalogへ登録し、通常の`feature`・`data`両モジュールへ`implementation(libs.kotlinx.collections.immutable)`で追加しました。native単独とCordovaの両方で利用できます。
 
@@ -49,6 +49,4 @@ val after = before.add("second")
 - 検証用ソースをcleanした通常Debug／Release APKのビルド成功。[ログ](immutable-normal-build.log)
 - `npm run check:android`とCatalogの依存解決に成功。Android Lintは全6構成でエラー0。[ログ](immutable-checks.log)、[件数](immutable-lint-results.json)
 - Git hookの28ケースに成功し、全ケースでindex不変。新たにdata classの`var`検出／`val`許可、Composableの`List`・`Set`・`Map`・`MutableList`検出、不変コレクション許可を確認。[結果](git-hook-tests/results.json)
-- 独立したktlintのチェック・故意の整形違反の拒否・整形後の成功と、ライセンス処理の22テストに成功。
-
-通常APKの外部実行時依存は44件から45件になりました。既存44件のArtifactハッシュは変わっていません。追加したJVM ArtifactのApache-2.0宣言・上流LICENSE・ソースの帰属を確認し、台帳と同梱通知を更新しました。両APKの通知テキストが管理元と一致し、45件すべての座標を含むことと、検証用assetsを含まないことを確認しています。[現在のAPK照合結果](license-apk-check.json)
+- 独立したktlintのチェック・故意の整形違反の拒否・整形後の成功を確認。

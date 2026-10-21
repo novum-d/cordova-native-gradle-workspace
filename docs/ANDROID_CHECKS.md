@@ -8,7 +8,6 @@
 
 | 対象 | 修正内容 |
 | --- | --- |
-| `native/gradle/licenses.gradle` | 非推奨の`Project.exec`を標準の`Exec`タスクへ移行。シェルの終了コードが失敗ならGradleも失敗する |
 | `verification/catalog-verification.gradle` | 実行時の`Task.project`取得をやめ、設定時に取得したプロジェクト参照を使用。`ProjectDependency.dependencyProject.path`を`ProjectDependency.path`へ変更 |
 | feature・dataのKotlinコンパイラ設定 | `android.kotlinOptions`から型付きの`KotlinJvmCompile.compilerOptions.jvmTarget`へ移行。CatalogのProviderから設定し、Debug／ReleaseともJVM 11であることを検証 |
 | CordovaアプリのLint設定 | `abortOnError=true`、`checkDependencies=true`を設定。Cordovaの後続設定で上書きされないよう、共有スクリプトの`androidComponents.finalizeDsl`で適用し、最終値も検証 |
@@ -26,7 +25,6 @@ npm run check:android
 - detekt・読み取り専用の整形チェック
 - feature・data・CordovaアプリのDebug／Release Android Lint。アプリ側ではCordovaLibを含む依存先もチェック
 - JDK・Gradle・AGP・Kotlin・SDK・JVM target・依存方向・APKホストの検証
-- ビルド前に呼ばれるライセンス検証
 - `--warning-mode all`によるGradle非推奨警告の表示
 
 実行ログは[android-gradle-check.log](android-gradle-check.log)です。Lintのエラーを無視する設定、baseline、警告の一括抑制は追加していません。警告はビルドを止めず、エラーで失敗させます。
@@ -51,7 +49,7 @@ Lintの失敗も実行確認しました。一時initスクリプトで既存の
 
 追加で、Catalog全体のライブラリ129 Artifact・Plugin 155 Artifactの解決と、型付きcompilerOptionsを使ったKotlin／Composeの検証ビルドも成功しました。[コンパイルログ](compiler-options-probe.log)
 
-検証用ソースを除いた通常のDebug／Release APKの[ビルド](android-normal-build.log)も成功しました。両APKの通知テキストの一致と検証用assetsの除外、ライセンスの22テスト、Cordova hookの4テスト、Git hookセットアップの5テストも確認しています。
+検証用ソースを除いた通常のDebug／Release APKの[ビルド](android-normal-build.log)も成功しました。検証用assetsの除外、Cordova hookの4テスト、Git hookセットアップの5テストも確認しています。
 
 ## 残っている警告
 

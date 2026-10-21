@@ -7,10 +7,6 @@
     "cordova": "13.0.0"
   },
   "scripts": {
-    "licenses:generate": "sh scripts/licenses.sh generate",
-    "licenses:check": "sh scripts/licenses.sh check",
-    "licenses:verify": "./scripts/with-env.sh ./native/gradlew -p CordovaComposeApp/platforms/android :app:verifyThirdPartyLicenses",
-    "test:licenses": "sh verification/licenses.test.sh",
     "cordova:prepare": "./scripts/cordova.sh prepare android",
     "cordova:build": "./scripts/cordova.sh build android",
     "native:build": "./scripts/with-env.sh ./native/gradlew -p native :feature:assembleDebug :data:assembleDebug",

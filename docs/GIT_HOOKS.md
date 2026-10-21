@@ -30,7 +30,7 @@ TvAppのdetektは1.23.7、Twitter Compose rulesは0.0.26でした。AGP 9.2.1・
 | ステージ内容の整形検査 | JGitでindexの内容をbuild/tmpへ取り出し、毎回読み取り専用のDetektタスクで検査 |
 | Git index | 読み取りのみ。自動stage・commit・resetはしない |
 | パス | 文字列集合として扱い、空白・日本語をshellで分割しない |
-| レポート | `build/reports/detekt/<task>.html`、`build/reports/git-hooks/preCommit.txt`、結果一覧の`preCommit.html` |
+| レポート | detekt標準の`build/reports/detekt/<task>.html`と、Git・整形処理の記録`build/reports/git-hooks/preCommit.txt` |
 
 TvAppのshell、既存detektコマンド、手動取得したローカルJARは取り込んでいません。Git判定・整形・解析はJGitとdetektのAPIで行い、`git diff`や`java -jar`は呼びません。HTMLの表示だけは、Gradleの注入サービス`ExecOperations`でOSの起動コマンドを実行します。
 
@@ -43,7 +43,7 @@ detekt Plugin、detekt-formatting、Twitter Compose rules、JGitは通常のMave
 | タスク | 処理 |
 | --- | --- |
 | `preCommit` | staged判定・内容取得→自動整形→変更検出→残存整形違反チェック→通常解析→ステージ内容の整形検査 |
-| `showPreCommitReport` | preCommitの最後に今回のHTML結果一覧を生成し、ローカル環境で自動表示 |
+| `showPreCommitReport` | preCommitでルール違反があった場合だけ、該当タスクのdetekt標準HTMLを自動表示 |
 | `detektFormat` | 自動整形だけを明示実行。stagedの有無ではスキップしない |
 | `detektFormatCheck` | 整形違反を検査し、ファイルは変更しない |
 | `detekt` | 通常の静的解析。ファイルは変更しない |
@@ -72,20 +72,34 @@ cd ~/repos/cordova-native-gradle-workspace
 
 ## 最後にHTMLレポートを開く
 
-2026-10-19に、自動表示を追加しました。ステージ済みKotlinがある場合、チェックの最後に`build/reports/git-hooks/preCommit.html`を生成して開きます。nativeからの実行なら`native/build/reports/git-hooks/preCommit.html`です。各段階の成功・失敗・未実行と、今回生成されたdetektの詳細レポートへのリンクを表示します。
+2026-10-21に、独自の結果一覧の生成を削除し、**lint・フォーマットルール違反があった場合だけ、detektが出力した標準HTMLをそのまま開く**方式に変更しました。独自HTMLの生成・detektレポートの加工は行いません。
 
-`preparePreCommit.finalizedBy(showPreCommitReport)`により、自動整形・解析・ステージ内容の検査で途中停止した場合も表示します。`mustRunAfter`で後続の検査より後に実行し、途中でブラウザを開かないようにしています。前回のHTMLは準備段階で削除し、古い結果へのリンクは表示しません。ファイル名とエラーメッセージはHTMLとしてエスケープします。
+| 停止した理由 | 開くdetekt標準HTML |
+| --- | --- |
+| 自動整形でファイルが変わり、確認・再ステージが必要 | `build/reports/detekt/detektPreCommitFormat.html` |
+| 自動整形段階で補正できないルール違反 | `build/reports/detekt/detektPreCommitFormat.html` |
+| 自動整形後の読み取り専用検査で残存する整形違反 | `build/reports/detekt/detektPreCommitFormatCheck.html` |
+| 通常のlint・静的解析ルール違反 | `build/reports/detekt/detektPreCommit.html` |
+| 再ステージ前など、index内の整形違反 | `build/reports/detekt/detektPreCommitStagedFormatCheck.html` |
+
+nativeから実行した場合は`native/build/reports/detekt/`、Cordovaから実行した場合は`CordovaComposeApp/platforms/android/build/reports/detekt/`配下です。
+
+`preparePreCommit.finalizedBy(showPreCommitReport)`と`mustRunAfter`により、予定された検査が終わってから表示します。detekt 1.23.8の`MaxIssuesReached`が失敗原因に含まれる場合、または自動整形で変更が生じた場合に限定しています。依存解決・設定不備・Git操作・detekt実行そのもののエラーは、ルール違反として扱いません。[detektの失敗原因の保持](https://github.com/detekt/detekt/blob/v1.23.8/detekt-gradle-plugin/src/main/kotlin/io/gitlab/arturbosch/detekt/invoke/DetektInvoker.kt)
+
+準備段階で前回のpreCommit用detekt HTMLと、旧版の独自一覧`build/reports/git-hooks/preCommit.html`を削除します。今回実行していない段階の古いレポートは開きません。通常の`check`や`detektFormatCheck`を単独で実行する場合は、従来どおり自動表示せず、ログのレポートリンクから参照します。
 
 macOSは`open`、Windowsは`rundll32.exe`、デスクトップのあるLinuxは`xdg-open`を使用します。macOSで既定のHTMLアプリが開けない場合はSafariを試します。起動失敗は警告とレポートへのリンクを出し、元のコミット可否の判定は維持します。
 
 以下の場合はブラウザを起動しません。
 
-- ステージ済みKotlinがなく、検査自体をスキップする場合（HTMLも生成しない）
+- 検査が成功した場合
+- ステージ済みKotlinがなく、検査自体をスキップする場合
+- 設定不備など、ルール違反以外の理由で失敗した場合
 - `CI=true`または`CI=1`
 - `-PopenPreCommitReport=false`を指定した場合
 - Linuxなどでデスクトップ環境を利用できない場合
 
-自動表示だけを無効にするには、`~/.gradle/gradle.properties`または実行するルートの`gradle.properties`に`openPreCommitReport=false`を設定できます。Kotlinの検査を実施した場合はHTMLの生成とリンク出力を継続します。
+自動表示だけを無効にするには、`~/.gradle/gradle.properties`または実行するルートの`gradle.properties`に`openPreCommitReport=false`を設定できます。detekt標準HTMLの出力は継続します。成功時にもdetekt自身はHTMLを出力しますが、ブラウザを起動しません。
 
 ## Gitコミット時の自動実行を初回設定する
 
@@ -123,14 +137,14 @@ TvApp同様に「stagedの`.kt`は実行のトリガー」であり、自動整�
 
 ## 検証結果
 
-このworkspaceで利用する設定は`native/gradle/config/detekt/`へ集約しています。`detekt.yml`・`formatting.yml`・`autocorrect.yml`をnative・Cordovaで共用し、上記の参照元TvAppのパスとは分けて管理します。移動後もnative・Cordovaの品質チェック、Cordova prepare、Git hookの28ケースが成功しました。追加で、意図的な末尾空白の自動削除、再ステージなしの再試行の拒否、再ステージ後の成功と、読み取り専用チェックが元ファイルを整形しないことを再確認しています。
+このworkspaceで利用する設定は`native/gradle/config/detekt/`へ集約しています。`detekt.yml`・`formatting.yml`・`autocorrect.yml`をnative・Cordovaで共用し、上記の参照元TvAppのパスとは分けて管理します。
 
-一時的なGit repositoryをJGitで作成し、実際のKotlin DSL・detektを実行した28ケースがすべて成功しました。ビルドキャッシュを有効にした状態で、同じリポジトリの再試行・再ステージまで確認しています。fixtureのGit操作も既存GitコマンドではなくJGit APIで行います。workspaceのindexへテストファイルをstageしていません。
+2026-10-21に、一時的なGit repositoryで実際のKotlin DSL・detektを実行した**30ケースがすべて成功**しました。ビルドキャッシュを有効にした状態で、同じリポジトリの再試行・再ステージまで確認しています。fixtureのGit操作も既存GitコマンドではなくJGit APIで行います。workspaceのindexへテストファイルをstageしていません。
 
 | ケース | 期待する結果 | 実測 |
 | --- | --- | --- |
 | stagedにKotlinなし | 未ステージの不正整形コードも変更せずスキップ | 成功 |
-| 正常なKotlinをstage | 整形チェック・解析を通過 | 成功 |
+| 正常なKotlinをstage | 整形チェック・解析を通過し、ブラウザは起動しない | 成功 |
 | 整形が必要なKotlinをstage | 自動修正後、レビュー・再ステージを要求して失敗 | 期待どおり失敗 |
 | 既存のstaged/unstaged差分が共存 | 追加整形がなければ成功し、既存差分を維持 | 成功 |
 | 静的解析違反 | detektで失敗 | 期待どおり失敗 |
@@ -144,12 +158,14 @@ TvApp同様に「stagedの`.kt`は実行のトリガー」であり、自動整�
 | 作業ファイルが消失し、ステージ内容に整形違反あり | ステージ内容を検査して失敗 | 期待どおり失敗 |
 | 空白・日本語を含むファイル名でステージ内容に整形違反あり | ステージ内容を検査して失敗 | 期待どおり失敗 |
 | GIT_INDEX_FILEで指定されたindexに整形違反あり | 指定されたindexを検査し、通常のindexも変更しない | 期待どおり失敗 |
-| ブラウザ自動表示を無効化 | HTMLを生成し、ブラウザは起動しない | 成功 |
-| CI環境 | HTMLを生成し、ブラウザは起動しない | 成功 |
-| ブラウザ起動コマンドが失敗 | コミットの検査結果を成功のまま維持 | 成功 |
-| macOSで既定アプリの起動が失敗 | Safariへのフォールバックで表示 | 成功 |
+| 補正できないフォーマットルール違反 | 停止し、detektの整形レポートを開く | 期待どおり失敗 |
+| detekt実行処理のエラー（古いHTMLが存在） | 停止し、ブラウザは起動しない | 期待どおり失敗 |
+| detekt設定YAMLの不備 | 停止し、ブラウザは起動しない | 期待どおり失敗 |
+| 解析違反時にブラウザ自動表示を無効化 | detekt標準HTMLを生成し、ブラウザは起動しない | 期待どおり失敗 |
+| 解析違反があるCI環境 | detekt標準HTMLを生成し、ブラウザは起動しない | 期待どおり失敗 |
+| macOSで既定アプリの起動が失敗 | Safariへのフォールバックで違反レポートを表示し、元の違反停止は維持 | 期待どおり失敗 |
 | 解析違反とブラウザ起動失敗が共存 | 解析違反によるコミット停止を維持 | 期待どおり失敗 |
-| HTML特殊文字を含むファイル名 | 一覧でエスケープし、ステージ内容の違反を検出 | 期待どおり失敗 |
+| HTML特殊文字を含むファイル名 | ステージ内容の違反を検出し、detekt標準HTMLを直接開く | 期待どおり失敗 |
 | data classの`var`プロパティ | `DataClassShouldBeImmutable`で失敗 | 期待どおり失敗 |
 | data classの`val`プロパティ | プロパティの再代入がない定義を許可 | 成功 |
 | Composableの`List`引数 | `UnstableCollections`で失敗 | 期待どおり失敗 |
@@ -158,9 +174,9 @@ TvApp同様に「stagedの`.kt`は実行のトリガー」であり、自動整�
 | Composableの`MutableList`引数 | 既存の`MutableParams`で失敗 | 期待どおり失敗 |
 | Composableの`ImmutableList`・`ImmutableSet`・`ImmutableMap`引数 | 不変コレクションを許可 | 成功 |
 
-全28ケースでindexの実行前後SHA-256が一致しました。Kotlinを検査した各ケースで、HTMLの生成・最後の起動呼び出し・有効な詳細リンクも確認しています。自動テストでは起動コマンドを差し替え、多数のタブを開かずに確認しています。[結果JSON](git-hook-tests/results.json)。初回9ケースの実行記録は[旧実行ログ](git-hook-tests.log)に保存しています。
+全30ケースでindexの実行前後SHA-256が一致しました。旧一覧を事前に置いても削除され、新しい一覧が生成されないこと、違反に応じたdetekt標準HTMLを最後に直接開くこと、成功時とルール違反以外のエラーでは開かないことを確認しています。ブラウザ自動表示の無効化・CIは、実際に解析違反があるケースで検証しています。[結果JSON](git-hook-tests/results.json)。
 
-別途、実際にインストールされている`.git/hooks/pre-commit`を専用の一時リポジトリから呼び出し、検査終了後のOS起動コマンドが終了コード0で完了することと、index不変を確認しました。[起動確認ログ](git-hook-browser-smoke.log)。実行環境の制限を引き継ぐ既存デーモンを避けるため、この表示確認だけは新しいGradleプロセスで実行しています。
+自動テストではOSの起動コマンドを差し替え、多数のタブを開かずに、開くファイルの実在と内容・呼び出し回数・実行順を検証します。初回9ケースの[旧実行ログ](git-hook-tests.log)や2026-10-19の[旧表示確認ログ](git-hook-browser-smoke.log)は、変更前の仕様の履歴です。
 
 ```sh
 python3 verification/verify-gradle-git-hooks.py
@@ -169,7 +185,7 @@ python3 verification/verify-gradle-git-hooks.py
 python3 verification/verify-gradle-git-hooks.py --output-dir /tmp/cordova-precommit-staged-check
 ```
 
-自動テストは一時repositoryだけで行い、終了時に削除します。Git判定・整形・解析は外部コマンドへ委譲しません。ブラウザ起動の実動作確認用fixtureとHTMLは、Git管理外の`native/build/tmp/git-hook-browser-check/`に残しています。
+自動テストは一時repositoryだけで行い、終了時に削除します。Git判定・整形・解析は外部コマンドへ委譲しません。
 
 workspace自体のnative・Cordovaルートでも品質タスクの読み込みを確認しています。未stageの状態ではpreCommitをスキップします。ステージ済みソースに対する陽性・陰性の動作確認は上記fixtureで行っています。
 

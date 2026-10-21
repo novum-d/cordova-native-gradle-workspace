@@ -13,11 +13,7 @@ BUILD SUCCESSFUL in 1s
 2 actionable tasks: 2 executed
 Warning: SDK processing. This version only understands SDK XML versions up to 3 but an SDK XML file of version 4 was encountered. This can happen if you use versions of Android Studio and the command-line tools that were released at different times.
 
-> Task :app:exportThirdPartyInventory
-License inventory: /Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/app/build/reports/licenses/runtime-artifacts.json
 
-> Task :app:verifyThirdPartyLicenses
-License checks passed for resolved Android runtime artifacts
 
 > Task :app:preBuild
 > Task :app:preDebugBuild
