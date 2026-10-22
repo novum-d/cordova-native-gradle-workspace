@@ -1,6 +1,6 @@
 # 検証結果（2026-10-17）
 
-2026-10-19に、Cordova CLIによるエミュレーター実行とComposeの表示・操作も確認しました。[実行記録](COMPOSE_RUNTIME.md)を参照してください。以下は初回からの検証記録です。
+2026-10-19に、Cordova CLIによるエミュレーター実行とComposeの表示・操作も確認しました。[実行記録](COMPOSE_RUNTIME.md)を参照してください。以下は初回からの検証記録です。依存選定用の独自タスク・コンパイル用fixture・Tooling API・hookなどの検証専用コードは削除済みで、結果表・ログは当時の証跡として保持しています。
 
 `~/repos/cordova-native-gradle-workspace`で、Cordova Android 14の基盤を維持したビルドを確認しました。
 
@@ -40,39 +40,21 @@ Android StudioのUI上でSyncボタンを押す操作は未実施です。Gradle
 
 SHA-256と実際のサイズは[最終Artifact検査](final-artifact-check.json)に保存しています。最終APKにprobe用クラス・assetsは含まれません。
 
-## 実行した主要コマンド
+## 現在の主な確認コマンド
 
-すべてworkspaceルートから実行しています。`scripts/with-env.sh`でJDK 17とCatalogのGradleを選択します。
+workspaceルートから実行します。初回のCatalog全項目検証・fixtureの注入は廃止し、現在は本体のビルドと標準タスクを使います。
 
 ```sh
-# native: 依存解決と実コンパイル
-./scripts/with-env.sh ./native/gradlew -p native -PverifyCatalog=true \
-  :feature:assembleDebug :data:assembleDebug verifyCatalogResolution verifyCatalogPlugins \
-  --console=plain --no-watch-fs
-
-# Cordova: 同じLibraryを既存ホストから実コンパイル
-./scripts/cordova.sh build android --debug -- \
-  --gradleArg=-PverifyCatalog=true --gradleArg=--no-watch-fs
-
-# 生成した検証コードを除去し、通常のLibraryをビルド
-./scripts/with-env.sh ./native/gradlew -p native \
-  :feature:clean :data:clean :feature:assembleDebug :data:assembleDebug \
-  verifyNativeIntegration projects --console=plain --no-watch-fs
-
-# この新規作成workspaceだけで再生成耐性を確認。実案件へ適用する前に生成物の独自変更を確認する。
-./scripts/cordova.sh platform rm android --nosave
-./scripts/cordova.sh platform add android@14.0.1 --save
-./scripts/cordova.sh prepare android
-./scripts/cordova.sh build android --debug -- --gradleArg=--no-watch-fs
-
+# nativeのLibraryとCordovaアプリを通常の依存でビルドする。
+npm run native:build
+npm run cordova:build
 ./scripts/with-env.sh ./native/gradlew -p CordovaComposeApp/platforms/android \
-  verifyNativeIntegration :app:assembleRelease --console=plain --no-watch-fs
+  :app:assembleRelease --console=plain --no-watch-fs
 
-# Android V2モデルによる構成検証
-./scripts/tooling-sync.sh native
-./scripts/tooling-sync.sh CordovaComposeApp/platforms/android
-
-sh verification/hook.test.sh
+# 本体・テストの品質とKDocを確認する。
+npm run check:android
+npm run test:unit
+npm run docs:kdoc
 ```
 
 ## 今回適用していないもの・未検証

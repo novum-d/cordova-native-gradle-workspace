@@ -113,7 +113,7 @@ macOSは`open`、Windowsは`rundll32.exe`、デスクトップのあるLinuxは`
 
 同じhookが登録済みなら再実行できます。異なる既存hookやシンボリックリンクは上書きせず停止します。`core.hooksPath`が設定済みの場合も設定を変更せず停止するため、既存のhook側から上記のコマンドを呼び出してください。セットアップスクリプトはbootstrapからは自動実行しません。
 
-セットアップとGitからの呼び出しは、一時リポジトリを使って`npm run test:git-hooks`で検証できます。
+セットアップとGitからの呼び出しは、一時リポジトリで検証済みです。検証専用コードは削除し、セットアップスクリプトと品質タスク本体を管理しています。
 
 ## 解析範囲とTvAppから調整した点
 
@@ -176,16 +176,9 @@ TvApp同様に「stagedの`.kt`は実行のトリガー」であり、自動整�
 
 全30ケースでindexの実行前後SHA-256が一致しました。旧一覧を事前に置いても削除され、新しい一覧が生成されないこと、違反に応じたdetekt標準HTMLを最後に直接開くこと、成功時とルール違反以外のエラーでは開かないことを確認しています。ブラウザ自動表示の無効化・CIは、実際に解析違反があるケースで検証しています。[結果JSON](git-hook-tests/results.json)。
 
-自動テストではOSの起動コマンドを差し替え、多数のタブを開かずに、開くファイルの実在と内容・呼び出し回数・実行順を検証します。初回9ケースの[旧実行ログ](git-hook-tests.log)や2026-10-19の[旧表示確認ログ](git-hook-browser-smoke.log)は、変更前の仕様の履歴です。
+当時の自動テストではOSの起動コマンドを差し替え、多数のタブを開かずに、開くファイルの実在と内容・呼び出し回数・実行順を検証します。初回9ケースの[旧実行ログ](git-hook-tests.log)や2026-10-19の[旧表示確認ログ](git-hook-browser-smoke.log)は、変更前の仕様の履歴です。
 
-```sh
-python3 verification/verify-gradle-git-hooks.py
-
-# ログをリポジトリ外へ出力する場合
-python3 verification/verify-gradle-git-hooks.py --output-dir /tmp/cordova-precommit-staged-check
-```
-
-自動テストは一時repositoryだけで行い、終了時に削除します。Git判定・整形・解析は外部コマンドへ委譲しません。
+上の表・結果JSONは削除前の検証記録です。検証用スクリプトとfixtureは現在のリポジトリには含めていません。
 
 workspace自体のnative・Cordovaルートでも品質タスクの読み込みを確認しています。未stageの状態ではpreCommitをスキップします。ステージ済みソースに対する陽性・陰性の動作確認は上記fixtureで行っています。
 

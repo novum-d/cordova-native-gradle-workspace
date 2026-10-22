@@ -37,7 +37,6 @@ cordova-native-gradle-workspace/
 │   ├── feature/build.gradle.kts / src/main/AndroidManifest.xml
 │   └── data/build.gradle.kts / src/main/AndroidManifest.xml
 ├── scripts/                               環境設定・再現用コマンド
-├── verification/                          検証専用コード・hookテスト
 └── docs/                                  実行ログ・検証レポート
 ```
 
@@ -91,7 +90,7 @@ GradleはCatalogの`gradle`をWrapper生成・実行環境の選択・実行版�
 | Timber | 5.0.1 | 公開安定版を維持 | 公開版: “5.0.1”<br>修正内容: “Fix TimberArgCount lint check false positive on some calls to `String.format`.” | [Timber 5.0.1の変更点](https://github.com/JakeWharton/timber/releases/tag/5.0.1) |
 | JUnit 4 | 4.13.2 | 維持 | 公式リリース名: “JUnit 4.13.2” | [JUnit 4.13.2の公開情報](https://github.com/junit-team/junit4/releases/tag/r4.13.2) |
 | AndroidX Test Core KTX / Ext JUnit KTX | 1.7.0 / 1.3.0 | Kotlinメタデータ1.9世代へ更新。Artifact解決確認済み | Core KTXの`androidx.test.core.app.ActivityScenarioKt.class`: `mv=[1,9,0]`<br>Ext JUnit KTXの`androidx.test.ext.junit.rules.ActivityScenarioRuleKt.class`: `mv=[1,9,0]` | [Core KTX 1.7.0 AAR](https://dl.google.com/dl/android/maven2/androidx/test/core-ktx/1.7.0/core-ktx-1.7.0.aar)、[Ext JUnit KTX 1.3.0 AAR](https://dl.google.com/dl/android/maven2/androidx/test/ext/junit-ktx/1.3.0/junit-ktx-1.3.0.aar) |
-| ktlint Gradle Plugin／ktlint本体 | 14.2.0／1.8.0 | どちらも確認時点の最新安定版。独立した検証用Gradleプロジェクトへ適用し、実ソースのコピーのチェック・故意の整形違反の検出・整形後の成功を確認 | Plugin Portal: “Version 14.2.0 (latest)”<br>ktlint本体の公開版: “1.8.0”<br>実測: `PASS: clean Kotlin accepted, malformed Kotlin rejected, formatted Kotlin accepted.` | [Plugin Portal](https://plugins.gradle.org/plugin/org.jlleitschuh.gradle.ktlint)、[ktlint 1.8.0](https://github.com/ktlint/ktlint/releases/tag/1.8.0)、[実行ログ](docs/quality-ktlint-latest.log) |
+| ktlint Gradle Plugin／ktlint本体 | 14.2.0／1.8.0 | 当時の一時Gradleプロジェクトで実行を確認。検証用コード・専用Catalog定義は削除済みで、通常の整形はdetekt-formattingを使用 | Plugin Portal: “Version 14.2.0 (latest)”<br>ktlint本体の公開版: “1.8.0”<br>実測: `PASS: clean Kotlin accepted, malformed Kotlin rejected, formatted Kotlin accepted.` | [Plugin Portal](https://plugins.gradle.org/plugin/org.jlleitschuh.gradle.ktlint)、[ktlint 1.8.0](https://github.com/ktlint/ktlint/releases/tag/1.8.0)、[実行ログ](docs/quality-ktlint-latest.log) |
 | detekt Gradle Plugin | 1.23.8 | 確認時点の最新安定版を適用済み。通常解析と整形チェックの実行成功を再確認 | 公式リリース: “v1.23.8”、`Latest`<br>実測: `> Task :detekt`、`> Task :detektFormatCheck`、`BUILD SUCCESSFUL` | [detekt 1.23.8](https://github.com/detekt/detekt/releases/tag/v1.23.8)、[実行ログ](docs/quality-detekt-latest.log)、[品質タスクの検証](docs/GIT_HOOKS.md) |
 | Dokka Gradle Plugin | 2.2.0 | KDocからHTMLを生成するビルド時のツール。DGP v2を使用し、アプリのKotlin 1.9.24を維持 | 公式の最小KGP要件: `KGP 1.9.0+`<br>実測結果はKDoc生成の記録を参照 | [2.2.0リリース](https://github.com/Kotlin/dokka/releases/tag/v2.2.0)、[KDoc生成](docs/KDOC.md) |
 
@@ -103,7 +102,7 @@ Immutable Collectionsに合わせて、detektの`DataClassShouldBeImmutable`と`
 
 単体テストにはJUnit 4と`kotlinx-coroutines-test:1.8.1`を使用します。Coroutines本体とテスト支援の版をそろえ、JaCoCo 0.8.14でカバレッジを収集します。AppCompat、Truth、MockK、Turbine、MockWebServer、KAPTのaliasや新規依存宣言はありません。Cordova由来の既存AppCompatは削除していません。
 
-Hilt・KSPをfeature・dataへ適用し、`ksp(libs.hilt.compiler)`を設定しました。dataにはKotlin Serialization Pluginも適用し、検証コードでRepositoryのFactory、Hilt ViewModelのModule／Factory、日時を含むSerializerの生成とコンパイルを確認しています。CordovaのApplicationをHilt化した実機での注入は、この検証には含めていません。ktlint Pluginは検証用の一時プロジェクトだけに適用し、`sh verification/verify-ktlint.sh`で再実行できます。通常のnative・Cordovaプロジェクトではdetektを適用し、読み取り専用checkとpreCommitを実行できます。この2つのルートにあるktlintCheckはdetektFormatCheckへの互換名です。詳細は[Git hookのKotlin DSL実装](docs/GIT_HOOKS.md)を参照してください。両モジュールにJUnitの環境確認テストを追加しており、配置・実行方法は[単体テスト環境](docs/UNIT_TESTS.md)を参照してください。
+Hilt・KSPをfeature・dataへ適用し、`ksp(libs.hilt.compiler)`を設定しました。dataにはKotlin Serialization Pluginも適用し、検証コードでRepositoryのFactory、Hilt ViewModelのModule／Factory、日時を含むSerializerの生成とコンパイルを確認しています。CordovaのApplicationをHilt化した実機での注入は、この検証には含めていません。ktlint Pluginは当時の一時プロジェクトで実行を確認しました。検証用スクリプトは削除済みです。通常のnative・Cordovaプロジェクトではdetektを適用し、読み取り専用checkとpreCommitを実行できます。この2つのルートにあるktlintCheckはdetektFormatCheckへの互換名です。詳細は[Git hookのKotlin DSL実装](docs/GIT_HOOKS.md)を参照してください。両モジュールにJUnitの環境確認テストを追加しており、配置・実行方法は[単体テスト環境](docs/UNIT_TESTS.md)を参照してください。
 
 選定根拠: [Cordova公式対応表](https://cordova.apache.org/docs/en/latest/guide/platforms/android/index.html)、[14.0.1既定値](https://github.com/apache/cordova-android/blob/14.0.1/framework/cdv-gradle-config-defaults.json)、[Compose BOM POM](https://dl.google.com/dl/android/maven2/androidx/compose/compose-bom/2025.07.00/compose-bom-2025.07.00.pom)、[Core](https://developer.android.com/jetpack/androidx/releases/core)、[Activity](https://developer.android.com/jetpack/androidx/releases/activity)、[DataStore](https://developer.android.com/jetpack/androidx/releases/datastore)、[WorkManager](https://developer.android.com/jetpack/androidx/releases/work)、[Hilt 2.52 POM](https://repo.maven.apache.org/maven2/com/google/dagger/hilt-android/2.52/hilt-android-2.52.pom)、[kotlin-result移行説明](https://github.com/michaelbull/kotlin-result/releases/tag/2.0.0)。最終的な解決座標は[ライブラリ](docs/resolved-catalog-libraries.txt)・[プラグイン](docs/resolved-catalog-plugins.txt)を参照してください。
 
@@ -111,7 +110,7 @@ Hilt・KSPをfeature・dataへ適用し、`ksp(libs.hilt.compiler)`を設定し�
 
 nativeはGradle標準の`gradle/libs.versions.toml`自動読込を使います。Cordovaは同じTOMLをSettingsスコープで`libs`として登録します。生成側の別Catalogや同名登録があれば上書きせず明示的に失敗します。
 
-シェルからは`./scripts/catalog-version.sh gradle`などで同じCatalogの版を取得します。`[versions]`内の`name = "value"`形式をsh・awkで読み取ります。hookのテストもシェルで実行し、CordovaのJavaScript関数を呼ぶ部分だけNode.jsを使います。
+シェルからは`./scripts/catalog-version.sh gradle`などで同じCatalogの版を取得します。`[versions]`内の`name = "value"`形式をsh・awkで読み取ります。CordovaのhookはCLIから呼ばれるJavaScript関数として実装しています。
 
 nativeルートだけがAGP・KotlinをCatalogの版付きaliasで宣言します。共有LibraryのAGP・KotlinはversionなしのPlugin IDを使います。Cordova側では既存`buildscript`クラスパスをそのまま使うため、既知でない版のPluginが既にクラスパスにあるという競合を避けられます。Hilt・KSP・Serializationは利用するLibraryの`plugins`でCatalogのaliasから宣言します。
 
@@ -132,27 +131,35 @@ cd ~/repos/cordova-native-gradle-workspace
 
 # 各cloneで初回のみ。git commit時にGradleの:preCommitを実行する。
 ./scripts/setup-git-hooks.sh
-
-npm run cordova:prepare
-npm run native:build
-npm run verify:structure
-npm run verify:sync
-npm run cordova:build
-npm run test:hooks
-npm run test:bootstrap
-npm run test:git-hooks
-npm run test:unit
-npm run test:unit:coverage
-npm run docs:kdoc
-npm run check:android
-
-# Catalog全Artifactの解決と、検証用Kotlinコードのコンパイル。
-npm run verify:catalog
-npm run verify:dependencies
-npm run verify:compile
 ```
 
-`bootstrap.sh`はルートのCordova CLIを開発用依存も含めてインストールします。`cordova.sh`は`.bin`リンクの有無に依存せず、インストールされたCLIをNode.jsで起動します。CLIだけを復元する場合は、リポジトリ直下で以下を実行してください。
+普段の変更反映とエミュレータでの起動は、次のコマンドで行います。Android SDKで作成済みのエミュレータ（AVD）が必要です。
+
+```sh
+npm run cordova:run
+```
+
+`cordova:run`は`run android --emulator`を実行し、prepare・ビルド・インストール・起動を行います。直前のprepareやplatform・pluginの削除／再追加は不要です。ファイル変更の監視は行わないため、変更後に再実行します。エミュレータを指定する場合は`npm run cordova:run -- --target=<AVD名または起動中のエミュレータID>`のように引数を渡します。[Cordova CLI仕様](https://cordova.apache.org/docs/en/latest/reference/cordova-cli/#cordova-run-command)
+
+起動以外の操作は、目的に応じて個別に実行します。次のコマンドをすべて順番に実行する必要はありません。
+
+| コマンド | 用途 |
+| --- | --- |
+| `npm run cordova:prepare` | 設定・Web assets・共有Gradle設定を反映。ビルド・起動は行わない |
+| `npm run cordova:build` | prepareを含めてAndroid APKをビルド。起動は行わない |
+| `npm run native:build` | native単独でfeature・dataのDebug AARをビルド |
+| `npm run check:android` | 両ホストの静的解析・整形確認、native単体テスト、Android Lint。起動は行わない |
+| `npm run test:unit` | nativeのfeature・dataでDebug／Releaseの単体テストを実行 |
+| `npm run test:unit:cordova` | Cordova側から同じ単体テストを実行 |
+| `npm run test:unit:coverage` | feature・dataのDebugカバレッジを生成 |
+| `npm run docs:kdoc` | KDoc HTMLをnativeルートで集約 |
+| `npm run docs:kdoc:cordova` | Cordova側から各LibraryのKDoc HTMLを個別生成 |
+
+`npm init`・`npm install`の事前実行は不要です。`bootstrap.sh`が、リポジトリ管理のルート・アプリ側それぞれの`package.json`・`package-lock.json`を使って`npm ci --include=dev`を実行し、Cordova CLIとAndroid依存をインストールします。Node.js・npm・JDK 17・Android SDKは事前に用意してください。
+
+2026-10-22に、現在の管理ファイルだけをコピーした一時workspaceで、両方の`node_modules`・`.tools`・Cordova platformがない状態から成功を確認しました。npmキャッシュも空にし、`NODE_ENV=production`・`omit=dev`・`bin-links=false`を指定した状態で、CLI 13.0.0・Gradle 8.13の取得、Android platformの作成、生成先Gradleの設定読み込みまで成功しています。両方の`package.json`・lockfileに変更がないことも確認しました。
+
+`cordova.sh`は`.bin`リンクの有無に依存せず、インストールされたCLIをNode.jsで起動します。CLIだけを復元する場合は、リポジトリ直下で以下を実行してください。
 
 ```sh
 npm ci --include=dev
@@ -180,46 +187,32 @@ Cordovaのprepareはこのファイルを再生成するため、手動追記だ
 
 Git hookでlint・フォーマットルール違反を検出した場合だけ、検査終了後に該当タスクのdetekt標準HTMLを開きます。独自の結果一覧は生成しません。nativeから実行した場合の出力先は`native/build/reports/detekt/<task>.html`です。成功時・ルール違反以外の実行エラー・CIでは自動表示せず、`-PopenPreCommitReport=false`でも無効化できます。[動作と検証結果](docs/GIT_HOOKS.md#最後にhtmlレポートを開く)
 
-`npm run check:android`はCordova prepare後、nativeとCordovaのdetekt・整形チェック、Debug／ReleaseのAndroid Lint、基盤・依存方向の検証を順番に実行します。Lintエラーはビルドを失敗させ、ライブラリの指摘もアプリのレポートに含めます。修正した非推奨APIと残る警告は[Gradle・Android Lintの確認結果](docs/ANDROID_CHECKS.md)を参照してください。
+`npm run check:android`はCordova prepare後、nativeとCordovaのdetekt・整形チェック、nativeの単体テスト、Debug／ReleaseのAndroid Lintを順番に実行します。Lintエラーはビルドを失敗させ、ライブラリの指摘もアプリのレポートに含めます。修正した非推奨APIと残る警告は[Gradle・Android Lintの確認結果](docs/ANDROID_CHECKS.md)を参照してください。
 
-`-PverifyCatalog=true`の検証ビルドだけが`verification/fixtures/*.kt`を`build/generated`へコピーし、検証用assetsを注入します。依存は通常のbuild.gradle.ktsで宣言しており、検証時に追加しません。Compose・日時・Serialization APIとHilt/KSPコード生成の実コンパイル、両Libraryのassetsマージを確認します。通常の配布APKには含めません。検証後に通常ビルドへ戻す場合は生成物をcleanしてください。
-
-```sh
-./scripts/with-env.sh ./native/gradlew -p native :feature:clean :data:clean
-npm run native:build
-npm run cordova:build
-```
-
-Android Studioでは`native/`を開き、GradleをWrapper、Gradle JDKを17に設定します。IDE画面上のSync操作は未実施ですが、Tooling APIによるAndroid V2モデル取得は実行しています。
+Android Studioでは`native/`を開き、GradleをWrapper、Gradle JDKを17に設定して標準のSyncを使います。過去に基本モデル取得を確認したTooling APIの独自検証コードは削除済みです。
 
 ## 変更ファイルの役割
 
 | ファイル | 追加・変更の理由 |
 | --- | --- |
-| ルートpackage.json・lock | CLI版と検証コマンドを固定 |
+| ルートpackage.json・lock | CLI版とビルド・テスト・品質・文書生成コマンドを管理 |
 | CordovaComposeAppのpackage.json・lock・config.xml | Android 14.0.1、SDK、既存Kotlin Pluginとhooksを管理 |
 | CordovaComposeApp/www配下 | CLI生成の標準テンプレート。独自機能は追加しない |
 | CordovaComposeApp/hooks/copy-gradle-extras.js | 冪等な参照復元、既存設定の保持、不足ファイル検出 |
 | native/gradle/libs.versions.toml | 全ライブラリ・Plugin・基盤版の共有元 |
 | native/settings.gradle.kts | RepositoryとLibraryモジュールを宣言、Catalog自動読込 |
-| native/build.gradle.kts | native単独時のAGP/KGP、Wrapper版と検証タスク |
+| native/build.gradle.kts | native単独時のAGP/KGP、Wrapper版、品質タスク、KDoc集約 |
 | native/gradle.properties | AndroidX、JVMメモリ、Kotlin設定 |
 | native/gradlew・gradlew.bat・gradle/wrapper配下 | Gradle 8.13で単独ビルドする標準Wrapper |
 | native/gradle/settings-extras.gradle | CordovaのSettingsへ共有Catalogと物理モジュールを登録 |
 | native/gradle/build-extras.gradle | 既存appへLibrary依存を追加、Cordova基盤とCatalogを照合、共有Kotlin DSL品質設定を適用 |
 | native/gradle/git-hooks.gradle.kts・native/gradle/config/detekt/配下 | TvAppを参照したdetekt・整形・preCommitの実装と設定 |
-| verification/git-hooks-fixture.gradle.kts・verify-gradle-git-hooks.py | 一時Git repositoryでの品質ゲート・index保持の実行検証 |
 | native/feature・dataのbuild.gradle.kts | Library化、Java/Kotlin 11、SDK、feature→dataの設定 |
 | native/feature・dataのManifest | 通常のLibrary Manifestは空。featureのDebug ManifestだけにCompose確認用Activityを登録 |
 | scripts/bootstrap.sh | 再現用依存・Gradle取得・platform復元 |
 | scripts/setup-git-hooks.sh | Gitのpre-commitからGradleの:preCommitを呼ぶhookを初回登録。既存hookは上書きしない |
 | scripts/with-env.sh・cordova.sh | JDK 17とローカルGradleを使う実行環境 |
 | scripts/catalog-version.sh | sh・awkで共有Catalogの版を取得し、シェル補助処理へ渡す |
-| scripts/tooling-sync.sh・verification/ToolingSync.java | Android V2モデルの取得検証 |
-| verification/catalog-verification.gradle | 独立したArtifact解決、基盤・依存方向の検証、任意のコンパイルprobe |
-| verification/fixtures/*.kt | Kotlin/Compose APIの検証専用コード。通常ビルドから除外 |
-| verification/hook.test.sh | Cordova hookの冪等性、既存設定保持、不足・破損時の挙動をシェルで検証 |
-| verification/git-hooks-setup.test.sh | Git hookの登録・既存設定保持・コミット時の呼び出しをシェルで検証 |
 | .gitignore | 生成platform、依存、ビルド結果、ローカル設定をGit管理外にする |
 | README.md・docs/ | 採用理由、実行方法、実測結果、ログを保存 |
 

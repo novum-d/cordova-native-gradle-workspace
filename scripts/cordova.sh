@@ -1,5 +1,6 @@
 #!/bin/sh
 # アプリディレクトリへ移動し、共有の実行環境でローカルのCordova CLIを呼び出す。
+# run・buildはCLI側でprepareも行うため、ここでは引数をそのまま渡す。
 set -eu
 
 workspace_dir=$(CDPATH='' cd -- "$(dirname -- "$0")/.." && pwd -P)

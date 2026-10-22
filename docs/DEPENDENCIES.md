@@ -1,6 +1,6 @@
 # 通常のモジュール依存と日時API（2026-10-19）
 
-Version Catalogで想定していたライブラリを、通常の`feature`・`data`へ追加しました。`-PverifyCatalog=true`を付けなくても、以下の依存を利用できます。版はすべて[`libs.versions.toml`](../native/gradle/libs.versions.toml)で管理します。
+Version Catalogで想定していたライブラリを、通常の`feature`・`data`へ追加しました。以下の依存を通常のビルドで利用できます。版はすべて[`libs.versions.toml`](../native/gradle/libs.versions.toml)で管理します。
 
 ## 配置
 
@@ -36,20 +36,26 @@ val instant = Instant.parse("2026-10-19T00:00:00Z")
 val local = instant.toLocalDateTime(TimeZone.of("Asia/Tokyo"))
 ```
 
-## 依存解決・コンパイルの確認
+## 現在の依存解決・コンパイルの確認
+
+独自のCatalog検証タスクとコンパイル用fixtureは削除しました。通常のビルドで依存解決と本体コードのコンパイルを行い、依存一覧はGradle標準の`dependencies`で確認します。
 
 ```sh
-# 通常の実依存。Debug／Release・単体テスト・Androidテスト・KSPを解決
-npm run verify:dependencies
+# feature・dataの本体をビルドする。
+npm run native:build
 
-# 同じ検査をCordovaホストから実行
-./scripts/with-env.sh ./native/gradlew -p CordovaComposeApp/platforms/android verifyModuleDependencies
+# 個別の構成の依存を確認する。releaseやテスト構成も--configurationで指定できる。
+./scripts/with-env.sh ./native/gradlew -p native :feature:dependencies --configuration debugRuntimeClasspath
+./scripts/with-env.sh ./native/gradlew -p native :data:dependencies --configuration debugRuntimeClasspath
 
-# 検証ソースによる実コンパイル
-npm run verify:compile
+# Cordova側から同じモジュールの依存を確認する。
+./scripts/with-env.sh ./native/gradlew -p CordovaComposeApp/platforms/android \
+  :feature:dependencies --configuration debugRuntimeClasspath
 ```
 
-`verifyModuleDependencies`は依存の解決をタスク実行時に行い、各構成の実際の外部Artifact座標を`build/reports/catalog/module-dependencies.json`へ出力します。Catalog全項目を一括解決する`verifyCatalogResolution`とは別に、モジュールへ設定したクラスパスを確認するためのタスクです。
+## 依存選定時の検証記録
+
+以下は独自タスク・検証ソースを削除する前の記録です。現在のビルドでは、これらの検証ソースやassetsを生成・追加しません。
 
 native・Cordovaそれぞれ30構成で解決に成功し、両者の座標一覧も一致しました。結果は[native JSON](dependencies-resolution-native.json)・[Cordova JSON](dependencies-resolution-cordova.json)、ログは[native](dependencies-resolution-native.log)・[Cordova／APKビルド](dependencies-build.log)です。テスト依存は解決を確認したもので、実機でAndroidテストを実行したという意味ではありません。
 
@@ -60,7 +66,7 @@ native・Cordovaそれぞれ30構成で解決に成功し、両者の座標一�
 - `@Serializable`な日時レコードのSerializer生成とJSON化
 - `@Inject` RepositoryのFactory、`@HiltViewModel`のModule・Factory生成とコンパイル
 
-生成する検証用ソースとassetsは`verifyCatalog=true`時だけ追加します。通常APKの前に両モジュールをcleanし、検証用assetsがAPKに残っていないことも確認しました。CordovaのApplicationでのHilt起動・実機での注入は未検証です。
+当時の検証用ソースとassetsは専用プロパティを指定した実行時だけ追加していました。通常APKの前に両モジュールをcleanし、検証用assetsがAPKに残っていないことも確認しました。CordovaのApplicationでのHilt起動・実機での注入は未検証です。
 
 Catalog全項目のライブラリ・Pluginを別構成で解決する従来の検証も成功しました。[ログ](dependencies-catalog.log)
 

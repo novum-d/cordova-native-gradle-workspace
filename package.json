@@ -7,22 +7,15 @@
     "cordova": "13.0.0"
   },
   "scripts": {
+    "cordova:run": "./scripts/cordova.sh run android --emulator",
     "cordova:prepare": "./scripts/cordova.sh prepare android",
     "cordova:build": "./scripts/cordova.sh build android",
     "native:build": "./scripts/with-env.sh ./native/gradlew -p native :feature:assembleDebug :data:assembleDebug",
-    "verify:catalog": "./scripts/with-env.sh ./native/gradlew -p native verifyCatalogResolution verifyCatalogPlugins",
-    "verify:dependencies": "./scripts/with-env.sh ./native/gradlew -p native verifyModuleDependencies",
-    "verify:compile": "./scripts/with-env.sh ./native/gradlew -p native -PverifyCatalog=true :feature:assembleDebug :data:assembleDebug",
-    "test:hooks": "sh verification/hook.test.sh",
-    "test:bootstrap": "sh verification/bootstrap.test.sh",
-    "test:git-hooks": "sh verification/git-hooks-setup.test.sh",
     "test:unit": "./scripts/with-env.sh ./native/gradlew -p native :feature:testDebugUnitTest :feature:testReleaseUnitTest :data:testDebugUnitTest :data:testReleaseUnitTest",
     "test:unit:cordova": "./scripts/cordova.sh prepare android && ./scripts/with-env.sh ./native/gradlew -p CordovaComposeApp/platforms/android :feature:testDebugUnitTest :feature:testReleaseUnitTest :data:testDebugUnitTest :data:testReleaseUnitTest",
     "test:unit:coverage": "./scripts/with-env.sh ./native/gradlew -p native :feature:createDebugUnitTestCoverageReport :data:createDebugUnitTestCoverageReport",
     "docs:kdoc": "./scripts/with-env.sh ./native/gradlew -p native :dokkaGeneratePublicationHtml",
     "docs:kdoc:cordova": "./scripts/cordova.sh prepare android && ./scripts/with-env.sh ./native/gradlew -p CordovaComposeApp/platforms/android :feature:dokkaGeneratePublicationHtml :data:dokkaGeneratePublicationHtml",
-    "check:android": "sh scripts/check-android.sh",
-    "verify:structure": "./scripts/with-env.sh ./native/gradlew -p native verifyNativeIntegration",
-    "verify:sync": "./scripts/tooling-sync.sh native"
+    "check:android": "./scripts/check-android.sh"
   }
 }

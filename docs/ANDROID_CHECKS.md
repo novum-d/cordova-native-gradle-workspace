@@ -8,11 +8,10 @@
 
 | 対象 | 修正内容 |
 | --- | --- |
-| `verification/catalog-verification.gradle` | 実行時の`Task.project`取得をやめ、設定時に取得したプロジェクト参照を使用。`ProjectDependency.dependencyProject.path`を`ProjectDependency.path`へ変更 |
 | feature・dataのKotlinコンパイラ設定 | `android.kotlinOptions`から型付きの`KotlinJvmCompile.compilerOptions.jvmTarget`へ移行。CatalogのProviderから設定し、Debug／ReleaseともJVM 11であることを検証 |
 | CordovaアプリのLint設定 | `abortOnError=true`、`checkDependencies=true`を設定。Cordovaの後続設定で上書きされないよう、共有スクリプトの`androidComponents.finalizeDsl`で適用し、最終値も検証 |
 
-置き換えの根拠は[Gradle 8.13の移行ガイド](https://docs.gradle.org/8.13/userguide/upgrading_version_8.html#deprecate_get_dependency_project)、[Execタスク](https://docs.gradle.org/8.13/dsl/org.gradle.api.tasks.Exec.html)、[Kotlinの型付きcompilerOptions](https://kotlinlang.org/docs/whatsnew18.html#exposing-kotlin-compiler-options-as-gradle-lazy-properties)、[AGPのDSL確定処理](https://developer.android.com/build/extend-agp)です。Kotlin 1.9.24でも利用できるAPIで実ビルドを確認しています。
+置き換えの根拠は[Kotlinの型付きcompilerOptions](https://kotlinlang.org/docs/whatsnew18.html#exposing-kotlin-compiler-options-as-gradle-lazy-properties)、[AGPのDSL確定処理](https://developer.android.com/build/extend-agp)です。Kotlin 1.9.24でも利用できるAPIで実ビルドを確認しています。
 
 ## 再実行
 
@@ -23,9 +22,11 @@ npm run check:android
 [`scripts/check-android.sh`](../scripts/check-android.sh)がCordova prepareを実行した後、native・Cordovaを順番に検証します。両方から同じnativeモジュールのビルドディレクトリを利用するため、並列には実行しません。
 
 - detekt・読み取り専用の整形チェック
+- nativeのfeature・dataでDebug／Releaseの単体テスト
 - feature・data・CordovaアプリのDebug／Release Android Lint。アプリ側ではCordovaLibを含む依存先もチェック
-- JDK・Gradle・AGP・Kotlin・SDK・JVM target・依存方向・APKホストの検証
 - `--warning-mode all`によるGradle非推奨警告の表示
+
+アプリのインストール・起動は行いません。エミュレータで起動確認する場合は、別途`npm run cordova:run`を実行します。
 
 実行ログは[android-gradle-check.log](android-gradle-check.log)です。Lintのエラーを無視する設定、baseline、警告の一括抑制は追加していません。警告はビルドを止めず、エラーで失敗させます。
 

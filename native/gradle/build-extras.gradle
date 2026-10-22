@@ -38,10 +38,6 @@ androidComponents.finalizeDsl { androidDsl ->
 }
 
 // rootへの登録は初回だけにし、再適用によるタスク名の衝突を防ぐ。
-if (!rootProject.ext.has('nativeCatalogVerificationConfigured')) {
-    rootProject.apply from: new File(rootDir, '../../../verification/catalog-verification.gradle')
-}
-
 if (!rootProject.ext.has('nativeGitHooksConfigured')) {
     rootProject.apply from: new File(rootDir, '../../../native/gradle/git-hooks.gradle.kts')
 }

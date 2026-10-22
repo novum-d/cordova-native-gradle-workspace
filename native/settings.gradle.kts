@@ -13,8 +13,6 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        // 任意のCatalog検証がPluginのマーカーArtifactを依存として解決するときに使う。
-        maven("https://plugins.gradle.org/m2/")
     }
 }
 

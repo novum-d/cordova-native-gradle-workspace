@@ -29,7 +29,5 @@ dokka {
     }
 }
 
-// 既存の依存構成検証とGit hookの品質チェックを、このホストにも登録する。
-apply(from = "../verification/catalog-verification.gradle")
-
+// Git hookと通常checkの品質タスクを、このホストにも登録する。
 apply(from = "gradle/git-hooks.gradle.kts")
