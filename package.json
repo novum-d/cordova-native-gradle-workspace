@@ -19,6 +19,8 @@
     "test:unit": "./scripts/with-env.sh ./native/gradlew -p native :feature:testDebugUnitTest :feature:testReleaseUnitTest :data:testDebugUnitTest :data:testReleaseUnitTest",
     "test:unit:cordova": "./scripts/cordova.sh prepare android && ./scripts/with-env.sh ./native/gradlew -p CordovaComposeApp/platforms/android :feature:testDebugUnitTest :feature:testReleaseUnitTest :data:testDebugUnitTest :data:testReleaseUnitTest",
     "test:unit:coverage": "./scripts/with-env.sh ./native/gradlew -p native :feature:createDebugUnitTestCoverageReport :data:createDebugUnitTestCoverageReport",
+    "docs:kdoc": "./scripts/with-env.sh ./native/gradlew -p native :dokkaGeneratePublicationHtml",
+    "docs:kdoc:cordova": "./scripts/cordova.sh prepare android && ./scripts/with-env.sh ./native/gradlew -p CordovaComposeApp/platforms/android :feature:dokkaGeneratePublicationHtml :data:dokkaGeneratePublicationHtml",
     "check:android": "sh scripts/check-android.sh",
     "verify:structure": "./scripts/with-env.sh ./native/gradlew -p native verifyNativeIntegration",
     "verify:sync": "./scripts/tooling-sync.sh native"

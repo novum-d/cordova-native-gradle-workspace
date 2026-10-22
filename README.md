@@ -2,11 +2,13 @@
 
 `CordovaComposeApp`を唯一のAPKホストとして、同じ`native/feature`・`native/data`をCordovaからもnative単独からもビルドするworkspaceです。2026-10-17に新規作成しました。既存の業務プロジェクトは提供されていないため、Cordova標準テンプレートを検証ホストにしています。
 
-画面、Activity、CordovaPlugin、Application、DI初期化、WebView通信、カメラ・NFC機能は新規実装していません。`cordova-plugin-compose`やnativeの`MainActivity`も、既存ファイルがないため作成していません。Cordova標準のJava版`MainActivity`は維持しています。
+業務用の画面、CordovaPlugin、Application、DI初期化、WebView通信、カメラ・NFC機能は新規実装していません。`native/feature`にはComposeの起動・状態更新を確認する検証用`MainActivity`があり、Debug APKだけで外部から起動できます。アプリのランチャーはCordova標準のJava版`MainActivity`です。
 
 ## 開発ルール
 
 コメント・KDocの記述方針は[プロジェクトルール](AGENTS.md)を参照してください。手書きのコード・設定には処理のまとまりごとの概要説明を必須とし、KDocで概要が分かる場合は通常コメントの重複を求めません。JSONの説明方法と生成ファイルの扱いも同文書に定めています。
+
+KDocをHTMLとして読むには`npm run docs:kdoc`を実行します。出力先・対象範囲・表示確認は[KDocドキュメント生成](docs/KDOC.md)を参照してください。
 
 ## 構成と依存方向
 
@@ -89,6 +91,7 @@ GradleはCatalogの`gradle`をWrapper生成・実行環境の選択・実行版�
 | AndroidX Test Core KTX / Ext JUnit KTX | 1.7.0 / 1.3.0 | Kotlinメタデータ1.9世代へ更新。Artifact解決確認済み | Core KTXの`androidx.test.core.app.ActivityScenarioKt.class`: `mv=[1,9,0]`<br>Ext JUnit KTXの`androidx.test.ext.junit.rules.ActivityScenarioRuleKt.class`: `mv=[1,9,0]` | [Core KTX 1.7.0 AAR](https://dl.google.com/dl/android/maven2/androidx/test/core-ktx/1.7.0/core-ktx-1.7.0.aar)、[Ext JUnit KTX 1.3.0 AAR](https://dl.google.com/dl/android/maven2/androidx/test/ext/junit-ktx/1.3.0/junit-ktx-1.3.0.aar) |
 | ktlint Gradle Plugin／ktlint本体 | 14.2.0／1.8.0 | どちらも確認時点の最新安定版。独立した検証用Gradleプロジェクトへ適用し、実ソースのコピーのチェック・故意の整形違反の検出・整形後の成功を確認 | Plugin Portal: “Version 14.2.0 (latest)”<br>ktlint本体の公開版: “1.8.0”<br>実測: `PASS: clean Kotlin accepted, malformed Kotlin rejected, formatted Kotlin accepted.` | [Plugin Portal](https://plugins.gradle.org/plugin/org.jlleitschuh.gradle.ktlint)、[ktlint 1.8.0](https://github.com/ktlint/ktlint/releases/tag/1.8.0)、[実行ログ](docs/quality-ktlint-latest.log) |
 | detekt Gradle Plugin | 1.23.8 | 確認時点の最新安定版を適用済み。通常解析と整形チェックの実行成功を再確認 | 公式リリース: “v1.23.8”、`Latest`<br>実測: `> Task :detekt`、`> Task :detektFormatCheck`、`BUILD SUCCESSFUL` | [detekt 1.23.8](https://github.com/detekt/detekt/releases/tag/v1.23.8)、[実行ログ](docs/quality-detekt-latest.log)、[品質タスクの検証](docs/GIT_HOOKS.md) |
+| Dokka Gradle Plugin | 2.2.0 | KDocからHTMLを生成するビルド時のツール。DGP v2を使用し、アプリのKotlin 1.9.24を維持 | 公式の最小KGP要件: `KGP 1.9.0+`<br>実測結果はKDoc生成の記録を参照 | [2.2.0リリース](https://github.com/Kotlin/dokka/releases/tag/v2.2.0)、[KDoc生成](docs/KDOC.md) |
 
 Composeライブラリには個別版を付けず、BOMを利用します。画面系は`feature`、通信・永続化系は`data`、日時・不変コレクション・Coroutines・Hilt・Result・Timberは両方へ通常依存として追加しています。単体テスト・Androidテスト依存と、Hilt/KSP・Serializationのコード生成も設定済みです。[配置一覧と解決結果](docs/DEPENDENCIES.md)を参照してください。
 
@@ -138,6 +141,7 @@ npm run test:bootstrap
 npm run test:git-hooks
 npm run test:unit
 npm run test:unit:coverage
+npm run docs:kdoc
 npm run check:android
 
 # Catalog全Artifactの解決と、検証用Kotlinコードのコンパイル。

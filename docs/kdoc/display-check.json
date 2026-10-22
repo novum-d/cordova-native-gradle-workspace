@@ -1,0 +1,31 @@
+{
+  "testedAt": "2026-10-22T02:36:06.773Z",
+  "browser": "155.0.8059.85",
+  "viewport": "1440x1000",
+  "visited": [
+    {
+      "name": "overview",
+      "path": "native/build/dokka/html/index.html",
+      "title": "All modules",
+      "expectedText": "依存方向はfeatureからdataです"
+    },
+    {
+      "name": "main-activity",
+      "path": "native/build/dokka/html/feature/dev.example.nativefeature/-main-activity/index.html",
+      "title": "MainActivity",
+      "expectedText": "Cordova APK内でCompose画面を起動できることを確認する検証用Activity"
+    },
+    {
+      "name": "onCreate",
+      "path": "native/build/dokka/html/feature/dev.example.nativefeature/-main-activity/on-create.html",
+      "title": "onCreate"
+    }
+  ],
+  "htmlPagesChecked": 8,
+  "internalReferencesChecked": 113,
+  "missingResources": [],
+  "consoleErrors": [],
+  "pageErrors": [],
+  "testAndGeneratedSourcesExcluded": true,
+  "cordovaIndividualHtmlVerified": true
+}

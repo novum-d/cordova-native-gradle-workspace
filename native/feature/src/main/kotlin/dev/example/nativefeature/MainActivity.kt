@@ -20,7 +20,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
+/**
+ * Cordova APK内でCompose画面を起動できることを確認する検証用Activity。
+ *
+ * [onCreate]でテーマと確認画面を設定し、ボタン操作による状態更新・再コンポーズを試す。
+ * 業務画面やCordovaとの通信処理は持たない。
+ */
 class MainActivity : ComponentActivity() {
+    /** Activityの生成時に、Composeのテーマと動作確認画面を設定する。 */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -31,6 +38,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+/** クリック回数を状態として保持し、ボタンを押した結果を画面に再表示する。 */
 @Composable
 private fun ComposeRuntimeCheck() {
     var clicks by remember { mutableIntStateOf(0) }
