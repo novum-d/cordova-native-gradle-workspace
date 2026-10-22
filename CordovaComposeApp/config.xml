@@ -18,7 +18,7 @@
         <preference name="android-minSdkVersion" value="24" />
         <preference name="android-compileSdkVersion" value="35" />
         <preference name="android-targetSdkVersion" value="35" />
-        <!-- prepareで共有Settingsを復元し、build時の再生成後にもbefore_compileで再登録する。 -->
+        <!-- prepare後に共有設定を復元する。compile単独実行にもbefore_compileで対応する。 -->
         <hook type="after_prepare" src="hooks/copy-gradle-extras.js" />
         <hook type="before_compile" src="hooks/copy-gradle-extras.js" />
     </platform>

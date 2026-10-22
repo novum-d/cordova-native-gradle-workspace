@@ -34,7 +34,7 @@
         <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
         <meta name="color-scheme" content="light dark">
         <link rel="stylesheet" href="css/index.css">
-        <title>Hello World</title>
+        <title>Cordova Kotlin</title>
     </head>
     <body>
         <div class="app">
@@ -43,6 +43,9 @@
                 <p class="event listening">Connecting to Device</p>
                 <p class="event received">Device is Ready</p>
             </div>
+            <!-- Cordova準備完了後に、プラグイン経由でCompose画面を開く。 -->
+            <button id="open-feature" type="button" disabled>Open Kotlin screen</button>
+            <p id="feature-status" role="status" aria-live="polite"></p>
         </div>
         <script src="cordova.js"></script>
         <script src="js/index.js"></script>

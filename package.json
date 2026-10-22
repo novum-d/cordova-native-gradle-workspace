@@ -8,9 +8,10 @@
   },
   "scripts": {
     "cordova:run": "./scripts/cordova.sh run android --emulator",
+    "cordova:plugin": "./scripts/setup-kotlin-plugin.sh",
     "cordova:prepare": "./scripts/cordova.sh prepare android",
     "cordova:build": "./scripts/cordova.sh build android",
-    "native:build": "./scripts/with-env.sh ./native/gradlew -p native :feature:assembleDebug :data:assembleDebug",
+    "native:build": "./scripts/with-env.sh ./native/gradlew -p native :feature:assembleDebug :data:assembleDebug :cordova-plugin-dev:assembleDebug",
     "test:unit": "./scripts/with-env.sh ./native/gradlew -p native :feature:testDebugUnitTest :feature:testReleaseUnitTest :data:testDebugUnitTest :data:testReleaseUnitTest",
     "test:unit:cordova": "./scripts/cordova.sh prepare android && ./scripts/with-env.sh ./native/gradlew -p CordovaComposeApp/platforms/android :feature:testDebugUnitTest :feature:testReleaseUnitTest :data:testDebugUnitTest :data:testReleaseUnitTest",
     "test:unit:coverage": "./scripts/with-env.sh ./native/gradlew -p native :feature:createDebugUnitTestCoverageReport :data:createDebugUnitTestCoverageReport",

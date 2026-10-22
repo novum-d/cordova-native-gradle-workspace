@@ -1,6 +1,7 @@
 # Cordovaと共有するビルド基盤、アプリ依存、検証・文書化ツールの版を管理する。
 [versions]
 # Cordova Android 14とそろえる基盤。SDK・JVM targetも両ホストから同じ値を参照する。
+cordova-android = "14.0.1"
 gradle = "8.13"
 agp = "8.7.3"
 kotlin = "1.9.24"
@@ -40,6 +41,8 @@ jgit = "7.8.0.202609011348-r"
 
 # feature・dataで利用するアプリ・テスト依存。ビルドツールは末尾で分ける。
 [libraries]
+# プラグイン編集用モジュールのcompileOnly。APK側は既存CordovaLibを使う。
+cordova-framework = { module = "org.apache.cordova:framework", version.ref = "cordova-android" }
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "core" }
 # ComposeはBOMで版をそろえ、各Artifactへ個別版を付けない。
 compose-bom = { module = "androidx.compose:compose-bom", version.ref = "compose-bom" }

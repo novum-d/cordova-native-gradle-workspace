@@ -11,6 +11,7 @@ cd "$workspace_dir"
 # nativeでは各モジュールのcheck・単体テストも含め、両variantのLintを確認する。
 ./scripts/with-env.sh ./native/gradlew -p native \
   check :feature:lintDebug :feature:lintRelease :data:lintDebug :data:lintRelease \
+  :cordova-plugin-dev:lintDebug :cordova-plugin-dev:lintRelease \
   --warning-mode all --console=plain
 
 # 両ホストは同じLibraryのbuildディレクトリを使うため、並行せずnative完了後に実行する。

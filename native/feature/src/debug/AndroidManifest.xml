@@ -1,9 +1,0 @@
-<!-- Debug APKでCompose確認用Activityを起動できるよう、本体Manifestへ追加マージする。 -->
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
-    <application>
-        <!-- エミュレーターから直接起動するためexportedを有効化する。ランチャーはCordovaのまま。 -->
-        <activity
-            android:name="dev.example.nativefeature.MainActivity"
-            android:exported="true" />
-    </application>
-</manifest>

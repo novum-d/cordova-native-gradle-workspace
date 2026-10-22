@@ -2,6 +2,8 @@
 
 Version Catalogで想定していたライブラリを、通常の`feature`・`data`へ追加しました。以下の依存を通常のビルドで利用できます。版はすべて[`libs.versions.toml`](../native/gradle/libs.versions.toml)で管理します。
 
+2026-10-22にCordovaプラグインの編集用モジュール`cordova-plugin-dev`を追加しました。`libs.cordova.framework`（`org.apache.cordova:framework:14.0.1`）は同モジュールの`compileOnly`です。Cordova APIをAndroid Studioで解決するための依存で、アプリへCordovaを二重に組み込みません。APKでは既存のCordovaLibが実装を提供します。[プラグイン構成](../kotlin-plugin/README.md)
+
 ## 配置
 
 | 配置先 | 依存・設定 |

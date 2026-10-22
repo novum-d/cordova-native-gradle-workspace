@@ -1,4 +1,4 @@
-// 共有Libraryのビルド基盤と、両モジュールをまとめるKDoc HTML生成を設定する。
+// 共有Libraryとプラグイン編集環境のビルド基盤・集約KDocを設定する。
 plugins {
     alias(libs.plugins.android.library) apply false
     alias(libs.plugins.kotlin.android) apply false
@@ -15,10 +15,11 @@ tasks.wrapper {
     distributionType = Wrapper.DistributionType.BIN
 }
 
-// Dokka標準の集約機能で、feature・dataの文書を単一のHTMLサイトにする。
+// Dokka標準の集約機能で、Libraryとプラグインの文書を単一のHTMLサイトにする。
 dependencies {
     dokka(project(":feature"))
     dokka(project(":data"))
+    dokka(project(":cordova-plugin-dev"))
 }
 
 dokka {

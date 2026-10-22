@@ -4,12 +4,14 @@
 
 ## セットアップからビルドまで
 
-1. [bootstrap.sh](../scripts/bootstrap.sh)がルートとアプリ側のnpm依存を復元し、Catalog指定のGradleとWrapperを用意します。不完全なCordova platformは退避して再生成し、正常なplatformはprepareします。
+1. [bootstrap.sh](../scripts/bootstrap.sh)がルートとアプリ側のnpm依存を復元し、Catalog指定のGradleとWrapperを用意します。不完全なCordova platformは退避して再生成し、正常なplatformはprepareします。最後に[setup-kotlin-plugin.sh](../scripts/setup-kotlin-plugin.sh)でプラグインをリンク導入します。
 2. [with-env.sh](../scripts/with-env.sh)がJDK・SDK・Gradleの環境を子プロセスへ渡します。[cordova.sh](../scripts/cordova.sh)はその環境で、ルートに導入したCLIをアプリディレクトリから実行します。[catalog-version.sh](../scripts/catalog-version.sh)は各シェルが必要とする版をTOMLから取り出します。
 3. [config.xml](../CordovaComposeApp/config.xml)のhookから[copy-gradle-extras.js](../CordovaComposeApp/hooks/copy-gradle-extras.js)を呼び、生成されたGradleファイルへ共有設定の参照を登録します。管理マーカー外の既存設定は保持します。
 4. [settings-extras.gradle](../native/gradle/settings-extras.gradle)がSettings評価時にCatalog・feature・dataを登録し、[build-extras.gradle](../native/gradle/build-extras.gradle)がapp依存・実効版の照合・Lint設定・Git hookの品質タスクを追加します。native単独では[settings.gradle.kts](../native/settings.gradle.kts)と[build.gradle.kts](../native/build.gradle.kts)が入口です。
 
 通常の起動は`npm run cordova:run`で行います。`cordova.sh`から`run android --emulator`を呼び、CLIがprepare・ビルド・インストール・起動を実行します。変更のたびにplatform・pluginを削除する処理や、事前のprepareは不要です。変更監視は行わないため、変更後に再実行します。
+
+[kotlin-plugin](../kotlin-plugin/README.md)がWebからKotlin機能への入口です。`www/kotlin-plugin.js`の`cordova/exec`を受けて`KotlinPlugin.execute`がfeature画面を起動します。プラグイン内にGradle設定は置かず、native専用の[cordova-plugin-dev](../native/cordova-plugin-dev/build.gradle.kts)が元のKTソースを編集・コンパイル・文書化します。Cordova側はplugin.xmlからソースを導入し、cordova-plugin-devには依存しません。
 
 ## コミット時の検査
 
@@ -30,7 +32,7 @@ Git indexを自動更新する処理はありません。通常の`check`・`ktl
 | --- | --- |
 | [featureの設定](../native/feature/build.gradle.kts)・[dataの設定](../native/data/build.gradle.kts) | Android Libraryの依存・JVM target・コード生成・単体テスト・Dokkaを設定。依存方向はfeature → data |
 | [MainActivity](../native/feature/src/main/kotlin/dev/example/nativefeature/MainActivity.kt) | Composeの起動・状態更新を確認する画面。既存KDocに処理の概要を記載 |
-| feature・dataの`src/main/AndroidManifest.xml`とfeatureの`src/debug/AndroidManifest.xml` | Libraryの最小Manifestと、Debugでだけ外部起動できる検証Activityの登録 |
+| feature・dataの`src/main/AndroidManifest.xml` | LibraryのManifest。featureのActivityは両variantで同一アプリから起動し、外部には公開しない |
 | 両モジュールの`src/test/kotlin/` | Mainの差し替え、仮想時間、Flow、DatetimeのJSON化を確認する環境テスト。各クラス・テストのKDocを参照 |
 | [check-android.sh](../scripts/check-android.sh) | native・Cordovaの品質チェック、単体テスト、Android Lintを順に実行 |
 | [libs.versions.toml](../native/gradle/libs.versions.toml)・[gradle.properties](../native/gradle.properties)・[detekt設定](../native/gradle/config/detekt/) | 採用版、Gradle実行環境、静的解析・整形ルールの管理元 |
@@ -46,13 +48,14 @@ Git indexを自動更新する処理はありません。通常の`check`・`ktl
 | コマンド | 目的 |
 | --- | --- |
 | `cordova:run` | prepare・ビルド後、エミュレータへインストールして起動。追加引数は`npm run cordova:run -- --target=<対象>`で渡す |
+| `cordova:plugin` | ローカルプラグインをリンク導入。JS・plugin.xml変更時は`-- --reinstall`で再導入 |
 | `cordova:prepare` | Cordovaの生成設定とWeb assetsを管理元から復元。ビルド・起動は行わない |
 | `cordova:build` | prepareを含めてAndroid APKをビルド。起動は行わない |
-| `native:build` | native単独でfeature・dataのDebug AARをビルド |
+| `native:build` | native単独でfeature・data・cordova-plugin-devのDebug AARをビルド |
 | `test:unit` | nativeのfeature・dataでDebug／Releaseの単体テストを実行 |
 | `test:unit:cordova` | prepare後、Cordova側から同じ単体テストを実行 |
 | `test:unit:coverage` | 両LibraryのDebugカバレッジを生成 |
-| `docs:kdoc` | feature・dataのKDoc HTMLをnativeルートで集約 |
+| `docs:kdoc` | feature・data・プラグインのKDoc HTMLをnativeルートで集約 |
 | `docs:kdoc:cordova` | prepare後、Cordova側から各LibraryのKDoc HTMLを個別生成 |
 | `check:android` | 両ホストの品質チェック、native単体テスト、Android Lintを順に実行。起動は行わない |
 
@@ -62,9 +65,11 @@ Git indexを自動更新する処理はありません。通常の`check`・`ktl
 
 アプリ側の`scripts.test`はテンプレートの未設定メッセージを出して失敗するコマンドです。このworkspaceの単体テストはルートの`test:unit`を使います。
 
+`devDependencies.kotlin-plugin`は`file:../kotlin-plugin`のローカル依存、`cordova.plugins.kotlin-plugin`はCordovaのプラグイン導入宣言です。プラグイン側の[package.json](../kotlin-plugin/package.json)は名前・版・対応platform・導入ファイルを管理します。各項目の役割は[プラグインの説明](../kotlin-plugin/README.md)を参照してください。
+
 ## 直接コメントを追加しないファイル
 
 - `build/`、Cordovaの`platforms/`・`plugins/`、KSPの生成ソース、検証ログ・レポート・スクリーンショットは生成物です。生成元のスクリプト・設定へ説明を付けます。
 - `package-lock.json`はnpmが作成する依存固定情報、`native/gradlew`・`gradlew.bat`・Wrapper JAR・`gradle-wrapper.properties`はWrapperの生成物です。Wrapperの版はCatalogと`native/build.gradle.kts`から管理します。
-- `CordovaComposeApp/www/`とアプリ側の`.gitignore`は配布元のテンプレートを保持します。`index.html`は起動画面とJS/CSS読込、`www/js/index.js`は`deviceready`後の表示切替、`www/css/index.css`はレイアウト・イベント状態・配色を担います。
+- アプリ側の`.gitignore`は配布元のテンプレートを保持します。`CordovaComposeApp/www/`は標準テンプレートを基に、プラグインを呼ぶボタンとコールバックの表示を追加しています。変更したHTML・JS・CSSの処理にはコメントを記載します。
 - Markdown本文や既存のモジュール概要は、それ自体を説明として扱います。画像・JARなどのバイナリへコメントは埋め込みません。

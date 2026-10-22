@@ -99,6 +99,18 @@ h1 {
 #deviceready.ready .event.listening { display: none; }
 #deviceready.ready .event.received { display: block; }
 
+/* WebからKotlin画面を開く操作領域と、結果を読み取るための表示領域。 */
+#open-feature {
+    min-height: 48px;
+    margin-top: 16px;
+    padding: 8px 16px;
+    font: inherit;
+}
+
+#feature-status {
+    text-transform: none;
+}
+
 @keyframes fade {
     from { opacity: 1.0; }
     50% { opacity: 0.4; }

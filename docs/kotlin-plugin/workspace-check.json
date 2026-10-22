@@ -1,0 +1,10 @@
+{
+  "freshBootstrapRestoredPluginAndLink": true,
+  "manifestsAndLockfilesUnchanged": true,
+  "setupIdempotent": true,
+  "explicitPluginReinstall": true,
+  "freshCordovaPluginCompilation": true,
+  "unformattedStagedPluginRejectedTwiceWithoutRestaging": true,
+  "indexAndWorkingFilePreserved": true,
+  "cleanStagedPluginAccepted": true
+}

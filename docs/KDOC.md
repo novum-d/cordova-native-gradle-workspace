@@ -4,7 +4,7 @@
 
 Dokka 2.2.0（Gradle Plugin v2）で、Kotlinソースに書いたKDocをHTMLへ変換します。KDoc本文を自動で書き足すタスクではありません。処理の目的・流れはソースのKDocに記述し、Gradle設定やJavaScriptなどの説明は各ファイルのコメントに残します。
 
-版とPlugin aliasは[Version Catalog](../native/gradle/libs.versions.toml)、適用と集約は[nativeルート](../native/build.gradle.kts)で管理します。[feature](../native/feature/build.gradle.kts)・[data](../native/data/build.gradle.kts)にもPluginを適用し、Dokka標準の`dokka(project(...))`で両モジュールの文書を集約します。
+版とPlugin aliasは[Version Catalog](../native/gradle/libs.versions.toml)、適用と集約は[nativeルート](../native/build.gradle.kts)で管理します。[feature](../native/feature/build.gradle.kts)・[data](../native/data/build.gradle.kts)・[cordova-plugin-dev](../native/cordova-plugin-dev/build.gradle.kts)にもPluginを適用し、Dokka標準の`dokka(project(...))`で文書を集約します。cordova-plugin-devはプラグインの元ソースを文書化し、Cordova側の生成コピーは含めません。
 
 アプリのKotlinは1.9.24のままです。Dokkaの解析エンジンは文書化専用の構成で実行し、アプリの`implementation`へ追加しません。公式リリースが示す最小KGP要件は1.9.0以上です。[Dokka 2.2.0の変更点](https://github.com/Kotlin/dokka/releases/tag/v2.2.0)
 
@@ -13,7 +13,7 @@ Dokka 2.2.0（Gradle Plugin v2）で、Kotlinソースに書いたKDocをHTMLへ
 リポジトリ直下で実行します。
 
 ```sh
-# feature・dataをまとめたHTMLサイトを生成する。
+# feature・dataとプラグインをまとめたHTMLサイトを生成する。
 npm run docs:kdoc
 
 # 同じ処理をGradleから直接実行する。
@@ -32,6 +32,7 @@ npm run docs:kdoc:cordova
 | --- | --- |
 | nativeの集約HTML | `:dokkaGeneratePublicationHtml` → `native/build/dokka/html/index.html` |
 | featureの個別HTML | `:feature:dokkaGeneratePublicationHtml` → `native/feature/build/dokka/html/index.html` |
+| プラグインの個別HTML | `:cordova-plugin-dev:dokkaGeneratePublicationHtml` → `native/cordova-plugin-dev/build/dokka/html/index.html`。native側だけに存在するタスク |
 | dataの個別生成 | `:data:dokkaGeneratePublicationHtml`。現在は本体クラスがないためHTMLの出力なし。APIを追加すると`native/data/build/dokka/html/index.html`へ出力 |
 | npmの入口 | [package.json](../package.json)の`docs:kdoc`はnative集約、`docs:kdoc:cordova`はprepareとCordovaからの個別生成を実行 |
 
@@ -41,6 +42,7 @@ Cordova側のルートには集約Pluginを追加していません。両ホス�
 
 - Android共通の`main` source setに限定し、`src/main/kotlin`のpublic・protected APIを掲載します。Dokka上の表示名は`androidJvm`です。Debug／Release・単体テスト・Androidテスト・生成ソースは掲載しません。継承元だけにあるメソッドは省き、このモジュールで実装したAPIを表示します。
 - [MainActivityのKDoc](../native/feature/src/main/kotlin/dev/example/nativefeature/MainActivity.kt)に、Compose起動確認の目的・画面構築・状態更新の概要を記述しています。非公開のComposableのKDocはソースから読めますが、この公開API一覧には表示されません。
+- [KotlinPluginのKDoc](../kotlin-plugin/src/android/dev/example/kotlinplugin/KotlinPlugin.kt)は、cordova-plugin-devから`kotlin-plugin/src/android`をmainのソースとして読み込みます。executeによる起動・成功通知・未知のactionの扱いを記載しています。
 - [featureの概要](../native/feature/Module.md)と[dataの概要](../native/data/Module.md)を、各モジュールの説明元として指定しています。dataには業務用の本体クラスがないため、Dokkaはdataの個別ページを生成しません。dataの現状は[集約トップの概要](../native/Module.md)に記載し、APIを追加した後はdataの概要も個別ページに反映されます。
 - コメントの有無・品質を自動判定するタスクではありません。コメントの記述ルールは[AGENTS.md](../AGENTS.md)に従います。
 

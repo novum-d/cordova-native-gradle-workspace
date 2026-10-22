@@ -1,0 +1,12 @@
+{
+  "name": "kotlin-plugin",
+  "version": "1.0.0",
+  "private": true,
+  "description": "CordovaのWeb画面からKotlinのfeature画面を起動するプラグイン",
+  "cordova": {
+    "id": "kotlin-plugin",
+    "platforms": ["android"]
+  },
+  "keywords": ["ecosystem:cordova", "cordova-android"],
+  "files": ["plugin.xml", "src/", "www/"]
+}

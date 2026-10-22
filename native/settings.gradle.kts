@@ -16,7 +16,7 @@ dependencyResolutionManagement {
     }
 }
 
-// このホストはAPKを持たず、featureとdataをLibraryとして読み込む。
+// このホストはAPKを持たず、共有Libraryとプラグインの編集用モジュールを読み込む。
 rootProject.name = "CordovaNativeLibraries"
-include(":feature", ":data")
+include(":feature", ":data", ":cordova-plugin-dev")
 // libsはgradle/libs.versions.tomlからGradleが自動登録するため、手動で二重登録しない。

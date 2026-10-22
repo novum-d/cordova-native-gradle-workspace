@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- JSとCordovaPluginの対応、Androidへ導入するソースを宣言する。Gradle設定はホストが管理する。 -->
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+    id="kotlin-plugin" version="1.0.0">
+    <name>KotlinPlugin</name>
+    <description>WebからKotlinのfeature画面を起動する入口。</description>
+
+    <!-- deviceready以降、Web側のwindow.KotlinPluginから呼び出せるようにする。 -->
+    <js-module src="www/kotlin-plugin.js" name="KotlinPlugin">
+        <clobbers target="KotlinPlugin" />
+    </js-module>
+
+    <platform name="android">
+        <!-- execのservice名をAndroidの実装クラスへ結び付ける。 -->
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="KotlinPlugin">
+                <param name="android-package" value="dev.example.kotlinplugin.KotlinPlugin" />
+            </feature>
+        </config-file>
+        <source-file src="src/android/dev/example/kotlinplugin/KotlinPlugin.kt"
+            target-dir="app/src/main/java/dev/example/kotlinplugin" />
+    </platform>
+</plugin>

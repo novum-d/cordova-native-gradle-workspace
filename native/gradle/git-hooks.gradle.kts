@@ -45,11 +45,11 @@ val formattingConfig = workspaceDir.resolve("native/gradle/config/detekt/formatt
 val autoCorrectConfig = workspaceDir.resolve("native/gradle/config/detekt/autocorrect.yml")
 check(detektConfig.isFile && formattingConfig.isFile && autoCorrectConfig.isFile) { "Missing native/gradle/config/detekt YAML in $workspaceDir" }
 
-// 各モジュールsrcのファイルツリーを作成
-val nativeModules = listOf("feature", "data")
-// 本体・Debug・テストを含むsrc全体を対象とし、生成ディレクトリは解析から外す。
-fun nativeKotlinSources(baseDir: File) = files(nativeModules.map { module ->
-    fileTree(baseDir.resolve("native/$module/src")) {
+// LibraryとCordovaプラグインの管理元を対象にする。生成先やリンク先を重複して検査しない。
+val kotlinSourceRoots = listOf("native/feature/src", "native/data/src", "kotlin-plugin/src")
+// 本体・テストを含むsrc全体を対象とし、生成ディレクトリは解析から外す。
+fun nativeKotlinSources(baseDir: File) = files(kotlinSourceRoots.map { relative ->
+    fileTree(baseDir.resolve(relative)) {
         include("**/*.kt")
         exclude("**/build/**", "**/generated/**")
     }
@@ -189,9 +189,9 @@ val preparePreCommit = tasks.register("preparePreCommit") {
                 check(status.conflicting.isEmpty()) { "Resolve Git conflicts before running preCommit" }
                 stagedKotlin = (status.added + status.changed).filter { it.endsWith(".kt") }.sorted()
             }
-            // Kotlinのステージがあれば全nativeを検査し、index内容の整形検査はnativeの管理対象へ絞る。
+            // Kotlinのステージがあれば全対象を検査し、index内容はLibraryとプラグインの管理元へ絞る。
             stagedNativeKotlin = stagedKotlin.filter { path ->
-                nativeModules.any { path.startsWith("native/$it/src/") } &&
+                kotlinSourceRoots.any { path.startsWith("$it/") } &&
                     path.split('/').none { it == "build" || it == "generated" }
             }
             // 作業ファイルではなく、indexが指す内容を読み取り専用で取り出す

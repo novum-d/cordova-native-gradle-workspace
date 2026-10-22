@@ -2,7 +2,7 @@
 
 `CordovaComposeApp`を唯一のAPKホストとして、同じ`native/feature`・`native/data`をCordovaからもnative単独からもビルドするworkspaceです。2026-10-17に新規作成しました。既存の業務プロジェクトは提供されていないため、Cordova標準テンプレートを検証ホストにしています。
 
-業務用の画面、CordovaPlugin、Application、DI初期化、WebView通信、カメラ・NFC機能は新規実装していません。`native/feature`にはComposeの起動・状態更新を確認する検証用`MainActivity`があり、Debug APKだけで外部から起動できます。アプリのランチャーはCordova標準のJava版`MainActivity`です。
+`kotlin-plugin`をWebからKotlin機能へ入る入口にしています。Webのボタンから`cordova/exec`を経由し、`CordovaPlugin`を継承したKTの`execute`が`startActivity`で`native/feature`の`MainActivity`を開きます。画面はDebug／Release共通で登録し、外部アプリには公開しません。アプリのランチャーはCordova標準のJava版`MainActivity`です。業務画面・DI初期化・カメラ・NFC処理は未実装です。[プラグインの構成と編集方法](kotlin-plugin/README.md)、[実行確認](docs/KOTLIN_PLUGIN.md)
 
 ## 開発ルール
 
@@ -21,13 +21,17 @@ cordova-native-gradle-workspace/
 │   ├── config.xml                         Kotlin有効化、SDK設定、hook登録
 │   ├── package.json / package-lock.json    cordova-android 14.0.1を固定
 │   ├── hooks/copy-gradle-extras.js          生成物に管理ブロックを復元
-│   ├── www/                               Cordova標準テンプレート
+│   ├── www/                               プラグイン経由でKotlin画面を開くWeb画面
 │   └── platforms/android/                 再生成可能、Git管理外
 │       ├── settings.gradle                Cordovaがビルド時に再生成
 │       ├── cdv-gradle-name.gradle          共有settingsスクリプトへの参照
 │       ├── app/build-extras.gradle         共有appスクリプトへの参照
 │       ├── app/                           唯一のcom.android.application
 │       └── CordovaLib/                     Cordova既存Library
+├── kotlin-plugin/                         Cordovaプラグイン。Gradleファイルは置かない
+│   ├── plugin.xml / package.json           JS・Androidクラス・導入ソースの宣言
+│   ├── src/android/dev/example/kotlinplugin/KotlinPlugin.kt
+│   └── www/kotlin-plugin.js                cordova/execを呼ぶJS
 ├── native/
 │   ├── settings.gradle.kts / build.gradle.kts / gradle.properties
 │   ├── gradlew / gradlew.bat / gradle/wrapper/
@@ -35,7 +39,8 @@ cordova-native-gradle-workspace/
 │   ├── gradle/settings-extras.gradle       CordovaへCatalog・モジュールを登録
 │   ├── gradle/build-extras.gradle          app依存と基盤版の照合
 │   ├── feature/build.gradle.kts / src/main/AndroidManifest.xml
-│   └── data/build.gradle.kts / src/main/AndroidManifest.xml
+│   ├── data/build.gradle.kts / src/main/AndroidManifest.xml
+│   └── cordova-plugin-dev/build.gradle.kts      プラグイン元ソースの編集・コンパイル設定
 ├── scripts/                               環境設定・再現用コマンド
 └── docs/                                  実行ログ・検証レポート
 ```
@@ -46,7 +51,9 @@ Cordova :app ──implementation──> :CordovaLib
              └implementation──> :data
 ```
 
-`feature`・`data`はどちらも`com.android.library`です。`native/app`、LibraryのtargetSdk、追加Launcherはありません。ソースはコピーしません。通常の`feature`には確認用の`MainActivity.kt`があります。`data`には通常のKotlinソースがないため、コンパイルタスクは`NO-SOURCE`となります。
+`feature`・`data`はどちらも`com.android.library`です。`native/app`、LibraryのtargetSdk、追加Launcherはありません。通常の`feature`には確認用の`MainActivity.kt`があります。`data`には通常のKotlinソースがないため、コンパイルタスクは`NO-SOURCE`となります。
+
+Cordovaアプリはplugin.xml経由でKTを導入し、画面とデータ処理は共有Libraryへ依存します。`native/cordova-plugin-dev`は元の`kotlin-plugin/src/android`をsource setへ登録する編集・コンパイル用のAndroid Libraryで、Cordova側のSettingsには登録しません。プラグインクラスがAPKで二重に定義されることを防ぎます。
 
 ## 固定する基盤
 
@@ -147,12 +154,13 @@ npm run cordova:run
 | --- | --- |
 | `npm run cordova:prepare` | 設定・Web assets・共有Gradle設定を反映。ビルド・起動は行わない |
 | `npm run cordova:build` | prepareを含めてAndroid APKをビルド。起動は行わない |
-| `npm run native:build` | native単独でfeature・dataのDebug AARをビルド |
+| `npm run cordova:plugin` | プラグインのリンク導入を復元。JS・plugin.xml変更時は`-- --reinstall`を付ける |
+| `npm run native:build` | native単独でfeature・data・cordova-plugin-devのDebug AARをビルド |
 | `npm run check:android` | 両ホストの静的解析・整形確認、native単体テスト、Android Lint。起動は行わない |
 | `npm run test:unit` | nativeのfeature・dataでDebug／Releaseの単体テストを実行 |
 | `npm run test:unit:cordova` | Cordova側から同じ単体テストを実行 |
 | `npm run test:unit:coverage` | feature・dataのDebugカバレッジを生成 |
-| `npm run docs:kdoc` | KDoc HTMLをnativeルートで集約 |
+| `npm run docs:kdoc` | LibraryとプラグインのKDoc HTMLをnativeルートで集約 |
 | `npm run docs:kdoc:cordova` | Cordova側から各LibraryのKDoc HTMLを個別生成 |
 
 `npm init`・`npm install`の事前実行は不要です。`bootstrap.sh`が、リポジトリ管理のルート・アプリ側それぞれの`package.json`・`package-lock.json`を使って`npm ci --include=dev`を実行し、Cordova CLIとAndroid依存をインストールします。Node.js・npm・JDK 17・Android SDKは事前に用意してください。
@@ -189,7 +197,7 @@ Git hookでlint・フォーマットルール違反を検出した場合だけ�
 
 `npm run check:android`はCordova prepare後、nativeとCordovaのdetekt・整形チェック、nativeの単体テスト、Debug／ReleaseのAndroid Lintを順番に実行します。Lintエラーはビルドを失敗させ、ライブラリの指摘もアプリのレポートに含めます。修正した非推奨APIと残る警告は[Gradle・Android Lintの確認結果](docs/ANDROID_CHECKS.md)を参照してください。
 
-Android Studioでは`native/`を開き、GradleをWrapper、Gradle JDKを17に設定して標準のSyncを使います。過去に基本モデル取得を確認したTooling APIの独自検証コードは削除済みです。
+Android Studioでは`native/`を開き、GradleをWrapper、Gradle JDKを17に設定して標準のSyncを使います。`cordova-plugin-dev`のmainソースには`kotlin-plugin/src/android/dev/example/kotlinplugin/KotlinPlugin.kt`の元ファイルが表示され、Cordova API・featureの参照を解決できます。過去に基本モデル取得を確認したTooling APIの独自検証コードは削除済みです。
 
 ## 変更ファイルの役割
 
@@ -197,7 +205,9 @@ Android Studioでは`native/`を開き、GradleをWrapper、Gradle JDKを17に�
 | --- | --- |
 | ルートpackage.json・lock | CLI版とビルド・テスト・品質・文書生成コマンドを管理 |
 | CordovaComposeAppのpackage.json・lock・config.xml | Android 14.0.1、SDK、既存Kotlin Pluginとhooksを管理 |
-| CordovaComposeApp/www配下 | CLI生成の標準テンプレート。独自機能は追加しない |
+| CordovaComposeApp/www配下 | 標準テンプレートに、プラグイン経由でKotlin画面を開く操作を追加 |
+| kotlin-plugin/ | Webのexec要求を受け、feature画面を起動するCordovaプラグイン。Gradle設定なし |
+| native/cordova-plugin-dev/ | プラグイン元ソースをAndroid Studioで編集・コンパイル・文書化するnative専用モジュール |
 | CordovaComposeApp/hooks/copy-gradle-extras.js | 冪等な参照復元、既存設定の保持、不足ファイル検出 |
 | native/gradle/libs.versions.toml | 全ライブラリ・Plugin・基盤版の共有元 |
 | native/settings.gradle.kts | RepositoryとLibraryモジュールを宣言、Catalog自動読込 |
@@ -208,8 +218,9 @@ Android Studioでは`native/`を開き、GradleをWrapper、Gradle JDKを17に�
 | native/gradle/build-extras.gradle | 既存appへLibrary依存を追加、Cordova基盤とCatalogを照合、共有Kotlin DSL品質設定を適用 |
 | native/gradle/git-hooks.gradle.kts・native/gradle/config/detekt/配下 | TvAppを参照したdetekt・整形・preCommitの実装と設定 |
 | native/feature・dataのbuild.gradle.kts | Library化、Java/Kotlin 11、SDK、feature→dataの設定 |
-| native/feature・dataのManifest | 通常のLibrary Manifestは空。featureのDebug ManifestだけにCompose確認用Activityを登録 |
+| native/feature・dataのManifest | featureの通常ManifestへCompose画面を登録。Debug／Release共通でプラグインから起動し、外部には公開しない |
 | scripts/bootstrap.sh | 再現用依存・Gradle取得・platform復元 |
+| scripts/setup-kotlin-plugin.sh | KTのリンク導入と、JS・plugin.xml変更時のプラグイン再導入 |
 | scripts/setup-git-hooks.sh | Gitのpre-commitからGradleの:preCommitを呼ぶhookを初回登録。既存hookは上書きしない |
 | scripts/with-env.sh・cordova.sh | JDK 17とローカルGradleを使う実行環境 |
 | scripts/catalog-version.sh | sh・awkで共有Catalogの版を取得し、シェル補助処理へ渡す |

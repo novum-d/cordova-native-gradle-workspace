@@ -1,5 +1,7 @@
 # Cordova CLI・Composeのエミュレーター実行確認（2026-10-19）
 
+この文書はプラグイン導入前の実行記録です。現在は[プラグイン経由の起動](KOTLIN_PLUGIN.md)へ変更し、Activityは通常Manifestに`exported=false`で登録しています。
+
 Android 15（API 35／arm64-v8a）のエミュレーターで、Cordova CLIによるインストール・起動と、同じAPKに含まれるCompose画面の表示・操作を確認しました。終了時にエミュレーターを閉じ、ADBの接続一覧が空であることも確認しています。[結果JSON](compose-runtime/result.json)
 
 `targetSdk`・`compileSdk`はどちらも35です。Cordovaの`config.xml`で明示し、Catalogでも`target-sdk = "35"`・`compile-sdk = "35"`を個別に管理して照合します。実行したDebug APKから`apkanalyzer manifest target-sdk`で35を読み取りました。実行端末のAPIレベルも35です。
@@ -20,7 +22,7 @@ Android 15（API 35／arm64-v8a）のエミュレーターで、Cordova CLIに�
 
 ## 追加した確認用画面
 
-featureの[`MainActivity.kt`](../native/feature/src/main/kotlin/dev/example/nativefeature/MainActivity.kt)を`ComponentActivity`・`setContent`・Material3を使用する画面へ変更しました。[Debug用Manifest](../native/feature/src/debug/AndroidManifest.xml)だけにActivityを登録しています。ReleaseのManifestには登録せず、Launcherは従来どおりCordovaのActivityです。[Manifest照合結果](compose-runtime/manifest-check.json)
+featureの[`MainActivity.kt`](../native/feature/src/main/kotlin/dev/example/nativefeature/MainActivity.kt)を`ComponentActivity`・`setContent`・Material3を使用する画面へ変更しました。当時はDebug用ManifestだけにActivityを登録し、ReleaseのManifestには登録していませんでした。LauncherはCordovaのActivityです。[当時のManifest照合結果](compose-runtime/manifest-check.json)。Debug専用Manifestは現在削除済みです。
 
 Cordova CLIで最初に起動するのはCordovaのWebViewです。その後、ADBで同じAPK内のCompose Activityを明示起動して確認しています。WebViewからComposeを開くJavaScriptブリッジは追加していません。
 

@@ -1,2 +1,9 @@
-<!-- UI用Libraryの最小Manifest。検証Activityの外部起動設定はDebug専用Manifestに分ける。 -->
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" />
+<!-- プラグインから明示的Intentで起動するCompose画面を、Debug・Release共通で登録する。 -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application>
+        <!-- 同一アプリのプラグインだけが起動する。ランチャーはCordovaアプリのまま。 -->
+        <activity
+            android:name="dev.example.nativefeature.MainActivity"
+            android:exported="false" />
+    </application>
+</manifest>

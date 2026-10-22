@@ -7,6 +7,9 @@ node_modules/
 **/.gradle/
 **/build/
 **/local.properties
+# Android Studioのローカルなプロジェクト情報。構成はGradleから再生成する。
+**/.idea/
+**/*.iml
 # Cordovaの再生成対象。管理元はconfig.xml・hook・native/gradle配下に置く。
 CordovaComposeApp/platforms/
 CordovaComposeApp/plugins/

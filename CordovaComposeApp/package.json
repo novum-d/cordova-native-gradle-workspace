@@ -18,6 +18,12 @@
   "cordova": {
     "platforms": [
       "android"
-    ]
+    ],
+    "plugins": {
+      "kotlin-plugin": {}
+    }
+  },
+  "devDependencies": {
+    "kotlin-plugin": "file:../kotlin-plugin"
   }
 }

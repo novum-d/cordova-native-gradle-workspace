@@ -17,13 +17,26 @@
     under the License.
 */
 
-// Wait for the deviceready event before using any of Cordova's device APIs.
-// See https://cordova.apache.org/docs/en/latest/cordova/events/events.html#deviceready
+// Cordovaの初期化完了後にプラグインを呼べるよう、画面の操作を有効化する。
 document.addEventListener('deviceready', onDeviceReady, false);
 
+/** プラグイン登録後に起動ボタンを有効にし、WebからKotlin画面への入口を用意する。 */
 function onDeviceReady() {
-    // Cordova is now initialized. Have fun!
-
     console.log('Running cordova-' + cordova.platformId + '@' + cordova.version);
     document.getElementById('deviceready').classList.add('ready');
+    const button = document.getElementById('open-feature');
+    const status = document.getElementById('feature-status');
+    button.disabled = false;
+    button.addEventListener('click', function () {
+        button.disabled = true;
+        status.textContent = 'Opening Kotlin screen...';
+        // 成功はActivity起動要求の完了を表す。画面から戻ったときの結果ではない。
+        window.KotlinPlugin.openFeature(function () {
+            status.textContent = 'Kotlin screen opened.';
+            button.disabled = false;
+        }, function (error) {
+            status.textContent = 'Could not open Kotlin screen: ' + error;
+            button.disabled = false;
+        });
+    });
 }

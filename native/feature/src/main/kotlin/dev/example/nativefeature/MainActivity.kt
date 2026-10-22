@@ -21,10 +21,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 /**
- * Cordova APK内でCompose画面を起動できることを確認する検証用Activity。
+ * Cordovaプラグインから起動し、Composeの表示と状態更新を確認するActivity。
  *
  * [onCreate]でテーマと確認画面を設定し、ボタン操作による状態更新・再コンポーズを試す。
- * 業務画面やCordovaとの通信処理は持たない。
+ * Webとの通信・起動要求の受付はプラグインに任せ、この画面ではUIだけを扱う。
  */
 class MainActivity : ComponentActivity() {
     /** Activityの生成時に、Composeのテーマと動作確認画面を設定する。 */

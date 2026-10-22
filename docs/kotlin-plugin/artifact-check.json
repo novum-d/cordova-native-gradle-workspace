@@ -1,0 +1,12 @@
+{
+  "debug": {
+    "featureActivityExported": false,
+    "pluginClassDefinitions": 1,
+    "featureActivityDefinitions": 1
+  },
+  "release": {
+    "featureActivityExported": false,
+    "pluginClassDefinitions": 1,
+    "featureActivityDefinitions": 1
+  }
+}

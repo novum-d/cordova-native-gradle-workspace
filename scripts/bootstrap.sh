@@ -73,3 +73,6 @@ else
   node -e 'require(process.argv[1])' "$android_dir/cordova/Api.js"
   ./scripts/cordova.sh prepare android
 fi
+
+# platformとプラグインの自動復元後、ローカルKTソースを直接編集できるリンク導入へそろえる。
+./scripts/setup-kotlin-plugin.sh
