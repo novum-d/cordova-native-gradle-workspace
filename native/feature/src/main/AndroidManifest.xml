@@ -1,1 +1,2 @@
+<!-- UI用Libraryの最小Manifest。検証Activityの外部起動設定はDebug専用Manifestに分ける。 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" />

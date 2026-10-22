@@ -1,10 +1,15 @@
+# npm依存とローカルに取得したツールは、管理元の設定から復元する。
 node_modules/
 .tools/
+# Gradleのキャッシュ・ビルド出力・マシン固有SDKパスを管理対象から外す。
+
 .gradle/
 **/.gradle/
 **/build/
 **/local.properties
+# Cordovaの再生成対象。管理元はconfig.xml・hook・native/gradle配下に置く。
 CordovaComposeApp/platforms/
 CordovaComposeApp/plugins/
+# OSのメタデータと検証用に書き出すArtifactを除外する。
 .DS_Store
 artifacts/

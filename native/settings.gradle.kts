@@ -1,3 +1,4 @@
+// native単独ビルドで使うPlugin・ライブラリの取得元と、共有Libraryの構成を定義する。
 pluginManagement {
     repositories {
         google()
@@ -6,16 +7,18 @@ pluginManagement {
     }
 }
 
+// 取得元をSettingsで統一し、モジュールが独自のrepositoriesを追加したら失敗させる。
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
         mavenCentral()
-        // Used only by the optional catalog plugin resolution verification.
+        // 任意のCatalog検証がPluginのマーカーArtifactを依存として解決するときに使う。
         maven("https://plugins.gradle.org/m2/")
     }
 }
 
+// このホストはAPKを持たず、featureとdataをLibraryとして読み込む。
 rootProject.name = "CordovaNativeLibraries"
 include(":feature", ":data")
-// libs is imported automatically from gradle/libs.versions.toml by Gradle.
+// libsはgradle/libs.versions.tomlからGradleが自動登録するため、手動で二重登録しない。

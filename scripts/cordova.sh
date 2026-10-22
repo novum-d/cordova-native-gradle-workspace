@@ -1,7 +1,7 @@
 #!/bin/sh
+# アプリディレクトリへ移動し、共有の実行環境でローカルのCordova CLIを呼び出す。
 set -eu
 
-# プロジェクト環境用のCordova CLI
 workspace_dir=$(CDPATH='' cd -- "$(dirname -- "$0")/.." && pwd -P)
 cordova_cli="$workspace_dir/node_modules/cordova/bin/cordova"
 if [ ! -f "$cordova_cli" ]; then
@@ -11,5 +11,5 @@ if [ ! -f "$cordova_cli" ]; then
 fi
 cd "$workspace_dir/CordovaComposeApp"
 
-# Use the installed CLI directly, also when npm bin-links=false.
+# .binリンクを作らないnpm設定でも動くよう、CLI本体をNodeへ直接渡す。
 exec "$workspace_dir/scripts/with-env.sh" node "$cordova_cli" "$@"

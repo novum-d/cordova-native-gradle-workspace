@@ -1,3 +1,5 @@
+// native・Cordova共通の品質タスク。通常checkは読み取り専用、preCommitだけが作業ツリーを整形する。
+// 整形したら確認・再ステージを促して停止し、再試行時もindexの内容を別途検査する。
 import io.gitlab.arturbosch.detekt.Detekt
 import io.gitlab.arturbosch.detekt.DetektPlugin
 import io.gitlab.arturbosch.detekt.extensions.DetektExtension
@@ -11,6 +13,7 @@ import java.nio.file.Files
 import java.security.MessageDigest
 import javax.inject.Inject
 
+/** タスクから使うファイル操作・外部プロセス実行を、Gradleのサービスとして受け取る。 */
 interface GitHookServices {
     @get:Inject val files: FileSystemOperations
     @get:Inject val processes: ExecOperations
@@ -26,15 +29,15 @@ buildscript {
     }
 }
 
-// 適用先確認がルートプロジェクトであることを確認
+// タスク名・対象ソース・Gitの状態を一元管理するため、Gradleルートへの適用だけを許可する。
 check(project == rootProject) { "Apply git-hooks.gradle.kts to the Gradle root project only" }
 
-// git-hooksの適用済みを確認できるプロパティを定義
+// Cordovaの共有extrasが重ねて適用しないよう、ルートに適用済みの印を残す。
 extra["nativeGitHooksConfigured"] = true
 
 apply<DetektPlugin>()
 
-// configファイルの存在確認
+// 呼び出し元がnativeかCordovaのplatformかを判別し、同じworkspaceの設定を参照する。
 val catalog = extensions.getByType<VersionCatalogsExtension>().named("libs")
 val workspaceDir = if (rootDir.name == "android") rootDir.resolve("../../..").canonicalFile else rootDir.parentFile
 val detektConfig = workspaceDir.resolve("native/gradle/config/detekt/detekt.yml")
@@ -44,6 +47,7 @@ check(detektConfig.isFile && formattingConfig.isFile && autoCorrectConfig.isFile
 
 // 各モジュールsrcのファイルツリーを作成
 val nativeModules = listOf("feature", "data")
+// 本体・Debug・テストを含むsrc全体を対象とし、生成ディレクトリは解析から外す。
 fun nativeKotlinSources(baseDir: File) = files(nativeModules.map { module ->
     fileTree(baseDir.resolve("native/$module/src")) {
         include("**/*.kt")
@@ -51,6 +55,7 @@ fun nativeKotlinSources(baseDir: File) = files(nativeModules.map { module ->
     }
 })
 val kotlinSources = nativeKotlinSources(workspaceDir)
+// 作業ツリーとindexの内容を混同しないよう、ステージ済みソースはbuild/tmpへ別に取り出す。
 val stagedSourcesDir = layout.buildDirectory.dir("tmp/git-hooks/staged")
 val stagedSources = nativeKotlinSources(stagedSourcesDir.get().asFile)
 val hookServices = objects.newInstance<GitHookServices>()
@@ -58,6 +63,7 @@ val detektReportsDir = layout.buildDirectory.dir("reports/detekt")
 val preCommitDetektNames = listOf(
     "detektPreCommitFormat", "detektPreCommitFormatCheck", "detektPreCommit", "detektPreCommitStagedFormatCheck",
 )
+// 表示設定は呼び出しごとの環境から取得する。CIや画面のないLinuxではブラウザーを起動しない。
 val openReport = providers.gradleProperty("openPreCommitReport").map(String::toBoolean).orElse(true)
 val onCi = providers.environmentVariable("CI").map { it.equals("true", ignoreCase = true) || it == "1" }.orElse(false)
 val osName = System.getProperty("os.name").lowercase()
@@ -97,6 +103,7 @@ tasks.withType<Detekt>().configureEach {
     }
 }
 
+// 手動整形用。入力をその場で書き換えるため、以前の実行結果を使って省略しない。
 val detektFormat = tasks.register<Detekt>("detektFormat") {
     description = "Auto-corrects native Kotlin formatting using the TvApp rule configuration."
     group = "verification"
@@ -109,6 +116,7 @@ val detektFormat = tasks.register<Detekt>("detektFormat") {
     outputs.cacheIf { false }
 }
 
+// 通常check用。修正はせず、整形ルール違反が残っていれば失敗させる。
 val detektFormatCheck = tasks.register<Detekt>("detektFormatCheck") {
     description = "Checks native Kotlin formatting without changing files."
     group = "verification"
@@ -119,25 +127,28 @@ val detektFormatCheck = tasks.register<Detekt>("detektFormatCheck") {
 val ktlintCheck = tasks.register("ktlintCheck") {
     description = "Compatibility alias for detektFormatCheck, matching TvApp."
     group = "verification"
-    // リントチェック前にフォーマットを実行する
+    // 既存コマンドとの互換名。依存先は自動整形ではなく、読み取り専用の整形チェック。
     dependsOn(detektFormatCheck)
 }
 
 
+// 両ホストでルートのcheckを用意し、整形チェックと通常の静的解析を結び付ける。
 val rootCheck = tasks.findByName("check")?.let { tasks.named("check") } ?: tasks.register("check")
 rootCheck.configure { dependsOn(ktlintCheck, tasks.named("detekt")) }
 
+// パスごとの実ファイル内容のハッシュを取り、フォーマット前後の変更・追加・削除を判定する。
 fun sourceDigests(): Map<String, String> = kotlinSources.files.sortedBy { it.path }.associate { source ->
     check(source.canonicalFile.toPath().startsWith(workspaceDir.canonicalFile.toPath())) {
         "Refusing to format a source outside the workspace: $source"
     }
     check(!Files.isSymbolicLink(source.toPath())) { "Refusing to format a symbolic link: $source" }
 
-    // ファイルパス to ファイルパスで計算されたハッシュ
+    // workspace相対パスをキー、ファイルの内容から計算したSHA-256を値にする。
     source.relativeTo(workspaceDir).invariantSeparatorsPath to
         MessageDigest.getInstance("SHA-256").digest(source.readBytes()).joinToString("") { "%02x".format(it) }
 }
 
+// 以下は1回のpreCommit中だけ共有する実行時状態。生きたindexを読むため構成キャッシュの対象外。
 var stagedKotlin = emptyList<String>()
 var stagedNativeKotlin = emptyList<String>()
 var beforeFormatting = emptyMap<String, String>()
@@ -145,6 +156,7 @@ var preCommitPrepared = false
 var formattingChanged = false
 val hookReport = layout.buildDirectory.file("reports/git-hooks/preCommit.txt")
 
+// indexの内容と整形前の作業ツリーを保存する。ここから始まる処理でgit addは実行しない。
 val preparePreCommit = tasks.register("preparePreCommit") {
     group = "verification"
     description = "Snapshots staged native Kotlin with JGit and records working-tree bytes before formatting."
@@ -153,7 +165,7 @@ val preparePreCommit = tasks.register("preparePreCommit") {
         val snapshotDir = stagedSourcesDir.get().asFile
         preCommitPrepared = false
         formattingChanged = false
-        // Remove stale detekt reports and the discontinued summary from older versions.
+        // 古いレポートと以前の独自一覧を削除し、今回の結果だけを表示対象にする。
         hookServices.files.delete {
             delete(
                 listOf(snapshotDir, layout.buildDirectory.file("reports/git-hooks/preCommit.html").get().asFile) +
@@ -161,6 +173,7 @@ val preparePreCommit = tasks.register("preparePreCommit") {
             )
         }
         val builder = FileRepositoryBuilder().findGitDir(workspaceDir)
+        // Gitが代替indexを指定したコミットでも、既定indexを読んで検査をすり抜けないようにする。
         System.getenv("GIT_INDEX_FILE")?.takeIf { it.isNotEmpty() }?.let { indexPath ->
             builder.setIndexFile(workspaceDir.resolve(indexPath))
         }
@@ -176,6 +189,7 @@ val preparePreCommit = tasks.register("preparePreCommit") {
                 check(status.conflicting.isEmpty()) { "Resolve Git conflicts before running preCommit" }
                 stagedKotlin = (status.added + status.changed).filter { it.endsWith(".kt") }.sorted()
             }
+            // Kotlinのステージがあれば全nativeを検査し、index内容の整形検査はnativeの管理対象へ絞る。
             stagedNativeKotlin = stagedKotlin.filter { path ->
                 nativeModules.any { path.startsWith("native/$it/src/") } &&
                     path.split('/').none { it == "build" || it == "generated" }
@@ -208,6 +222,7 @@ val preparePreCommit = tasks.register("preparePreCommit") {
     }
 }
 
+// indexを保持したまま作業ツリーを自動整形し、次のタスクで変更の有無を判定する。
 val preCommitFormat = tasks.register<Detekt>("detektPreCommitFormat") {
     group = "verification"
     description = "Formatting phase of preCommit."
@@ -221,6 +236,7 @@ val preCommitFormat = tasks.register<Detekt>("detektPreCommitFormat") {
     notCompatibleWithConfigurationCache("Uses the live pre-commit snapshot")
 }
 
+// 1ファイルでも内容が変わればコミットを止める。自動ステージせず、利用者に差分確認を任せる。
 val checkPreCommitFormattingChanges = tasks.register("checkPreCommitFormattingChanges") {
     group = "verification"
     description = "Stops after auto-formatting so the user can review and restage the changes."
@@ -245,6 +261,7 @@ val checkPreCommitFormattingChanges = tasks.register("checkPreCommitFormattingCh
     }
 }
 
+// 自動修正できない整形違反も残さないよう、作業ツリーを読み取り専用で再検査する。
 val preCommitFormatCheck = tasks.register<Detekt>("detektPreCommitFormatCheck") {
     group = "verification"
     description = "Rejects remaining formatting violations after preCommit auto-correction."
@@ -258,6 +275,7 @@ val preCommitFormatCheck = tasks.register<Detekt>("detektPreCommitFormatCheck") 
     notCompatibleWithConfigurationCache("Uses the live pre-commit snapshot")
 }
 
+// 整形の確認が終わった後に、Compose・不変性などを含む通常の解析ルールを実行する。
 val preCommitAnalysis = tasks.register<Detekt>("detektPreCommit") {
     group = "verification"
     description = "Static analysis phase of preCommit, after formatting."
@@ -270,6 +288,7 @@ val preCommitAnalysis = tasks.register<Detekt>("detektPreCommit") {
     notCompatibleWithConfigurationCache("Uses the live pre-commit snapshot")
 }
 
+// 作業ツリーが整形済みでもindexが古い場合を拒否する。再ステージしない再試行でも必ず検査する。
 val preCommitStagedFormatCheck = tasks.register<Detekt>("detektPreCommitStagedFormatCheck") {
     group = "verification"
     description = "Checks the staged native Kotlin contents without changing the Git index or working files."
@@ -309,12 +328,13 @@ val preCommitPhases = listOf(
 )
 val preCommitDetektTasks = listOf(preCommitFormat, preCommitFormatCheck, preCommitAnalysis, preCommitStagedFormatCheck)
 
-// detekt 1.23.8 preserves this cause through its isolated CLI class loader.
-// Inspect its name so we don't add detekt-tooling to the buildscript classpath.
+// detekt 1.23.8の隔離CLIで発生した原因例外を、型名で照合してルール違反と識別する。
+// 同じ型を直接参照するためだけに、detekt-toolingをbuildscriptのclasspathへ追加しない。
 fun Detekt.failedWithRuleViolations(): Boolean = generateSequence(state.failure) { it.cause }.any {
     it.javaClass.name == "io.github.detekt.tooling.api.MaxIssuesReached"
 }
 
+// ルール違反に対応するdetekt標準HTMLだけを開く。設定破損や実行エラーでは古いHTMLを開かない。
 val showPreCommitReport = tasks.register("showPreCommitReport") {
     group = "verification"
     description = "Opens detekt's own HTML report only when preCommit finds rule violations."
@@ -322,8 +342,7 @@ val showPreCommitReport = tasks.register("showPreCommitReport") {
         preCommitPrepared && stagedKotlin.isNotEmpty() &&
             (formattingChanged || preCommitDetektTasks.any { it.get().failedWithRuleViolations() })
     }
-    // The finalizer is attached to prepare, which also runs when a later dependency fails.
-    // Wait until all scheduled phases finish instead of opening after prepare itself.
+    // prepareに登録したfinalizerが、後続フェーズを追い越して表示しないよう最後まで待たせる。
     mustRunAfter(preCommitPhases)
     notCompatibleWithConfigurationCache("Reads live pre-commit failures and opens a desktop report")
     doLast {
@@ -347,7 +366,7 @@ val showPreCommitReport = tasks.register("showPreCommitReport") {
             }
         }
         try {
-            // Resolve against this invocation's PATH, not the long-lived daemon's PATH.
+            // 長時間動作するGradle Daemonの古いPATHを使わず、今回の呼び出しのPATHから探す。
             val executable = executablePath.orNull.orEmpty().split(File.pathSeparator)
                 .map { File(it, command.first()) }.firstOrNull { it.isFile && it.canExecute() }
             if (executable == null) {
@@ -358,6 +377,7 @@ val showPreCommitReport = tasks.register("showPreCommitReport") {
                 commandLine(listOf(executable.absolutePath) + command.drop(1))
                 isIgnoreExitValue = true
             }
+            // macOSの既定アプリで開けない場合だけSafariを試し、表示失敗で解析結果を上書きしない。
             if (result.exitValue != 0 && osName.startsWith("mac")) {
                 logger.lifecycle("Default HTML application could not open the report; trying Safari.")
                 result = hookServices.processes.exec {
@@ -372,4 +392,5 @@ val showPreCommitReport = tasks.register("showPreCommitReport") {
         }
     }
 }
+// 後続フェーズが失敗しても表示判定へ進めるよう、最初の準備タスクのfinalizerに登録する。
 preparePreCommit.configure { finalizedBy(showPreCommitReport) }

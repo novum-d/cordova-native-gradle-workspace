@@ -1,6 +1,7 @@
-// Optional comparison only: does not change the catalog or production dependencies.
+// -Iで明示的に使うCompose BOM比較専用のinit script。Catalogや通常の宣言ファイルは編集しない。
 gradle.beforeProject { candidate ->
     if (candidate.path != ':feature') return
+    // 通常の依存宣言が出そろった後、-PcomposeBomProbeのBOMをこの実行にだけ追加する。
     candidate.afterEvaluate {
         def version = candidate.providers.gradleProperty('composeBomProbe').get()
         candidate.dependencies.add('implementation', candidate.dependencies.platform("androidx.compose:compose-bom:$version"))
@@ -12,6 +13,7 @@ gradle.beforeProject { candidate ->
                     .sort { it.toString() }.each { println "BOM probe resolved: $it" }
             }
         }
+        // コンパイル前に実解決版を記録し、成功・失敗をどのCompose/Kotlin構成で得たか追跡できるようにする。
         candidate.tasks.matching { it.name == 'compileDebugKotlin' }.configureEach { dependsOn(report) }
     }
 }

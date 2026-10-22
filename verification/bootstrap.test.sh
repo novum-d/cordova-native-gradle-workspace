@@ -1,4 +1,5 @@
 #!/bin/sh
+# 実際のnpm/Cordovaを一時workspaceで動かし、初回構築・破損復旧・設定不足を回帰検証する。
 set -eu
 
 workspace_dir=$(CDPATH='' cd -- "$(dirname -- "$0")/.." && pwd -P)
@@ -6,11 +7,13 @@ test_root=$(mktemp -d "${TMPDIR:-/tmp}/cordova-bootstrap.XXXXXX")
 trap 'rm -rf "$test_root"' EXIT
 trap 'exit 1' HUP INT TERM
 
+# 失敗した条件を表示して直ちに停止し、一時ファイルの回収はtrapへ任せる。
 fail() {
   echo "FAIL: $*" >&2
   exit 1
 }
 
+# 空白・日本語のパスと、本番モード・bin-links無効のnpm設定を組み合わせる。
 fixture_dir="$test_root/日本語 workspace"
 mkdir -p "$fixture_dir/scripts" "$fixture_dir/native/gradle" "$fixture_dir/CordovaComposeApp"
 fixture_dir=$(CDPATH='' cd -- "$fixture_dir" && pwd -P)
@@ -23,7 +26,7 @@ cp "$workspace_dir/CordovaComposeApp/package.json" "$workspace_dir/CordovaCompos
 cp "$workspace_dir/native/gradle/libs.versions.toml" "$fixture_dir/native/gradle/"
 gradle_version=$("$workspace_dir/scripts/catalog-version.sh" gradle)
 mkdir -p "$fixture_dir/.tools/gradle-$gradle_version/bin"
-# Stop after both real npm installs, before platform creation or any Gradle work.
+# npmの実インストールだけを先に検証するため、Gradle入口で固有の終了コードを返す。
 cat >"$fixture_dir/.tools/gradle-$gradle_version/bin/gradle" <<'SH'
 #!/bin/sh
 exit 73
@@ -51,6 +54,7 @@ actual_version=$(cd "$test_root" && "$fixture_dir/scripts/cordova.sh" --version)
 [ "$actual_version" = "$expected_version" ] || fail "unexpected CLI version: $actual_version"
 echo 'PASS: wrapper invokes the installed CLI without .bin links, from outside a workspace with spaces and Unicode'
 
+# Api.jsはあるがcordova-androidがない状態を作り、npm ciだけで読み込みが復旧するか調べる。
 api_dir="$fixture_dir/CordovaComposeApp/platforms/android/cordova"
 mkdir -p "$api_dir"
 printf "module.exports = require('cordova-android');\n" >"$api_dir/Api.js"
@@ -67,7 +71,7 @@ NODE_PATH='' node -e 'const api = require(process.argv[1]); if (typeof api.creat
   || fail 'npm ci did not restore the generated Android API'
 echo 'PASS: reinstalling app dependencies restores Api.js loading without deleting the platform'
 
-# Continue through real platform creation, while replacing only Gradle execution.
+# 実際のCLIでplatformを生成する段階へ進める。bootstrap内のGradle呼び出しだけをダミーにする。
 cp "$workspace_dir/CordovaComposeApp/config.xml" "$fixture_dir/CordovaComposeApp/"
 cp -R "$workspace_dir/CordovaComposeApp/www" "$workspace_dir/CordovaComposeApp/hooks" "$fixture_dir/CordovaComposeApp/"
 for relative in native/gradle/settings-extras.gradle native/gradle/build-extras.gradle \
@@ -83,6 +87,7 @@ cat >"$fixture_dir/.tools/gradle-$gradle_version/bin/gradle" <<'SH'
 exit 0
 SH
 
+# 呼び出し位置をworkspaceの外に固定し、各復旧パターンのログを分けて残す。
 run_platform_bootstrap() {
   if ! (cd "$test_root" && "$fixture_dir/scripts/bootstrap.sh") >"$test_root/$1.log" 2>&1; then
     cat "$test_root/$1.log" >&2
@@ -98,7 +103,7 @@ grep -Fq CORDOVA_NATIVE_GRADLE "$android_dir/app/build-extras.gradle" || fail 'f
 NODE_PATH='' node -e 'require(process.argv[1])' "$android_dir/cordova/Api.js" || fail 'fresh platform API cannot load'
 echo 'PASS: bootstrap creates a missing Android platform with the real Cordova CLI'
 
-# Configure the real fresh Gradle project, rather than checking marker files alone.
+# マーカーの存在だけでなく、本物のGradleで新規platformのCatalog・Plugin設定を読み込む。
 run_android_gradle() {
   "$workspace_dir/scripts/with-env.sh" "$workspace_dir/native/gradlew" \
     -p "$android_dir" help --console=plain >"$test_root/$1.log" 2>&1
@@ -109,8 +114,7 @@ if ! run_android_gradle fresh-gradle; then
 fi
 echo 'PASS: a fresh platform configures successfully with the real Gradle and shared catalog'
 
-# Cordova rewrites cdv-gradle-name.gradle on prepare. Skipping hooks leaves app
-# extras in place but removes the Settings reference that registers libs.
+# prepare後のhookを省略するとSettingsへの参照だけが消える状況を再現し、原因と復旧方法を確認する。
 if ! "$fixture_dir/scripts/cordova.sh" prepare android --nohooks=after_prepare >"$test_root/nohooks.log" 2>&1; then
   cat "$test_root/nohooks.log" >&2
   fail 'prepare without hooks failed'
@@ -136,6 +140,7 @@ if ! run_android_gradle restored-catalog; then
 fi
 echo 'PASS: ordinary prepare restores the missing Settings integration and Gradle succeeds'
 
+# 必須ファイルを欠落させ、旧platformの中身がバックアップへ保存されて再生成されるかを確認する。
 mv "$android_dir/cordova/Api.js" "$android_dir/cordova/Api.js.saved-for-test"
 printf 'existing generated files must be preserved\n' >"$android_dir/keep-me.txt"
 run_platform_bootstrap incomplete-platform
@@ -146,6 +151,7 @@ backup_marker=$(find "$fixture_dir/.tools/cordova-platform-backups" -type f -nam
 NODE_PATH='' node -e 'require(process.argv[1])' "$android_dir/cordova/Api.js" || fail 'regenerated platform API cannot load'
 echo 'PASS: a platform missing Api.js is backed up and regenerated without deleting existing files'
 
+# 正常なplatformは置き換えず、prepareだけで共有設定を復元することを確認する。
 printf 'keep the healthy platform\n' >"$android_dir/healthy-platform-marker.txt"
 run_platform_bootstrap healthy-platform
 [ -f "$android_dir/healthy-platform-marker.txt" ] || fail 'healthy platform was replaced'
@@ -155,6 +161,7 @@ if grep -Fq 'Incomplete Android platform' "$test_root/healthy-platform.log"; the
 fi
 echo 'PASS: a healthy platform is prepared without replacement'
 
+# CLI不足と、2種類のpackage.jsonの宣言不足を分けて、利用者向けの復旧案内を確かめる。
 mv "$fixture_dir/node_modules/cordova" "$test_root/installed-cordova"
 if "$fixture_dir/scripts/cordova.sh" --version >"$test_root/missing.log" 2>&1; then
   fail 'missing CLI unexpectedly succeeded'

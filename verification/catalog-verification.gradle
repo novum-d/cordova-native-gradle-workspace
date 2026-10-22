@@ -1,11 +1,11 @@
-// Build verification only. Probe sources and assets never enter ordinary builds.
+// 両ホストで共有する構成・依存解決の検証タスク。検証用ソースは指定されたビルドだけへ取り込む。
 import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.api.attributes.Usage
 
 ext.nativeCatalogVerificationConfigured = true
 
 def catalog = extensions.getByType(VersionCatalogsExtension).named('libs')
-// Capture the script's project at configuration time instead of Task.project in actions.
+// タスク実行中のTask.projectへの依存を避け、適用先のProjectを設定時に保持する。
 def verificationProject = project
 def featureProject = project(':feature')
 def moduleProjects = [featureProject, project(':data')]
@@ -14,6 +14,7 @@ def catalogReports = layout.buildDirectory.dir('reports/catalog')
 def probesEnabled = providers.gradleProperty('verifyCatalog').map { it == 'true' }.getOrElse(false)
 def fixtureDir = new File(buildFile.parentFile.name == 'native' ? rootDir.parentFile : new File(rootDir, '../../..'), 'verification/fixtures')
 
+// -PverifyCatalog=trueのときだけAPI参照用ソースと識別用assetsをbuild/generatedに作る。
 if (probesEnabled) {
     subprojects { candidate ->
         if (!(candidate.name in ['feature', 'data'])) return
@@ -34,7 +35,7 @@ if (probesEnabled) {
             }
             candidate.android.sourceSets.main.java.srcDir(output.map { new File(it.asFile, 'kotlin') })
             candidate.android.sourceSets.main.assets.srcDir(output.map { new File(it.asFile, 'assets') })
-            // AGP 8/KSP 1 do not retain producer dependencies from sourceSet directory Providers.
+            // AGP 8/KSP 1ではsourceSetのDirectory Providerから生成タスクへの依存が残らないため補う。
             candidate.tasks.matching {
                 it.name.startsWith('ksp') && it.name.endsWith('Kotlin') ||
                     it.name.startsWith('compile') && it.name.endsWith('Kotlin') || it.name.endsWith('Assets')
@@ -43,11 +44,13 @@ if (probesEnabled) {
     }
 }
 
+// Catalogの全ライブラリをBOM込みで一括解決する。通常のモジュールの依存宣言は変更しない。
 tasks.register('verifyCatalogResolution') {
     group = 'verification'
     description = 'Resolves application catalog libraries in an isolated configuration, without applying Hilt/KSP.'
     doLast {
         def feature = featureProject
+        // アプリ用Artifactの検証なので、detekt本体へ読み込むルールPluginは含めない。
         def buildToolGroups = ['io.gitlab.arturbosch.detekt', 'com.twitter.compose.rules']
         def dependenciesToCheck = catalog.libraryAliases.findAll {
             it != 'compose.bom' && !buildToolGroups.contains(catalog.findLibrary(it).get().get().module.group)
@@ -56,6 +59,7 @@ tasks.register('verifyCatalogResolution') {
         }
         dependenciesToCheck.add(feature.dependencies.platform(catalog.findLibrary('compose-bom').get().get()))
         def checking = feature.configurations.detachedConfiguration(*dependenciesToCheck)
+        // Android向けArtifactを選ぶ属性は、実際のdebugRuntimeClasspathから引き継ぐ。
         def reference = feature.configurations.getByName('debugRuntimeClasspath')
         reference.attributes.keySet().each { checking.attributes.attribute(it, reference.attributes.getAttribute(it)) }
         def artifacts = checking.incoming.artifacts.artifacts
@@ -66,6 +70,7 @@ tasks.register('verifyCatalogResolution') {
     }
 }
 
+// Pluginマーカーを依存として解決し、適用せずに取得可能性と推移依存を確かめる。
 tasks.register('verifyCatalogPlugins') {
     group = 'verification'
     description = 'Resolves catalog plugin marker artifacts without applying optional plugins; run from native.'
@@ -84,6 +89,7 @@ tasks.register('verifyCatalogPlugins') {
     }
 }
 
+// 実際の本体・テスト・KSPの各構成を解決し、モジュールと構成ごとの外部Artifact一覧を出力する。
 tasks.register('verifyModuleDependencies') {
     group = 'verification'
     description = 'Resolves actual module compile/runtime, test and KSP dependencies for both Android variants.'
@@ -100,6 +106,7 @@ tasks.register('verifyModuleDependencies') {
             }*.name
             names.unique().sort().each { name ->
                 def configuration = candidate.configurations.getByName(name)
+                // project依存は外部Artifact一覧へ混ぜず、feature→dataの関係は別タスクで確認する。
                 def artifacts = configuration.incoming.artifactView {
                     componentFilter { !(it instanceof org.gradle.api.artifacts.component.ProjectComponentIdentifier) }
                 }.artifacts.artifacts
@@ -115,12 +122,14 @@ tasks.register('verifyModuleDependencies') {
     }
 }
 
+// 宣言値に加え、読み込まれたPlugin・実効DSL・解決版を調べ、共有基盤と依存方向のずれを検出する。
 tasks.register('verifyNativeIntegration') {
     group = 'verification'
     description = 'Checks module boundaries, fixed toolchain and effective host runtime versions.'
     doLast {
         assert System.getProperty('java.specification.version') == '17'
         assert gradle.gradleVersion == catalog.findVersion('gradle').get().requiredVersion
+        // Catalogの文字列だけでなく、実際にロードされたAGPとKotlin Pluginの版を取得する。
         def libraryPlugin = featureProject.plugins.getPlugin('com.android.library')
         def agpVersion = libraryPlugin.class.classLoader.loadClass('com.android.builder.model.Version').getField('ANDROID_GRADLE_PLUGIN_VERSION').get(null)
         assert agpVersion == catalog.findVersion('agp').get().requiredVersion
@@ -128,6 +137,7 @@ tasks.register('verifyNativeIntegration') {
         def kotlinVersion = kotlinPlugin.class.classLoader.loadClass('org.jetbrains.kotlin.config.KotlinCompilerVersion').getField('VERSION').get(null)
         assert kotlinVersion == catalog.findVersion('kotlin').get().requiredVersion
         def allAndroidProjects = verificationProject.allprojects.findAll { it.plugins.hasPlugin('com.android.application') || it.plugins.hasPlugin('com.android.library') }
+        // Libraryの境界、コード生成Plugin、SDK、Java/KotlinのJVM targetが両ホストで一致することを確認する。
         [':feature', ':data'].each { name ->
             def candidate = verificationProject.project(name)
             assert candidate.plugins.hasPlugin('com.android.library')
@@ -148,6 +158,7 @@ tasks.register('verifyNativeIntegration') {
         }
         def app = verificationProject.findProject(':app')
         def hosts = allAndroidProjects.findAll { it.plugins.hasPlugin('com.android.application') }*.path
+        // CordovaではAPKホストを:appだけに限定し、CordovaLibの依存と最終的なLint設定も確認する。
         if (app != null) {
             assert hosts == [':app']
             assert app.android.defaultConfig.targetSdk == catalog.findVersion('target-sdk').get().requiredVersion.toInteger()
@@ -165,6 +176,7 @@ tasks.register('verifyNativeIntegration') {
             assert app.configurations.implementation.dependencies.any {
                 it instanceof ProjectDependency && it.path == ':CordovaLib'
             }
+            // 実行時のAppCompat・WebKit・Kotlinが、Cordovaの基準から持ち上がっていないか確認する。
             def modules = app.configurations.debugRuntimeClasspath.incoming.resolutionResult.allComponents.findAll { it.moduleVersion != null }*.moduleVersion
             assert modules.find { it.group == 'androidx.appcompat' && it.name == 'appcompat' }.version == '1.7.0'
             assert modules.find { it.group == 'androidx.webkit' && it.name == 'webkit' }.version == '1.12.1'

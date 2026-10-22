@@ -1,9 +1,10 @@
-// Applied in Settings scope through Cordova 14's generated cdv-gradle-name.gradle.
+// Cordovaのcdv-gradle-name.gradleからSettingsスコープで読み込み、共有CatalogとLibraryを登録する。
 def nativeDir = new File(settingsDir, '../../../native').canonicalFile
 def catalogFile = new File(nativeDir, 'gradle/libs.versions.toml')
 if (!catalogFile.isFile()) {
     throw new GradleException("Missing native Version Catalog: ${catalogFile}")
 }
+// 生成側Catalogとの混在やlibsの二重登録は、異なる版の参照を防ぐため明示的に拒否する。
 if (new File(settingsDir, 'gradle/libs.versions.toml').exists()) {
     throw new GradleException('Remove the generated Android build local libs catalog before sharing native/libs')
 }
@@ -13,6 +14,7 @@ if (catalogs.findByName('libs') != null) {
 }
 catalogs.create('libs') { from(files(catalogFile)) }
 
+// Gradle上のプロジェクト名を、workspaceのnative配下にある実体へ結び付ける。
 ['feature', 'data'].each { name ->
     def dir = new File(nativeDir, name)
     if (!new File(dir, 'build.gradle.kts').isFile()) {

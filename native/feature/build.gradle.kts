@@ -4,7 +4,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
 plugins {
-    // Versions come from the native root OR Cordova's existing buildscript classpath.
+    // AGP・Kotlinの版はnativeルート、またはCordovaが読み込んだbuildscriptの実体を使う。
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     alias(libs.plugins.ksp)

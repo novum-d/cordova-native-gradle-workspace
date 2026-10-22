@@ -8,9 +8,11 @@ import org.gradle.tooling.ProjectConnection;
 import org.gradle.tooling.model.gradle.BasicGradleProject;
 import com.android.builder.model.v2.models.BasicAndroidProject;
 
-/** Requests Android Studio's Android V2 base models through the Gradle Tooling API. */
+/** Gradle Tooling APIでAndroid V2の基本モデルを取得し、IDEのSyncに必要な構成を確認する。 */
 public final class ToolingSync {
+    /** 接続先ビルドの各ProjectからAndroidモデルを集め、variant数とManifestの場所を返す。 */
     public static final class AndroidModels implements BuildAction<List<String>> {
+        /** Android以外のProjectを読み飛ばし、Androidモデルが1件もなければ検証を失敗させる。 */
         public List<String> execute(BuildController controller) {
             List<String> models = new ArrayList<>();
             for (BasicGradleProject project : controller.getBuildModel().getProjects()) {
@@ -25,6 +27,7 @@ public final class ToolingSync {
             return models;
         }
     }
+    /** 引数のプロジェクトへ指定Gradle・JAVA_HOMEで接続し、モデル取得の結果を表示して接続を閉じる。 */
     public static void main(String[] args) {
         try (ProjectConnection connection = GradleConnector.newConnector()
                 .forProjectDirectory(new File(args[0]))

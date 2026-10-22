@@ -1,4 +1,5 @@
 #!/bin/sh
+# 一時Gitリポジトリでhookの設置・再設置・コミット連動・既存設定の保護を確認する。
 set -eu
 
 source_dir=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd -P)
@@ -11,11 +12,13 @@ export GIT_CONFIG_NOSYSTEM=1
 export GIT_CONFIG_GLOBAL=/dev/null
 unset GIT_DIR GIT_WORK_TREE GIT_INDEX_FILE GIT_COMMON_DIR
 
+# 条件不一致をテスト失敗として通知し、一時リポジトリはtrapで回収する。
 fail() {
   echo "FAIL: $*" >&2
   exit 1
 }
 
+# 既定のテンプレートや署名設定に左右されない、ケースごとのGit環境を作る。
 fixture() {
   case_dir="$test_root/$1"
   fixture_dir="$case_dir/日本語 workspace"
@@ -29,10 +32,12 @@ fixture() {
   mkdir -p "$fixture_dir/.git/hooks"
 }
 
+# 別ディレクトリからセットアップを呼び、作業位置に依存しないことも確認する。
 setup() {
   (cd "$case_dir" && sh "$fixture_dir/scripts/setup-git-hooks.sh") >"$case_dir/setup.log" 2>&1
 }
 
+# 成功を期待した操作が失敗したら、原因となるセットアップログを表示する。
 expect_setup_success() {
   if ! setup; then
     cat "$case_dir/setup.log" >&2
@@ -40,12 +45,14 @@ expect_setup_success() {
   fi
 }
 
+# 保護対象があるケースでは、成功終了を回帰不具合として扱う。
 expect_setup_failure() {
   if setup; then
     fail 'setup should fail'
   fi
 }
 
+# 同じhookのinode・内容を保って再実行でき、実行権限だけを戻せることを確認する。
 fixture repeat
 expect_setup_success
 [ -x "$hook_file" ] || fail 'installed hook is not executable'
@@ -58,6 +65,7 @@ cmp -s "$hook_file" "$case_dir/before" || fail 'repeated setup changed the hook'
 [ -x "$hook_file" ] || fail 'repeated setup did not restore execution permission'
 echo 'PASS: installs an executable hook and can be repeated without replacing it'
 
+# Gitから実際にhookを起動し、作業位置・引数とGradle相当の終了コードが反映されるか確認する。
 fixture commit
 expect_setup_success
 cat >"$fixture_dir/scripts/with-env.sh" <<'SH'
@@ -83,6 +91,7 @@ fi
 [ "$(git -C "$fixture_dir" log -1 --format=%s)" = 'Hook check' ] || fail 'successful commit is missing'
 echo 'PASS: Git invokes Gradle through with-env and follows its exit status'
 
+# 独自hookの内容と権限を、拒否時にも変更しない。
 fixture existing
 printf '#!/bin/sh\necho existing hook\n' >"$hook_file"
 chmod 644 "$hook_file"
@@ -93,6 +102,7 @@ cmp -s "$hook_file" "$case_dir/before" || fail 'existing hook was modified'
 [ "$(ls -ld "$hook_file" | awk '{print substr($1, 1, 10)}')" = '-rw-r--r--' ] || fail 'existing hook permissions changed'
 echo 'PASS: refuses to overwrite an existing custom hook'
 
+# 壊れたリンクも既存hookとして扱い、参照先の作成やリンクの置き換えを防ぐ。
 fixture symlink
 link_target="$case_dir/missing-hook"
 ln -s "$link_target" "$hook_file"
@@ -102,6 +112,7 @@ expect_setup_failure
 [ ! -e "$link_target" ] || fail 'symbolic link target was created'
 echo 'PASS: refuses to replace a symbolic link'
 
+# core.hooksPathの運用を保ち、Gitが使わないディレクトリへhookを誤設置しない。
 fixture configured
 git -C "$fixture_dir" config core.hooksPath .custom-hooks
 expect_setup_failure

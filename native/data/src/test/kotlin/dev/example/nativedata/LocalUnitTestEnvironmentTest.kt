@@ -12,9 +12,10 @@ import kotlinx.serialization.json.Json
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-/** Verifies coroutine virtual time and the test source set's serialization plugin. */
+/** Coroutinesの仮想時間と、テストソースへのSerialization Plugin適用を確認するJVM環境テスト。 */
 @OptIn(ExperimentalCoroutinesApi::class)
 class LocalUnitTestEnvironmentTest {
+    /** Flow内のdelayを仮想時間で進め、受信値の順番と経過時間を確認する。 */
     @Test
     fun flowDelaysUseVirtualTime() = runTest {
         val states = flow {
@@ -27,6 +28,7 @@ class LocalUnitTestEnvironmentTest {
         assertEquals(5_000L, testScheduler.currentTime)
     }
 
+    /** Datetimeを含むテスト用データのSerializer生成と、JSONの往復変換を確認する。 */
     @Test
     fun testSourcesGenerateASerializerForDatetimeRecords() {
         val record = StoredRecord("example", Instant.parse("2026-10-20T00:00:00Z"))
@@ -38,6 +40,7 @@ class LocalUnitTestEnvironmentTest {
         assertEquals(record, restored)
     }
 
+    /** テストソースにもSerializerが生成されることを確かめるための最小データ。 */
     @Serializable
     private data class StoredRecord(val name: String, val updatedAt: Instant)
 }

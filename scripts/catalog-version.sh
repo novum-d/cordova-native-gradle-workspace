@@ -1,8 +1,9 @@
 #!/bin/sh
+# Version Catalogの[versions]から指定aliasの文字列を取り出し、他のシェルへ渡す。
 set -eu
 
-# Version Catalogから引数で指定したプロパティのバージョンを取得するシェル
 workspace_dir=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+# aliasを小文字英数字・ハイフンに限定し、awkの検索パターンへ任意の式を混ぜない。
 if [ "$#" -ne 1 ]; then
   echo 'A catalog version alias is required' >&2
   exit 1
@@ -14,7 +15,7 @@ case "$1" in
   ;;
 esac
 
-# [versions]内の name = "value" 形式を読み取る
+# [versions]内の name = "value" だけを読む簡易パーサー。TOML全般の構文解析は行わない。
 awk -v requested="$1" '
   /^[[:space:]]*\[/ {
     in_versions = ($0 ~ /^[[:space:]]*\[versions\][[:space:]]*(#.*)?$/)
@@ -30,6 +31,7 @@ awk -v requested="$1" '
     found = 1
     exit
   }
+  # aliasがなければ空文字の成功扱いにせず、呼び出し元も失敗させる。
   END {
     if (!found) {
       print "Missing catalog version: " requested > "/dev/stderr"

@@ -1,7 +1,9 @@
+// 機能テスト専用の一時Gitリポジトリに、各シナリオの作業ツリー・indexを構築する。
 import org.eclipse.jgit.api.Git
 import org.gradle.api.artifacts.VersionCatalogsExtension
 import java.security.MessageDigest
 
+// シェルのGitコマンドに頼らず、実際のhookと同じ版のJGitでステージ状態を作る。
 buildscript {
     val catalog = project.extensions.getByType<VersionCatalogsExtension>().named("libs")
     repositories { mavenCentral() }
@@ -10,6 +12,7 @@ buildscript {
     }
 }
 
+// マーカーファイルのある一時ディレクトリだけを許可し、本番workspaceへの誤適用を防ぐ。
 val fixtureDir = rootDir.parentFile
 check(fixtureDir.resolve(".git-hook-functional-fixture").isFile) { "Fixture setup may only run in its temporary test repository" }
 val scenario = providers.gradleProperty("scenario").get()
@@ -17,10 +20,12 @@ val reuseFixture = providers.gradleProperty("reuseFixture").isPresent
 val restageFixture = providers.gradleProperty("restageFixture").isPresent
 val target = "native/data/src/main/kotlin/fixture/Answer.kt"
 val good = "package fixture\n\ninternal fun answer(value: Int): Int = value + 42\n"
+/** 一時リポジトリ配下に親ディレクトリごと検証用ファイルを書き出す。 */
 fun put(relative: String, content: String) {
     fixtureDir.resolve(relative).apply { parentFile.mkdirs(); writeText(content) }
 }
 
+// 通常は新規のindexを作る。再試行ケースだけは同じindexを再利用し、明示された場合のみ再ステージする。
 val setup = tasks.register("setupHookFixture") {
     doLast {
         if (reuseFixture) {
@@ -29,6 +34,7 @@ val setup = tasks.register("setupHookFixture") {
             }
         } else {
             Git.init().setDirectory(fixtureDir).call().use { git ->
+                // 整形・解析違反、部分ステージ、削除、特殊パスを、それぞれ独立した状態として作る。
                 when (scenario) {
                     "no-staged-kotlin" -> {
                         put(target, "package fixture\n\ninternal fun answer(value: Int): Int = value + 42    \n")
@@ -49,7 +55,7 @@ val setup = tasks.register("setupHookFixture") {
                             "staged-formatting-html-name" -> "native/data/src/main/kotlin/fixture/Probe <unsafe>&.kt"
                             else -> target
                         }
-                        // These cases exercise path handling, independently of the Filename naming rule.
+                        // ファイル名の命名ルールを抑え、ここでは空白・日本語・HTML特殊文字のパス処理だけを検証する。
                         val pathGood = if (stagedTarget == target) good else "@file:Suppress(\"Filename\")\n\n$good"
                         put(stagedTarget, pathGood.replace("42\n", "42    \n"))
                         git.add().addFilepattern(stagedTarget).call()
@@ -59,6 +65,7 @@ val setup = tasks.register("setupHookFixture") {
                             put(stagedTarget, pathGood)
                         }
                     }
+                    // 通常indexを整形済みに、代替indexを未整形にし、GIT_INDEX_FILEが尊重されるか調べる。
                     "alternate-index-formatting-only" -> {
                         put(target, good.replace("42\n", "42    \n"))
                         git.add().addFilepattern(target).call()
@@ -69,6 +76,7 @@ val setup = tasks.register("setupHookFixture") {
                         fixtureDir.resolve(".git/index").writeBytes(formattedIndex)
                         fixtureDir.resolve("alternate-index").writeBytes(unformattedIndex)
                     }
+                    // HEAD・index・作業ツリーの値をすべて変え、未ステージ変更が残るか確認する。
                     "existing-unstaged" -> {
                         put(target, good.replace("42", "40"))
                         git.add().addFilepattern(target).call()
@@ -82,6 +90,7 @@ val setup = tasks.register("setupHookFixture") {
                         put(target, "package fixture\n\ninternal fun first(): Nothing {\n    throw Exception(\"first\")\n}\n\ninternal fun second(): Nothing {\n    throw Exception(\"second\")\n}\n")
                         git.add().addFilepattern(target).call()
                     }
+                    // 正しいソースに実行・設定のエラーだけを組み合わせ、ルール違反との区別を確認する。
                     "analysis-execution-failed", "invalid-detekt-config" -> {
                         put(target, good)
                         if (scenario == "invalid-detekt-config") {
@@ -146,6 +155,7 @@ val setup = tasks.register("setupHookFixture") {
                 }
             }
         }
+        // hook実行前のindexを記録し、検証後にPython側でバイト単位の不変性を照合する。
         val indexFile = if (scenario == "alternate-index-formatting-only") "alternate-index" else ".git/index"
         val index = fixtureDir.resolve(indexFile).readBytes()
         fixtureDir.resolve("index-before.sha256").writeText(
@@ -160,12 +170,13 @@ val setup = tasks.register("setupHookFixture") {
     }
 }
 
+// 実際のhookを起動する直前にfixtureを構築する。読み取り専用checkも同じ準備を使う。
 tasks.named("preparePreCommit") { dependsOn(setup) }
 tasks.named("detektFormatCheck") { dependsOn(setup) }
 if (scenario == "analysis-execution-failed") {
     tasks.named("detektPreCommit") {
         doFirst {
-            // Even an existing HTML file must not be opened for execution errors.
+            // HTMLが存在しても、解析の実行エラーでそれを開かないことを確認する。
             put("native/build/reports/detekt/detektPreCommit.html", "STALE REPORT")
             error("Fixture detekt execution failure")
         }

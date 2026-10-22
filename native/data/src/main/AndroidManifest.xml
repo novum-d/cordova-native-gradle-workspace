@@ -1,1 +1,2 @@
+<!-- データ処理用Libraryの最小Manifest。Application・画面・権限はここでは追加しない。 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" />

@@ -1,4 +1,5 @@
-// Applied ONLY to the existing Cordova :app via its supported build-extras.gradle.
+// Cordovaのapp/build-extras.gradleから適用し、実効版の照合・Library依存・ルート検証を設定する。
+// libsの登録はSettings評価時に必要。prepareのhookが途切れた場合は復旧コマンドを案内する。
 def catalogs = extensions.getByType(org.gradle.api.artifacts.VersionCatalogsExtension)
 if (!catalogs.find('libs').isPresent()) {
     throw new GradleException("""Shared Version Catalog 'libs' was not registered during Settings evaluation.
@@ -8,6 +9,7 @@ ${new File(rootDir, 'cdv-gradle-name.gradle')}
 Check CordovaComposeApp/config.xml for the after_prepare hook if the reference is still missing.""")
 }
 def catalog = catalogs.named('libs')
+// Cordovaが生成した実効設定をCatalogと照合する。値を強制上書きして不整合を隠さない。
 def requiredVersions = [MIN_BUILD_TOOLS_VERSION: 'build-tools', AGP_VERSION: 'agp', GRADLE_VERSION: 'gradle', KOTLIN_VERSION: 'kotlin',
                         ANDROIDX_WEBKIT_VERSION: 'webkit', JAVA_SOURCE_COMPATIBILITY: 'jvm-target',
                         JAVA_TARGET_COMPATIBILITY: 'jvm-target', MIN_SDK_VERSION: 'min-sdk',
@@ -22,18 +24,20 @@ if (gradle.gradleVersion != catalog.findVersion('gradle').get().requiredVersion)
     throw new GradleException('Cordova and native must use the same catalog Gradle version')
 }
 
+// APKホストは既存の:appだけとし、共有Libraryをそこへ組み込む。
 dependencies {
     implementation(project(':feature'))
     implementation(project(':data'))
 }
 
-// Cordova assigns abortOnError=false AFTER loading build-extras.gradle.
-// Finalize the DSL after those defaults and any other plugin extras are applied.
+// Cordovaはextras読込後にabortOnError=falseを設定するため、DSLの確定時にエラー停止を有効化する。
+// checkDependenciesで、LibraryとCordovaLibの指摘もアプリのLintに含める。
 androidComponents.finalizeDsl { androidDsl ->
     androidDsl.lint.abortOnError = true
     androidDsl.lint.checkDependencies = true
 }
 
+// rootへの登録は初回だけにし、再適用によるタスク名の衝突を防ぐ。
 if (!rootProject.ext.has('nativeCatalogVerificationConfigured')) {
     rootProject.apply from: new File(rootDir, '../../../verification/catalog-verification.gradle')
 }

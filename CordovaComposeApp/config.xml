@@ -1,4 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
+<!-- アプリの識別情報と、再生成されるAndroid platformへ渡すSDK設定・連携hookの管理元。 -->
 <widget id="dev.example.cordovanative" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>CordovaComposeApp</name>
     <description>
@@ -7,14 +8,17 @@
     <author email="dev@cordova.apache.org" href="https://cordova.apache.org">
         Apache Cordova Team
     </author>
+    <!-- Cordova標準のWeb画面を入口とし、外部HTTP(S)リンクはOS側で開けるようにする。 -->
     <content src="index.html" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
+    <!-- Cordova Android 14に合わせる。CLIが設定を再生成するため、platform内を直接変更しない。 -->
     <platform name="android">
         <preference name="GradlePluginKotlinEnabled" value="true" />
         <preference name="android-minSdkVersion" value="24" />
         <preference name="android-compileSdkVersion" value="35" />
         <preference name="android-targetSdkVersion" value="35" />
+        <!-- prepareで共有Settingsを復元し、build時の再生成後にもbefore_compileで再登録する。 -->
         <hook type="after_prepare" src="hooks/copy-gradle-extras.js" />
         <hook type="before_compile" src="hooks/copy-gradle-extras.js" />
     </platform>

@@ -1,4 +1,5 @@
 #!/bin/sh
+# Cordova hookが管理ブロックだけを復元し、再実行・異常入力でも既存設定を保つことを確認する。
 set -eu
 
 source_dir=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd -P)
@@ -6,11 +7,13 @@ test_root=$(mktemp -d "${TMPDIR:-/tmp}/cordova-native-hook.XXXXXX")
 trap 'rm -rf "$test_root"' EXIT
 trap 'exit 1' HUP INT TERM
 
+# 条件不一致時に原因を表示し、このテストを非ゼロで終了する。
 fail() {
   echo "FAIL: $*" >&2
   exit 1
 }
 
+# 他Pluginの設定を含む最小platformを、空白・日本語を含む一時パスに用意する。
 fixture() {
   case_dir="$test_root/$1"
   fixture_dir="$case_dir/日本語 workspace"
@@ -31,6 +34,7 @@ fixture() {
   extras_file="$app_dir/platforms/android/app/build-extras.gradle"
 }
 
+# CLI全体を起動せず、Cordovaが渡すcontextを組み立てて管理対象のhook関数を呼ぶ。
 run_hook() {
   # CordovaのJavaScript関数を実行する部分だけNode.jsを使う。
   node - "$source_dir/CordovaComposeApp/hooks/copy-gradle-extras.js" "$app_dir" "${1:-android}" \
@@ -40,6 +44,7 @@ hook({ hook: 'test', opts: { projectRoot: process.argv[3], platforms: [process.a
 JS
 }
 
+# 成功ケースの失敗時はhookのログも表示し、原因を追えるようにする。
 expect_hook_success() {
   if ! run_hook "${1:-android}"; then
     cat "$case_dir/hook.log" >&2
@@ -47,6 +52,7 @@ expect_hook_success() {
   fi
 }
 
+# 非ゼロ終了と期待するエラーの両方を照合し、別の原因による失敗を成功扱いしない。
 expect_hook_failure() {
   if run_hook; then
     fail 'Cordova hook should fail'
@@ -54,6 +60,7 @@ expect_hook_failure() {
   grep -q "$1" "$case_dir/hook.log" || fail 'missing expected Cordova hook error'
 }
 
+# 再適用の冪等性と、Settings本体・既存Plugin設定の保存を確認する。
 fixture repeat
 cp "$settings_file" "$case_dir/settings-before"
 expect_hook_success
@@ -69,6 +76,7 @@ grep -q 'existing plugin integration' "$extras_file" || fail 'existing plugin se
 [ "$(grep -c 'BEGIN CORDOVA_NATIVE_GRADLE' "$extras_file")" -eq 1 ] || fail 'integration marker was duplicated'
 echo 'PASS: preserves existing plugin settings and is byte-identical after repeated runs'
 
+# 管理元不足では、生成ファイルに手を付ける前に停止する。
 fixture missing
 cp "$name_file" "$case_dir/name-before"
 rm "$fixture_dir/native/data/build.gradle.kts"
@@ -76,6 +84,7 @@ expect_hook_failure 'Required integration file missing'
 cmp -s "$name_file" "$case_dir/name-before" || fail 'missing-module failure changed generated files'
 echo 'PASS: fails before modifying generated files when a native module is missing'
 
+# 破損した管理マーカーを修復名目で消さず、既存内容を維持して拒否する。
 fixture damaged
 printf '// BEGIN CORDOVA_NATIVE_GRADLE\n// existing custom plugin' >"$extras_file"
 cp "$extras_file" "$case_dir/extras-before"
@@ -83,6 +92,7 @@ expect_hook_failure 'Malformed integration markers'
 cmp -s "$extras_file" "$case_dir/extras-before" || fail 'damaged-marker failure changed existing content'
 echo 'PASS: rejects damaged markers instead of erasing unrelated Gradle content'
 
+# Androidを含まないprepareでは、Android用ファイルの存在確認や生成を行わない。
 case_dir="$test_root/non-android"
 mkdir -p "$case_dir"
 app_dir="$case_dir/not-an-android-project"

@@ -1,4 +1,5 @@
-# buildUponDefaultConfig=false requires rule-level autoCorrect to be explicit.
+# 整形専用の設定。buildUponDefaultConfig=falseのため、対象ルールとautoCorrectを明示する。
+# 実際に書き換えるかはタスクのautoCorrectが決め、読み取り専用checkでも同じルールを使う。
 formatting:
   active: true
   android: true
@@ -15,6 +16,7 @@ formatting:
   EnumWrapping:
     active: true
     autoCorrect: true
+  # 複数引数の関数宣言、波括弧、リストの空行を統一する。
   FunctionSignature:
     active: true
     autoCorrect: true
@@ -39,6 +41,7 @@ formatting:
   TypeParameterListSpacing:
     active: true
     autoCorrect: true
+  # 宣言の末尾カンマ・インデント・行長・空白をそろえる。
   TrailingCommaOnDeclarationSite:
     active: true
     autoCorrect: true
@@ -56,6 +59,7 @@ formatting:
   NoTrailingSpaces:
     active: true
     autoCorrect: true
+  # 自動修正だけでは解消できないワイルドカードimportも、残存違反として拒否する。
   NoWildcardImports:
     active: true
     autoCorrect: true

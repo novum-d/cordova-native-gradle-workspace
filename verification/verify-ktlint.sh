@@ -1,7 +1,8 @@
 #!/bin/sh
+# 独立した一時Gradleプロジェクトで本物のktlintを動かし、検出・非変更・自動修正を確認する。
 set -eu
 
-# Exercise the actual ktlint plugin/engine separately from the detektFormatCheck alias.
+# 通常プロジェクトのktlintCheckはdetektの互換名なので、ktlint Pluginとエンジン自体は別に適用する。
 workspace_dir=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd -P)
 fixture_dir=$(mktemp -d "${TMPDIR:-/tmp}/workspace-ktlint.XXXXXX")
 trap 'rm -rf "$fixture_dir"' EXIT
@@ -11,6 +12,7 @@ plugin_version=$("$workspace_dir/scripts/catalog-version.sh" ktlint)
 engine_version=$("$workspace_dir/scripts/catalog-version.sh" ktlint-engine)
 kotlin_version=$("$workspace_dir/scripts/catalog-version.sh" kotlin)
 
+# 一時プロジェクトとコピーした入力だけを使い、通常ソース・依存設定は変更しない。
 cat >"$fixture_dir/settings.gradle" <<'GRADLE'
 pluginManagement { repositories { gradlePluginPortal(); mavenCentral() } }
 rootProject.name = 'ktlint-execution-probe'
@@ -38,6 +40,7 @@ class Answer {
 }
 KOTLIN
 
+# 実際のWrapperと共有環境を使い、呼び出し元のJDKや作業ディレクトリに依存させない。
 run_gradle() {
   "$workspace_dir/scripts/with-env.sh" "$workspace_dir/native/gradlew" \
     -p "$fixture_dir" --console=plain --no-watch-fs "$@"
@@ -46,7 +49,7 @@ run_gradle() {
 echo "ktlint Gradle Plugin $plugin_version / ktlint engine $engine_version / Kotlin $kotlin_version"
 run_gradle ktlintCheck
 
-# A successful clean check alone does not prove that formatting violations are detected.
+# 故意の末尾空白を拒否することと、checkが入力を書き換えないことを確かめてからformatを実行する。
 printf '\n    \n' >>"$fixture_dir/src/main/kotlin/Answer.kt"
 cp "$fixture_dir/src/main/kotlin/Answer.kt" "$fixture_dir/malformed-before.kt"
 if run_gradle ktlintCheck >"$fixture_dir/rejected.log" 2>&1; then

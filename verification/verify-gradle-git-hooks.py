@@ -1,3 +1,4 @@
+# 一時リポジトリで本物のGradle Kotlin DSLを実行し、終了状態・index保存・レポート表示を照合する。
 """Exercises the real Kotlin DSL hook in disposable repositories. No Git/Detekt CLI or local tool JAR is used."""
 from pathlib import Path
 import argparse
@@ -9,6 +10,7 @@ import sys
 import tempfile
 
 workspace = Path(__file__).resolve().parent.parent
+# シナリオごとの期待する成否とログ断片。単なる失敗ではなく、意図したルールで停止したかも判定する。
 cases = {
     'no-staged-kotlin': (True, 'No staged Kotlin files'),
     'clean-staged': (True, 'preCommit passed'),
@@ -35,6 +37,7 @@ cases = {
     'compose-mutable-list': (False, 'MutableParams'),
     'compose-immutable-collections': (True, 'preCommit passed'),
 }
+# 出力先と対象ケースだけを指定できるようにし、実行ログ・検査後ソース・集計を出力する。
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--output-dir', type=Path, default=workspace / 'docs/git-hook-tests')
 parser.add_argument('--scenario', action='append', choices=cases)
@@ -44,6 +47,7 @@ logs.mkdir(parents=True, exist_ok=True)
 results = []
 
 
+# 1ケースを実行し、実ファイル・index・detekt HTML・ブラウザー呼び出しを組み合わせて判定する。
 def run_case(fixture, scenario, should_pass, expected, label=None, properties=(), ci=False, browser_exit=0, safari_fallback=False):
     label = label or scenario
     native = fixture / 'native'
@@ -51,6 +55,7 @@ def run_case(fixture, scenario, should_pass, expected, label=None, properties=()
     command = [str(workspace / 'scripts/with-env.sh'), str(workspace / 'native/gradlew'),
                '-p', str(native), f'-Pscenario={scenario}', *properties, task,
                '--console=plain', '--no-watch-fs', '--build-cache']
+    # 実ブラウザーの代わりに呼び出しを記録するコマンドを優先し、CI・表示失敗も再現する。
     environment = dict(os.environ)
     environment['PATH'] = str(fixture / 'browser-bin') + os.pathsep + environment.get('PATH', '')
     environment['CI'] = 'true' if ci else 'false'
@@ -62,6 +67,7 @@ def run_case(fixture, scenario, should_pass, expected, label=None, properties=()
     browser_log.unlink(missing_ok=True)
     report = native / 'build/reports/git-hooks/preCommit.html'
     report.parent.mkdir(parents=True, exist_ok=True)
+    # 古いHTMLを先に置き、前回の結果が削除されて今回のHTMLだけが開かれるか確認する。
     if task == 'preCommit':
         report.write_text('STALE REPORT')
         old_reports = native / 'build/reports/detekt'
@@ -84,6 +90,7 @@ def run_case(fixture, scenario, should_pass, expected, label=None, properties=()
     if snapshot.is_file():
         sources['staged_source_snapshot'] = snapshot.read_text()
     (logs / f'{label}-after.json').write_text(json.dumps(sources, indent=2) + '\n')
+    # 作業ツリー・スナップショットの内容に加え、index自体のバイト列が不変かを検査する。
     index = fixture / ('alternate-index' if scenario == 'alternate-index-formatting-only' else '.git/index')
     index_before = fixture / 'index-before.sha256'
     unchanged = index.is_file() and index_before.is_file() and (
@@ -105,6 +112,7 @@ def run_case(fixture, scenario, should_pass, expected, label=None, properties=()
             fixture / 'default-index-before.sha256').read_text()
     if label == 'retry-after-restaging':
         passed = passed and sources.get('working_tree_source') == sources.get('staged_source_snapshot')
+    # ルール違反と設定・実行エラーを分け、適切なdetekt標準HTMLだけが表示対象になるか調べる。
     expected_report = None
     if not should_pass and scenario not in ['check-does-not-format', 'analysis-execution-failed', 'invalid-detekt-config']:
         if label == 'retry-without-restaging' or scenario.startswith('staged-formatting-') or scenario == 'alternate-index-formatting-only':
@@ -135,6 +143,7 @@ def run_case(fixture, scenario, should_pass, expected, label=None, properties=()
         passed = passed and f'Could not open detekt HTML report (exit {browser_exit})' in result.stdout
     if safari_fallback:
         passed = passed and 'trying Safari.' in result.stdout and 'Opened detekt HTML report.' in result.stdout
+    # 失敗ケースも集計へ残し、最後に全ケースの結果から検証コマンドの成否を決める。
     results.append({'scenario': label, 'passed': passed, 'exit_code': result.returncode,
                     'expected_success': should_pass, 'git_index_unchanged': unchanged,
                     'legacy_summary_removed': not report.exists(), 'detekt_report': expected_report,
@@ -144,6 +153,7 @@ def run_case(fixture, scenario, should_pass, expected, label=None, properties=()
         print(result.stdout[-8000:], flush=True)
 
 
+# ケースごとに別の一時リポジトリを使う。元workspaceのindexやソースはテスト用に変更しない。
 with tempfile.TemporaryDirectory(prefix='gradle-git-hook-tests-') as temporary:
     for scenario in options.scenario or cases:
         should_pass, expected = cases[scenario]
@@ -153,6 +163,7 @@ with tempfile.TemporaryDirectory(prefix='gradle-git-hook-tests-') as temporary:
         (fixture / '.git-hook-functional-fixture').touch()
         browser_bin = fixture / 'browser-bin'
         browser_bin.mkdir()
+        # openerは実行パス・回数・終了コードだけを記録し、利用者のブラウザーは起動しない。
         for name in ['open', 'xdg-open']:
             opener = browser_bin / name
             opener.write_text('''#!/bin/sh
@@ -164,6 +175,7 @@ if [ "$1" = '-a' ]; then exit "$PRECOMMIT_BROWSER_FALLBACK_EXIT"; fi
 exit "${PRECOMMIT_BROWSER_EXIT:-0}"
 ''')
             opener.chmod(0o755)
+        # 設定YAMLはコピーするが、検査するKotlin DSLはworkspaceの実体を読み込む。
         config = fixture / 'native/gradle/config/detekt'
         config.mkdir(parents=True)
         for name in ['detekt.yml', 'formatting.yml', 'autocorrect.yml']:
@@ -182,11 +194,13 @@ exit "${PRECOMMIT_BROWSER_EXIT:-0}"
             )
         )
         run_case(fixture, scenario, should_pass, expected)
+        # 同じindexでの再試行は拒否し、利用者が再ステージした後だけ成功することを確かめる。
         if scenario == 'formatting-changed':
             run_case(fixture, scenario, False, 'detektPreCommitStagedFormatCheck FAILED',
                      label='retry-without-restaging', properties=('-PreuseFixture=true',))
             run_case(fixture, scenario, True, 'preCommit passed', label='retry-after-restaging',
                      properties=('-PreuseFixture=true', '-PrestageFixture=true'))
+        # 検査失敗を保ったまま、表示抑止・CI・ブラウザー失敗・Safariへの再試行を比較する。
         if scenario == 'analysis-failed':
             run_case(fixture, scenario, False, expected, label='browser-disabled',
                      properties=('-PreuseFixture=true', '-PopenPreCommitReport=false'))
@@ -197,6 +211,7 @@ exit "${PRECOMMIT_BROWSER_EXIT:-0}"
             if sys.platform == 'darwin':
                 run_case(fixture, scenario, False, expected, label='browser-fallback-succeeds',
                          properties=('-PreuseFixture=true',), browser_exit=7, safari_fallback=True)
+# 全ケースを実行してから結果JSONを保存し、1件でも不一致なら非ゼロで終了する。
 summary = {'passed': sum(r['passed'] for r in results), 'total': len(results), 'results': results}
 (logs / 'results.json').write_text(json.dumps(summary, indent=2) + '\n')
 if not all(r['passed'] for r in results):

@@ -1,8 +1,10 @@
+/** Cordovaの生成物に、共有Gradle設定を読み込む管理ブロックを復元するhook。 */
 "use strict";
 const fs = require("node:fs");
 const path = require("node:path");
 
 const marker = "CORDOVA_NATIVE_GRADLE";
+/** 管理マーカー内だけを差し替え、他Pluginの設定を残す。重複・破損したマーカーは拒否する。 */
 function upsert(file, statement) {
     const start = `// BEGIN ${marker}`;
     const end = `// END ${marker}`;
@@ -15,6 +17,7 @@ function upsert(file, statement) {
     if ((beginAt < 0) !== (endAt < 0) || (beginAt >= 0 && endAt < beginAt)) {
         throw new Error(`Malformed integration markers in ${file}`);
     }
+    // 内容が同じなら書き込まず、prepareの繰り返しで差分や更新時刻を増やさない。
     const block = `${start}\n${statement}\n${end}`;
     const updated = beginAt < 0
         ? `${original}${original.endsWith("\n") || original.length === 0 ? "" : "\n"}${block}\n`
@@ -22,6 +25,7 @@ function upsert(file, statement) {
     if (updated !== original) fs.writeFileSync(file, updated);
 }
 
+/** Android対象のprepare／compileで、必要ファイルと対応版を確認してから参照を登録する。 */
 module.exports = function (context) {
     const selected = context.opts.platforms || context.opts.cordova?.platforms || [];
     if (selected.length && !selected.includes("android")) return;
@@ -29,6 +33,7 @@ module.exports = function (context) {
     const androidDir = path.join(appDir, "platforms/android");
     if (!fs.existsSync(androidDir)) throw new Error("Run cordova platform add android@14.0.1 first");
     const workspace = path.resolve(appDir, "..");
+    // 書き換え前に管理元を検査し、ファイル不足の状態で生成側だけを進めない。
     for (const relative of ["native/gradle/libs.versions.toml", "native/gradle/settings-extras.gradle",
         "native/gradle/build-extras.gradle", "native/feature/build.gradle.kts", "native/data/build.gradle.kts",
         "native/gradle/git-hooks.gradle.kts", "native/gradle/config/detekt/detekt.yml",
@@ -37,6 +42,7 @@ module.exports = function (context) {
     }
     const packageVersion = require(path.join(appDir, "node_modules/cordova-android/package.json")).version;
     if (!packageVersion.startsWith("14.")) throw new Error(`This integration targets Cordova Android 14, found ${packageVersion}`);
+    // CatalogはSettings評価時、app依存はProject評価時に必要なので、入口を分けて登録する。
     upsert(path.join(androidDir, "cdv-gradle-name.gradle"),
         'apply from: new File(settingsDir, "../../../native/gradle/settings-extras.gradle")');
     upsert(path.join(androidDir, "app/build-extras.gradle"),

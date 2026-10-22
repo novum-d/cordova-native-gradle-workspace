@@ -1,5 +1,6 @@
 # Cordovaと共有するビルド基盤、アプリ依存、検証・文書化ツールの版を管理する。
 [versions]
+# Cordova Android 14とそろえる基盤。SDK・JVM targetも両ホストから同じ値を参照する。
 gradle = "8.13"
 agp = "8.7.3"
 kotlin = "1.9.24"
@@ -9,6 +10,7 @@ compile-sdk = "35"
 target-sdk = "35"
 min-sdk = "24"
 jvm-target = "11"
+# UI・通信・永続化などの採用版。互換性の選定理由はREADMEの表で管理する。
 compose-bom = "2025.07.00"
 core = "1.16.0"
 activity = "1.10.1"
@@ -26,6 +28,7 @@ result = "2.0.1"
 hilt = "2.52"
 ksp = "1.9.24-1.0.20"
 timber = "5.0.1"
+# テスト・品質チェック・文書化・Git連携のツール。アプリの通常依存とは用途を分ける。
 junit = "4.13.2"
 jacoco = "0.8.14"
 test-core = "1.7.0"
@@ -40,6 +43,7 @@ jgit = "7.8.0.202609011348-r"
 # feature・dataで利用するアプリ・テスト依存。ビルドツールは末尾で分ける。
 [libraries]
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "core" }
+# ComposeはBOMで版をそろえ、各Artifactへ個別版を付けない。
 compose-bom = { module = "androidx.compose:compose-bom", version.ref = "compose-bom" }
 compose-ui = { module = "androidx.compose.ui:ui" }
 compose-foundation = { module = "androidx.compose.foundation:foundation" }
@@ -47,11 +51,13 @@ compose-foundation-layout = { module = "androidx.compose.foundation:foundation-l
 compose-material3 = { module = "androidx.compose.material3:material3" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
+# 画面とLifecycle、Cordova側と版をそろえるWebKit。
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity" }
 androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle" }
 androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycle" }
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle" }
 androidx-webkit = { module = "androidx.webkit:webkit", version.ref = "webkit" }
+# 永続化・非同期・日時・通信など、feature/dataの役割に応じて各モジュールへ宣言する。
 datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
 datastore-core = { module = "androidx.datastore:datastore-core", version.ref = "datastore" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
@@ -65,14 +71,16 @@ retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit
 okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
 okhttp-logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okhttp" }
 kotlin-result = { module = "com.michael-bull.kotlin-result:kotlin-result", version.ref = "result" }
+# Hiltの本体とコード生成用Compilerは同じ版を使う。
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
+# ローカルJVMテストとAndroidテストの支援ライブラリ。Coroutines Testは本体のcoroutines版を使う。
 junit = { module = "junit:junit", version.ref = "junit" }
 androidx-test-core-ktx = { module = "androidx.test:core-ktx", version.ref = "test-core" }
 androidx-test-ext-junit-ktx = { module = "androidx.test.ext:junit-ktx", version.ref = "test-junit" }
 
-# Build-time tools only; these are not application dependencies.
+# detektの解析時だけに使うルールPlugin。アプリのimplementationへは追加しない。
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
 detekt-twitter-compose = { module = "com.twitter.compose.rules:detekt", version.ref = "twitter-compose-rules" }
 

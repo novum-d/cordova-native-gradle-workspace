@@ -1,3 +1,4 @@
+# native・Cordova共通の静的解析ルール。デフォルト設定へ重ね、1件の違反でも失敗させる。
 build:
   maxIssues: 0
   excludeCorrectable: false
@@ -7,12 +8,14 @@ build:
     style: 1
     comments: 1
 
+# YAMLの設定項目を検証する。未知のキーを黙って無視してルールを無効化しないための設定。
 config:
   validation: true
   warningsAsErrors: false
   checkExhaustiveness: false
   excludes: ""
 
+# 処理統計とコンソール・HTML向け出力を有効にする。出力形式と保存先はKotlin DSL側で指定する。
 processors:
   active: true
 
@@ -22,9 +25,11 @@ console-reports:
 output-reports:
   active: true
 
+# コメント関連の標準ルールを使う。処理概要の十分さはAGENTS.mdに従ってレビューする。
 comments:
   active: true
 
+# 引数数・関数数・長い処理などを検出する。Composableを考慮した閾値と例外を個別に設定する。
 complexity:
   active: true
   CognitiveComplexMethod:
@@ -32,7 +37,7 @@ complexity:
   NamedArguments:
     active: true
     threshold: 3
-  # for compose
+  # Composeのデフォルト引数を考慮し、関数の引数上限を10にする。
   LongParameterList:
     active: true
     functionThreshold: 10
@@ -45,6 +50,7 @@ complexity:
     active: true
     threshold: 150
 
+# 非同期処理・空ブロック・例外の扱いに関する標準ルールを適用する。
 coroutines:
   active: true
 
@@ -58,9 +64,10 @@ exceptions:
   TooGenericExceptionCaught:
     active: false
 
+# Kotlinの命名を確認しつつ、Composableの大文字開始名を許容する。
 naming:
   active: true
-  # for compose
+  # Composableには通常関数と異なる命名規約を適用する。
   FunctionNaming:
     active: true
     functionPattern: "[a-zA-Z][a-zA-Z0-9]*"
@@ -69,6 +76,7 @@ naming:
     active: true
     constantPattern: "([A-Z][_A-Z0-9]*|[A-Z][A-Za-z0-9]*)"
 
+# 性能面と潜在バグのルールを適用する。型解決が必要なルールはclasspathのない解析では検査されない。
 performance:
   active: true
 
@@ -104,6 +112,7 @@ potential-bugs:
   UnsafeCallOnNullableType:
     active: true
 
+# 曖昧な記述や冗長な構文を検出する。可読性・不変性をルール単位で調整する。
 style:
   active: true
   BracesOnIfStatements:
@@ -133,6 +142,7 @@ style:
     negativeFunctionNameParts:
       - "not"
       - "non"
+  # data classのvarを検出する。valが参照するオブジェクトの深い不変性まで保証するルールではない。
   DataClassShouldBeImmutable:
     active: true
   EqualsOnSignatureLine:
@@ -181,12 +191,13 @@ style:
   DestructuringDeclarationWithTooManyEntries:
     active: true
     maxDestructuringEntries: 7
-  # for compose
+  # UIの定数や宣言的な記述を過剰に指摘しないため、この2ルールは無効化する。
   MagicNumber:
     active: false
   UnusedPrivateMember:
     active: false
 
+# detekt-twitter-composeのルール。Composableの状態・引数・命名・ViewModelの扱いを検査する。
 TwitterCompose:
   CompositionLocalAllowlist:
     active: true
@@ -217,6 +228,7 @@ TwitterCompose:
   RememberMissing:
     active: true
 
+  # Composableへ通常のList・Set・Mapを渡す箇所を検出し、不変コレクションなどの利用を促す。
   UnstableCollections:
     active: true
   ViewModelForwarding:

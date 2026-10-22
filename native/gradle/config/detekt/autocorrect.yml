@@ -1,5 +1,5 @@
-# Corrected findings must not abort the formatting phase.
-# The separate, read-only formatting check still rejects every remaining violation.
+# 自動修正済みの指摘では整形タスクを失敗させず、変更を検出する後続タスクへ進む。
+# 自動修正できない指摘は除外されず、読み取り専用の整形チェックでも残存違反を拒否する。
 build:
   maxIssues: 0
   excludeCorrectable: true

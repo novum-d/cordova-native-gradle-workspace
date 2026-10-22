@@ -1,9 +1,11 @@
 #!/bin/sh
+# CLI・Android依存・Gradleを復元し、Cordova platformを新規作成またはprepareする初回セットアップ。
 set -eu
 
 workspace_dir=$(CDPATH='' cd -- "$(dirname -- "$0")/.." && pwd -P)
 cd "$workspace_dir"
 
+# インストール前に、CLIを管理するルートとAndroid本体を管理するアプリ側の宣言を確かめる。
 cordova_version=$(node -p 'const p = require("./package.json"); p.devDependencies?.cordova ?? p.dependencies?.cordova ?? ""')
 [ -n "$cordova_version" ] || {
   echo "Cordova CLI is not declared in: $workspace_dir/package.json" >&2
@@ -17,7 +19,7 @@ cordova_android_version=$(node -p 'const p = require("./CordovaComposeApp/packag
   exit 1
 }
 
-# Cordova CLI is a development dependency, including when NODE_ENV=production.
+# production環境でも開発依存のCordova CLIを省略せず、両方のlockfileどおりに導入する。
 npm ci --include=dev --no-audit --no-fund
 [ -f node_modules/cordova/bin/cordova ] || {
   echo "Cordova CLI was not installed in: $workspace_dir/node_modules/cordova" >&2
@@ -28,11 +30,11 @@ npm ci --include=dev --no-audit --no-fund
   exit 1
 }
 (cd CordovaComposeApp && npm ci --include=dev --no-audit --no-fund)
-# Report the original Node error before Cordova replaces it with a generic API error.
+# Cordovaが汎用エラーに置き換える前に、Android実装を読み込めない原因をNodeから表示する。
 node -e 'const api = require(process.argv[1]); if (typeof api.createPlatform !== "function") throw new Error("Invalid Cordova Android API")' \
   "$workspace_dir/CordovaComposeApp/node_modules/cordova-android"
 
-# Gradle
+# Catalog指定のGradleを取得し、配布元のSHA-256と一致する場合だけ展開する。
 gradle_version=$(./scripts/catalog-version.sh gradle)
 if [ ! -x ".tools/gradle-$gradle_version/bin/gradle" ]; then
   mkdir -p .tools
@@ -47,11 +49,12 @@ if [ ! -x ".tools/gradle-$gradle_version/bin/gradle" ]; then
   unzip -q ".tools/gradle-$gradle_version-bin.zip" -d .tools
 fi
 
-# Sdk（platforms/android-35, build-tools/35.0.0）
+# 準備済みのJDK・Android SDK環境で、Catalogと同じ版のWrapperを復元する。
 ./scripts/with-env.sh ".tools/gradle-$gradle_version/bin/gradle" -p native wrapper --console=plain
 
-# Cordova
+# Cordova Androidの生成物を確認し、不完全なplatformだけを復旧対象にする。
 android_dir="$workspace_dir/CordovaComposeApp/platforms/android"
+# 必須ファイルが欠けたplatformは退避する。正常なplatformは再作成せず既存内容を保つ。
 if [ -e "$android_dir" ] || [ -L "$android_dir" ]; then
   if [ ! -f "$android_dir/cordova/Api.js" ] || [ ! -f "$android_dir/settings.gradle" ] \
     || [ ! -f "$android_dir/app/build.gradle" ] || [ ! -f "$android_dir/CordovaLib/build.gradle" ]; then
@@ -63,6 +66,7 @@ if [ -e "$android_dir" ] || [ -L "$android_dir" ]; then
     echo 'Regenerating the Android platform with Cordova CLI.'
   fi
 fi
+# platform未作成なら追加し、既存ならApi.jsを読み込めることを確かめてhookとassetsを復元する。
 if [ ! -d "$android_dir" ]; then
   ./scripts/cordova.sh platform add android@14.0.1 --save
 else
