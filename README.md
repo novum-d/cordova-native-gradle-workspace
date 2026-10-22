@@ -4,6 +4,10 @@
 
 画面、Activity、CordovaPlugin、Application、DI初期化、WebView通信、カメラ・NFC機能は新規実装していません。`cordova-plugin-compose`やnativeの`MainActivity`も、既存ファイルがないため作成していません。Cordova標準のJava版`MainActivity`は維持しています。
 
+## 開発ルール
+
+コメント・KDocの記述方針は[プロジェクトルール](AGENTS.md)を参照してください。手書きのコード・設定には処理のまとまりごとの概要説明を必須とし、KDocで概要が分かる場合は通常コメントの重複を求めません。JSONの説明方法と生成ファイルの扱いも同文書に定めています。
+
 ## 構成と依存方向
 
 ```text
