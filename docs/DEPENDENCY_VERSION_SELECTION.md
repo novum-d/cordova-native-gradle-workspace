@@ -8,7 +8,7 @@
 
 **Cordovaの対応範囲を最優先し、その基盤で利用できる安定版をできるだけ新しくする。** 前回の「既存版を凍結して維持する」方針から変更する。
 
-本メモの主案は、既存のCordova Android 14を維持する前提で、**cordova-android 14.0.1、AGP 8.7.3、Gradle 8.13、Kotlin 1.9.24、JDK 17、compileSdk／targetSdk 35、minSdk 24**を基準とする。Compose BOMは**2025.07.00（主要Compose 1.8.3、Material 3 1.3.2）**へ更新する。
+本プロジェクトでは、既存のCordova Android 14を維持する前提で、**cordova-android 14.0.1、AGP 8.7.3、Gradle 8.13、Kotlin 1.9.24、JDK 17、compileSdk／targetSdk 35、minSdk 24**を採用している。Compose BOMは**2025.07.00（主要Compose 1.8.3、Material 3 1.3.2）**を使う。
 
 選定の優先順位は次のとおり。
 
@@ -17,16 +17,16 @@
 3. その他のライブラリは、上記のSDK・AGP・Kotlinを維持できる範囲で新しい安定版を選ぶ。直接依存だけでなく推移依存も確認する。
 4. 型・APIの移行が必要な更新は、その変更点を明示する。alpha／beta／RC、互換性チェックの無効化、要求版を下げる強制解決は主案に含めない。
 
-**Cordovaが公式に指定する版と、本メモが追加ライブラリについて選んだ互換候補は区別する。** CordovaはCompose、Hilt、Retrofit等の全版について公式な対応表を提供していない。以下の追加ライブラリの選定は、公式リリース情報、公開POM／Gradle Module Metadata、AAR要件、Kotlinメタデータから判断した案であり、Cordova公式の動作保証を意味しない。
+**Cordovaが公式に指定する版と、本プロジェクトで選定した追加ライブラリの版は区別する。** CordovaはCompose、Hilt、Retrofit等の全版について公式な対応表を提供していない。以下の追加ライブラリの選定は、公式リリース情報、公開POM／Gradle Module Metadata、AAR要件、Kotlinメタデータと本プロジェクトの実測結果から選定したものであり、Cordova公式の動作保証を意味しない。
 
-この文書は2026-10-23にObsidianのMemoから本プロジェクトの`docs/`へ移動した。以下は選定時点の候補と検証記録であり、未採用・削除済みの候補も含む。現在の採用版は[Version Catalog](../native/gradle/libs.versions.toml)、実際の依存配置は[依存関係ドキュメント](DEPENDENCIES.md)を管理元とする。
+この文書は2026-10-23にObsidianのMemoから本プロジェクトの`docs/`へ移動した。採用した構成と、その選定理由・検証記録を記載する。現在の採用版は[Version Catalog](../native/gradle/libs.versions.toml)、実際の依存配置は[依存関係ドキュメント](DEPENDENCIES.md)を管理元とする。
 
 ## 検証用workspaceへの反映状況（2026-10-22）
 
 - `feature`・`data`へ依存を配置し、native単独とCordovaホストで共有している。Immutable Collectionsは0.3.8、Datetimeは0.6.2を追加済み。実際の採用版と依存方向は[Version Catalog](../native/gradle/libs.versions.toml)と[配置・解決結果](DEPENDENCIES.md)を管理元とする。
 - Compose BOM 2025.07.00でビルドし、Cordova CLIからエミュレーターへインストール・起動、Compose表示・状態更新・Cordovaへの復帰を確認済み。[実行記録](COMPOSE_RUNTIME.md)。案件の既存アプリ環境でもビルド・起動できたとの報告を受けているが、このworkspaceの検証記録とは別の確認である。
-- JVM単体テストはJUnit 4.13.2とCoroutines Test 1.8.1、カバレッジはJaCoCo 0.8.14を採用済み。[環境と対象範囲](UNIT_TESTS.md)。下表のMockK・Truth・Turbineは選定時の候補で、現在のworkspaceには追加していない。
-- ktlintはPlugin 14.2.0／エンジン1.8.0を当時の独立した検証構成で確認したが、その構成は削除済み。通常の品質チェックとGit hookはdetekt 1.23.8とdetekt-formattingを使い、ktlint 0.50.0のルール・整形エンジンを推移依存として利用する。Git hookのHTML表示は、ルール違反時にdetekt標準レポートを開く。[品質チェックの構成](GIT_HOOKS.md)。
+- JVM単体テストはJUnit 4.13.2とCoroutines Test 1.8.1、カバレッジはJaCoCo 0.8.14を採用済み。[環境と対象範囲](UNIT_TESTS.md)。
+- 通常の品質チェックとGit hookはdetekt 1.23.8とdetekt-formattingを使い、ktlint 0.50.0のルール・整形エンジンを推移依存として利用する。Git hookのHTML表示は、ルール違反時にdetekt標準レポートを開く。[品質チェックの構成](GIT_HOOKS.md)。
 - 手書きコード・設定には処理のまとまりごとの概要説明を付ける。KDocで概要を把握できれば通常コメントの重複は不要。JSONはREADME等で説明し、生成ファイルは対象外とする。[記述ルール](../AGENTS.md)。
 
 ### KDocのHTML生成にDokka 2.2.0を採用
@@ -77,7 +77,7 @@ KGP 1.9.24に対してGradle 8.13／AGP 8.7.3は、[JetBrainsの完全サポー�
 
 「維持」は互換条件による選択であり、単に変更を避ける判断ではない。Kotlinライブラリは、アプリ／テストの依存グラフがKotlin 2.xの標準ライブラリやリフレクションへ持ち上がらないことを基本条件とする。これも本メモの選定基準であり、Cordovaが個々の追加ライブラリに規定する公式上限ではない。
 
-原文欄はREADMEに記録済みの短い抜粋・公開メタデータと、選定時の確認記録を示す。原文の抜粋が残っていない候補はその旨を明記する。独立したktlint Pluginなど、検証後に削除した構成は上記の反映状況を参照する。
+原文欄はREADMEに記録済みの短い抜粋・公開メタデータと、選定時の確認記録を示す。採用しなかった新しい版への言及は、現在の版を選んだ理由として残す。
 
 | 項目 | 今回の版 | 提示候補からの判断 | 判断理由となった原文・メタデータ（抜粋） | 原文のリンク |
 | --- | --- | --- | --- | --- |
@@ -92,22 +92,18 @@ KGP 1.9.24に対してGradle 8.13／AGP 8.7.3は、[JetBrainsの完全サポー�
 | Datetime | **0.6.2** | Kotlin 1.9.24で実コンパイルを確認。0.7系の`kotlin.time.Instant`への移行を避ける | JVM POM: `<artifactId>kotlin-stdlib</artifactId>` … `<version>1.9.21</version>`<br>Instantの`mv=[1,9,0]`<br>0.7.0: “Remove `kotlinx.datetime.Instant` and `kotlinx.datetime.Clock` in favor of `kotlin.time.Instant`” | [0.7.0変更点](https://github.com/Kotlin/kotlinx-datetime/releases/tag/v0.7.0)、[0.6.2 JVM POM](https://repo.maven.apache.org/maven2/org/jetbrains/kotlinx/kotlinx-datetime-jvm/0.6.2/kotlinx-datetime-jvm-0.6.2.pom)、[0.7.0のAPI変更](https://github.com/Kotlin/kotlinx-datetime/releases/tag/v0.7.0)、[追加内容](DEPENDENCIES.md) |
 | Serialization runtime | **1.6.3** | 維持。1.7系が求めるSerialization Compiler Plugin 2.0.0-RC1以降と、現在のPlugin 1.9.24の不整合を避ける。Serialization Gradle PluginはKotlinと同じ1.9.24にする | 1.7.0: “it may not be possible to use it with the Kotlin 1.9.x compiler plugin.”<br>同版が参照する1.7.0-RC: “it requires a compiler plugin with a version at least of 2.0.0-RC1.” | [Serializationリリース](https://github.com/Kotlin/kotlinx.serialization/releases/tag/v1.7.0)、[Serialization 1.7.0の注意事項](https://github.com/Kotlin/kotlinx.serialization/releases/tag/v1.7.0)、[1.7.0-RCのCompiler Plugin要件](https://github.com/Kotlin/kotlinx.serialization/releases/tag/v1.7.0-RC) |
 | Retrofit | **2.11.0** | 維持。2.12.0の公開JARはKotlinメタデータ2.1.0。Java中心のライブラリでもArtifact内のKotlin部分を確認する | 2.12.0 JAR内の`retrofit2.KotlinExtensions.class`: `kotlin.Metadata(` … `mv=[2,1,0]` | [2.12.0 JAR](https://repo.maven.apache.org/maven2/com/squareup/retrofit2/retrofit/2.12.0/retrofit-2.12.0.jar)、[Retrofit 2.12.0 JAR](https://repo.maven.apache.org/maven2/com/squareup/retrofit2/retrofit/2.12.0/retrofit-2.12.0.jar) |
-| OkHttp | **4.12.0** | 維持。4系の安定版を採用し、Kotlin 2.xへ移行する5系は外す。Interceptor／MockWebServerも同版へ揃える | Logging InterceptorのPOM: `<artifactId>okhttp</artifactId>` … `<version>4.12.0</version>`、`<artifactId>kotlin-stdlib-jdk8</artifactId>` … `<version>1.8.21</version>` | [OkHttp変更履歴](https://square.github.io/okhttp/changelogs/changelog/)、[Logging Interceptor 4.12.0 POM](https://repo.maven.apache.org/maven2/com/squareup/okhttp3/logging-interceptor/4.12.0/logging-interceptor-4.12.0.pom) |
-| Hilt / Dagger | **2.52** | 更新。本体・Compiler・Gradle Plugin・テストを統一する。2.53の本体POMは既にstdlib 2.0.0-Beta5、2.53.1は2.0.21へ進むため、Pluginの版だけで判断しない | `hilt-android:2.52`のPOM: `<artifactId>kotlin-stdlib</artifactId>` … `<version>1.9.24</version>`<br>`hilt-android:2.53`のPOM: `<artifactId>kotlin-stdlib</artifactId>` … `<version>2.0.0-Beta5</version>` | [2.52 POM](https://repo.maven.apache.org/maven2/com/google/dagger/hilt-android/2.52/hilt-android-2.52.pom)、[2.53 POM](https://repo.maven.apache.org/maven2/com/google/dagger/hilt-android/2.53/hilt-android-2.53.pom)、[Hilt Android 2.52 POM](https://repo.maven.apache.org/maven2/com/google/dagger/hilt-android/2.52/hilt-android-2.52.pom) |
-| KSP（利用する場合） | **1.9.24-1.0.20** | Kotlin Compiler 1.9.24用を維持する。KAPT利用中なら追加は必須ではない | “KSP 1.0.20 for kotlin compiler version 1.9.24” | [KSPリリース](https://github.com/google/ksp/releases/tag/1.9.24-1.0.20)、[KSP 1.9.24-1.0.20の公開情報](https://github.com/google/ksp/releases/tag/1.9.24-1.0.20) |
+| OkHttp | **4.12.0** | 維持。4系の安定版を採用し、Kotlin 2.xへ移行する5系は外す。Logging Interceptorも同版へ揃える | Logging InterceptorのPOM: `<artifactId>okhttp</artifactId>` … `<version>4.12.0</version>`、`<artifactId>kotlin-stdlib-jdk8</artifactId>` … `<version>1.8.21</version>` | [OkHttp変更履歴](https://square.github.io/okhttp/changelogs/changelog/)、[Logging Interceptor 4.12.0 POM](https://repo.maven.apache.org/maven2/com/squareup/okhttp3/logging-interceptor/4.12.0/logging-interceptor-4.12.0.pom) |
+| Hilt / Dagger | **2.52** | 更新。本体・Compiler・Gradle Pluginを統一する。2.53の本体POMは既にstdlib 2.0.0-Beta5、2.53.1は2.0.21へ進むため、Pluginの版だけで判断しない | `hilt-android:2.52`のPOM: `<artifactId>kotlin-stdlib</artifactId>` … `<version>1.9.24</version>`<br>`hilt-android:2.53`のPOM: `<artifactId>kotlin-stdlib</artifactId>` … `<version>2.0.0-Beta5</version>` | [2.52 POM](https://repo.maven.apache.org/maven2/com/google/dagger/hilt-android/2.52/hilt-android-2.52.pom)、[2.53 POM](https://repo.maven.apache.org/maven2/com/google/dagger/hilt-android/2.53/hilt-android-2.53.pom)、[Hilt Android 2.52 POM](https://repo.maven.apache.org/maven2/com/google/dagger/hilt-android/2.52/hilt-android-2.52.pom) |
+| KSP Plugin | **1.9.24-1.0.20** | Kotlin Compiler 1.9.24用を採用。feature・dataに適用し、Hilt CompilerをKSPで実行する | “KSP 1.0.20 for kotlin compiler version 1.9.24” | [KSPリリース](https://github.com/google/ksp/releases/tag/1.9.24-1.0.20)、[KSP 1.9.24-1.0.20の公開情報](https://github.com/google/ksp/releases/tag/1.9.24-1.0.20) |
 | Timber | **5.0.1** | 維持。公開済み安定版 | 公開版: “5.0.1”<br>修正内容: “Fix TimberArgCount lint check false positive on some calls to `String.format`.” | [Timberリリース](https://github.com/JakeWharton/timber/releases/tag/5.0.1)、[Timber 5.0.1の変更点](https://github.com/JakeWharton/timber/releases/tag/5.0.1) |
 | kotlin-result | **2.0.1** | 更新。ただし2.0でinline value class化されたためAPI移行が必要。公開JARはメタデータ1.9.0／stdlib 1.9.22。2.0.2はstdlib・メタデータとも2.2系 | 2.0.0: “The base `Result` class is now modelled as an inline value class.”<br>2.0.1 JVMのPOM: `<artifactId>kotlin-stdlib</artifactId>` … `<version>1.9.22</version>` | [移行説明](https://github.com/michaelbull/kotlin-result/releases/tag/2.0.0)、[2.0.1 POM](https://repo.maven.apache.org/maven2/com/michael-bull/kotlin-result/kotlin-result-jvm/2.0.1/kotlin-result-jvm-2.0.1.pom)、[2.0.0の移行説明](https://github.com/michaelbull/kotlin-result/releases/tag/2.0.0)、[2.0.1 JVM POM](https://repo.maven.apache.org/maven2/com/michael-bull/kotlin-result/kotlin-result-jvm/2.0.1/kotlin-result-jvm-2.0.1.pom) |
 | JUnit 4 | **4.13.2** | 維持。JUnit 4系の安定版 | 公式リリース名: “JUnit 4.13.2” | [JUnit 4リリース](https://github.com/junit-team/junit4/releases/tag/r4.13.2)、[JUnit 4.13.2の公開情報](https://github.com/junit-team/junit4/releases/tag/r4.13.2) |
 | AndroidX Test Core | **1.7.0** | 更新。公開AARはKotlinメタデータ1.9.0、stdlib 1.9.21／Coroutines 1.8.1。minSdk 21で対象端末の範囲内 | Core KTXの`androidx.test.core.app.ActivityScenarioKt.class`: `mv=[1,9,0]`<br>Ext JUnit KTXの`androidx.test.ext.junit.rules.ActivityScenarioRuleKt.class`: `mv=[1,9,0]` | [Testリリース](https://developer.android.com/jetpack/androidx/releases/test)、[Core KTX 1.7.0 AAR](https://dl.google.com/dl/android/maven2/androidx/test/core-ktx/1.7.0/core-ktx-1.7.0.aar)、[Ext JUnit KTX 1.3.0 AAR](https://dl.google.com/dl/android/maven2/androidx/test/ext/junit-ktx/1.3.0/junit-ktx-1.3.0.aar) |
 | AndroidX Test ext.junit | **1.3.0** | 更新。Core 1.7.0と同世代。`androidx.test.ext:junit`を指定する | Core KTXの`androidx.test.core.app.ActivityScenarioKt.class`: `mv=[1,9,0]`<br>Ext JUnit KTXの`androidx.test.ext.junit.rules.ActivityScenarioRuleKt.class`: `mv=[1,9,0]` | [Testリリース](https://developer.android.com/jetpack/androidx/releases/test)、[Core KTX 1.7.0 AAR](https://dl.google.com/dl/android/maven2/androidx/test/core-ktx/1.7.0/core-ktx-1.7.0.aar)、[Ext JUnit KTX 1.3.0 AAR](https://dl.google.com/dl/android/maven2/androidx/test/ext/junit-ktx/1.3.0/junit-ktx-1.3.0.aar) |
-| MockK | **1.13.11** | 整合性を優先して1版戻す。1.13.12以降のstdlib／reflect 2.0.0流入を避ける。1.13.12が必ず動かないという意味ではない | 選定時のPOM確認結果: 1.13.12ではKotlin stdlib／reflect `2.0.0`への依存あり | [1.13.11 POM](https://repo.maven.apache.org/maven2/io/mockk/mockk-jvm/1.13.11/mockk-jvm-1.13.11.pom)、[1.13.12 POM](https://repo.maven.apache.org/maven2/io/mockk/mockk-jvm/1.13.12/mockk-jvm-1.13.12.pom) |
-| Truth（利用中なら） | **1.4.5** | 更新。未使用なら削除可能。削除は利用検索で判断し、バージョン互換性を理由にしない | 選定時の公開版: `1.4.5`（原文の抜粋は未記録） | [Truthリリース](https://github.com/google/truth/releases/tag/v1.4.5) |
-| Turbine | **1.1.0** | 維持。1.2.0はstdlib 2.0.21／Coroutines 1.9.0に依存する | 1.2.0のPOM: Kotlin stdlib `2.0.21`／Coroutines `1.9.0`への依存あり | [1.2.0 POM](https://repo.maven.apache.org/maven2/app/cash/turbine/turbine-jvm/1.2.0/turbine-jvm-1.2.0.pom) |
-| ktlint Gradle Plugin | **14.2.0** | 更新候補。公開安定版。Gradle Plugin API属性は7.4、Pluginの言語／API版はKotlin 1.8。アプリのKotlinを更新せずに利用する。ktlintエンジンの版とは別管理 | Plugin Portal: “Version 14.2.0 (latest)”<br>ktlint本体の公開版: “1.8.0”<br>実測: `PASS: clean Kotlin accepted, malformed Kotlin rejected, formatted Kotlin accepted.` | [14.2.0リリース](https://github.com/JLLeitschuh/ktlint-gradle/releases/tag/v14.2.0)、[Pluginビルド設定](https://github.com/JLLeitschuh/ktlint-gradle/blob/v14.2.0/plugin/build.gradle.kts)、[Plugin Portal](https://plugins.gradle.org/plugin/org.jlleitschuh.gradle.ktlint)、[ktlint 1.8.0](https://github.com/ktlint/ktlint/releases/tag/1.8.0)、[実行ログ](quality-ktlint-latest.log) |
-| detekt | **1.23.8** | 安定1系の修正版へ更新候補。専用構成のCompilerを使わせる。アプリのKotlin 1.9.24への全構成一括強制はしない。型解決付きタスクも確認する | 公式リリース: “v1.23.8”、`Latest`<br>実測: `> Task :detekt`、`> Task :detektFormatCheck`、`BUILD SUCCESSFUL` | [detekt互換表](https://detekt.dev/docs/introduction/compatibility/)、[detekt 1.23.8](https://github.com/detekt/detekt/releases/tag/v1.23.8)、[実行ログ](quality-detekt-latest.log)、[品質タスクの検証](GIT_HOOKS.md) |
+| detekt | **1.23.8** | 安定1系の修正版を採用済み。専用構成のCompilerを使う。アプリのKotlin 1.9.24への全構成一括強制はしない。通常解析・整形チェックの実行を確認済み | 公式リリース: “v1.23.8”、`Latest`<br>実測: `> Task :detekt`、`> Task :detektFormatCheck`、`BUILD SUCCESSFUL` | [detekt互換表](https://detekt.dev/docs/introduction/compatibility/)、[detekt 1.23.8](https://github.com/detekt/detekt/releases/tag/v1.23.8)、[実行ログ](quality-detekt-latest.log)、[品質タスクの検証](GIT_HOOKS.md) |
 | Dokka Gradle Plugin | **2.2.0** | KDoc HTML生成用。KGP 1.9.0以上に対応するDGP v2を使い、アプリ側はKotlin 1.9.24を維持する | 公式の最小KGP要件: `KGP 1.9.0+`<br>実測結果はKDoc生成の記録を参照 | [リリース](https://github.com/Kotlin/dokka/releases/tag/v2.2.0)、[検証記録](KDOC.md)、[2.2.0リリース](https://github.com/Kotlin/dokka/releases/tag/v2.2.0)、[KDoc生成](KDOC.md) |
 
-ここでいう「できるだけ新しい」は、上記の基盤・依存世代・安定版という条件で確認できた候補を指す。任意の依存強制や前方互換まで含めた、動作可能な絶対上限を証明したものではない。
+ここでいう「できるだけ新しい」は、上記の基盤・依存世代・安定版という条件で確認し、採用した版を指す。任意の依存強制や前方互換まで含めた、動作可能な絶対上限を証明したものではない。
 
 ## 組み合わせで確認する点
 
@@ -121,93 +117,87 @@ KGP 1.9.24に対してGradle 8.13／AGP 8.7.3は、[JetBrainsの完全サポー�
 
 根拠: [UI 1.8.3 AAR](https://dl.google.com/dl/android/maven2/androidx/compose/ui/ui-android/1.8.3/ui-android-1.8.3.aar)、[Foundation 1.8.3 AAR](https://dl.google.com/dl/android/maven2/androidx/compose/foundation/foundation-android/1.8.3/foundation-android-1.8.3.aar)、[Runtime 1.8.3 POM](https://dl.google.com/dl/android/maven2/androidx/compose/runtime/runtime-android/1.8.3/runtime-android-1.8.3.pom)。
 
-### Hiltは2.52へ更新し、Processor方式は既存構成を基準にする
+### Hilt 2.52のコード生成にはKSPを採用する
 
-既存がKAPTなら、まずHilt本体・Compiler・Pluginを2.52へ揃えて更新する。KSP利用中ならKSP 1.9.24-1.0.20を維持して検証する。
+KSP 1.9.24-1.0.20を`feature`・`data`の両モジュールへ適用済み。Hiltの本体・Compiler・Gradle Pluginを2.52にそろえ、`ksp(libs.hilt.compiler)`でコード生成を行う。
 
-Hilt 2.52世代のDagger KSPは、現在の公式ドキュメントの安定化基準であるDagger 2.60+／KSP 2.3.9+には達していない。新規のKSP移行は版更新と分け、クリーンビルド、増分ビルド、テストを確認する。[Dagger KSP](https://dagger.dev/dev-guide/ksp.html)
-
-残存ProcessorやData Bindingを確認する前に`kotlin-kapt`を削除しない。Compiler Artifactは既存宣言と解決結果を確認し、`com.google.dagger:hilt-compiler`を使う場合は本体と同じ2.52へ揃える。HiltのInstrumentation／Robolectric Testを使う場合も`hilt-android-testing:2.52`とする。
+検証コードでRepositoryのFactoryとHilt ViewModelのModule／Factory生成・コンパイルを確認している。[配置・検証記録](DEPENDENCIES.md)。
 
 ### kotlin-result 2.0.1にはソース移行が伴う
 
-2.0では`Result`がinline value classになり、`Ok`／`Err`を型として扱うコードなどを変更する必要がある。最新版へ近づける主案は2.0.1とし、API移行ができない期間だけ1系を別途選び直す。バージョン番号だけを書き換えて完了とはしない。
+2.0では`Result`がinline value classになり、`Ok`／`Err`を型として扱うコードなどを変更する必要がある。本プロジェクトでは2.0.1を採用している。バージョン番号だけを書き換えて完了とはしない。
 
 ### 解析ツールのCompilerとアプリのKotlinは分ける
 
 detekt 1.23.8はKotlin 2.0.21でビルドされているが、専用の`detekt`構成内で実行するCompilerまでアプリの1.9.24へ揃える必要はない。`configurations.all`等でそのCompiler依存を書き換えない。アプリ／テストのclasspathと、解析ツールのclasspathをそれぞれ確認する。
 
-ktlint Gradle Pluginとktlintエンジンも別物である。14.2.0の公開ソースでのエンジン既定値は1.5.0。既存のエンジン指定・カスタムルール・`.editorconfig`を確認し、実際の使用版を明示する。Plugin更新に伴うルール変更や警告は、`ktlintCheck`で確認する。
+整形には`detekt-formatting:1.23.8`が推移依存として利用するktlint 0.50.0を使う。`ktlintCheck`は読み取り専用の`detektFormatCheck`への互換名である。[品質タスク](GIT_HOOKS.md)。
 
-## Version Catalogへ反映する版
+## 採用したVersion Catalogの設定
 
-以下は**選定時点の候補を含む転記用の例**であり、現在のCatalog全体を表すものではない。未採用のMockK・Truth・Turbine、削除済みの独立したktlint Pluginなどを含むため、利用する項目だけを選ぶ。現在の設定は[Version Catalog](../native/gradle/libs.versions.toml)を参照し、Gradle Wrapper、SDK、Cordova自身の版は対応する設定ファイルで別途管理する。
+以下は[現在のVersion Catalog](../native/gradle/libs.versions.toml)からの抜粋。全ライブラリのaliasは管理元を参照する。Gradle Wrapper、SDK、Cordova自身の版は対応する設定ファイルでも管理する。
 
 ```toml
 [versions]
+# Cordova Android 14とそろえる基盤。SDK・JVM targetも両ホストから同じ値を参照する。
+cordova-android = "14.0.1"
+gradle = "8.13"
 agp = "8.7.3"
 kotlin = "1.9.24"
 compose-compiler = "1.5.14"
+build-tools = "35.0.0"
+compile-sdk = "35"
+target-sdk = "35"
+min-sdk = "24"
+jvm-target = "11"
+# UI・通信・永続化などの採用版。互換性の選定理由はREADMEの表で管理する。
 compose-bom = "2025.07.00"
-core-ktx = "1.16.0"
-activity-compose = "1.10.1"
+core = "1.16.0"
+activity = "1.10.1"
 lifecycle = "2.8.7"
-appcompat = "1.7.0"
 webkit = "1.12.1"
 datastore = "1.1.7"
-work = "2.10.5"
+serialization = "1.6.3"
 coroutines = "1.8.1"
 collections-immutable = "0.3.8"
 datetime = "0.6.2"
-serialization = "1.6.3"
+work = "2.10.5"
 retrofit = "2.11.0"
 okhttp = "4.12.0"
+result = "2.0.1"
 hilt = "2.52"
-ksp = "1.9.24-1.0.20" # KSPを使うモジュールがある場合のみ
+ksp = "1.9.24-1.0.20"
 timber = "5.0.1"
-kotlin-result = "2.0.1"
+# テスト・品質チェック・文書化・Git連携のツール。アプリの通常依存とは用途を分ける。
 junit = "4.13.2"
 jacoco = "0.8.14"
-androidx-test-core = "1.7.0"
-androidx-test-junit = "1.3.0"
-mockk = "1.13.11"
-truth = "1.4.5" # 利用中の場合のみ
-turbine = "1.1.0"
-ktlint-plugin = "14.2.0"
+test-core = "1.7.0"
+test-junit = "1.3.0"
 detekt = "1.23.8"
 dokka = "2.2.0"
+twitter-compose-rules = "0.0.26"
+jgit = "7.8.0.202609011348-r"
 
+# コード生成・品質チェック・文書化に使うPlugin。
 [plugins]
-# Serialization Pluginの版はruntimeではなくKotlinに合わせる
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-# KAPT利用中なら、残存Processorを確認するまで維持する
-kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
-ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint-plugin" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 
+# 採用した通常依存とテスト依存の一部。
 [libraries]
-androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "compose-bom" }
-androidx-compose-foundation-layout = { module = "androidx.compose.foundation:foundation-layout" }
+compose-bom = { module = "androidx.compose:compose-bom", version.ref = "compose-bom" }
+compose-foundation-layout = { module = "androidx.compose.foundation:foundation-layout" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt" }
-hilt-android-testing = { module = "com.google.dagger:hilt-android-testing", version.ref = "hilt" }
-androidx-test-junit = { module = "androidx.test.ext:junit", version.ref = "androidx-test-junit" }
+androidx-test-ext-junit-ktx = { module = "androidx.test.ext:junit-ktx", version.ref = "test-junit" }
 ```
 
-ライブラリのaliasは既存Catalogへ合わせる。`foundation-layout`はコードから直接使う場合に追加し、個別版は付けない。KAPTとKSPは実際にProcessorを割り当てる方をモジュールで適用する。
+Composeの各Artifactには個別版を付けず、BOMでそろえる。HiltのProcessorは両モジュールでKSPへ登録する。
 
-## Cordova本体も更新する場合
-
-**14系維持は本メモの作業前提であり、Cordova全体の最新を意味しない。** 本体更新も含めて最新へ近づける場合は、確認時点のnpm安定版**cordova-android 15.1.0**を別の基準にする。[npm公開版情報](https://registry.npmjs.org/cordova-android/15.1.0)
-
-公開npmパッケージ内の`framework/cdv-gradle-config-defaults.json`では、15.1.0はKotlin 2.1.21、AGP 8.10.1、Gradle 8.14.2、SDK 36、AppCompat 1.7.1、WebKit 1.14.0を採用している。minSdkは24、JDKは17のまま。公式ガイドの15.0.x欄の構成とも一致する。
-
-この場合はKotlin 1.9系による制限が変わるため、**14用の上表をそのまま最新版の選定表として流用しない。** Compose Compilerも`org.jetbrains.kotlin.plugin.compose:2.1.21`へ切り替え、利用中のCordovaプラグインと追加ライブラリをKotlin 2.1.21／SDK 36の条件で再選定する。KotlinやAGPだけを14へ先行適用せず、Cordova本体・ビルド基盤・プラグインを一組で更新する。
-
-## 採用確定に必要な検証
+## 採用構成の確認手順
 
 対象Androidプロジェクトで、モジュール名を実構成へ合わせて実行する。
 
@@ -239,8 +229,7 @@ cordova platform ls
 - 直接依存と推移依存を含め、Cordovaが使うAppCompat／WebKit等の実解決版が公式採用版から変わっていない。
 - Composeの主要ArtifactがBOMの1.8.3へ揃い、アプリ／テストのKotlin依存が意図せず2.xへ上がっていない。
 - ReleaseビルドでR8、DataStore、Hiltの生成コードが通り、kotlin-resultのAPI移行後のテストが成功する。
-- Instrumentation Testがある場合は`./gradlew :app:connectedDebugAndroidTest`を実行する。Runnerを明示する場合は1.7.0、Espressoを使う場合は3.7.0を同世代の候補とする。
-- KSPを使う場合はHilt Module／`@Inject`対象を変更した後の増分ビルドも成功する。
+- Hilt Module／`@Inject`対象を変更した後も、KSPの増分ビルドが成功する。
 - minSdk側とAPI 35側の対象端末で、WebViewとネイティブ画面の遷移、カメラ、権限、バックグラウンド処理を確認する。
 
-以上を満たした構成を実プロジェクトの採用版としてロックする。基盤を超える最新版が必要になった場合は、追加ライブラリの要求を無理に下げず、Cordova本体更新の構成へ進む。
+上記は採用構成を対象プロジェクトで確認する手順であり、すべての案件固有機能を本workspaceで検証済みという意味ではない。実行済みの範囲は各検証記録を参照する。
