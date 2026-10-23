@@ -231,6 +231,8 @@ Android Studioでは`native/`を開き、GradleをWrapper、Gradle JDKを17に�
 
 ## 検証結果と未対応事項
 
+依存関係の選定方針とバージョンごとの判断理由は[依存関係バージョン妥当性検証](docs/DEPENDENCY_VERSION_SELECTION.md)を参照してください。
+
 Cordova CLIによるエミュレーターへのインストール・起動と、同じAPK内でのCompose表示・状態更新・Cordovaへの復帰も確認しました。確認後のエミュレーター終了を含め、[実行記録とスクリーンショット](docs/COMPOSE_RUNTIME.md)を参照してください。
 
 実測結果、APK、コマンド、残存事項は[検証レポート](docs/VALIDATION.md)に記載しています。追加したdetekt・preCommit環境、TvAppとの差異、28ケースの実行検証は[Git hookのKotlin DSL実装](docs/GIT_HOOKS.md)を参照してください。

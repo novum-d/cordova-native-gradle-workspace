@@ -8,6 +8,8 @@ Dokka 2.2.0（Gradle Plugin v2）で、Kotlinソースに書いたKDocをHTMLへ
 
 アプリのKotlinは1.9.24のままです。Dokkaの解析エンジンは文書化専用の構成で実行し、アプリの`implementation`へ追加しません。公式リリースが示す最小KGP要件は1.9.0以上です。[Dokka 2.2.0の変更点](https://github.com/Kotlin/dokka/releases/tag/v2.2.0)
 
+採用理由は[依存関係の選定ドキュメント](DEPENDENCY_VERSION_SELECTION.md#kdocのhtml生成にdokka-220を採用)にも記載しています。
+
 ## 生成・表示
 
 リポジトリ直下で実行します。
