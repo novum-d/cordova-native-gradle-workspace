@@ -1,0 +1,771 @@
+
+> cordova-native-gradle-workspace@1.0.0 check:android
+> ./scripts/check-android.sh
+
+[native-gradle] project root: /Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp
+[native-gradle] hook script: /Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/hooks/copy-gradle-extras.js
+[native-gradle] updated: /Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/cdv-gradle-name.gradle
+[native-gradle] unchanged: /Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/app/build-extras.gradle
+[native-gradle] integration restored (after_prepare)
+
+> Configure project :cordova-plugin-dev
+Declaring an 'is-' property with a Boolean type has been deprecated. Starting with Gradle 9.0, this property will be ignored by Gradle. The combination of method name and return type is not consistent with Java Bean property rules and will become unsupported in future versions of Groovy. Add a method named 'getCrunchPngs' with the same behavior and mark the old one with @Deprecated, or change the type of 'com.android.build.gradle.internal.dsl.BuildType$AgpDecorated.isCrunchPngs' (and the setter) to 'boolean'. Consult the upgrading guide for further information: https://docs.gradle.org/8.13/userguide/upgrading_version_8.html#groovy_boolean_properties
+Declaring an 'is-' property with a Boolean type has been deprecated. Starting with Gradle 9.0, this property will be ignored by Gradle. The combination of method name and return type is not consistent with Java Bean property rules and will become unsupported in future versions of Groovy. Add a method named 'getUseProguard' with the same behavior and mark the old one with @Deprecated, or change the type of 'com.android.build.gradle.internal.dsl.BuildType.isUseProguard' (and the setter) to 'boolean'. Consult the upgrading guide for further information: https://docs.gradle.org/8.13/userguide/upgrading_version_8.html#groovy_boolean_properties
+Warning: SDK processing. This version only understands SDK XML versions up to 3 but an SDK XML file of version 4 was encountered. This can happen if you use versions of Android Studio and the command-line tools that were released at different times.
+
+> Task :detekt UP-TO-DATE
+> Task :detektFormatCheck UP-TO-DATE
+> Task :ktlintCheck UP-TO-DATE
+> Task :check UP-TO-DATE
+> Task :cordova-plugin-dev:preBuild UP-TO-DATE
+> Task :cordova-plugin-dev:preDebugBuild UP-TO-DATE
+> Task :cordova-plugin-dev:mergeDebugJniLibFolders UP-TO-DATE
+> Task :cordova-plugin-dev:mergeDebugNativeLibs NO-SOURCE
+> Task :cordova-plugin-dev:stripDebugDebugSymbols NO-SOURCE
+> Task :cordova-plugin-dev:copyDebugJniLibsProjectAndLocalJars UP-TO-DATE
+> Task :cordova-plugin-dev:checkKotlinGradlePluginConfigurationErrors
+> Task :cordova-plugin-dev:generateDebugResValues UP-TO-DATE
+> Task :cordova-plugin-dev:generateDebugResources UP-TO-DATE
+> Task :cordova-plugin-dev:packageDebugResources UP-TO-DATE
+> Task :cordova-plugin-dev:parseDebugLocalResources UP-TO-DATE
+> Task :cordova-plugin-dev:generateDebugRFile UP-TO-DATE
+> Task :feature:preBuild UP-TO-DATE
+> Task :feature:preDebugBuild UP-TO-DATE
+> Task :feature:generateDebugResValues UP-TO-DATE
+> Task :feature:generateDebugResources UP-TO-DATE
+> Task :feature:packageDebugResources
+> Task :feature:parseDebugLocalResources UP-TO-DATE
+> Task :feature:generateDebugRFile UP-TO-DATE
+> Task :data:preBuild UP-TO-DATE
+> Task :data:preDebugBuild UP-TO-DATE
+> Task :data:generateDebugResValues UP-TO-DATE
+> Task :data:generateDebugResources UP-TO-DATE
+> Task :data:packageDebugResources
+> Task :data:parseDebugLocalResources UP-TO-DATE
+> Task :data:generateDebugRFile UP-TO-DATE
+> Task :data:checkKotlinGradlePluginConfigurationErrors
+> Task :data:kspDebugKotlin NO-SOURCE
+> Task :data:compileDebugKotlin NO-SOURCE
+> Task :data:javaPreCompileDebug UP-TO-DATE
+> Task :data:compileDebugJavaWithJavac NO-SOURCE
+> Task :data:transformDebugClassesWithAsm UP-TO-DATE
+> Task :data:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :data:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :feature:checkKotlinGradlePluginConfigurationErrors
+> Task :feature:kspDebugKotlin UP-TO-DATE
+> Task :feature:javaPreCompileDebug UP-TO-DATE
+> Task :cordova-plugin-dev:extractDeepLinksForAarDebug UP-TO-DATE
+> Task :cordova-plugin-dev:javaPreCompileDebug UP-TO-DATE
+> Task :cordova-plugin-dev:mergeDebugShaders UP-TO-DATE
+> Task :cordova-plugin-dev:compileDebugShaders NO-SOURCE
+> Task :cordova-plugin-dev:generateDebugAssets UP-TO-DATE
+> Task :cordova-plugin-dev:packageDebugAssets UP-TO-DATE
+> Task :cordova-plugin-dev:prepareDebugArtProfile UP-TO-DATE
+> Task :cordova-plugin-dev:prepareLintJarForPublish UP-TO-DATE
+> Task :cordova-plugin-dev:processDebugManifest UP-TO-DATE
+> Task :cordova-plugin-dev:writeDebugAarMetadata UP-TO-DATE
+> Task :feature:mergeDebugJniLibFolders UP-TO-DATE
+> Task :feature:mergeDebugNativeLibs NO-SOURCE
+> Task :feature:stripDebugDebugSymbols NO-SOURCE
+> Task :feature:copyDebugJniLibsProjectAndLocalJars UP-TO-DATE
+> Task :feature:extractDeepLinksForAarDebug UP-TO-DATE
+> Task :feature:mergeDebugShaders UP-TO-DATE
+> Task :feature:compileDebugShaders NO-SOURCE
+> Task :feature:generateDebugAssets UP-TO-DATE
+> Task :feature:packageDebugAssets UP-TO-DATE
+> Task :feature:prepareDebugArtProfile UP-TO-DATE
+> Task :feature:prepareLintJarForPublish UP-TO-DATE
+> Task :feature:processDebugManifest UP-TO-DATE
+> Task :feature:writeDebugAarMetadata UP-TO-DATE
+> Task :data:mergeDebugJniLibFolders
+> Task :data:mergeDebugNativeLibs NO-SOURCE
+> Task :data:stripDebugDebugSymbols NO-SOURCE
+> Task :data:copyDebugJniLibsProjectAndLocalJars
+> Task :data:extractDebugAnnotations
+> Task :data:extractDeepLinksForAarDebug
+> Task :data:mergeDebugGeneratedProguardFiles
+> Task :data:mergeDebugConsumerProguardFiles
+> Task :data:mergeDebugShaders
+> Task :data:compileDebugShaders NO-SOURCE
+> Task :data:generateDebugAssets UP-TO-DATE
+> Task :data:packageDebugAssets
+> Task :data:prepareDebugArtProfile
+> Task :data:prepareLintJarForPublish
+> Task :data:processDebugJavaRes NO-SOURCE
+> Task :cordova-plugin-dev:preDebugAndroidTestBuild UP-TO-DATE
+> Task :data:writeDebugAarMetadata
+> Task :cordova-plugin-dev:generateDebugAndroidTestResValues
+> Task :cordova-plugin-dev:writeDebugLintModelMetadata
+> Task :data:createFullJarDebug
+> Task :data:writeDebugLintModelMetadata
+> Task :feature:writeDebugLintModelMetadata
+> Task :data:processDebugManifest
+> Task :cordova-plugin-dev:extractProguardFiles
+> Task :data:mergeDebugJavaResource
+> Task :data:extractProguardFiles
+> Task :data:syncDebugLibJars
+> Task :data:bundleDebugLocalLintAar
+> Task :data:generateDebugLintModel
+> Task :feature:extractProguardFiles
+> Task :cordova-plugin-dev:preDebugUnitTestBuild UP-TO-DATE
+> Task :data:preDebugAndroidTestBuild UP-TO-DATE
+> Task :data:generateDebugAndroidTestResValues
+> Task :data:generateDebugAndroidTestLintModel
+> Task :data:preDebugUnitTestBuild UP-TO-DATE
+> Task :data:generateDebugUnitTestLintModel
+> Task :feature:preDebugAndroidTestBuild UP-TO-DATE
+> Task :feature:generateDebugAndroidTestResValues
+> Task :feature:preDebugUnitTestBuild UP-TO-DATE
+> Task :feature:compileDebugKotlin
+> Task :feature:compileDebugJavaWithJavac NO-SOURCE
+> Task :cordova-plugin-dev:generateDebugUnitTestStubRFile
+> Task :feature:extractDebugAnnotations UP-TO-DATE
+> Task :feature:processDebugJavaRes UP-TO-DATE
+> Task :feature:mergeDebugJavaResource UP-TO-DATE
+> Task :feature:transformDebugClassesWithAsm
+> Task :feature:generateDebugLintModel
+> Task :feature:mergeDebugGeneratedProguardFiles UP-TO-DATE
+> Task :feature:mergeDebugConsumerProguardFiles UP-TO-DATE
+> Task :feature:bundleLibCompileToJarDebug
+> Task :feature:syncDebugLibJars
+> Task :cordova-plugin-dev:compileDebugKotlin UP-TO-DATE
+> Task :cordova-plugin-dev:extractDebugAnnotations UP-TO-DATE
+> Task :cordova-plugin-dev:compileDebugJavaWithJavac NO-SOURCE
+> Task :cordova-plugin-dev:mergeDebugGeneratedProguardFiles UP-TO-DATE
+> Task :cordova-plugin-dev:mergeDebugConsumerProguardFiles UP-TO-DATE
+> Task :cordova-plugin-dev:processDebugJavaRes UP-TO-DATE
+> Task :cordova-plugin-dev:mergeDebugJavaResource UP-TO-DATE
+> Task :cordova-plugin-dev:syncDebugLibJars UP-TO-DATE
+> Task :cordova-plugin-dev:bundleDebugLocalLintAar
+> Task :feature:bundleDebugLocalLintAar
+> Task :cordova-plugin-dev:bundleLibRuntimeToJarDebug
+> Task :feature:bundleLibRuntimeToJarDebug
+> Task :cordova-plugin-dev:bundleLibCompileToJarDebug
+> Task :cordova-plugin-dev:createFullJarDebug
+> Task :feature:createFullJarDebug
+> Task :cordova-plugin-dev:generateDebugAndroidTestLintModel
+> Task :cordova-plugin-dev:generateDebugLintReportModel
+> Task :cordova-plugin-dev:generateDebugUnitTestLintModel
+> Task :feature:generateDebugAndroidTestLintModel
+> Task :feature:generateDebugUnitTestLintModel
+> Task :cordova-plugin-dev:compileDebugUnitTestKotlin NO-SOURCE
+> Task :cordova-plugin-dev:processDebugUnitTestJavaRes NO-SOURCE
+> Task :cordova-plugin-dev:preReleaseBuild UP-TO-DATE
+> Task :cordova-plugin-dev:generateReleaseResValues
+> Task :cordova-plugin-dev:javaPreCompileDebugUnitTest
+> Task :cordova-plugin-dev:generateReleaseResources
+> Task :cordova-plugin-dev:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :cordova-plugin-dev:testDebugUnitTest NO-SOURCE
+> Task :cordova-plugin-dev:packageReleaseResources
+> Task :feature:preReleaseBuild UP-TO-DATE
+> Task :feature:generateReleaseResValues UP-TO-DATE
+> Task :feature:generateReleaseResources UP-TO-DATE
+> Task :feature:packageReleaseResources UP-TO-DATE
+> Task :feature:parseReleaseLocalResources UP-TO-DATE
+> Task :feature:generateReleaseRFile UP-TO-DATE
+> Task :data:preReleaseBuild UP-TO-DATE
+> Task :data:generateReleaseResValues UP-TO-DATE
+> Task :data:generateReleaseResources UP-TO-DATE
+> Task :cordova-plugin-dev:parseReleaseLocalResources
+> Task :data:packageReleaseResources UP-TO-DATE
+> Task :data:parseReleaseLocalResources UP-TO-DATE
+> Task :data:generateReleaseRFile UP-TO-DATE
+> Task :data:kspReleaseKotlin NO-SOURCE
+> Task :data:compileReleaseKotlin NO-SOURCE
+> Task :data:javaPreCompileRelease UP-TO-DATE
+> Task :data:compileReleaseJavaWithJavac NO-SOURCE
+> Task :cordova-plugin-dev:generateReleaseRFile
+> Task :data:transformReleaseClassesWithAsm UP-TO-DATE
+> Task :data:bundleLibCompileToJarRelease UP-TO-DATE
+> Task :data:bundleLibRuntimeToJarRelease UP-TO-DATE
+> Task :feature:kspReleaseKotlin UP-TO-DATE
+> Task :feature:compileReleaseKotlin UP-TO-DATE
+> Task :feature:javaPreCompileRelease UP-TO-DATE
+> Task :feature:compileReleaseJavaWithJavac NO-SOURCE
+> Task :feature:transformReleaseClassesWithAsm UP-TO-DATE
+> Task :feature:bundleLibCompileToJarRelease UP-TO-DATE
+> Task :cordova-plugin-dev:preReleaseUnitTestBuild UP-TO-DATE
+> Task :cordova-plugin-dev:javaPreCompileRelease
+> Task :cordova-plugin-dev:javaPreCompileReleaseUnitTest
+> Task :data:processReleaseJavaRes NO-SOURCE
+> Task :feature:bundleLibRuntimeToJarRelease UP-TO-DATE
+> Task :feature:processReleaseJavaRes UP-TO-DATE
+> Task :data:generateDebugLintReportModel
+> Task :cordova-plugin-dev:generateReleaseUnitTestStubRFile
+> Task :data:preReleaseUnitTestBuild UP-TO-DATE
+> Task :data:javaPreCompileDebugUnitTest
+> Task :data:generateDebugUnitTestStubRFile
+> Task :data:generateReleaseUnitTestStubRFile
+> Task :cordova-plugin-dev:compileReleaseKotlin
+> Task :cordova-plugin-dev:compileReleaseJavaWithJavac NO-SOURCE
+> Task :cordova-plugin-dev:bundleLibRuntimeToJarRelease
+> Task :cordova-plugin-dev:bundleLibCompileToJarRelease
+> Task :cordova-plugin-dev:processReleaseJavaRes
+> Task :cordova-plugin-dev:compileReleaseUnitTestKotlin NO-SOURCE
+> Task :cordova-plugin-dev:compileReleaseUnitTestJavaWithJavac NO-SOURCE
+> Task :cordova-plugin-dev:processReleaseUnitTestJavaRes NO-SOURCE
+> Task :cordova-plugin-dev:testReleaseUnitTest NO-SOURCE
+> Task :cordova-plugin-dev:test UP-TO-DATE
+> Task :data:javaPreCompileReleaseUnitTest
+> Task :feature:generateDebugLintReportModel
+> Task :feature:generateDebugUnitTestStubRFile UP-TO-DATE
+> Task :data:kspDebugUnitTestKotlin
+> Task :data:kspReleaseUnitTestKotlin
+> Task :data:lintAnalyzeDebugAndroidTest
+> Task :feature:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :feature:preReleaseUnitTestBuild UP-TO-DATE
+> Task :feature:generateReleaseUnitTestStubRFile UP-TO-DATE
+> Task :feature:kspReleaseUnitTestKotlin UP-TO-DATE
+> Task :feature:compileReleaseUnitTestKotlin UP-TO-DATE
+> Task :feature:javaPreCompileReleaseUnitTest UP-TO-DATE
+> Task :feature:compileReleaseUnitTestJavaWithJavac NO-SOURCE
+> Task :feature:hiltAggregateDepsReleaseUnitTest UP-TO-DATE
+> Task :feature:hiltJavaCompileReleaseUnitTest NO-SOURCE
+> Task :feature:processReleaseUnitTestJavaRes UP-TO-DATE
+> Task :feature:transformReleaseUnitTestClassesWithAsm UP-TO-DATE
+> Task :data:lintAnalyzeDebugUnitTest
+> Task :feature:testReleaseUnitTest UP-TO-DATE
+> Task :data:processReleaseManifest
+> Task :data:mergeReleaseJniLibFolders
+> Task :feature:kspDebugUnitTestKotlin
+> Task :data:generateReleaseLintModel
+> Task :feature:compileDebugUnitTestKotlin UP-TO-DATE
+> Task :feature:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :feature:hiltAggregateDepsDebugUnitTest UP-TO-DATE
+> Task :feature:hiltJavaCompileDebugUnitTest NO-SOURCE
+> Task :feature:processDebugUnitTestJavaRes UP-TO-DATE
+> Task :feature:transformDebugUnitTestClassesWithAsm UP-TO-DATE
+> Task :data:compileReleaseUnitTestKotlin
+> Task :data:compileDebugUnitTestKotlin
+> Task :data:lintAnalyzeDebug
+> Task :feature:testDebugUnitTest
+> Task :data:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :data:compileReleaseUnitTestJavaWithJavac NO-SOURCE
+> Task :data:hiltAggregateDepsDebugUnitTest
+> Task :data:hiltJavaCompileDebugUnitTest NO-SOURCE
+> Task :data:hiltAggregateDepsReleaseUnitTest
+> Task :data:processDebugUnitTestJavaRes
+> Task :data:hiltJavaCompileReleaseUnitTest NO-SOURCE
+> Task :data:processReleaseUnitTestJavaRes
+> Task :data:transformDebugUnitTestClassesWithAsm
+> Task :data:transformReleaseUnitTestClassesWithAsm
+> Task :data:testDebugUnitTest
+> Task :data:testReleaseUnitTest
+> Task :data:test
+> Task :feature:test
+> Task :data:mergeReleaseNativeLibs NO-SOURCE
+> Task :data:stripReleaseDebugSymbols NO-SOURCE
+> Task :data:copyReleaseJniLibsProjectAndLocalJars
+> Task :data:extractDeepLinksForAarRelease
+> Task :data:extractReleaseAnnotations
+> Task :data:mergeReleaseGeneratedProguardFiles
+> Task :data:mergeReleaseConsumerProguardFiles
+> Task :data:mergeReleaseShaders
+> Task :data:compileReleaseShaders NO-SOURCE
+> Task :data:generateReleaseAssets UP-TO-DATE
+> Task :data:packageReleaseAssets
+> Task :data:prepareReleaseArtProfile
+> Task :data:writeReleaseAarMetadata
+> Task :data:mergeReleaseJavaResource
+> Task :data:createFullJarRelease
+> Task :data:syncReleaseLibJars
+> Task :data:bundleReleaseLocalLintAar
+> Task :data:writeReleaseLintModelMetadata
+> Task :data:generateReleaseUnitTestLintModel
+> Task :feature:mergeReleaseJniLibFolders
+> Task :feature:processReleaseManifest
+> Task :feature:mergeReleaseNativeLibs NO-SOURCE
+> Task :feature:generateReleaseLintReportModel
+> Task :feature:stripReleaseDebugSymbols NO-SOURCE
+> Task :feature:copyReleaseJniLibsProjectAndLocalJars
+> Task :feature:extractDeepLinksForAarRelease
+> Task :feature:extractReleaseAnnotations
+> Task :feature:mergeReleaseGeneratedProguardFiles
+> Task :feature:mergeReleaseConsumerProguardFiles
+> Task :feature:mergeReleaseShaders
+> Task :feature:compileReleaseShaders NO-SOURCE
+> Task :feature:generateReleaseAssets UP-TO-DATE
+> Task :feature:packageReleaseAssets
+> Task :feature:prepareReleaseArtProfile
+> Task :feature:writeReleaseAarMetadata
+> Task :feature:createFullJarRelease
+> Task :feature:writeReleaseLintModelMetadata
+> Task :feature:mergeReleaseJavaResource
+> Task :data:generateReleaseLintReportModel
+> Task :feature:syncReleaseLibJars
+> Task :feature:bundleReleaseLocalLintAar
+> Task :cordova-plugin-dev:processReleaseManifest
+> Task :feature:generateReleaseLintModel
+> Task :feature:generateReleaseUnitTestLintModel
+> Task :cordova-plugin-dev:generateReleaseLintReportModel
+> Task :cordova-plugin-dev:mergeReleaseJniLibFolders
+> Task :cordova-plugin-dev:mergeReleaseNativeLibs NO-SOURCE
+> Task :cordova-plugin-dev:stripReleaseDebugSymbols NO-SOURCE
+> Task :cordova-plugin-dev:copyReleaseJniLibsProjectAndLocalJars
+> Task :cordova-plugin-dev:extractDeepLinksForAarRelease
+> Task :cordova-plugin-dev:extractReleaseAnnotations
+> Task :cordova-plugin-dev:mergeReleaseGeneratedProguardFiles
+> Task :cordova-plugin-dev:mergeReleaseConsumerProguardFiles
+> Task :cordova-plugin-dev:mergeReleaseShaders
+> Task :cordova-plugin-dev:compileReleaseShaders NO-SOURCE
+> Task :cordova-plugin-dev:generateReleaseAssets UP-TO-DATE
+> Task :cordova-plugin-dev:packageReleaseAssets
+> Task :cordova-plugin-dev:prepareReleaseArtProfile
+> Task :cordova-plugin-dev:writeReleaseAarMetadata
+> Task :cordova-plugin-dev:createFullJarRelease
+> Task :cordova-plugin-dev:mergeReleaseJavaResource
+> Task :cordova-plugin-dev:syncReleaseLibJars
+> Task :cordova-plugin-dev:bundleReleaseLocalLintAar
+> Task :cordova-plugin-dev:writeReleaseLintModelMetadata
+> Task :cordova-plugin-dev:generateReleaseUnitTestLintModel
+> Task :feature:lintAnalyzeDebug
+> Task :cordova-plugin-dev:lintAnalyzeDebugUnitTest
+> Task :cordova-plugin-dev:lintAnalyzeDebugAndroidTest
+> Task :feature:lintAnalyzeDebugAndroidTest
+> Task :data:lintReportDebug
+> Task :data:lintDebug
+> Task :data:lint
+> Task :data:check
+> Task :data:lintAnalyzeRelease
+> Task :feature:lintAnalyzeDebugUnitTest
+
+> Task :feature:lintReportDebug
+Wrote HTML report to file:///Users/novumd/repos/cordova-native-gradle-workspace/native/feature/build/reports/lint-results-debug.html
+
+> Task :feature:lintDebug
+> Task :feature:lint
+> Task :feature:check
+> Task :data:lintAnalyzeReleaseUnitTest
+> Task :feature:lintAnalyzeReleaseUnitTest
+> Task :data:lintReportRelease
+> Task :data:lintRelease
+> Task :cordova-plugin-dev:lintAnalyzeDebug
+> Task :feature:lintAnalyzeRelease
+
+> Task :feature:lintReportRelease
+Wrote HTML report to file:///Users/novumd/repos/cordova-native-gradle-workspace/native/feature/build/reports/lint-results-release.html
+
+> Task :feature:lintRelease
+
+> Task :cordova-plugin-dev:lintReportDebug
+Wrote HTML report to file:///Users/novumd/repos/cordova-native-gradle-workspace/native/cordova-plugin-dev/build/reports/lint-results-debug.html
+
+> Task :cordova-plugin-dev:lintDebug
+> Task :cordova-plugin-dev:lint
+> Task :cordova-plugin-dev:check
+> Task :cordova-plugin-dev:lintAnalyzeReleaseUnitTest
+> Task :cordova-plugin-dev:lintAnalyzeRelease
+
+> Task :cordova-plugin-dev:lintReportRelease
+Wrote HTML report to file:///Users/novumd/repos/cordova-native-gradle-workspace/native/cordova-plugin-dev/build/reports/lint-results-release.html
+
+> Task :cordova-plugin-dev:lintRelease
+
+[Incubating] Problems report is available at: file:///Users/novumd/repos/cordova-native-gradle-workspace/native/build/reports/problems/problems-report.html
+
+BUILD SUCCESSFUL in 18s
+254 actionable tasks: 167 executed, 87 up-to-date
+
+> Configure project :app
+Declaring an 'is-' property with a Boolean type has been deprecated. Starting with Gradle 9.0, this property will be ignored by Gradle. The combination of method name and return type is not consistent with Java Bean property rules and will become unsupported in future versions of Groovy. Add a method named 'getCrunchPngs' with the same behavior and mark the old one with @Deprecated, or change the type of 'com.android.build.gradle.internal.dsl.BuildType$AgpDecorated.isCrunchPngs' (and the setter) to 'boolean'. Consult the upgrading guide for further information: https://docs.gradle.org/8.13/userguide/upgrading_version_8.html#groovy_boolean_properties
+	at build_qi462y6dpvbq2hbbe2zdml7k.run(/Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/app/build.gradle:20)
+	(Run with --stacktrace to get the full stack trace of this deprecation warning.)
+Declaring an 'is-' property with a Boolean type has been deprecated. Starting with Gradle 9.0, this property will be ignored by Gradle. The combination of method name and return type is not consistent with Java Bean property rules and will become unsupported in future versions of Groovy. Add a method named 'getUseProguard' with the same behavior and mark the old one with @Deprecated, or change the type of 'com.android.build.gradle.internal.dsl.BuildType.isUseProguard' (and the setter) to 'boolean'. Consult the upgrading guide for further information: https://docs.gradle.org/8.13/userguide/upgrading_version_8.html#groovy_boolean_properties
+	at build_qi462y6dpvbq2hbbe2zdml7k.run(/Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/app/build.gradle:20)
+	(Run with --stacktrace to get the full stack trace of this deprecation warning.)
+Build file '/Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/app/build.gradle': line 186
+Properties should be assigned using the 'propName = value' syntax. Setting a property via the Gradle-generated 'propName value' or 'propName(value)' syntax in Groovy DSL has been deprecated. This is scheduled to be removed in Gradle 10.0. Use assignment ('namespace = <value>') instead. Consult the upgrading guide for further information: https://docs.gradle.org/8.13/userguide/upgrading_version_8.html#groovy_space_assignment_syntax
+	at build_qi462y6dpvbq2hbbe2zdml7k$_run_closure7.doCall$original(/Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/app/build.gradle:186)
+	(Run with --stacktrace to get the full stack trace of this deprecation warning.)
+	at build_qi462y6dpvbq2hbbe2zdml7k.run(/Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/app/build.gradle:185)
+	(Run with --stacktrace to get the full stack trace of this deprecation warning.)
+Build file '/Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/app/build.gradle': line 189
+Properties should be assigned using the 'propName = value' syntax. Setting a property via the Gradle-generated 'propName value' or 'propName(value)' syntax in Groovy DSL has been deprecated. This is scheduled to be removed in Gradle 10.0. Use assignment ('buildConfig = <value>') instead. Consult the upgrading guide for further information: https://docs.gradle.org/8.13/userguide/upgrading_version_8.html#groovy_space_assignment_syntax
+	at build_qi462y6dpvbq2hbbe2zdml7k$_run_closure7$_closure12.doCall$original(/Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/app/build.gradle:189)
+	(Run with --stacktrace to get the full stack trace of this deprecation warning.)
+	at build_qi462y6dpvbq2hbbe2zdml7k$_run_closure7.doCall$original(/Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/app/build.gradle:188)
+	(Run with --stacktrace to get the full stack trace of this deprecation warning.)
+Build file '/Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/app/build.gradle': line 205
+Properties should be assigned using the 'propName = value' syntax. Setting a property via the Gradle-generated 'propName value' or 'propName(value)' syntax in Groovy DSL has been deprecated. This is scheduled to be removed in Gradle 10.0. Use assignment ('abortOnError = <value>') instead. Consult the upgrading guide for further information: https://docs.gradle.org/8.13/userguide/upgrading_version_8.html#groovy_space_assignment_syntax
+	at build_qi462y6dpvbq2hbbe2zdml7k$_run_closure7$_closure14.doCall$original(/Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/app/build.gradle:205)
+	(Run with --stacktrace to get the full stack trace of this deprecation warning.)
+	at build_qi462y6dpvbq2hbbe2zdml7k$_run_closure7.doCall$original(/Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/app/build.gradle:204)
+	(Run with --stacktrace to get the full stack trace of this deprecation warning.)
+Declaring an 'is-' property with a Boolean type has been deprecated. Starting with Gradle 9.0, this property will be ignored by Gradle. The combination of method name and return type is not consistent with Java Bean property rules and will become unsupported in future versions of Groovy. Add a method named 'getWearAppUnbundled' with the same behavior and mark the old one with @Deprecated, or change the type of 'com.android.build.api.variant.impl.ApplicationVariantImpl.isWearAppUnbundled' (and the setter) to 'boolean'. Consult the upgrading guide for further information: https://docs.gradle.org/8.13/userguide/upgrading_version_8.html#groovy_boolean_properties
+
+> Configure project :CordovaLib
+Build file '/Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/CordovaLib/build.gradle': line 47
+Properties should be assigned using the 'propName = value' syntax. Setting a property via the Gradle-generated 'propName value' or 'propName(value)' syntax in Groovy DSL has been deprecated. This is scheduled to be removed in Gradle 10.0. Use assignment ('namespace = <value>') instead. Consult the upgrading guide for further information: https://docs.gradle.org/8.13/userguide/upgrading_version_8.html#groovy_space_assignment_syntax
+	at build_4ukbrzng19194dcy8id6l8b61$_run_closure2.doCall$original(/Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/CordovaLib/build.gradle:47)
+	(Run with --stacktrace to get the full stack trace of this deprecation warning.)
+	at build_4ukbrzng19194dcy8id6l8b61.run(/Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/CordovaLib/build.gradle:46)
+	(Run with --stacktrace to get the full stack trace of this deprecation warning.)
+Warning: SDK processing. This version only understands SDK XML versions up to 3 but an SDK XML file of version 4 was encountered. This can happen if you use versions of Android Studio and the command-line tools that were released at different times.
+
+> Task :detekt
+
+> Task :detektFormatCheck
+......................
+
+22 kotlin files were analyzed.
+Complexity Report:
+	- 811 lines of code (loc)
+	- 597 source lines of code (sloc)
+	- 349 logical lines of code (lloc)
+	- 100 comment lines of code (cloc)
+	- 65 cyclomatic complexity (mcc)
+	- 15 cognitive complexity
+	- 0 number of total code smells
+	- 16% comment source ratio
+	- 186 mcc per 1,000 lloc
+	- 0 code smells per 1,000 lloc
+
+Project Statistics:
+	- number of properties: 39
+	- number of functions: 43
+	- number of classes: 17
+	- number of packages: 9
+	- number of kt files: 22
+
+Successfully generated HTML report at file:///Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/build/reports/detekt/detektFormatCheck.html
+
+> Task :ktlintCheck
+> Task :check
+> Task :feature:preBuild UP-TO-DATE
+> Task :feature:preDebugBuild UP-TO-DATE
+> Task :feature:mergeDebugJniLibFolders UP-TO-DATE
+> Task :feature:mergeDebugNativeLibs NO-SOURCE
+> Task :feature:stripDebugDebugSymbols NO-SOURCE
+> Task :data:preBuild UP-TO-DATE
+> Task :data:preDebugBuild UP-TO-DATE
+> Task :data:generateDebugResValues UP-TO-DATE
+> Task :data:generateDebugResources UP-TO-DATE
+> Task :feature:copyDebugJniLibsProjectAndLocalJars
+> Task :data:packageDebugResources
+> Task :data:parseDebugLocalResources UP-TO-DATE
+> Task :data:generateDebugRFile UP-TO-DATE
+> Task :data:checkKotlinGradlePluginConfigurationErrors
+> Task :data:kspDebugKotlin NO-SOURCE
+> Task :data:compileDebugKotlin NO-SOURCE
+> Task :data:javaPreCompileDebug UP-TO-DATE
+> Task :data:compileDebugJavaWithJavac NO-SOURCE
+> Task :data:transformDebugClassesWithAsm UP-TO-DATE
+> Task :data:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :feature:checkKotlinGradlePluginConfigurationErrors
+> Task :feature:generateDebugResValues UP-TO-DATE
+> Task :feature:generateDebugResources UP-TO-DATE
+> Task :feature:packageDebugResources
+> Task :feature:parseDebugLocalResources UP-TO-DATE
+> Task :feature:generateDebugRFile UP-TO-DATE
+> Task :feature:kspDebugKotlin UP-TO-DATE
+> Task :feature:extractDeepLinksForAarDebug
+> Task :data:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :feature:javaPreCompileDebug UP-TO-DATE
+> Task :feature:mergeDebugShaders UP-TO-DATE
+> Task :feature:compileDebugShaders NO-SOURCE
+> Task :feature:generateDebugAssets UP-TO-DATE
+> Task :feature:packageDebugAssets UP-TO-DATE
+> Task :feature:prepareDebugArtProfile
+> Task :feature:processDebugManifest UP-TO-DATE
+> Task :feature:writeDebugAarMetadata UP-TO-DATE
+> Task :data:mergeDebugJniLibFolders UP-TO-DATE
+> Task :feature:prepareLintJarForPublish
+> Task :data:mergeDebugNativeLibs NO-SOURCE
+> Task :data:stripDebugDebugSymbols NO-SOURCE
+> Task :data:copyDebugJniLibsProjectAndLocalJars
+> Task :data:extractDebugAnnotations
+> Task :data:extractDeepLinksForAarDebug
+> Task :data:mergeDebugGeneratedProguardFiles
+> Task :data:mergeDebugConsumerProguardFiles
+> Task :data:mergeDebugShaders UP-TO-DATE
+> Task :data:compileDebugShaders NO-SOURCE
+> Task :data:generateDebugAssets UP-TO-DATE
+> Task :data:packageDebugAssets UP-TO-DATE
+> Task :data:prepareDebugArtProfile
+> Task :data:prepareLintJarForPublish
+> Task :data:processDebugManifest UP-TO-DATE
+> Task :data:processDebugJavaRes NO-SOURCE
+> Task :data:writeDebugAarMetadata UP-TO-DATE
+> Task :CordovaLib:preBuild UP-TO-DATE
+> Task :CordovaLib:preDebugBuild UP-TO-DATE
+> Task :CordovaLib:mergeDebugJniLibFolders UP-TO-DATE
+> Task :CordovaLib:mergeDebugNativeLibs NO-SOURCE
+> Task :CordovaLib:stripDebugDebugSymbols NO-SOURCE
+> Task :CordovaLib:copyDebugJniLibsProjectAndLocalJars
+> Task :CordovaLib:generateDebugResValues UP-TO-DATE
+> Task :CordovaLib:generateDebugResources UP-TO-DATE
+> Task :CordovaLib:packageDebugResources UP-TO-DATE
+> Task :CordovaLib:parseDebugLocalResources UP-TO-DATE
+> Task :CordovaLib:generateDebugRFile UP-TO-DATE
+> Task :data:mergeDebugJavaResource
+> Task :CordovaLib:extractDebugAnnotations
+> Task :data:syncDebugLibJars
+> Task :data:bundleDebugLocalLintAar
+> Task :CordovaLib:extractDeepLinksForAarDebug
+> Task :CordovaLib:javaPreCompileDebug UP-TO-DATE
+> Task :CordovaLib:compileDebugJavaWithJavac UP-TO-DATE
+> Task :CordovaLib:mergeDebugGeneratedProguardFiles
+> Task :CordovaLib:mergeDebugConsumerProguardFiles
+> Task :CordovaLib:mergeDebugShaders UP-TO-DATE
+> Task :CordovaLib:compileDebugShaders NO-SOURCE
+> Task :CordovaLib:generateDebugAssets UP-TO-DATE
+> Task :CordovaLib:packageDebugAssets UP-TO-DATE
+> Task :CordovaLib:prepareDebugArtProfile
+> Task :CordovaLib:prepareLintJarForPublish
+> Task :CordovaLib:processDebugManifest UP-TO-DATE
+> Task :CordovaLib:processDebugJavaRes UP-TO-DATE
+> Task :CordovaLib:writeDebugAarMetadata UP-TO-DATE
+> Task :app:checkKotlinGradlePluginConfigurationErrors
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:generateDebugBuildConfig UP-TO-DATE
+> Task :CordovaLib:mergeDebugJavaResource
+> Task :app:checkDebugAarMetadata UP-TO-DATE
+> Task :CordovaLib:syncDebugLibJars
+> Task :CordovaLib:bundleDebugLocalLintAar
+> Task :app:generateDebugResValues UP-TO-DATE
+> Task :feature:compileDebugKotlin
+> Task :app:mapDebugSourceSetPaths UP-TO-DATE
+> Task :feature:extractDebugAnnotations
+> Task :feature:compileDebugJavaWithJavac NO-SOURCE
+> Task :feature:transformDebugClassesWithAsm UP-TO-DATE
+> Task :feature:mergeDebugGeneratedProguardFiles
+> Task :feature:mergeDebugConsumerProguardFiles
+> Task :feature:processDebugJavaRes UP-TO-DATE
+> Task :app:generateDebugResources UP-TO-DATE
+> Task :feature:mergeDebugJavaResource
+> Task :app:mergeDebugResources UP-TO-DATE
+> Task :feature:syncDebugLibJars
+> Task :feature:bundleDebugLocalLintAar
+> Task :app:packageDebugResources UP-TO-DATE
+> Task :app:parseDebugLocalResources UP-TO-DATE
+> Task :app:createDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksDebug UP-TO-DATE
+> Task :CordovaLib:extractDeepLinksDebug UP-TO-DATE
+> Task :data:extractDeepLinksDebug UP-TO-DATE
+> Task :feature:extractDeepLinksDebug UP-TO-DATE
+> Task :app:processDebugMainManifest UP-TO-DATE
+> Task :app:processDebugManifest UP-TO-DATE
+> Task :app:processDebugManifestForPackage UP-TO-DATE
+> Task :CordovaLib:compileDebugLibraryResources UP-TO-DATE
+> Task :data:compileDebugLibraryResources UP-TO-DATE
+> Task :feature:compileDebugLibraryResources UP-TO-DATE
+> Task :app:processDebugResources UP-TO-DATE
+> Task :CordovaLib:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :feature:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :app:compileDebugKotlin UP-TO-DATE
+> Task :app:javaPreCompileDebug UP-TO-DATE
+> Task :app:compileDebugJavaWithJavac UP-TO-DATE
+> Task :app:preDebugAndroidTestBuild SKIPPED
+> Task :app:generateDebugAndroidTestResValues
+> Task :CordovaLib:writeDebugLintModelMetadata
+> Task :app:bundleDebugClassesToCompileJar
+> Task :data:createFullJarDebug
+> Task :data:writeDebugLintModelMetadata
+> Task :CordovaLib:bundleLibRuntimeToJarDebug
+> Task :CordovaLib:createFullJarDebug
+> Task :feature:bundleLibRuntimeToJarDebug
+> Task :feature:writeDebugLintModelMetadata
+> Task :feature:createFullJarDebug
+> Task :app:generateDebugAndroidTestLintModel
+> Task :app:extractProguardFiles
+> Task :CordovaLib:extractProguardFiles
+> Task :CordovaLib:generateDebugLintModel
+> Task :data:extractProguardFiles
+> Task :data:generateDebugLintModel
+> Task :feature:extractProguardFiles
+> Task :feature:generateDebugLintModel
+> Task :app:generateDebugLintReportModel
+> Task :app:preDebugUnitTestBuild UP-TO-DATE
+> Task :app:generateDebugUnitTestLintModel
+> Task :CordovaLib:preDebugAndroidTestBuild UP-TO-DATE
+> Task :CordovaLib:generateDebugAndroidTestResValues
+> Task :CordovaLib:generateDebugAndroidTestLintModel
+> Task :CordovaLib:preDebugUnitTestBuild UP-TO-DATE
+> Task :CordovaLib:generateDebugUnitTestLintModel
+> Task :data:preDebugAndroidTestBuild UP-TO-DATE
+> Task :data:generateDebugAndroidTestResValues
+> Task :data:generateDebugAndroidTestLintModel
+> Task :data:preDebugUnitTestBuild UP-TO-DATE
+> Task :data:generateDebugUnitTestLintModel
+> Task :feature:preDebugAndroidTestBuild UP-TO-DATE
+> Task :feature:generateDebugAndroidTestResValues
+> Task :feature:generateDebugAndroidTestLintModel
+> Task :feature:preDebugUnitTestBuild UP-TO-DATE
+> Task :feature:generateDebugUnitTestLintModel
+> Task :app:buildKotlinToolingMetadata
+> Task :app:preReleaseBuild UP-TO-DATE
+> Task :app:generateReleaseBuildConfig
+> Task :CordovaLib:preReleaseBuild UP-TO-DATE
+> Task :data:preReleaseBuild UP-TO-DATE
+> Task :CordovaLib:writeReleaseAarMetadata
+> Task :feature:preReleaseBuild UP-TO-DATE
+> Task :data:writeReleaseAarMetadata
+> Task :feature:writeReleaseAarMetadata
+> Task :app:generateReleaseResValues
+> Task :CordovaLib:generateReleaseResValues
+> Task :app:checkReleaseAarMetadata
+> Task :CordovaLib:generateReleaseResources
+> Task :CordovaLib:packageReleaseResources
+> Task :data:generateReleaseResValues
+> Task :data:generateReleaseResources
+> Task :data:packageReleaseResources
+> Task :feature:generateReleaseResValues
+> Task :feature:generateReleaseResources
+> Task :feature:packageReleaseResources
+> Task :app:mapReleaseSourceSetPaths
+> Task :app:generateReleaseResources
+> Task :data:lintAnalyzeDebug
+> Task :app:lintAnalyzeDebugAndroidTest
+> Task :app:packageReleaseResources
+> Task :app:createReleaseCompatibleScreenManifests
+> Task :app:extractDeepLinksRelease
+> Task :CordovaLib:extractDeepLinksRelease
+> Task :data:extractDeepLinksRelease
+> Task :feature:extractDeepLinksRelease
+> Task :CordovaLib:compileReleaseLibraryResources
+> Task :data:compileReleaseLibraryResources
+> Task :feature:compileReleaseLibraryResources
+> Task :CordovaLib:parseReleaseLocalResources
+> Task :data:parseReleaseLocalResources
+> Task :feature:parseReleaseLocalResources
+> Task :app:parseReleaseLocalResources
+> Task :CordovaLib:javaPreCompileRelease
+> Task :data:processReleaseManifest
+> Task :CordovaLib:processReleaseManifest
+> Task :feature:processReleaseManifest
+> Task :CordovaLib:generateReleaseRFile
+> Task :data:generateReleaseRFile
+> Task :feature:generateReleaseRFile
+> Task :app:processReleaseMainManifest
+> Task :app:processReleaseManifest
+> Task :app:mergeReleaseResources
+> Task :app:lintAnalyzeDebugUnitTest
+
+> Task :CordovaLib:compileReleaseJavaWithJavac
+ノート:一部の入力ファイルは推奨されないAPIを使用またはオーバーライドしています。
+ノート:詳細は、-Xlint:deprecationオプションを指定して再コンパイルしてください。
+
+> Task :data:kspReleaseKotlin NO-SOURCE
+> Task :data:compileReleaseKotlin NO-SOURCE
+> Task :data:javaPreCompileRelease
+> Task :CordovaLib:bundleLibCompileToJarRelease
+> Task :data:compileReleaseJavaWithJavac NO-SOURCE
+> Task :feature:javaPreCompileRelease
+> Task :app:javaPreCompileRelease
+> Task :app:processReleaseManifestForPackage
+> Task :data:transformReleaseClassesWithAsm
+> Task :data:bundleLibCompileToJarRelease
+> Task :data:bundleLibRuntimeToJarRelease
+> Task :CordovaLib:bundleLibRuntimeToJarRelease
+> Task :CordovaLib:processReleaseJavaRes
+> Task :CordovaLib:createFullJarRelease
+> Task :CordovaLib:generateReleaseLintModel
+> Task :data:processReleaseJavaRes NO-SOURCE
+> Task :data:createFullJarRelease
+> Task :data:generateReleaseLintModel
+> Task :feature:mergeReleaseJniLibFolders
+> Task :feature:mergeReleaseNativeLibs NO-SOURCE
+> Task :feature:stripReleaseDebugSymbols NO-SOURCE
+> Task :feature:copyReleaseJniLibsProjectAndLocalJars
+> Task :feature:extractDeepLinksForAarRelease
+> Task :feature:mergeReleaseShaders
+> Task :feature:compileReleaseShaders NO-SOURCE
+> Task :feature:generateReleaseAssets UP-TO-DATE
+> Task :feature:packageReleaseAssets
+> Task :feature:prepareReleaseArtProfile
+> Task :data:mergeReleaseJniLibFolders
+> Task :data:mergeReleaseNativeLibs NO-SOURCE
+> Task :data:stripReleaseDebugSymbols NO-SOURCE
+> Task :data:copyReleaseJniLibsProjectAndLocalJars
+> Task :data:extractDeepLinksForAarRelease
+> Task :data:extractReleaseAnnotations
+> Task :data:mergeReleaseGeneratedProguardFiles
+> Task :data:mergeReleaseConsumerProguardFiles
+> Task :data:mergeReleaseShaders
+> Task :data:compileReleaseShaders NO-SOURCE
+> Task :data:generateReleaseAssets UP-TO-DATE
+> Task :data:packageReleaseAssets
+> Task :data:prepareReleaseArtProfile
+> Task :CordovaLib:mergeReleaseJniLibFolders
+> Task :data:mergeReleaseJavaResource
+> Task :data:syncReleaseLibJars
+> Task :data:bundleReleaseLocalLintAar
+> Task :CordovaLib:mergeReleaseNativeLibs NO-SOURCE
+> Task :CordovaLib:stripReleaseDebugSymbols NO-SOURCE
+> Task :CordovaLib:copyReleaseJniLibsProjectAndLocalJars
+> Task :CordovaLib:extractDeepLinksForAarRelease
+> Task :CordovaLib:extractReleaseAnnotations
+> Task :CordovaLib:lintAnalyzeDebugAndroidTest
+> Task :CordovaLib:mergeReleaseGeneratedProguardFiles
+> Task :app:processReleaseResources
+> Task :CordovaLib:mergeReleaseConsumerProguardFiles
+> Task :CordovaLib:mergeReleaseShaders
+> Task :CordovaLib:compileReleaseShaders NO-SOURCE
+> Task :CordovaLib:generateReleaseAssets UP-TO-DATE
+> Task :CordovaLib:packageReleaseAssets
+> Task :CordovaLib:prepareReleaseArtProfile
+> Task :app:preReleaseUnitTestBuild UP-TO-DATE
+> Task :CordovaLib:writeReleaseLintModelMetadata
+> Task :CordovaLib:mergeReleaseJavaResource
+> Task :data:writeReleaseLintModelMetadata
+> Task :feature:kspReleaseKotlin
+> Task :CordovaLib:syncReleaseLibJars
+> Task :CordovaLib:bundleReleaseLocalLintAar
+> Task :feature:writeReleaseLintModelMetadata
+> Task :CordovaLib:preReleaseUnitTestBuild UP-TO-DATE
+> Task :CordovaLib:generateReleaseUnitTestLintModel
+> Task :data:preReleaseUnitTestBuild UP-TO-DATE
+> Task :data:generateReleaseUnitTestLintModel
+> Task :feature:preReleaseUnitTestBuild UP-TO-DATE
+> Task :CordovaLib:lintAnalyzeDebugUnitTest
+> Task :data:lintAnalyzeDebugAndroidTest
+> Task :feature:compileReleaseKotlin
+> Task :feature:compileReleaseJavaWithJavac NO-SOURCE
+> Task :feature:processReleaseJavaRes
+> Task :feature:generateReleaseLintModel
+> Task :feature:extractReleaseAnnotations
+> Task :feature:mergeReleaseJavaResource
+> Task :feature:transformReleaseClassesWithAsm
+> Task :feature:mergeReleaseGeneratedProguardFiles
+> Task :feature:mergeReleaseConsumerProguardFiles
+> Task :feature:bundleLibCompileToJarRelease
+> Task :feature:bundleLibRuntimeToJarRelease
+> Task :feature:syncReleaseLibJars
+> Task :feature:lintAnalyzeDebug
+> Task :feature:createFullJarRelease
+> Task :feature:bundleReleaseLocalLintAar
+> Task :feature:generateReleaseUnitTestLintModel
+> Task :app:compileReleaseKotlin
+> Task :data:lintAnalyzeDebugUnitTest
+> Task :app:compileReleaseJavaWithJavac
+> Task :app:generateReleaseLintReportModel
+> Task :app:bundleReleaseClassesToCompileJar
+> Task :app:generateReleaseUnitTestLintModel
+> Task :feature:lintAnalyzeDebugAndroidTest
+> Task :CordovaLib:lintAnalyzeDebug
+> Task :feature:lintAnalyzeDebugUnitTest
+> Task :data:lintAnalyzeRelease
+> Task :app:lintAnalyzeDebug
+
+> Task :app:lintReportDebug
+Wrote HTML report to file:///Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/app/build/reports/lint-results-debug.html
+
+> Task :app:lintDebug
+> Task :app:lintAnalyzeReleaseUnitTest
+> Task :CordovaLib:lintAnalyzeReleaseUnitTest
+> Task :data:lintAnalyzeReleaseUnitTest
+> Task :CordovaLib:lintAnalyzeRelease
+> Task :feature:lintAnalyzeRelease
+> Task :feature:lintAnalyzeReleaseUnitTest
+> Task :app:lintAnalyzeRelease
+
+> Task :app:lintReportRelease
+Wrote HTML report to file:///Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/app/build/reports/lint-results-release.html
+
+> Task :app:lintRelease
+
+[Incubating] Problems report is available at: file:///Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/build/reports/problems/problems-report.html
+
+BUILD SUCCESSFUL in 13s
+267 actionable tasks: 203 executed, 64 up-to-date

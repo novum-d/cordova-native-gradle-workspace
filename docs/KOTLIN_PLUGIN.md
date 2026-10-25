@@ -2,6 +2,8 @@
 
 ## 構成
 
+現在のMainActivityは、プラグインからIntentで受け取った処理IDに応じて[ホーム・NFC・Camera画面](NFC_NAVIGATION.md)を直接表示します。後半のカウンタ操作・画像は、ナビゲーション導入前の検証記録です。
+
 `CordovaComposeApp`は動作確認用のCordovaアプリ本体、[kotlin-plugin](../kotlin-plugin/README.md)はWebからKotlin機能を呼ぶ入口です。
 
 ```text
@@ -9,8 +11,9 @@ CordovaComposeApp/www/js/index.js
   → window.KotlinPlugin.openFeature
   → kotlin-plugin/www/kotlin-plugin.js の cordova/exec
   → KotlinPlugin.execute("openFeature", ...)
-  → UIスレッドで startActivity(Intent(activity, MainActivity::class.java))
-  → native/feature の MainActivity
+  → {id, args?}をFeatureLaunchRequestへ変換・検証
+  → UIスレッドで固定のMainActivityへ要求JSON付きIntentを送る
+  → MainActivityが処理IDを型付き画面へ解決
 ```
 
 プラグイン内は`plugin.xml`・`package.json`・`src/`・`www/`・READMEだけで、Gradleファイルはありません。Kotlin有効化はアプリの`config.xml`、feature・dataへの依存は既存の`native/gradle/build-extras.gradle`が管理します。

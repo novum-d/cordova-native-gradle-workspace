@@ -43,7 +43,7 @@ Cordova側のルートには集約Pluginを追加していません。両ホス�
 ## 掲載対象
 
 - Android共通の`main` source setに限定し、`src/main/kotlin`のpublic・protected APIを掲載します。Dokka上の表示名は`androidJvm`です。Debug／Release・単体テスト・Androidテスト・生成ソースは掲載しません。継承元だけにあるメソッドは省き、このモジュールで実装したAPIを表示します。
-- [MainActivityのKDoc](../native/feature/src/main/kotlin/dev/example/nativefeature/MainActivity.kt)に、Compose起動確認の目的・画面構築・状態更新の概要を記述しています。非公開のComposableのKDocはソースから読めますが、この公開API一覧には表示されません。
+- [MainActivityのKDoc](../native/feature/src/main/kotlin/dev/example/nativefeature/MainActivity.kt)に、Intentの処理IDによる画面選択・新しいIntentの受信・引数の保存復元の概要を記述しています。非公開のComposableのKDocはソースから読めますが、この公開API一覧には表示されません。
 - [KotlinPluginのKDoc](../kotlin-plugin/src/android/dev/example/kotlinplugin/KotlinPlugin.kt)は、cordova-plugin-devから`kotlin-plugin/src/android`をmainのソースとして読み込みます。executeによる起動・成功通知・未知のactionの扱いを記載しています。
 - [featureの概要](../native/feature/Module.md)と[dataの概要](../native/data/Module.md)を、各モジュールの説明元として指定しています。dataには業務用の本体クラスがないため、Dokkaはdataの個別ページを生成しません。dataの現状は[集約トップの概要](../native/Module.md)に記載し、APIを追加した後はdataの概要も個別ページに反映されます。
 - コメントの有無・品質を自動判定するタスクではありません。コメントの記述ルールは[AGENTS.md](../AGENTS.md)に従います。

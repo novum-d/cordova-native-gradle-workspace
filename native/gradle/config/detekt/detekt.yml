@@ -53,6 +53,9 @@ complexity:
 # 非同期処理・空ブロック・例外の扱いに関する標準ルールを適用する。
 coroutines:
   active: true
+  # 合意した追加ルール。寿命を管理できないGlobalScope.launch／asyncの使用を検出する。
+  GlobalCoroutineUsage:
+    active: true
 
 empty-blocks:
   active: true

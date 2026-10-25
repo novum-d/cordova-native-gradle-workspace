@@ -17,6 +17,8 @@
 | [git-hooks/](git-hooks/README.md) | Git pre-commit・detektの動作確認 | [GIT_HOOKS.md](../GIT_HOOKS.md) |
 | [immutable-collections/](immutable-collections/README.md) | Immutable Collections導入の確認 | [IMMUTABLE_COLLECTIONS.md](../IMMUTABLE_COLLECTIONS.md) |
 | [compose-runtime/](compose-runtime/README.md) | Compose画面のエミュレーター実行 | [COMPOSE_RUNTIME.md](../COMPOSE_RUNTIME.md) |
+| [intent-routing/](intent-routing/README.md) | 処理ID分岐・機能別Navigation・ViewModelの引数受け取りと復元 | [NFC_NAVIGATION.md](../NFC_NAVIGATION.md) |
+| [nfc-navigation/](nfc-navigation/README.md) | 導入初期のホーム内サンプル遷移と引数の保存復元 | [NFC_NAVIGATION.md](../NFC_NAVIGATION.md) |
 | [kotlin-plugin/](kotlin-plugin/README.md) | Kotlinプラグイン経由の画面起動 | [KOTLIN_PLUGIN.md](../KOTLIN_PLUGIN.md) |
 | [kdoc/](kdoc/README.md) | KDocのHTML表示確認 | [KDOC.md](../KDOC.md) |
 

@@ -20,23 +20,31 @@
 // Cordovaの初期化完了後にプラグインを呼べるよう、画面の操作を有効化する。
 document.addEventListener('deviceready', onDeviceReady, false);
 
-/** プラグイン登録後に起動ボタンを有効にし、WebからKotlin画面への入口を用意する。 */
+/** プラグイン登録後に操作を有効にし、選んだ処理ID・argsをKotlinへ渡す。 */
 function onDeviceReady() {
     console.log('Running cordova-' + cordova.platformId + '@' + cordova.version);
     document.getElementById('deviceready').classList.add('ready');
-    const button = document.getElementById('open-feature');
     const status = document.getElementById('feature-status');
-    button.disabled = false;
-    button.addEventListener('click', function () {
-        button.disabled = true;
-        status.textContent = 'Opening Kotlin screen...';
-        // 成功はActivity起動要求の完了を表す。画面から戻ったときの結果ではない。
-        window.KotlinPlugin.openFeature(function () {
-            status.textContent = 'Kotlin screen opened.';
-            button.disabled = false;
-        }, function (error) {
-            status.textContent = 'Could not open Kotlin screen: ' + error;
-            button.disabled = false;
+    const operations = [
+        { button: 'open-feature', request: { id: 'home' } },
+        { button: 'open-nfc', request: { id: 'nfc.read', args: {} } },
+        { button: 'open-nfc-write', request: { id: 'nfc.write', args: {} } },
+        { button: 'open-camera', request: { id: 'camera.capture', args: {} } }
+    ];
+    operations.forEach(function (operation) {
+        const button = document.getElementById(operation.button);
+        button.disabled = false;
+        button.addEventListener('click', function () {
+            button.disabled = true;
+            status.textContent = 'Opening ' + operation.request.id + '...';
+            // 成功はActivity起動要求の完了であり、画面を閉じた結果ではない。
+            window.KotlinPlugin.openFeature(operation.request, function () {
+                status.textContent = 'Opened ' + operation.request.id + '.';
+                button.disabled = false;
+            }, function (error) {
+                status.textContent = 'Could not open screen: ' + error;
+                button.disabled = false;
+            });
         });
     });
 }

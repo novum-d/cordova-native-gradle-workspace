@@ -1,59 +1,66 @@
 package dev.example.nativefeature
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import dev.example.nativefeature.launch.FeatureLaunchRequest
+import dev.example.nativefeature.navigation.FeatureLaunchCommand
+import dev.example.nativefeature.navigation.FeatureNavigation
 
 /**
- * Cordovaプラグインから起動し、Composeの表示と状態更新を確認するActivity。
+ * Cordovaプラグインからの起動要求を検証し、Navigationへ一度だけ渡すActivity。
  *
- * [onCreate]でテーマと確認画面を設定し、ボタン操作による状態更新・再コンポーズを試す。
- * Webとの通信・起動要求の受付はプラグインに任せ、この画面ではUIだけを扱う。
+ * [onCreate]と[onNewIntent]で同じ起動要求を検証し、処理IDに対応する画面を直接開く。
+ * 画面・引数の保存はNavigationと各画面のSavedStateHandleへ任せ、要求JSONは重複保存しない。
  */
 class MainActivity : ComponentActivity() {
-    /** Activityの生成時に、Composeのテーマと動作確認画面を設定する。 */
+    private var pendingCommand by mutableStateOf<FeatureLaunchCommand?>(null)
+
+    /** 初回だけIntentを渡す。再生成時はNavigationの復元を優先し、古いIntentを再実行しない。 */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (savedInstanceState == null && !acceptRequest(intent.getStringExtra(EXTRA_REQUEST))) return
         setContent {
             MaterialTheme {
-                ComposeRuntimeCheck()
+                FeatureNavigation(
+                    command = pendingCommand,
+                    onCommandHandled = { handled ->
+                        if (pendingCommand === handled) pendingCommand = null
+                    },
+                    onClose = ::finish,
+                )
             }
         }
     }
-}
 
-/** クリック回数を状態として保持し、ボタンを押した結果を画面に再表示する。 */
-@Composable
-private fun ComposeRuntimeCheck() {
-    var clicks by remember { mutableIntStateOf(0) }
-    Surface(modifier = Modifier.fillMaxSize()) {
-        Column(
-            modifier = Modifier.padding(24.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            Text(text = "Compose runtime check", style = MaterialTheme.typography.headlineSmall)
-            Text(text = "Cordova APK / native feature")
-            Text(text = "Clicks: $clicks")
-            Button(onClick = { clicks++ }) {
-                Text(text = "Check recomposition")
-            }
+    /** singleTopによる再利用時も、Intentを更新して新しい要求を同じ検証経路へ渡す。 */
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        acceptRequest(intent.getStringExtra(EXTRA_REQUEST))
+    }
+
+    /** 不正な要求では終了し、正常時は同じ内容の再要求も独立した遷移として受け付ける。 */
+    private fun acceptRequest(requestJson: String?): Boolean {
+        val resolved = try {
+            FeatureLaunchRequest.fromJson(requireNotNull(requestJson)).toDestination()
+        } catch (error: IllegalArgumentException) {
+            Log.w("FeatureLaunch", "Invalid feature launch request", error)
+            finish()
+            return false
         }
+        pendingCommand = FeatureLaunchCommand(resolved)
+        return true
+    }
+
+    /** プラグインから処理ID・argsのJSONを受け取るIntentキー。 */
+    companion object {
+        const val EXTRA_REQUEST = "dev.example.nativefeature.LAUNCH_REQUEST"
     }
 }

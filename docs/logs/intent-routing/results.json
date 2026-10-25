@@ -1,0 +1,83 @@
+{
+  "directNfcFromWebButton": true,
+  "nfcBackReturnsToCordova": true,
+  "homeIdSelectsHome": true,
+  "sameActivityHandlesNewIntent": true,
+  "omittedArgsRemainNull": true,
+  "structuredArgsPreservedThroughPluginIntentAndNavigation": true,
+  "invalidRequestsRejectedWithoutLaunching": [
+    {
+      "request": {
+        "id": "unknown"
+      },
+      "outcome": {
+        "ok": false,
+        "error": "Invalid feature request: unsupported id or invalid args"
+      }
+    },
+    {
+      "request": {
+        "id": 123
+      },
+      "outcome": {
+        "ok": false,
+        "error": "Invalid feature request: unsupported id or invalid args"
+      }
+    },
+    {
+      "request": {
+        "args": {}
+      },
+      "outcome": {
+        "ok": false,
+        "error": "Invalid feature request: unsupported id or invalid args"
+      }
+    },
+    {
+      "request": {
+        "id": "nfc.read",
+        "args": []
+      },
+      "outcome": {
+        "ok": false,
+        "error": "Invalid feature request: unsupported id or invalid args"
+      }
+    },
+    {
+      "request": null,
+      "outcome": {
+        "ok": false,
+        "error": "Expected one request object with id and optional args"
+      }
+    }
+  ],
+  "newIntentCanSwitchBackToHome": true,
+  "latestIntentSurvivesRotation": true,
+  "latestIntentSurvivesProcessDeath": true,
+  "systemBackReturnsToCordova": true,
+  "emulatorClosed": true,
+  "checkedOn": "2026-10-25",
+  "unitTests": {
+    "Debug": [
+      {
+        "class": "FeatureDestinationTest",
+        "passed": 5
+      },
+      {
+        "class": "FeatureLaunchRequestTest",
+        "passed": 8
+      }
+    ],
+    "Release": [
+      {
+        "class": "FeatureDestinationTest",
+        "passed": 5
+      },
+      {
+        "class": "FeatureLaunchRequestTest",
+        "passed": 8
+      }
+    ]
+  },
+  "jsBridgeForwardingShapesPassed": 3
+}

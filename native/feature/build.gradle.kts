@@ -7,6 +7,8 @@ plugins {
     // AGP・Kotlinの版はnativeルート、またはCordovaが読み込んだbuildscriptの実体を使う。
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    // 型付き画面引数のserializerを生成し、Navigationの保存・復元で利用する。
+    alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
     alias(libs.plugins.dokka)
@@ -66,6 +68,11 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
+    // 画面ごとのViewModelはSavedStateHandleからNavigationの引数を復元する。
+    implementation(libs.androidx.lifecycle.viewmodel.savedstate)
+    // NFC・Camera画面の型付きルートと、任意のJSONオブジェクト引数を扱う。
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.kotlinx.serialization.json)
     implementation(libs.androidx.webkit)
     // Hiltのコード生成は各モジュールで実行し、Compilerをapiへ公開しない。
     ksp(libs.hilt.compiler)

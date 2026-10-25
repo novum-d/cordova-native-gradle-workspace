@@ -4,6 +4,8 @@
 
 `kotlin-plugin`をWebからKotlin機能へ入る入口にしています。Webのボタンから`cordova/exec`を経由し、`CordovaPlugin`を継承したKTの`execute`が`startActivity`で`native/feature`の`MainActivity`を開きます。画面はDebug／Release共通で登録し、外部アプリには公開しません。アプリのランチャーはCordova標準のJava版`MainActivity`です。業務画面・DI初期化・カメラ・NFC処理は未実装です。[プラグインの構成と編集方法](kotlin-plugin/README.md)、[実行確認](docs/KOTLIN_PLUGIN.md)
 
+KotlinPluginのIntentから`{id, args?}`を受け取り、`nfc.read`・`nfc.write`・`camera.capture`に対応する画面を直接開きます。確認用の`home`も利用できます。機能別のNavigationと各画面のViewModelを持ち、引数は`SavedStateHandle`から復元して中央に表示します。[画面構成と引数](docs/NFC_NAVIGATION.md)を参照してください。NFC・Cameraの実機処理は未実装です。
+
 ## 開発ルール
 
 コメント・KDocの記述方針は[プロジェクトルール](AGENTS.md)を参照してください。手書きのコード・設定には処理のまとまりごとの概要説明を必須とし、KDocで概要が分かる場合は通常コメントの重複を求めません。JSONの説明方法と生成ファイルの扱いも同文書に定めています。

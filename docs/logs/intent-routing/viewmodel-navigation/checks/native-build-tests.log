@@ -1,0 +1,164 @@
+> Task :feature:preBuild UP-TO-DATE
+> Task :feature:preDebugBuild UP-TO-DATE
+> Task :feature:mergeDebugJniLibFolders UP-TO-DATE
+> Task :feature:mergeDebugNativeLibs NO-SOURCE
+> Task :feature:stripDebugDebugSymbols NO-SOURCE
+> Task :feature:copyDebugJniLibsProjectAndLocalJars UP-TO-DATE
+> Task :data:preBuild UP-TO-DATE
+> Task :data:preDebugBuild UP-TO-DATE
+> Task :data:generateDebugResValues UP-TO-DATE
+> Task :data:generateDebugResources UP-TO-DATE
+> Task :data:packageDebugResources UP-TO-DATE
+> Task :data:parseDebugLocalResources UP-TO-DATE
+> Task :data:generateDebugRFile UP-TO-DATE
+> Task :data:checkKotlinGradlePluginConfigurationErrors
+> Task :data:kspDebugKotlin NO-SOURCE
+> Task :data:compileDebugKotlin NO-SOURCE
+> Task :data:javaPreCompileDebug UP-TO-DATE
+> Task :data:compileDebugJavaWithJavac NO-SOURCE
+> Task :data:transformDebugClassesWithAsm UP-TO-DATE
+> Task :data:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :feature:checkKotlinGradlePluginConfigurationErrors
+> Task :feature:generateDebugResValues UP-TO-DATE
+> Task :feature:generateDebugResources UP-TO-DATE
+> Task :feature:packageDebugResources UP-TO-DATE
+> Task :feature:parseDebugLocalResources UP-TO-DATE
+> Task :feature:generateDebugRFile UP-TO-DATE
+> Task :feature:extractDeepLinksForAarDebug UP-TO-DATE
+> Task :data:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :feature:javaPreCompileDebug UP-TO-DATE
+> Task :feature:mergeDebugShaders UP-TO-DATE
+> Task :feature:compileDebugShaders NO-SOURCE
+> Task :feature:generateDebugAssets UP-TO-DATE
+> Task :feature:packageDebugAssets UP-TO-DATE
+> Task :feature:prepareDebugArtProfile UP-TO-DATE
+> Task :feature:prepareLintJarForPublish UP-TO-DATE
+> Task :feature:processDebugManifest UP-TO-DATE
+> Task :feature:writeDebugAarMetadata UP-TO-DATE
+> Task :cordova-plugin-dev:preBuild UP-TO-DATE
+> Task :cordova-plugin-dev:preDebugBuild UP-TO-DATE
+> Task :cordova-plugin-dev:mergeDebugJniLibFolders UP-TO-DATE
+> Task :cordova-plugin-dev:mergeDebugNativeLibs NO-SOURCE
+> Task :cordova-plugin-dev:stripDebugDebugSymbols NO-SOURCE
+> Task :cordova-plugin-dev:copyDebugJniLibsProjectAndLocalJars UP-TO-DATE
+> Task :cordova-plugin-dev:checkKotlinGradlePluginConfigurationErrors
+> Task :cordova-plugin-dev:generateDebugResValues UP-TO-DATE
+> Task :cordova-plugin-dev:generateDebugResources UP-TO-DATE
+> Task :cordova-plugin-dev:packageDebugResources UP-TO-DATE
+> Task :cordova-plugin-dev:parseDebugLocalResources UP-TO-DATE
+> Task :cordova-plugin-dev:generateDebugRFile UP-TO-DATE
+> Task :cordova-plugin-dev:extractDeepLinksForAarDebug UP-TO-DATE
+> Task :cordova-plugin-dev:javaPreCompileDebug UP-TO-DATE
+> Task :cordova-plugin-dev:mergeDebugShaders UP-TO-DATE
+> Task :cordova-plugin-dev:compileDebugShaders NO-SOURCE
+> Task :cordova-plugin-dev:generateDebugAssets UP-TO-DATE
+> Task :cordova-plugin-dev:packageDebugAssets UP-TO-DATE
+> Task :cordova-plugin-dev:prepareDebugArtProfile UP-TO-DATE
+> Task :cordova-plugin-dev:prepareLintJarForPublish UP-TO-DATE
+> Task :cordova-plugin-dev:processDebugManifest UP-TO-DATE
+> Task :cordova-plugin-dev:writeDebugAarMetadata UP-TO-DATE
+> Task :data:processDebugJavaRes NO-SOURCE
+> Task :feature:preDebugUnitTestBuild UP-TO-DATE
+> Task :feature:kspDebugKotlin
+> Task :feature:generateDebugUnitTestStubRFile UP-TO-DATE
+> Task :feature:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :data:preReleaseBuild UP-TO-DATE
+> Task :data:generateReleaseResValues UP-TO-DATE
+> Task :data:generateReleaseResources UP-TO-DATE
+> Task :data:packageReleaseResources UP-TO-DATE
+> Task :data:parseReleaseLocalResources UP-TO-DATE
+> Task :data:generateReleaseRFile UP-TO-DATE
+> Task :data:kspReleaseKotlin NO-SOURCE
+> Task :data:compileReleaseKotlin NO-SOURCE
+> Task :data:javaPreCompileRelease UP-TO-DATE
+> Task :data:compileReleaseJavaWithJavac NO-SOURCE
+> Task :data:transformReleaseClassesWithAsm UP-TO-DATE
+> Task :data:bundleLibRuntimeToJarRelease UP-TO-DATE
+> Task :data:processReleaseJavaRes NO-SOURCE
+> Task :feature:preReleaseBuild UP-TO-DATE
+> Task :data:bundleLibCompileToJarRelease UP-TO-DATE
+> Task :feature:generateReleaseResValues UP-TO-DATE
+> Task :feature:generateReleaseResources UP-TO-DATE
+> Task :feature:packageReleaseResources UP-TO-DATE
+> Task :feature:parseReleaseLocalResources UP-TO-DATE
+> Task :feature:generateReleaseRFile UP-TO-DATE
+> Task :feature:javaPreCompileRelease UP-TO-DATE
+> Task :feature:preReleaseUnitTestBuild UP-TO-DATE
+> Task :feature:generateReleaseUnitTestStubRFile UP-TO-DATE
+> Task :feature:javaPreCompileReleaseUnitTest UP-TO-DATE
+> Task :feature:kspReleaseKotlin
+> Task :feature:compileDebugKotlin
+> Task :detekt
+> Task :feature:extractDebugAnnotations
+> Task :feature:compileDebugJavaWithJavac NO-SOURCE
+> Task :feature:processDebugJavaRes
+> Task :feature:transformDebugClassesWithAsm
+> Task :feature:mergeDebugJavaResource
+> Task :feature:mergeDebugGeneratedProguardFiles
+> Task :feature:mergeDebugConsumerProguardFiles
+> Task :feature:syncDebugLibJars
+> Task :feature:bundleDebugAar
+> Task :feature:assembleDebug
+> Task :feature:bundleLibCompileToJarDebug
+> Task :feature:bundleLibRuntimeToJarDebug
+
+> Task :detektFormatCheck
+......................
+
+22 kotlin files were analyzed.
+Complexity Report:
+	- 811 lines of code (loc)
+	- 597 source lines of code (sloc)
+	- 349 logical lines of code (lloc)
+	- 100 comment lines of code (cloc)
+	- 65 cyclomatic complexity (mcc)
+	- 15 cognitive complexity
+	- 0 number of total code smells
+	- 16% comment source ratio
+	- 186 mcc per 1,000 lloc
+	- 0 code smells per 1,000 lloc
+
+Project Statistics:
+	- number of properties: 39
+	- number of functions: 43
+	- number of classes: 17
+	- number of packages: 9
+	- number of kt files: 22
+
+Successfully generated HTML report at file:///Users/novumd/repos/cordova-native-gradle-workspace/native/build/reports/detekt/detektFormatCheck.html
+
+> Task :cordova-plugin-dev:compileDebugKotlin
+> Task :cordova-plugin-dev:extractDebugAnnotations
+> Task :cordova-plugin-dev:compileDebugJavaWithJavac NO-SOURCE
+> Task :cordova-plugin-dev:mergeDebugGeneratedProguardFiles
+> Task :cordova-plugin-dev:mergeDebugConsumerProguardFiles
+> Task :cordova-plugin-dev:processDebugJavaRes
+> Task :cordova-plugin-dev:mergeDebugJavaResource
+> Task :cordova-plugin-dev:syncDebugLibJars
+> Task :cordova-plugin-dev:bundleDebugAar
+> Task :cordova-plugin-dev:assembleDebug
+> Task :feature:kspDebugUnitTestKotlin
+> Task :feature:compileReleaseKotlin
+> Task :feature:compileReleaseJavaWithJavac NO-SOURCE
+> Task :feature:processReleaseJavaRes
+> Task :feature:transformReleaseClassesWithAsm
+> Task :feature:bundleLibRuntimeToJarRelease
+> Task :feature:bundleLibCompileToJarRelease
+> Task :feature:compileDebugUnitTestKotlin
+> Task :feature:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :feature:kspReleaseUnitTestKotlin
+> Task :feature:hiltAggregateDepsDebugUnitTest
+> Task :feature:hiltJavaCompileDebugUnitTest NO-SOURCE
+> Task :feature:processDebugUnitTestJavaRes
+> Task :feature:transformDebugUnitTestClassesWithAsm
+> Task :feature:compileReleaseUnitTestKotlin
+> Task :feature:testDebugUnitTest
+> Task :feature:compileReleaseUnitTestJavaWithJavac NO-SOURCE
+> Task :feature:hiltAggregateDepsReleaseUnitTest
+> Task :feature:hiltJavaCompileReleaseUnitTest NO-SOURCE
+> Task :feature:processReleaseUnitTestJavaRes
+> Task :feature:transformReleaseUnitTestClassesWithAsm
+> Task :feature:testReleaseUnitTest
+
+BUILD SUCCESSFUL in 4s
+101 actionable tasks: 43 executed, 58 up-to-date

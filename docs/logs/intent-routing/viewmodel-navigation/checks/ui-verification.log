@@ -1,0 +1,13 @@
+PASS: Web button -> Intent -> ViewModel: nfc.read
+PASS: Web button -> Intent -> ViewModel: nfc.write
+PASS: Web button -> Intent -> ViewModel: camera.capture
+PASS: onNewIntent + omitted/empty/structured args: nfc.read
+PASS: onNewIntent + omitted/empty/structured args: nfc.write
+PASS: onNewIntent + omitted/empty/structured args: camera.capture
+PASS: repeated request, validation, system back closes replaced stack.
+Warning: Activity not started, its current task has been brought to the front
+PASS: latest args restored by Navigation/SavedStateHandle after rotation + process death: nfc.read
+Warning: Activity not started, its current task has been brought to the front
+PASS: latest args restored by Navigation/SavedStateHandle after rotation + process death: nfc.write
+Warning: Activity not started, its current task has been brought to the front
+PASS: latest args restored by Navigation/SavedStateHandle after rotation + process death: camera.capture

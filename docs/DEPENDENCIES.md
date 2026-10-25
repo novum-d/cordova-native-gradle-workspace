@@ -10,7 +10,7 @@ Version Catalogで想定していたライブラリを、通常の`feature`・`d
 
 | 配置先 | 依存・設定 |
 | --- | --- |
-| feature | Core KTX、Compose BOM・UI・Foundation・Layout・Material3・Preview、Activity Compose、Lifecycle Runtime KTX／Compose・ViewModel Compose、WebKit、dataプロジェクト |
+| feature | Core KTX、Compose BOM・UI・Foundation・Layout・Material3・Preview、Activity Compose、Navigation Compose、Lifecycle Runtime KTX／Compose・ViewModel Compose／SavedState、WebKit、dataプロジェクト |
 | featureのDebugのみ | Compose UI Tooling。Releaseへは追加しない |
 | data | DataStore Preferences・Core、Serialization JSON、WorkManager、Retrofit、OkHttp・Logging Interceptor |
 | 両方のapi | `libs.bundles.native.common`。Coroutines Core・Android、Immutable Collections、Kotlinx Datetime、kotlin-result、Hilt Android、Timber |
@@ -26,6 +26,10 @@ Version Catalogで想定していたライブラリを、通常の`feature`・`d
 2026-10-20に[単体テスト環境](UNIT_TESTS.md)を整備しました。両モジュールの`src/test/`に環境確認テストを追加し、JUnit 4・Coroutines TestとAGPのJaCoCo連携で実行・レポート生成を行います。Coroutines Testは`testImplementation`で、JaCoCoはビルド時ツールです。
 
 featureのCompose Compilerを常時有効にしました。AGP・Kotlinは従来のnative／Cordova基盤を使い、Hilt・KSP・Serializationは利用するモジュールのCatalog aliasで適用します。Hilt用にCordovaの生成GradleやApplicationを書き換える処理は追加していません。
+
+## 画面遷移の依存
+
+featureへ`navigation-compose:2.8.9`と既存版のSerialization JSON 1.6.3、Kotlin Serialization Plugin 1.9.24を追加しています。型付きルートを生成・保存するための構成です。各画面のViewModelが`SavedStateHandle`から引数を受け取るため、既存と同じ2.8.7の`lifecycle-viewmodel-savedstate`を直接依存として明示しています。Navigation 3はKotlin 2系・新しいLifecycle／SavedStateなどを要求するため、既存のCordova／Kotlin基盤に合わせてNavigation 2.8系を選びました。[画面構成と引数](NFC_NAVIGATION.md)
 
 ## Kotlinx Datetime
 

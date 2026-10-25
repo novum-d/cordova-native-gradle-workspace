@@ -3,7 +3,12 @@
 
 const exec = require('cordova/exec');
 
-/** 成功・失敗のコールバックを受け取り、引数なしでfeature画面を起動する。 */
-exports.openFeature = function (success, error) {
-    exec(success, error, 'KotlinPlugin', 'openFeature', []);
+/**
+ * 処理IDと任意のJSONオブジェクトをKotlinへ渡し、指定した画面を起動する。
+ * @param {{id: string, args?: Object}} request 起動要求。対応IDはhome・nfc.read・nfc.write・camera.capture。
+ * @param {Function} success Activity起動要求が完了したときの通知。
+ * @param {Function} error 引数不正・未対応ID・起動失敗の通知。
+ */
+exports.openFeature = function (request, success, error) {
+    exec(success, error, 'KotlinPlugin', 'openFeature', [request]);
 };

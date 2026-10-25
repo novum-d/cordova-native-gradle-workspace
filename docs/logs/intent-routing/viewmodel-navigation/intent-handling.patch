@@ -1,0 +1,353 @@
+diff --git a/kotlin-plugin/src/android/dev/example/kotlinplugin/KotlinPlugin.kt b/kotlin-plugin/src/android/dev/example/kotlinplugin/KotlinPlugin.kt
+index 8a571891..56a3dc04 100644
+--- a/kotlin-plugin/src/android/dev/example/kotlinplugin/KotlinPlugin.kt
++++ b/kotlin-plugin/src/android/dev/example/kotlinplugin/KotlinPlugin.kt
+@@ -2,6 +2,7 @@ package dev.example.kotlinplugin
+ 
+ import android.content.Intent
+ import dev.example.nativefeature.MainActivity
++import dev.example.nativefeature.launch.FeatureLaunchRequest
+ import org.apache.cordova.CallbackContext
+ import org.apache.cordova.CordovaPlugin
+ import org.json.JSONArray
+@@ -9,7 +10,7 @@ import org.json.JSONArray
+ /** Webからの起動要求を受け付け、featureの画面へ処理を渡すCordovaプラグイン。 */
+ class KotlinPlugin : CordovaPlugin() {
+     /**
+-     * openFeatureを受けたときだけ、UIスレッドで明示的Intentを使ってMainActivityを起動する。
++     * openFeatureのJSON要求を型へ変換し、明示的IntentでMainActivityへ渡す。
+      *
+      * 成功通知はstartActivityの完了を表し、画面を閉じたときの結果は返さない。
+      * 未知のactionはfalseを返し、Cordova標準の不正actionエラーとして扱う。
+@@ -23,10 +24,25 @@ class KotlinPlugin : CordovaPlugin() {
+             return false
+         }
+ 
++        val payload = args.optJSONObject(0)?.takeIf { args.length() == 1 }
++        if (payload == null) {
++            callbackContext.error("Expected one request object with id and optional args")
++            return true
++        }
++        val request = try {
++            FeatureLaunchRequest.fromJson(payload.toString()).also { it.toDestination() }
++        } catch (_: IllegalArgumentException) {
++            callbackContext.error("Invalid feature request: unsupported id or invalid args")
++            return true
++        }
+         val activity = cordova.activity
+         activity.runOnUiThread {
+             try {
+-                activity.startActivity(Intent(activity, MainActivity::class.java))
++                // 受信したIntentや遷移先クラス名は転送せず、検証した要求だけを固定のActivityへ渡す。
++                val intent = Intent(activity, MainActivity::class.java)
++                    .putExtra(MainActivity.EXTRA_REQUEST, request.toJson())
++                    .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
++                activity.startActivity(intent)
+                 callbackContext.success()
+             } catch (error: RuntimeException) {
+                 callbackContext.error("${error.javaClass.simpleName}: ${error.message}")
+diff --git a/native/feature/src/main/kotlin/dev/example/nativefeature/MainActivity.kt b/native/feature/src/main/kotlin/dev/example/nativefeature/MainActivity.kt
+index 6acbad14..bc220ad2 100644
+--- a/native/feature/src/main/kotlin/dev/example/nativefeature/MainActivity.kt
++++ b/native/feature/src/main/kotlin/dev/example/nativefeature/MainActivity.kt
+@@ -1,59 +1,66 @@
+ package dev.example.nativefeature
+ 
++import android.content.Intent
+ import android.os.Bundle
++import android.util.Log
+ import androidx.activity.ComponentActivity
+ import androidx.activity.compose.setContent
+-import androidx.compose.foundation.layout.Arrangement
+-import androidx.compose.foundation.layout.Column
+-import androidx.compose.foundation.layout.fillMaxSize
+-import androidx.compose.foundation.layout.padding
+-import androidx.compose.material3.Button
+ import androidx.compose.material3.MaterialTheme
+-import androidx.compose.material3.Surface
+-import androidx.compose.material3.Text
+-import androidx.compose.runtime.Composable
+ import androidx.compose.runtime.getValue
+-import androidx.compose.runtime.mutableIntStateOf
+-import androidx.compose.runtime.remember
++import androidx.compose.runtime.mutableStateOf
+ import androidx.compose.runtime.setValue
+-import androidx.compose.ui.Alignment
+-import androidx.compose.ui.Modifier
+-import androidx.compose.ui.unit.dp
++import dev.example.nativefeature.launch.FeatureLaunchRequest
++import dev.example.nativefeature.navigation.FeatureLaunchCommand
++import dev.example.nativefeature.navigation.FeatureNavigation
+ 
+ /**
+- * Cordovaプラグインから起動し、Composeの表示と状態更新を確認するActivity。
++ * Cordovaプラグインからの起動要求を検証し、Navigationへ一度だけ渡すActivity。
+  *
+- * [onCreate]でテーマと確認画面を設定し、ボタン操作による状態更新・再コンポーズを試す。
+- * Webとの通信・起動要求の受付はプラグインに任せ、この画面ではUIだけを扱う。
++ * [onCreate]と[onNewIntent]で同じ起動要求を検証し、処理IDに対応する画面を直接開く。
++ * 画面・引数の保存はNavigationと各画面のSavedStateHandleへ任せ、要求JSONは重複保存しない。
+  */
+ class MainActivity : ComponentActivity() {
+-    /** Activityの生成時に、Composeのテーマと動作確認画面を設定する。 */
++    private var pendingCommand by mutableStateOf<FeatureLaunchCommand?>(null)
++
++    /** 初回だけIntentを渡す。再生成時はNavigationの復元を優先し、古いIntentを再実行しない。 */
+     override fun onCreate(savedInstanceState: Bundle?) {
+         super.onCreate(savedInstanceState)
++        if (savedInstanceState == null && !acceptRequest(intent.getStringExtra(EXTRA_REQUEST))) return
+         setContent {
+             MaterialTheme {
+-                ComposeRuntimeCheck()
++                FeatureNavigation(
++                    command = pendingCommand,
++                    onCommandHandled = { handled ->
++                        if (pendingCommand === handled) pendingCommand = null
++                    },
++                    onClose = ::finish,
++                )
+             }
+         }
+     }
+-}
+ 
+-/** クリック回数を状態として保持し、ボタンを押した結果を画面に再表示する。 */
+-@Composable
+-private fun ComposeRuntimeCheck() {
+-    var clicks by remember { mutableIntStateOf(0) }
+-    Surface(modifier = Modifier.fillMaxSize()) {
+-        Column(
+-            modifier = Modifier.padding(24.dp),
+-            verticalArrangement = Arrangement.Center,
+-            horizontalAlignment = Alignment.CenterHorizontally,
+-        ) {
+-            Text(text = "Compose runtime check", style = MaterialTheme.typography.headlineSmall)
+-            Text(text = "Cordova APK / native feature")
+-            Text(text = "Clicks: $clicks")
+-            Button(onClick = { clicks++ }) {
+-                Text(text = "Check recomposition")
+-            }
++    /** singleTopによる再利用時も、Intentを更新して新しい要求を同じ検証経路へ渡す。 */
++    override fun onNewIntent(intent: Intent) {
++        super.onNewIntent(intent)
++        setIntent(intent)
++        acceptRequest(intent.getStringExtra(EXTRA_REQUEST))
++    }
++
++    /** 不正な要求では終了し、正常時は同じ内容の再要求も独立した遷移として受け付ける。 */
++    private fun acceptRequest(requestJson: String?): Boolean {
++        val resolved = try {
++            FeatureLaunchRequest.fromJson(requireNotNull(requestJson)).toDestination()
++        } catch (error: IllegalArgumentException) {
++            Log.w("FeatureLaunch", "Invalid feature launch request", error)
++            finish()
++            return false
+         }
++        pendingCommand = FeatureLaunchCommand(resolved)
++        return true
++    }
++
++    /** プラグインから処理ID・argsのJSONを受け取るIntentキー。 */
++    companion object {
++        const val EXTRA_REQUEST = "dev.example.nativefeature.LAUNCH_REQUEST"
+     }
+ }
+diff --git a/native/feature/src/main/kotlin/dev/example/nativefeature/launch/FeatureLaunchRequest.kt b/native/feature/src/main/kotlin/dev/example/nativefeature/launch/FeatureLaunchRequest.kt
+new file mode 100644
+index 00000000..b41e3bab
+--- /dev/null
++++ b/native/feature/src/main/kotlin/dev/example/nativefeature/launch/FeatureLaunchRequest.kt
+@@ -0,0 +1,41 @@
++package dev.example.nativefeature.launch
++
++import dev.example.nativefeature.navigation.FeatureDestination
++import kotlinx.serialization.Serializable
++import kotlinx.serialization.json.Json
++import kotlinx.serialization.json.JsonObject
++
++/**
++ * KotlinPluginからIntentへ渡す、処理IDと任意のJSONオブジェクトを持つ起動要求。
++ *
++ * JSONとの変換をこの型に集約し、Activityは[toDestination]で処理IDに対応する画面を選ぶ。
++ * argsの省略と空オブジェクトを区別し、未対応IDやオブジェクト以外のargsは受け付けない。
++ */
++@Serializable
++data class FeatureLaunchRequest(
++    val id: String,
++    val args: JsonObject? = null,
++) {
++    /** プラグインからIntentへ格納するJSONを生成する。 */
++    fun toJson(): String = Json.encodeToString(serializer(), this)
++
++    /** 処理IDを既知の型付き画面へ解決する。未対応IDで別の画面を開かない。 */
++    fun toDestination(): FeatureDestination = when (id) {
++        HOME -> FeatureDestination.Home
++        NFC_READ -> FeatureDestination.NfcRead(id = id, args = args)
++        NFC_WRITE -> FeatureDestination.NfcWrite(id = id, args = args)
++        CAMERA_CAPTURE -> FeatureDestination.CameraCapture(id = id, args = args)
++        else -> throw IllegalArgumentException("Unsupported feature process ID: $id")
++    }
++
++    /** JSとIntentの境界で使う処理IDと、型付きJSONへの変換を公開する。 */
++    companion object {
++        const val HOME = "home"
++        const val NFC_READ = "nfc.read"
++        const val NFC_WRITE = "nfc.write"
++        const val CAMERA_CAPTURE = "camera.capture"
++
++        /** 必須idの欠落やargsの型違いを検出し、起動要求を復元する。 */
++        fun fromJson(value: String): FeatureLaunchRequest = Json.decodeFromString<FeatureLaunchRequest>(value)
++    }
++}
+diff --git a/native/feature/src/main/kotlin/dev/example/nativefeature/navigation/FeatureNavigation.kt b/native/feature/src/main/kotlin/dev/example/nativefeature/navigation/FeatureNavigation.kt
+new file mode 100644
+index 00000000..1023d490
+--- /dev/null
++++ b/native/feature/src/main/kotlin/dev/example/nativefeature/navigation/FeatureNavigation.kt
+@@ -0,0 +1,45 @@
++package dev.example.nativefeature.navigation
++
++import androidx.compose.foundation.layout.fillMaxSize
++import androidx.compose.material3.Surface
++import androidx.compose.runtime.Composable
++import androidx.compose.runtime.LaunchedEffect
++import androidx.compose.ui.Modifier
++import androidx.navigation.compose.NavHost
++import androidx.navigation.compose.composable
++import androidx.navigation.compose.rememberNavController
++import dev.example.nativefeature.camera.cameraNavigation
++import dev.example.nativefeature.home.HomeScreen
++import dev.example.nativefeature.nfc.nfcNavigation
++
++/**
++ * 一つのNavHostに機能別の画面を登録し、起動コマンドで表示先を切り替える。
++ *
++ * NavHostを作り直さず、現在の画面と引数はNavController・SavedStateHandleから復元する。
++ * 新しい要求では履歴を置き換え、戻る操作で起動元のCordovaへ戻れるようにする。
++ */
++@Composable
++internal fun FeatureNavigation(
++    command: FeatureLaunchCommand?,
++    onCommandHandled: (FeatureLaunchCommand) -> Unit,
++    onClose: () -> Unit,
++) {
++    val navController = rememberNavController()
++    Surface(modifier = Modifier.fillMaxSize()) {
++        NavHost(navController = navController, startDestination = FeatureDestination.Home) {
++            composable<FeatureDestination.Home> {
++                HomeScreen()
++            }
++            nfcNavigation(onClose = onClose)
++            cameraNavigation(onClose = onClose)
++        }
++    }
++    LaunchedEffect(command) {
++        command?.let { pending ->
++            navController.navigate(pending.destination) {
++                popUpTo(navController.graph.id) { inclusive = false }
++            }
++            onCommandHandled(pending)
++        }
++    }
++}
+diff --git a/native/feature/src/main/kotlin/dev/example/nativefeature/navigation/FeatureLaunchCommand.kt b/native/feature/src/main/kotlin/dev/example/nativefeature/navigation/FeatureLaunchCommand.kt
+new file mode 100644
+index 00000000..e1271043
+--- /dev/null
++++ b/native/feature/src/main/kotlin/dev/example/nativefeature/navigation/FeatureLaunchCommand.kt
+@@ -0,0 +1,4 @@
++package dev.example.nativefeature.navigation
++
++/** 同じ処理ID・argsの連続要求も区別する、保存対象外の一時的な起動コマンド。 */
++internal class FeatureLaunchCommand(val destination: FeatureDestination)
+diff --git a/native/feature/src/main/kotlin/dev/example/nativefeature/navigation/FeatureDestination.kt b/native/feature/src/main/kotlin/dev/example/nativefeature/navigation/FeatureDestination.kt
+new file mode 100644
+index 00000000..1cb7e533
+--- /dev/null
++++ b/native/feature/src/main/kotlin/dev/example/nativefeature/navigation/FeatureDestination.kt
+@@ -0,0 +1,38 @@
++package dev.example.nativefeature.navigation
++
++import kotlinx.serialization.Serializable
++import kotlinx.serialization.json.JsonObject
++
++/** Navigationの文字列パスを直接扱わず、画面とその引数を型で表す。 */
++@Serializable
++sealed interface FeatureDestination {
++    /** 引数なしで表示するホーム画面。 */
++    @Serializable
++    data object Home : FeatureDestination
++
++    /**
++     * NFC読み取り画面へ渡す処理IDと任意のJSONオブジェクト。
++     *
++     * [id]は呼び出し元が指定する処理ID。[args]は省略時にnull、空オブジェクト指定時に{}を保持する。
++     * argsの項目は未定のためJsonObjectで受け、文字列・配列などを誤って渡せないようにする。
++     */
++    @Serializable
++    data class NfcRead(
++        val id: String,
++        val args: JsonObject? = null,
++    ) : FeatureDestination
++
++    /** NFC書き込み画面へ処理IDと任意のJSONオブジェクトを渡す。 */
++    @Serializable
++    data class NfcWrite(
++        val id: String,
++        val args: JsonObject? = null,
++    ) : FeatureDestination
++
++    /** Camera撮影画面へ処理IDと任意のJSONオブジェクトを渡す。 */
++    @Serializable
++    data class CameraCapture(
++        val id: String,
++        val args: JsonObject? = null,
++    ) : FeatureDestination
++}
+diff --git a/native/feature/src/main/kotlin/dev/example/nativefeature/navigation/JsonObjectNavType.kt b/native/feature/src/main/kotlin/dev/example/nativefeature/navigation/JsonObjectNavType.kt
+new file mode 100644
+index 00000000..c73dd586
+--- /dev/null
++++ b/native/feature/src/main/kotlin/dev/example/nativefeature/navigation/JsonObjectNavType.kt
+@@ -0,0 +1,41 @@
++package dev.example.nativefeature.navigation
++
++import android.net.Uri
++import android.os.Bundle
++import androidx.navigation.NavType
++import kotlinx.serialization.json.Json
++import kotlinx.serialization.json.JsonObject
++import kotlin.reflect.typeOf
++
++/** NavigationとSavedStateHandleで同じJSON引数の保存形式を使うための型対応表。 */
++internal val featureArgumentTypes = mapOf(typeOf<JsonObject?>() to JsonObjectNavType)
++
++/**
++ * 任意のJSONオブジェクトをNavigationの型付き引数として保存・復元する。
++ *
++ * BundleにはJSON文字列を保存し、ルートへ含めるときだけURIエンコードする。
++ * NavigationがURIをデコードした値をparseValueへ渡すため、二重デコードは行わない。
++ */
++internal object JsonObjectNavType : NavType<JsonObject?>(isNullableAllowed = true) {
++    /** 画面の復元用BundleへJSONを格納し、省略されたargsはnullのまま保存する。 */
++    override fun put(
++        bundle: Bundle,
++        key: String,
++        value: JsonObject?,
++    ) {
++        bundle.putString(key, value?.toString())
++    }
++
++    /** 保存したJSONを復元する。オブジェクト以外のJSONは受け付けない。 */
++    override fun get(
++        bundle: Bundle,
++        key: String,
++    ): JsonObject? = bundle.getString(key)?.let { Json.decodeFromString<JsonObject>(it) }
++
++    /** Navigationから渡されたJSON文字列を型付きのオブジェクトへ戻す。 */
++    override fun parseValue(value: String): JsonObject? =
++        if (value == "null") null else Json.decodeFromString<JsonObject>(value)
++
++    /** JSON内の予約文字や日本語がルート構造を変えないようエンコードする。 */
++    override fun serializeAsValue(value: JsonObject?): String = value?.let { Uri.encode(it.toString()) } ?: "null"
++}

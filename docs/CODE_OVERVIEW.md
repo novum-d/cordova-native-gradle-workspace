@@ -11,7 +11,7 @@
 
 通常の起動は`npm run cordova:run`で行います。`cordova.sh`から`run android --emulator`を呼び、CLIがprepare・ビルド・インストール・起動を実行します。変更のたびにplatform・pluginを削除する処理や、事前のprepareは不要です。変更監視は行わないため、変更後に再実行します。
 
-[kotlin-plugin](../kotlin-plugin/README.md)がWebからKotlin機能への入口です。`www/kotlin-plugin.js`の`cordova/exec`を受けて`KotlinPlugin.execute`がfeature画面を起動します。プラグイン内にGradle設定は置かず、native専用の[cordova-plugin-dev](../native/cordova-plugin-dev/build.gradle.kts)が元のKTソースを編集・コンパイル・文書化します。Cordova側はplugin.xmlからソースを導入し、cordova-plugin-devには依存しません。
+[kotlin-plugin](../kotlin-plugin/README.md)がWebからKotlin機能への入口です。`www/kotlin-plugin.js`の`cordova/exec`を受けて`KotlinPlugin.execute`が処理ID・任意argsをJSONとしてIntentへ格納し、MainActivityが処理IDから型付き画面を選びます。プラグイン内にGradle設定は置かず、native専用の[cordova-plugin-dev](../native/cordova-plugin-dev/build.gradle.kts)が元のKTソースを編集・コンパイル・文書化します。Cordova側はplugin.xmlからソースを導入し、cordova-plugin-devには依存しません。
 
 ## コミット時の検査
 
@@ -31,7 +31,7 @@ Git indexを自動更新する処理はありません。通常の`check`・`ktl
 | 管理元 | 役割 |
 | --- | --- |
 | [featureの設定](../native/feature/build.gradle.kts)・[dataの設定](../native/data/build.gradle.kts) | Android Libraryの依存・JVM target・コード生成・単体テスト・Dokkaを設定。依存方向はfeature → data |
-| [MainActivity](../native/feature/src/main/kotlin/dev/example/nativefeature/MainActivity.kt) | Composeの起動・状態更新を確認する画面。既存KDocに処理の概要を記載 |
+| [MainActivity](../native/feature/src/main/kotlin/dev/example/nativefeature/MainActivity.kt) | 起動Intentを検証してNavigationへ渡すActivity。要求JSONを重複保存せず、画面とargsの復元はNavigation・ViewModelが担当。詳細は[画面構成](NFC_NAVIGATION.md)を参照 |
 | feature・dataの`src/main/AndroidManifest.xml` | LibraryのManifest。featureのActivityは両variantで同一アプリから起動し、外部には公開しない |
 | 両モジュールの`src/test/kotlin/` | Mainの差し替え、仮想時間、Flow、DatetimeのJSON化を確認する環境テスト。各クラス・テストのKDocを参照 |
 | [check-android.sh](../scripts/check-android.sh) | native・Cordovaの品質チェック、単体テスト、Android Lintを順に実行 |

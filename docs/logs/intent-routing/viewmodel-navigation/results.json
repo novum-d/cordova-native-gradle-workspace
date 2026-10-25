@@ -1,0 +1,151 @@
+{
+  "webButtons": [
+    {
+      "id": "nfc.read",
+      "opened": true,
+      "backToCordova": true
+    },
+    {
+      "id": "nfc.write",
+      "opened": true,
+      "backToCordova": true
+    },
+    {
+      "id": "camera.capture",
+      "opened": true,
+      "backToCordova": true
+    }
+  ],
+  "newIntents": [
+    {
+      "id": "nfc.read",
+      "sameActivity": true,
+      "omittedEmptyStructuredArgs": true
+    },
+    {
+      "id": "nfc.write",
+      "sameActivity": true,
+      "omittedEmptyStructuredArgs": true
+    },
+    {
+      "id": "camera.capture",
+      "sameActivity": true,
+      "omittedEmptyStructuredArgs": true
+    }
+  ],
+  "repeatedIdenticalRequestAccepted": true,
+  "invalidRequests": [
+    {
+      "request": {
+        "id": "nfc.unknown"
+      },
+      "outcome": {
+        "ok": false,
+        "error": "Invalid feature request: unsupported id or invalid args"
+      }
+    },
+    {
+      "request": {
+        "id": 123
+      },
+      "outcome": {
+        "ok": false,
+        "error": "Invalid feature request: unsupported id or invalid args"
+      }
+    },
+    {
+      "request": {
+        "args": {}
+      },
+      "outcome": {
+        "ok": false,
+        "error": "Invalid feature request: unsupported id or invalid args"
+      }
+    },
+    {
+      "request": {
+        "id": "nfc.write",
+        "args": []
+      },
+      "outcome": {
+        "ok": false,
+        "error": "Invalid feature request: unsupported id or invalid args"
+      }
+    },
+    {
+      "request": {
+        "id": "camera.capture",
+        "args": "text"
+      },
+      "outcome": {
+        "ok": false,
+        "error": "Invalid feature request: unsupported id or invalid args"
+      }
+    },
+    {
+      "request": null,
+      "outcome": {
+        "ok": false,
+        "error": "Expected one request object with id and optional args"
+      }
+    }
+  ],
+  "replacementDoesNotKeepPreviousScreens": true,
+  "restoration": [
+    {
+      "id": "nfc.read",
+      "rotation": true,
+      "beforePid": "7401",
+      "afterPid": "7882",
+      "restored": true
+    },
+    {
+      "id": "nfc.write",
+      "rotation": true,
+      "beforePid": "7882",
+      "afterPid": "8078",
+      "restored": true
+    },
+    {
+      "id": "camera.capture",
+      "rotation": true,
+      "beforePid": "8078",
+      "afterPid": "8263",
+      "restored": true
+    }
+  ],
+  "status": "passed",
+  "webViewConnectionsClosed": true,
+  "emulatorClosed": true,
+  "buildsAndQuality": {
+    "nativeDebugAar": true,
+    "cordovaDebugApk": true,
+    "cordovaReleaseApk": true,
+    "nativeAndCordovaCheck": true,
+    "debugAndReleaseLint": true,
+    "detektAndFormatting": true,
+    "kdocHtml": true
+  },
+  "unitTests": {
+    "featureDebug": {
+      "tests": 17,
+      "failures": 0,
+      "errors": 0
+    },
+    "featureRelease": {
+      "tests": 17,
+      "failures": 0,
+      "errors": 0
+    },
+    "dataDebug": {
+      "tests": 2,
+      "failures": 0,
+      "errors": 0
+    },
+    "dataRelease": {
+      "tests": 2,
+      "failures": 0,
+      "errors": 0
+    }
+  }
+}

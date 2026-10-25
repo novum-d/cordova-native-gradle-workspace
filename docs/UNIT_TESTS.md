@@ -17,6 +17,10 @@
 
 版は[`libs.versions.toml`](../native/gradle/libs.versions.toml)、テスト依存とカバレッジ設定は各モジュールの`build.gradle.kts`に置きます。MockK等のモックライブラリは追加せず、必要な依存は手書きのFakeで差し替える方針です。通常のJVM単体テストにHiltのAndroidテスト用依存は不要です。[Hiltの単体テストの説明](https://developer.android.com/training/dependency-injection/hilt-testing)
 
+## NFC画面引数のテスト
+
+featureの[FeatureDestinationTest](../native/feature/src/test/kotlin/dev/example/nativefeature/FeatureDestinationTest.kt)に5件の契約テストを追加しています。args省略・空オブジェクト・日本語と予約文字を含む構造化JSONの保持、必須idの欠落、argsへの配列指定を確認します。既存の環境確認テストとは別のテストクラスです。[FeatureLaunchRequestTest](../native/feature/src/test/kotlin/dev/example/nativefeature/FeatureLaunchRequestTest.kt)には、処理IDの分岐とJSON境界の10件を追加しています。NFC読み取り・書き込み・Camera撮影の分岐と、省略・空・構造化argsを確認します。ViewModelの`SavedStateHandle.toRoute()`はAndroidのBundleを使うため、実際のWeb→Plugin→Intent→Navigation→ViewModelの経路と復元をエミュレーターで確認します。[仕様と検証](NFC_NAVIGATION.md)
+
 ## 配置
 
 | ファイル | 目的 |

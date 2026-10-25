@@ -1,0 +1,7 @@
+
+> cordova-native-gradle-workspace@1.0.0 cordova:plugin
+> ./scripts/setup-kotlin-plugin.sh --reinstall
+
+Uninstalling kotlin-plugin from android
+Removing "kotlin-plugin"
+Installing "kotlin-plugin" for android

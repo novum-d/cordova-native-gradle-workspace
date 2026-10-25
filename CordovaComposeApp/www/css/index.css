@@ -45,12 +45,12 @@ body {
     width:100%;
 }
 
-/* Portrait layout (default) */
+/* 縦画面では起動ボタン4つを表示できる位置に、Cordovaのサンプル操作領域を置く。 */
 .app {
     background:url(../img/logo.png) no-repeat center top; /* 170px x 200px */
     position:absolute;             /* position in the center of the screen */
     left:50%;
-    top:50%;
+    top:40%;
     height:50px;                   /* text area height */
     width:225px;                   /* text area width */
     text-align:center;
@@ -100,9 +100,10 @@ h1 {
 #deviceready.ready .event.received { display: block; }
 
 /* WebからKotlin画面を開く操作領域と、結果を読み取るための表示領域。 */
-#open-feature {
+.feature-button {
+    width: 100%;
     min-height: 48px;
-    margin-top: 16px;
+    margin-top: 8px;
     padding: 8px 16px;
     font: inherit;
 }

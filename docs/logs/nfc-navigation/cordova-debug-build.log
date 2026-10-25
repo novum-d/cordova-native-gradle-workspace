@@ -1,0 +1,167 @@
+
+> cordova-native-gradle-workspace@1.0.0 cordova:build
+> ./scripts/cordova.sh build android --debug
+
+[native-gradle] project root: /Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp
+[native-gradle] hook script: /Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/hooks/copy-gradle-extras.js
+[native-gradle] updated: /Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/cdv-gradle-name.gradle
+[native-gradle] unchanged: /Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/app/build-extras.gradle
+[native-gradle] integration restored (after_prepare)
+[native-gradle] project root: /Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp
+[native-gradle] hook script: /Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/hooks/copy-gradle-extras.js
+[native-gradle] unchanged: /Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/cdv-gradle-name.gradle
+[native-gradle] unchanged: /Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/app/build-extras.gradle
+[native-gradle] integration restored (before_compile)
+Checking Java JDK and Android SDK versions
+ANDROID_HOME=/Users/novumd/Library/Android/sdk (recommended setting)
+ANDROID_SDK_ROOT=/Users/novumd/Library/Android/sdk (DEPRECATED)
+Using Android SDK: /Users/novumd/Library/Android/sdk
+> Task :wrapper UP-TO-DATE
+
+BUILD SUCCESSFUL in 256ms
+1 actionable task: 1 up-to-date
+Subproject Path: CordovaLib
+Subproject Path: app
+Warning: SDK processing. This version only understands SDK XML versions up to 3 but an SDK XML file of version 4 was encountered. This can happen if you use versions of Android Studio and the command-line tools that were released at different times.
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :app:checkKotlinGradlePluginConfigurationErrors
+> Task :app:generateDebugBuildConfig
+> Task :CordovaLib:preBuild UP-TO-DATE
+> Task :CordovaLib:preDebugBuild UP-TO-DATE
+> Task :data:preBuild UP-TO-DATE
+> Task :data:preDebugBuild UP-TO-DATE
+> Task :CordovaLib:writeDebugAarMetadata
+> Task :feature:preBuild UP-TO-DATE
+> Task :feature:preDebugBuild UP-TO-DATE
+> Task :data:writeDebugAarMetadata
+> Task :feature:writeDebugAarMetadata
+> Task :app:generateDebugResValues
+> Task :CordovaLib:generateDebugResValues
+> Task :CordovaLib:generateDebugResources
+> Task :app:checkDebugAarMetadata
+> Task :CordovaLib:packageDebugResources
+> Task :data:generateDebugResValues
+> Task :data:generateDebugResources
+> Task :data:packageDebugResources
+> Task :feature:generateDebugResValues
+> Task :feature:generateDebugResources
+> Task :feature:packageDebugResources
+> Task :app:mapDebugSourceSetPaths
+> Task :app:generateDebugResources
+> Task :app:packageDebugResources
+> Task :app:createDebugCompatibleScreenManifests
+> Task :app:extractDeepLinksDebug
+> Task :CordovaLib:extractDeepLinksDebug
+> Task :data:extractDeepLinksDebug
+> Task :feature:extractDeepLinksDebug
+> Task :app:parseDebugLocalResources
+> Task :data:processDebugManifest
+> Task :CordovaLib:processDebugManifest
+> Task :feature:processDebugManifest
+> Task :app:mergeDebugResources
+> Task :CordovaLib:compileDebugLibraryResources
+> Task :app:processDebugMainManifest
+> Task :app:processDebugManifest
+> Task :data:compileDebugLibraryResources
+> Task :CordovaLib:parseDebugLocalResources
+> Task :feature:compileDebugLibraryResources
+> Task :data:parseDebugLocalResources
+> Task :data:checkKotlinGradlePluginConfigurationErrors
+> Task :feature:parseDebugLocalResources
+> Task :CordovaLib:javaPreCompileDebug
+> Task :feature:checkKotlinGradlePluginConfigurationErrors
+> Task :app:javaPreCompileDebug
+> Task :app:processDebugManifestForPackage
+> Task :feature:javaPreCompileDebug
+> Task :data:javaPreCompileDebug
+> Task :app:mergeDebugShaders
+> Task :app:compileDebugShaders NO-SOURCE
+> Task :app:generateDebugAssets UP-TO-DATE
+> Task :feature:generateDebugRFile
+> Task :CordovaLib:generateDebugRFile
+> Task :data:generateDebugRFile
+> Task :CordovaLib:mergeDebugShaders
+> Task :app:processDebugResources
+
+> Task :CordovaLib:compileDebugJavaWithJavac
+ノート:一部の入力ファイルは推奨されないAPIを使用またはオーバーライドしています。
+ノート:詳細は、-Xlint:deprecationオプションを指定して再コンパイルしてください。
+
+> Task :data:kspDebugKotlin NO-SOURCE
+> Task :data:compileDebugKotlin NO-SOURCE
+> Task :data:compileDebugJavaWithJavac NO-SOURCE
+> Task :CordovaLib:bundleLibCompileToJarDebug
+> Task :CordovaLib:compileDebugShaders NO-SOURCE
+> Task :CordovaLib:generateDebugAssets UP-TO-DATE
+> Task :CordovaLib:packageDebugAssets
+> Task :data:mergeDebugShaders
+> Task :data:compileDebugShaders NO-SOURCE
+> Task :data:generateDebugAssets UP-TO-DATE
+> Task :data:packageDebugAssets
+> Task :data:transformDebugClassesWithAsm
+> Task :feature:mergeDebugShaders
+> Task :data:bundleLibCompileToJarDebug
+> Task :data:bundleLibRuntimeToJarDebug
+> Task :feature:compileDebugShaders NO-SOURCE
+> Task :feature:generateDebugAssets UP-TO-DATE
+> Task :feature:packageDebugAssets
+> Task :app:mergeDebugAssets
+> Task :app:compressDebugAssets
+> Task :CordovaLib:processDebugJavaRes
+> Task :data:processDebugJavaRes NO-SOURCE
+> Task :feature:kspDebugKotlin
+> Task :app:checkDebugDuplicateClasses
+> Task :app:desugarDebugFileDependencies
+> Task :feature:compileDebugKotlin
+> Task :feature:compileDebugJavaWithJavac NO-SOURCE
+> Task :feature:processDebugJavaRes
+> Task :data:bundleLibRuntimeToDirDebug
+> Task :app:mergeDebugJniLibFolders
+> Task :CordovaLib:mergeDebugJniLibFolders
+> Task :CordovaLib:mergeDebugNativeLibs NO-SOURCE
+> Task :feature:transformDebugClassesWithAsm
+> Task :CordovaLib:copyDebugJniLibsProjectOnly
+> Task :feature:bundleLibCompileToJarDebug
+> Task :data:mergeDebugJniLibFolders
+> Task :feature:bundleLibRuntimeToDirDebug
+> Task :CordovaLib:bundleLibRuntimeToDirDebug
+> Task :data:mergeDebugNativeLibs NO-SOURCE
+> Task :data:copyDebugJniLibsProjectOnly
+> Task :feature:mergeDebugJniLibFolders
+> Task :feature:mergeDebugNativeLibs NO-SOURCE
+> Task :feature:copyDebugJniLibsProjectOnly
+> Task :app:validateSigningDebug
+> Task :app:writeDebugAppMetadata
+> Task :app:mergeDebugNativeLibs
+> Task :app:writeDebugSigningConfigVersions
+
+> Task :app:stripDebugDebugSymbols
+Unable to strip the following libraries, packaging them as they are: libandroidx.graphics.path.so, libdatastore_shared_counter.so.
+
+> Task :app:compileDebugKotlin
+> Task :app:compileDebugJavaWithJavac
+> Task :app:processDebugJavaRes
+> Task :app:mergeLibDexDebug
+> Task :app:dexBuilderDebug
+> Task :app:mergeProjectDexDebug
+> Task :app:mergeDebugJavaResource
+> Task :app:mergeExtDexDebug
+> Task :app:packageDebug
+> Task :app:createDebugApkListingFileRedirect
+> Task :app:assembleDebug
+> Task :app:cdvBuildDebug
+
+[Incubating] Problems report is available at: file:///Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/build/reports/problems/problems-report.html
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/8.13/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD SUCCESSFUL in 27s
+95 actionable tasks: 95 executed
+Built the following apk(s): 
+	/Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/app/build/outputs/apk/debug/app-debug.apk

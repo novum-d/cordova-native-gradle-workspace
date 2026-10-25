@@ -1,0 +1,132 @@
+> Task :feature:preBuild UP-TO-DATE
+> Task :feature:preDebugBuild UP-TO-DATE
+> Task :feature:mergeDebugJniLibFolders UP-TO-DATE
+> Task :feature:mergeDebugNativeLibs NO-SOURCE
+> Task :feature:stripDebugDebugSymbols NO-SOURCE
+> Task :feature:copyDebugJniLibsProjectAndLocalJars UP-TO-DATE
+> Task :data:preBuild UP-TO-DATE
+> Task :data:preDebugBuild UP-TO-DATE
+> Task :data:generateDebugResValues UP-TO-DATE
+> Task :data:generateDebugResources UP-TO-DATE
+> Task :data:packageDebugResources UP-TO-DATE
+> Task :data:parseDebugLocalResources UP-TO-DATE
+> Task :data:generateDebugRFile UP-TO-DATE
+> Task :data:checkKotlinGradlePluginConfigurationErrors
+> Task :data:kspDebugKotlin NO-SOURCE
+> Task :data:compileDebugKotlin NO-SOURCE
+> Task :data:javaPreCompileDebug UP-TO-DATE
+> Task :data:compileDebugJavaWithJavac NO-SOURCE
+> Task :data:transformDebugClassesWithAsm UP-TO-DATE
+> Task :data:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :feature:checkKotlinGradlePluginConfigurationErrors
+> Task :feature:generateDebugResValues UP-TO-DATE
+> Task :feature:generateDebugResources UP-TO-DATE
+> Task :feature:packageDebugResources UP-TO-DATE
+> Task :feature:parseDebugLocalResources UP-TO-DATE
+> Task :feature:generateDebugRFile UP-TO-DATE
+> Task :feature:extractDeepLinksForAarDebug UP-TO-DATE
+> Task :data:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :feature:javaPreCompileDebug UP-TO-DATE
+> Task :feature:mergeDebugShaders UP-TO-DATE
+> Task :feature:compileDebugShaders NO-SOURCE
+> Task :feature:generateDebugAssets UP-TO-DATE
+> Task :feature:packageDebugAssets UP-TO-DATE
+> Task :feature:prepareDebugArtProfile UP-TO-DATE
+> Task :feature:prepareLintJarForPublish UP-TO-DATE
+> Task :feature:processDebugManifest UP-TO-DATE
+> Task :feature:writeDebugAarMetadata UP-TO-DATE
+> Task :data:processDebugJavaRes NO-SOURCE
+> Task :feature:preDebugUnitTestBuild UP-TO-DATE
+> Task :feature:kspDebugKotlin
+> Task :feature:generateDebugUnitTestStubRFile UP-TO-DATE
+> Task :feature:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :data:preReleaseBuild UP-TO-DATE
+> Task :data:generateReleaseResValues
+> Task :data:generateReleaseResources
+> Task :data:packageReleaseResources
+> Task :feature:preReleaseBuild UP-TO-DATE
+> Task :data:parseReleaseLocalResources
+> Task :feature:generateReleaseResValues
+> Task :data:javaPreCompileRelease
+> Task :feature:generateReleaseResources
+> Task :data:generateReleaseRFile
+> Task :feature:packageReleaseResources
+> Task :data:kspReleaseKotlin NO-SOURCE
+> Task :data:compileReleaseKotlin NO-SOURCE
+> Task :data:compileReleaseJavaWithJavac NO-SOURCE
+> Task :data:processReleaseJavaRes NO-SOURCE
+> Task :feature:preReleaseUnitTestBuild UP-TO-DATE
+> Task :data:transformReleaseClassesWithAsm
+> Task :feature:parseReleaseLocalResources
+> Task :feature:javaPreCompileRelease
+> Task :feature:javaPreCompileReleaseUnitTest
+> Task :data:bundleLibRuntimeToJarRelease
+> Task :data:bundleLibCompileToJarRelease
+> Task :feature:generateReleaseRFile
+> Task :detekt
+> Task :feature:generateReleaseUnitTestStubRFile
+
+> Task :detektFormatCheck
+...........
+
+11 kotlin files were analyzed.
+Complexity Report:
+	- 424 lines of code (loc)
+	- 313 source lines of code (sloc)
+	- 175 logical lines of code (lloc)
+	- 57 comment lines of code (cloc)
+	- 27 cyclomatic complexity (mcc)
+	- 5 cognitive complexity
+	- 0 number of total code smells
+	- 18% comment source ratio
+	- 154 mcc per 1,000 lloc
+	- 0 code smells per 1,000 lloc
+
+Project Statistics:
+	- number of properties: 16
+	- number of functions: 20
+	- number of classes: 9
+	- number of packages: 3
+	- number of kt files: 11
+
+Successfully generated HTML report at file:///Users/novumd/repos/cordova-native-gradle-workspace/native/build/reports/detekt/detektFormatCheck.html
+
+> Task :feature:kspReleaseKotlin
+> Task :feature:compileDebugKotlin
+> Task :feature:extractDebugAnnotations
+> Task :feature:compileDebugJavaWithJavac NO-SOURCE
+> Task :feature:processDebugJavaRes
+> Task :feature:transformDebugClassesWithAsm
+> Task :feature:mergeDebugGeneratedProguardFiles
+> Task :feature:mergeDebugConsumerProguardFiles
+> Task :feature:bundleLibRuntimeToJarDebug
+> Task :feature:bundleLibCompileToJarDebug
+> Task :feature:mergeDebugJavaResource
+> Task :feature:syncDebugLibJars
+> Task :feature:bundleDebugAar
+> Task :feature:assembleDebug
+> Task :feature:compileReleaseKotlin
+> Task :feature:compileReleaseJavaWithJavac NO-SOURCE
+> Task :feature:processReleaseJavaRes
+> Task :feature:transformReleaseClassesWithAsm
+> Task :feature:bundleLibRuntimeToJarRelease
+> Task :feature:bundleLibCompileToJarRelease
+> Task :feature:kspDebugUnitTestKotlin
+> Task :feature:kspReleaseUnitTestKotlin
+> Task :feature:compileDebugUnitTestKotlin
+> Task :feature:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :feature:compileReleaseUnitTestKotlin
+> Task :feature:compileReleaseUnitTestJavaWithJavac NO-SOURCE
+> Task :feature:hiltAggregateDepsDebugUnitTest
+> Task :feature:hiltAggregateDepsReleaseUnitTest
+> Task :feature:hiltJavaCompileDebugUnitTest NO-SOURCE
+> Task :feature:processDebugUnitTestJavaRes
+> Task :feature:hiltJavaCompileReleaseUnitTest NO-SOURCE
+> Task :feature:processReleaseUnitTestJavaRes
+> Task :feature:transformDebugUnitTestClassesWithAsm
+> Task :feature:transformReleaseUnitTestClassesWithAsm
+> Task :feature:testDebugUnitTest
+> Task :feature:testReleaseUnitTest
+
+BUILD SUCCESSFUL in 4s
+77 actionable tasks: 51 executed, 26 up-to-date
