@@ -100,7 +100,7 @@ GradleはCatalogの`gradle`をWrapper生成・実行環境の選択・実行版�
 | detekt Gradle Plugin | 1.23.8 | 確認時点の最新安定版を適用済み。通常解析と整形チェックの実行成功を再確認 | 公式リリース: “v1.23.8”、`Latest`<br>実測: `> Task :detekt`、`> Task :detektFormatCheck`、`BUILD SUCCESSFUL` | [detekt 1.23.8](https://github.com/detekt/detekt/releases/tag/v1.23.8)、[実行ログ](docs/quality-detekt-latest.log)、[品質タスクの検証](docs/GIT_HOOKS.md) |
 | Dokka Gradle Plugin | 2.2.0 | KDocからHTMLを生成するビルド時のツール。DGP v2を使用し、アプリのKotlin 1.9.24を維持 | 公式の最小KGP要件: `KGP 1.9.0+`<br>実測結果はKDoc生成の記録を参照 | [2.2.0リリース](https://github.com/Kotlin/dokka/releases/tag/v2.2.0)、[KDoc生成](docs/KDOC.md) |
 
-Composeライブラリには個別版を付けず、BOMを利用します。画面系は`feature`、通信・永続化系は`data`、日時・不変コレクション・Coroutines・Hilt・Result・Timberは両方へ通常依存として追加しています。単体テスト・Androidテスト依存と、Hilt/KSP・Serializationのコード生成も設定済みです。[配置一覧と解決結果](docs/DEPENDENCIES.md)を参照してください。
+Composeライブラリには個別版を付けず、BOMを利用します。画面系は`feature`、通信・永続化系は`data`へ追加しています。日時・不変コレクション・Coroutines Core／Android・Hilt Android・kotlin-result・Timberの7依存は、共有Catalogの`native-common` bundleへまとめ、両モジュールの`api(libs.bundles.native.common)`で利用側にも公開しています。単体テスト・Androidテスト依存と、Hilt/KSP・Serializationのコード生成も設定済みです。[配置一覧と解決結果](docs/DEPENDENCIES.md)を参照してください。
 
 Immutable Collectionsに合わせて、detektの`DataClassShouldBeImmutable`と`TwitterCompose.UnstableCollections`を有効にし、違反1件で停止する設定にしました。使い方とルールの範囲は[追加内容](docs/IMMUTABLE_COLLECTIONS.md)を参照してください。
 
@@ -127,6 +127,8 @@ Cordova 14.0.1の`ProjectBuilder.prepBuildFiles()`は**build時にsettings.gradl
 根拠: [ProjectBuilder 14.0.1](https://github.com/apache/cordova-android/blob/14.0.1/lib/builders/ProjectBuilder.js)、[prepare 14.0.1](https://github.com/apache/cordova-android/blob/14.0.1/lib/prepare.js)、[Cordova hook実行順](https://cordova.apache.org/docs/en/latest/guide/appdev/hooks/)。この拡張点は14.0.1の生成形式に依存するため、Cordova更新時に再確認します。
 
 ## 再実行
+
+hookの呼び出しや反映先を調べる場合は、workspaceルートで`./scripts/cordova.sh prepare android --verbose`を実行します。`[native-gradle] project root:`は対象アプリ、`hook script:`は実際に読み込んだJS、`updated:`／`unchanged:`は書き込み・読み戻し確認後のファイルの実パスです。`unchanged`は同じ設定が既存ファイルにあることを示します。完了ログがあるのにファイルが見当たらない場合は、この実パスを確認し、後続のhookやplatform再生成で変更・削除されていないか調べます。反映先は`platforms/android/cdv-gradle-name.gradle`と`platforms/android/app/build-extras.gradle`で、`native/gradle/`の設定ファイル自体はコピーしません。
 
 Node.js、JDK 17、SDK 35とBuild Tools 35.0.0を用意します。このマシンではmiseの17.0.2を利用します。miseを使わない場合は`CORDOVA_JAVA_HOME`を指定してください。環境スクリプトは既存のグローバルGradleやJDK設定を書き換えません。
 

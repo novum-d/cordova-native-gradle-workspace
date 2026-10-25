@@ -85,6 +85,18 @@ androidx-test-ext-junit-ktx = { module = "androidx.test.ext:junit-ktx", version.
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
 detekt-twitter-compose = { module = "com.twitter.compose.rules:detekt", version.ref = "twitter-compose-rules" }
 
+# 共通の型・非同期処理・ログ・DIを両Libraryのapiで公開する。Processorとテスト依存は含めない。
+[bundles]
+native-common = [
+    "kotlinx-coroutines-core",
+    "kotlinx-coroutines-android",
+    "kotlinx-collections-immutable",
+    "kotlinx-datetime",
+    "kotlin-result",
+    "hilt-android",
+    "timber",
+]
+
 # Pluginの版も上の定義を参照し、native・Cordovaの両ホストで共有する。
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

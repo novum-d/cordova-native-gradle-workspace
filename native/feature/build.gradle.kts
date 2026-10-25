@@ -51,6 +51,8 @@ dokka {
 
 // 画面からdataへ依存し、テスト・デバッグ専用の依存は対応する構成へ分ける。
 dependencies {
+    // 共通依存を利用側にも公開し、featureに依存するプラグインやappから同じ型を使えるようにする。
+    api(libs.bundles.native.common)
     implementation(project(":data"))
     implementation(libs.androidx.core.ktx)
     implementation(platform(libs.compose.bom))
@@ -65,14 +67,8 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.webkit)
-    implementation(libs.kotlinx.coroutines.core)
-    implementation(libs.kotlinx.coroutines.android)
-    implementation(libs.kotlinx.collections.immutable)
-    implementation(libs.kotlinx.datetime)
-    implementation(libs.kotlin.result)
-    implementation(libs.hilt.android)
+    // Hiltのコード生成は各モジュールで実行し、Compilerをapiへ公開しない。
     ksp(libs.hilt.compiler)
-    implementation(libs.timber)
 
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)

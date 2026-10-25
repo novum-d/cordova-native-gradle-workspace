@@ -197,6 +197,8 @@ androidx-test-ext-junit-ktx = { module = "androidx.test.ext:junit-ktx", version.
 
 Composeの各Artifactには個別版を付けず、BOMでそろえる。HiltのProcessorは両モジュールでKSPへ登録する。
 
+共通のDatetime・kotlin-result・Immutable Collections・Coroutines Core／Android・Hilt Android・Timberは、Catalogの`native-common` bundleにまとめ、feature・dataの`api`で公開する。利用側への公開範囲と設定は[依存の配置](DEPENDENCIES.md)を参照する。
+
 ## 採用構成の確認手順
 
 対象Androidプロジェクトで、モジュール名を実構成へ合わせて実行する。

@@ -9,6 +9,14 @@ npm-debug.log*
 build/
 local.properties
 
+# native/をGradle User Homeとして実行した際のキャッシュ・配布物もローカルに保持する。
+/native/caches/
+/native/daemon/
+/native/kotlin-profile/
+/native/native/
+/native/wrapper/
+/native/android/
+
 # Androidの外部ネイティブビルドで生成される作業ディレクトリを除外する。
 .cxx/
 .externalNativeBuild/

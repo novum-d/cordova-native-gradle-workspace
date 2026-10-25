@@ -49,21 +49,17 @@ dokka {
 
 // 画面への逆依存を作らず、通信・永続化・日時処理とテスト用の依存を設定する。
 dependencies {
+    // 共通依存を利用側にも公開し、dataに依存するモジュールから同じ型を使えるようにする。
+    api(libs.bundles.native.common)
     implementation(libs.datastore.preferences)
     implementation(libs.datastore.core)
     implementation(libs.kotlinx.serialization.json)
-    implementation(libs.kotlinx.coroutines.core)
-    implementation(libs.kotlinx.coroutines.android)
-    implementation(libs.kotlinx.collections.immutable)
-    implementation(libs.kotlinx.datetime)
     implementation(libs.androidx.work.runtime.ktx)
     implementation(libs.retrofit)
     implementation(libs.okhttp)
     implementation(libs.okhttp.logging.interceptor)
-    implementation(libs.kotlin.result)
-    implementation(libs.hilt.android)
+    // Hiltのコード生成は各モジュールで実行し、Compilerをapiへ公開しない。
     ksp(libs.hilt.compiler)
-    implementation(libs.timber)
 
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
