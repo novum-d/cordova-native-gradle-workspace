@@ -10,6 +10,10 @@ sealed interface FeatureDestination {
     @Serializable
     data object Home : FeatureDestination
 
+    /** 業務サービスと区別して開く、WebMessage双方向通信の検証画面。 */
+    @Serializable
+    data object WebViewSample : FeatureDestination
+
     /**
      * ゴルフ場ID・ホルダー番号の読み取り画面へ渡す処理IDと任意のJSONオブジェクト。
      *

@@ -2,9 +2,11 @@
 
 [ドキュメント一覧](README.md) · [KotlinプラグインのAPI](../kotlin-plugin/README.md)
 
+この文書は、ネイティブ画面を起動する現在の暫定実装と検証記録を説明します。WebView主体の画面遷移・クライアントAPI・ゴルフ場釣り銭機サービスの構成方針は[CLIENT_API_SPEC.md](CLIENT_API_SPEC.md)を参照してください。通常のAPI実行にNavigationを必須とする仕様ではありません。
+
 ## 呼び出しの流れ
 
-CordovaのWebから`{id, args?}`を渡し、KotlinPluginが検証した要求を明示的Intentへ格納します。Activityは要求を一度だけNavigationへ渡し、各画面のViewModelが`SavedStateHandle`から処理ID・argsを受け取ります。
+CordovaのWebから`{id, args?}`を渡し、KotlinPluginが検証した要求を明示的Intentへ格納します。Activityは要求を一度だけNavigationへ渡し、ゴルフ画面のViewModelが`SavedStateHandle`から処理ID・argsを受け取ります。通信サンプルは画面引数を使用しません。
 
 ```text
 Web: openFeature({id, args?}, success, error)
@@ -19,6 +21,7 @@ Web: openFeature({id, args?}, success, error)
 | --- | --- | --- |
 | `golf-change.read-holder` | ゴルフ場ID・ホルダー番号 読み取り画面 | GolfHolderReadViewModel |
 | `home` | 確認用のホーム画面 | 引数を使用しないためなし |
+| `sample.webview` | 手書きHTMLの双方向通信サンプル | 保存する画面引数なし。WebView接続は画面の寿命で管理 |
 
 各機能画面は画面名・処理ID・argsを中央に表示し、「戻る」でCordovaへ戻ります。現在の確定仕様はゴルフ場ID・ホルダー番号の読み取りです。この2項目は読み取りによって取得する値で、Webからの必須引数にはしていません。実際の読み取り、データ形式の解析、結果のWeb返却、権限要求は未実装です。
 
@@ -39,7 +42,7 @@ window.KotlinPlugin.openFeature({ id: 'golf-change.read-holder' }, onSuccess, on
 window.KotlinPlugin.openFeature({ id: 'golf-change.read-holder', args: {} }, onSuccess, onError);
 ```
 
-サンプルWebには、ゴルフ場釣り銭機サービスと確認用ホームを呼ぶボタンを置いています。未知のIDや不正な要求はエラーコールバックへ返し、Activityを起動しません。ネイティブ画面内で仮の処理IDを生成する操作はありません。
+サンプルWebには、ゴルフ場釣り銭機サービス・確認用ホーム・[WebView通信サンプル](WEBVIEW_BRIDGE_SAMPLE.md)を呼ぶボタンを置いています。未知のIDや不正な要求はエラーコールバックへ返し、Activityを起動しません。ネイティブ画面内で仮の処理IDを生成する操作はありません。
 
 ## 起動要求と型安全性
 
@@ -71,6 +74,7 @@ data class FeatureLaunchRequest(
 | [navigation/](../native/feature/src/main/kotlin/dev/example/nativefeature/navigation/) | 共通NavHost、型付きルート、JSON用NavType |
 | [services/golfchange/](../native/feature/src/main/kotlin/dev/example/nativefeature/services/golfchange/) | ゴルフ場釣り銭機サービスのNavigation・ViewModel・画面 |
 | [home/](../native/feature/src/main/kotlin/dev/example/nativefeature/home/) | 確認用ホームの表示 |
+| [webview/](../native/feature/src/main/kotlin/dev/example/nativefeature/webview/) | 検証用WebView・WebMessageの解析・接続と読み込み制御 |
 | [common/](../native/feature/src/main/kotlin/dev/example/nativefeature/common/) | 画面名・処理ID・argsを中央に表示する共通レイアウト |
 
 NavHostとNavControllerは一つです。`golfChangeNavigation()`でサービス単位に画面を登録し、ViewModelは各NavBackStackEntryに属します。Activity共有のViewModelで引数を使い回しません。

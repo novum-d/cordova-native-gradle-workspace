@@ -1,0 +1,58 @@
+{
+  "androidApi": 35,
+  "abi": "arm64-v8a",
+  "webView": "124.0.6367.219",
+  "featureLintWarnings": [
+    {
+      "id": "LogNotTimber",
+      "file": "MainActivity.kt",
+      "existing": true
+    }
+  ],
+  "tests": [
+    {
+      "module": "feature",
+      "variant": "Debug",
+      "tests": 26,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "feature",
+      "variant": "Release",
+      "tests": 26,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "data",
+      "variant": "Debug",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "data",
+      "variant": "Release",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "artifacts": {
+    "debugApk": {
+      "path": "CordovaComposeApp/platforms/android/app/build/outputs/apk/debug/app-debug.apk",
+      "bytes": 13887462,
+      "sha256": "57063185d8962122bf1366e7cded3d89506cecf37be718967d46c3898e3b0c58"
+    },
+    "releaseAab": {
+      "path": "CordovaComposeApp/platforms/android/app/build/outputs/bundle/release/app-release.aab",
+      "bytes": 9347227,
+      "sha256": "72065562e2ec2960ea1166620525d861ff11ac375a7d2b4e540020bae484fd1c"
+    }
+  }
+}

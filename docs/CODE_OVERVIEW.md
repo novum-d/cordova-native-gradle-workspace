@@ -2,6 +2,8 @@
 
 手書きで管理するコード・設定を、[コメント記述ルール](../AGENTS.md)に従って確認しています。各ファイルでは処理のまとまりごとに目的・判断理由を説明し、既存のKDocで概要が分かる箇所は説明を重複させません。JSONや生成・配布元のファイルについては、この文書で補足します。
 
+以下は現在の暫定実装の説明です。WebViewのUI・画面遷移と、Kotlinブリッジによるサービス実行の構成方針は[CLIENT_API_SPEC.md](CLIENT_API_SPEC.md)にまとめています。
+
 ## セットアップからビルドまで
 
 1. [bootstrap.sh](../scripts/bootstrap.sh)がルートとアプリ側のnpm依存を復元し、Catalog指定のGradleとWrapperを用意します。不完全なCordova platformは退避して再生成し、正常なplatformはprepareします。最後に[setup-kotlin-plugin.sh](../scripts/setup-kotlin-plugin.sh)でプラグインをリンク導入します。
@@ -33,9 +35,13 @@ Git indexを自動更新する処理はありません。通常の`check`・`ktl
 | [featureの設定](../native/feature/build.gradle.kts)・[dataの設定](../native/data/build.gradle.kts) | Android Libraryの依存・JVM target・コード生成・単体テスト・Dokkaを設定。依存方向はfeature → data |
 | [MainActivity](../native/feature/src/main/kotlin/dev/example/nativefeature/MainActivity.kt) | 起動Intentを検証してNavigationへ渡すActivity。要求JSONを重複保存せず、画面とargsの復元はNavigation・ViewModelが担当。詳細は[画面構成](SERVICE_NAVIGATION.md)を参照 |
 | feature・dataの`src/main/AndroidManifest.xml` | LibraryのManifest。featureのActivityは両variantで同一アプリから起動し、外部には公開しない |
-| 両モジュールの`src/test/kotlin/` | Mainの差し替え、仮想時間、Flow、DatetimeのJSON化を確認する環境テスト。各クラス・テストのKDocを参照 |
+| 両モジュールの`src/test/kotlin/` | Mainの差し替え、仮想時間、Flow、DatetimeのJSON化と、起動要求・WebMessage・URL許可の契約テスト。各クラス・テストのKDocを参照 |
 | [check-android.sh](../scripts/check-android.sh) | native・Cordovaの品質チェック、単体テスト、Android Lintを順に実行 |
 | [libs.versions.toml](../native/gradle/libs.versions.toml)・[gradle.properties](../native/gradle.properties)・[detekt設定](../native/gradle/config/detekt/) | 採用版、Gradle実行環境、静的解析・整形ルールの管理元 |
+
+## WebView通信サンプル
+
+[WebViewSampleScreen.kt](../native/feature/src/main/kotlin/dev/example/nativefeature/webview/WebViewSampleScreen.kt)がComposeの検証UIを持ち、[WebViewBridge.kt](../native/feature/src/main/kotlin/dev/example/nativefeature/webview/WebViewBridge.kt)が一つのWebViewの接続と解放を管理します。[WebMessage.kt](../native/feature/src/main/kotlin/dev/example/nativefeature/webview/WebMessage.kt)でJSONを解析し、[WebViewPolicy.kt](../native/feature/src/main/kotlin/dev/example/nativefeature/webview/WebViewPolicy.kt)と[SampleWebViewClient.kt](../native/feature/src/main/kotlin/dev/example/nativefeature/webview/SampleWebViewClient.kt)で配信先と通信先を絞ります。[index.html](../native/feature/src/main/assets/index.html)は固定のHTMLとJavaScript・CSPを持ちます。通信の流れと制約は[サンプル文書](WEBVIEW_BRIDGE_SAMPLE.md)を参照してください。
 
 ## JSONの説明
 

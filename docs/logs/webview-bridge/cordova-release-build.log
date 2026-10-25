@@ -1,0 +1,180 @@
+
+> cordova-native-gradle-workspace@1.0.0 cordova:build
+> ./scripts/cordova.sh build android --release
+
+[native-gradle] project root: /Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp
+[native-gradle] hook script: /Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/hooks/copy-gradle-extras.js
+[native-gradle] updated: /Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/cdv-gradle-name.gradle
+[native-gradle] unchanged: /Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/app/build-extras.gradle
+[native-gradle] integration restored (after_prepare)
+[native-gradle] project root: /Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp
+[native-gradle] hook script: /Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/hooks/copy-gradle-extras.js
+[native-gradle] unchanged: /Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/cdv-gradle-name.gradle
+[native-gradle] unchanged: /Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/app/build-extras.gradle
+[native-gradle] integration restored (before_compile)
+Checking Java JDK and Android SDK versions
+ANDROID_HOME=/Users/novumd/Library/Android/sdk (recommended setting)
+ANDROID_SDK_ROOT=/Users/novumd/Library/Android/sdk (DEPRECATED)
+Using Android SDK: /Users/novumd/Library/Android/sdk
+> Task :wrapper UP-TO-DATE
+
+BUILD SUCCESSFUL in 323ms
+1 actionable task: 1 up-to-date
+Subproject Path: CordovaLib
+Subproject Path: app
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preReleaseBuild UP-TO-DATE
+> Task :app:generateReleaseResValues
+> Task :CordovaLib:preBuild UP-TO-DATE
+> Task :CordovaLib:preReleaseBuild UP-TO-DATE
+> Task :CordovaLib:generateReleaseResValues
+> Task :CordovaLib:generateReleaseResources
+> Task :CordovaLib:packageReleaseResources
+> Task :data:preBuild UP-TO-DATE
+> Task :data:preReleaseBuild UP-TO-DATE
+> Task :data:generateReleaseResValues
+> Task :data:generateReleaseResources
+> Task :data:packageReleaseResources
+> Task :feature:preBuild UP-TO-DATE
+> Task :feature:preReleaseBuild UP-TO-DATE
+> Task :feature:generateReleaseResValues
+> Task :feature:generateReleaseResources
+> Task :feature:packageReleaseResources
+> Task :app:mapReleaseSourceSetPaths
+> Task :app:generateReleaseResources
+> Task :app:createReleaseCompatibleScreenManifests
+> Task :app:extractDeepLinksRelease
+> Task :CordovaLib:extractDeepLinksRelease
+> Task :data:extractDeepLinksRelease
+> Task :CordovaLib:processReleaseManifest
+> Task :feature:extractDeepLinksRelease
+> Task :data:processReleaseManifest
+> Task :feature:processReleaseManifest
+> Task :CordovaLib:writeReleaseAarMetadata
+> Task :data:writeReleaseAarMetadata
+> Task :feature:writeReleaseAarMetadata
+> Task :app:processReleaseMainManifest
+> Task :app:processReleaseManifest
+> Task :app:processApplicationManifestReleaseForBundle
+> Task :app:checkReleaseAarMetadata
+> Task :app:packageReleaseResources
+> Task :app:mergeReleaseResources
+> Task :CordovaLib:compileReleaseLibraryResources
+> Task :app:parseReleaseLocalResources
+> Task :data:compileReleaseLibraryResources
+> Task :CordovaLib:parseReleaseLocalResources
+> Task :feature:compileReleaseLibraryResources
+> Task :data:parseReleaseLocalResources
+> Task :CordovaLib:generateReleaseRFile
+> Task :feature:parseReleaseLocalResources
+> Task :data:generateReleaseRFile
+> Task :app:extractReleaseVersionControlInfo
+> Task :data:checkKotlinGradlePluginConfigurationErrors
+> Task :data:kspReleaseKotlin NO-SOURCE
+> Task :feature:generateReleaseRFile
+> Task :data:compileReleaseKotlin NO-SOURCE
+> Task :feature:checkKotlinGradlePluginConfigurationErrors
+> Task :data:javaPreCompileRelease
+> Task :feature:javaPreCompileRelease
+> Task :CordovaLib:javaPreCompileRelease
+> Task :data:compileReleaseJavaWithJavac NO-SOURCE
+> Task :data:transformReleaseClassesWithAsm
+
+> Task :CordovaLib:compileReleaseJavaWithJavac
+ノート:一部の入力ファイルは推奨されないAPIを使用またはオーバーライドしています。
+ノート:詳細は、-Xlint:deprecationオプションを指定して再コンパイルしてください。
+
+> Task :data:bundleLibCompileToJarRelease
+> Task :data:bundleLibRuntimeToJarRelease
+> Task :data:bundleLibRuntimeToDirRelease
+> Task :app:checkReleaseDuplicateClasses
+> Task :app:buildKotlinToolingMetadata
+> Task :app:checkKotlinGradlePluginConfigurationErrors
+> Task :app:generateReleaseBuildConfig
+> Task :app:javaPreCompileRelease
+> Task :app:desugarReleaseFileDependencies
+> Task :app:mergeReleaseStartupProfile
+> Task :CordovaLib:bundleLibRuntimeToDirRelease
+> Task :CordovaLib:bundleLibCompileToJarRelease
+> Task :app:mergeReleaseShaders
+> Task :app:compileReleaseShaders NO-SOURCE
+> Task :app:generateReleaseAssets UP-TO-DATE
+> Task :CordovaLib:mergeReleaseShaders
+> Task :CordovaLib:compileReleaseShaders NO-SOURCE
+> Task :CordovaLib:generateReleaseAssets UP-TO-DATE
+> Task :CordovaLib:packageReleaseAssets
+> Task :data:mergeReleaseShaders
+> Task :data:compileReleaseShaders NO-SOURCE
+> Task :data:generateReleaseAssets UP-TO-DATE
+> Task :data:packageReleaseAssets
+> Task :feature:mergeReleaseShaders
+> Task :feature:compileReleaseShaders NO-SOURCE
+> Task :feature:generateReleaseAssets UP-TO-DATE
+> Task :feature:packageReleaseAssets
+> Task :app:mergeReleaseAssets
+> Task :CordovaLib:bundleLibRuntimeToJarRelease
+> Task :CordovaLib:processReleaseJavaRes
+> Task :data:processReleaseJavaRes NO-SOURCE
+> Task :app:mergeReleaseJniLibFolders
+> Task :CordovaLib:mergeReleaseJniLibFolders
+> Task :CordovaLib:mergeReleaseNativeLibs NO-SOURCE
+> Task :CordovaLib:copyReleaseJniLibsProjectOnly
+> Task :app:processReleaseManifestForPackage
+> Task :data:mergeReleaseJniLibFolders
+> Task :data:mergeReleaseNativeLibs NO-SOURCE
+> Task :data:copyReleaseJniLibsProjectOnly
+> Task :feature:mergeReleaseJniLibFolders
+> Task :feature:mergeReleaseNativeLibs NO-SOURCE
+> Task :feature:copyReleaseJniLibsProjectOnly
+> Task :feature:kspReleaseKotlin
+> Task :app:writeReleaseAppMetadata
+> Task :CordovaLib:prepareReleaseArtProfile
+> Task :data:prepareReleaseArtProfile
+> Task :feature:prepareReleaseArtProfile
+> Task :app:mergeReleaseNativeLibs
+> Task :app:mergeReleaseArtProfile
+
+> Task :app:stripReleaseDebugSymbols
+Unable to strip the following libraries, packaging them as they are: libandroidx.graphics.path.so, libdatastore_shared_counter.so.
+
+> Task :app:processReleaseResources
+> Task :app:collectReleaseDependencies
+> Task :app:configureReleaseDependencies
+> Task :app:parseReleaseIntegrityConfig
+> Task :app:extractReleaseNativeSymbolTables
+> Task :app:bundleReleaseResources
+> Task :feature:compileReleaseKotlin
+> Task :feature:compileReleaseJavaWithJavac NO-SOURCE
+> Task :feature:processReleaseJavaRes
+> Task :feature:transformReleaseClassesWithAsm
+> Task :feature:bundleLibCompileToJarRelease
+> Task :feature:bundleLibRuntimeToJarRelease
+> Task :feature:bundleLibRuntimeToDirRelease
+> Task :app:compileReleaseKotlin
+> Task :app:compileReleaseJavaWithJavac
+> Task :app:dexBuilderRelease
+> Task :app:mergeReleaseGlobalSynthetics
+> Task :app:processReleaseJavaRes
+> Task :app:mergeExtDexRelease
+> Task :app:mergeReleaseJavaResource
+> Task :app:mergeDexRelease
+> Task :app:buildReleasePreBundle
+> Task :app:compileReleaseArtProfile
+> Task :app:packageReleaseBundle
+> Task :app:signReleaseBundle
+> Task :app:produceReleaseBundleIdeListingFile
+> Task :app:createReleaseBundleListingFileRedirect
+> Task :app:bundleRelease
+
+[Incubating] Problems report is available at: file:///Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/build/reports/problems/problems-report.html
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/8.13/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD SUCCESSFUL in 7s
+111 actionable tasks: 111 executed
+Built the following bundle(s): 
+	/Users/novumd/repos/cordova-native-gradle-workspace/CordovaComposeApp/platforms/android/app/build/outputs/bundle/release/app-release.aab

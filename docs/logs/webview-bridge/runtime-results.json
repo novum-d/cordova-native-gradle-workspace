@@ -1,0 +1,30 @@
+{
+  "bidirectional": {
+    "realApi": true,
+    "composeUser": true,
+    "replyProxy": true,
+    "customEvent": true
+  },
+  "invalidMessages": [
+    "malformed",
+    "unknown",
+    "wrongFieldType",
+    "staleSession",
+    "deepJson",
+    "oversize",
+    "binary"
+  ],
+  "textContentPreventsHtmlExecution": true,
+  "apiFailureAndRetry": true,
+  "blockedUntrustedScriptNavigationFetch": true,
+  "nativeAndJsReload": {
+    "newSession": true,
+    "staleReadyRejected": true,
+    "staleResultRejected": true,
+    "nfcReconnected": true
+  },
+  "beforeReadyButtonDisabled": true,
+  "activityAndProcessRecreation": true,
+  "closeReleasesWebViewAndExistingRoutesWork": true,
+  "status": "passed"
+}

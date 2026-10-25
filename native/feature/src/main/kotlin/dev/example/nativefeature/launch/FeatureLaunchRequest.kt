@@ -22,6 +22,7 @@ data class FeatureLaunchRequest(
     /** 処理IDを既知の型付き画面へ解決する。未対応IDで別の画面を開かない。 */
     fun toDestination(): FeatureDestination = when (id) {
         HOME -> FeatureDestination.Home
+        WEBVIEW_SAMPLE -> FeatureDestination.WebViewSample
         GOLF_HOLDER_READ -> FeatureDestination.GolfHolderRead(id = id, args = args)
         else -> throw IllegalArgumentException("Unsupported feature process ID: $id")
     }
@@ -29,6 +30,7 @@ data class FeatureLaunchRequest(
     /** JSとIntentの境界で使う処理IDと、型付きJSONへの変換を公開する。 */
     companion object {
         const val HOME = "home"
+        const val WEBVIEW_SAMPLE = "sample.webview"
         const val GOLF_HOLDER_READ = "golf-change.read-holder"
 
         /** 必須idの欠落やargsの型違いを検出し、起動要求を復元する。 */

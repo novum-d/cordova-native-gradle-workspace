@@ -27,7 +27,8 @@ function onDeviceReady() {
     const status = document.getElementById('feature-status');
     const operations = [
         { button: 'open-feature', request: { id: 'home' } },
-        { button: 'open-golf-holder', request: { id: 'golf-change.read-holder', args: {} } }
+        { button: 'open-golf-holder', request: { id: 'golf-change.read-holder', args: {} } },
+        { button: 'open-webview', request: { id: 'sample.webview' } }
     ];
     operations.forEach(function (operation) {
         const button = document.getElementById(operation.button);

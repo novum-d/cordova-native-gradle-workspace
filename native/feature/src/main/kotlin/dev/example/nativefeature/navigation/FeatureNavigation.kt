@@ -10,6 +10,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dev.example.nativefeature.home.HomeScreen
 import dev.example.nativefeature.services.golfchange.golfChangeNavigation
+import dev.example.nativefeature.webview.WebViewSampleScreen
 
 /**
  * 一つのNavHostにサービス別の画面を登録し、起動コマンドで表示先を切り替える。
@@ -28,6 +29,9 @@ internal fun FeatureNavigation(
         NavHost(navController = navController, startDestination = FeatureDestination.Home) {
             composable<FeatureDestination.Home> {
                 HomeScreen()
+            }
+            composable<FeatureDestination.WebViewSample> {
+                WebViewSampleScreen(onClose = onClose)
             }
             golfChangeNavigation(onClose = onClose)
         }

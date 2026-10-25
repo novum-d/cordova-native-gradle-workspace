@@ -13,6 +13,14 @@ import org.junit.Test
 
 /** JS・IntentのJSON境界と、処理IDによる型付き画面の振り分けを確認する。 */
 class FeatureLaunchRequestTest {
+    /** 通信サンプルの要求を業務サービスの画面と区別して解決する。 */
+    @Test
+    fun sampleIdSelectsWebView() {
+        val request = FeatureLaunchRequest.fromJson("""{"id":"sample.webview"}""")
+
+        assertEquals(FeatureDestination.WebViewSample, request.toDestination())
+    }
+
     /** homeの処理IDをホーム画面へ解決する。 */
     @Test
     fun homeIdSelectsHome() {

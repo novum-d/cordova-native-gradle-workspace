@@ -1,0 +1,9 @@
+{
+  "status": "passed",
+  "realApi": true,
+  "compose": true,
+  "logcat": true,
+  "customEvent": true,
+  "reload": true,
+  "disposed": true
+}

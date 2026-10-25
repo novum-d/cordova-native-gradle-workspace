@@ -2,9 +2,13 @@
 
 `CordovaComposeApp`を唯一のAPKホストとして、同じ`native/feature`・`native/data`をCordovaからもnative単独からもビルドするworkspaceです。2026-10-17に新規作成しました。既存の業務プロジェクトは提供されていないため、Cordova標準テンプレートを検証ホストにしています。
 
+基本のUIと画面遷移はWebViewが担当し、フロントエンドのクライアントAPIからKotlinのJSブリッジへ処理ID・引数を渡してサービスの処理を実行する構成を想定しています。ネイティブのテキスト・ボタン・画面遷移は現在の動作確認用です。[構成方針とサービス仕様](docs/CLIENT_API_SPEC.md)に、Navigationを設ける範囲とゴルフ場ID・ホルダー番号の読み取り要件をまとめています。以下は現在の暫定実装の説明です。
+
+Activityの起動要件はCordovaPlugin経由と別アプリからの2種類です。外部からサービス要求を受け付ける入口・公開契約は未実装で、現在のサービスActivityは`exported=false`です。詳細は[起動要件](docs/CLIENT_API_SPEC.md#activityの起動要件)を参照してください。
+
 `kotlin-plugin`をWebからKotlin機能へ入る入口にしています。Webのボタンから`cordova/exec`を経由し、`CordovaPlugin`を継承したKTの`execute`が`startActivity`で`native/feature`の`MainActivity`を開きます。画面はDebug／Release共通で登録し、外部アプリには公開しません。アプリのランチャーはCordova標準のJava版`MainActivity`です。業務画面・DI初期化・カメラ・NFC処理は未実装です。[プラグインの構成と編集方法](kotlin-plugin/README.md)、[実行確認](docs/KOTLIN_PLUGIN.md)
 
-KotlinPluginのIntentから`{id, args?}`を受け取り、サービスIDの`golf-change.read-holder`でゴルフ場ID・ホルダー番号の読み取り画面を開きます。確認用の`home`も利用できます。サービス別のNavigationとViewModelを持ち、引数は`SavedStateHandle`から復元します。[サービス構成と引数](docs/SERVICE_NAVIGATION.md)を参照してください。実際の読み取り・解析・結果返却は未実装です。
+KotlinPluginのIntentから`{id, args?}`を受け取り、サービスIDの`golf-change.read-holder`でゴルフ場ID・ホルダー番号の読み取り画面を開きます。確認用の`home`と、双方向通信を検証する`sample.webview`も利用できます。サービス別のNavigationとViewModelを持ち、引数は`SavedStateHandle`から復元します。[サービス構成と引数](docs/SERVICE_NAVIGATION.md)を参照してください。実際の読み取り・解析・結果返却は未実装です。
 
 ## 開発ルール
 
@@ -235,6 +239,10 @@ Android Studioでは`native/`を開き、GradleをWrapper、Gradle JDKを17に�
 | README.md・docs/ | 採用理由、実行方法、実測結果、ログを保存 |
 
 `platforms/android`内の変更はすべて再生成またはhookによる復元です。恒久的な手動パッチやnode_modulesの書き換えはありません。
+
+## WebViewの通信サンプル
+
+Cordova画面の「WebView通信を検証する」から既存featureのMainActivityを開きます。手書きHTMLのAPI実行結果をComposeへ渡し、Composeから疑似NFCイベントをHTMLへ返せます。再読み込み時は接続を作り直します。[実装・検証手順](docs/WEBVIEW_BRIDGE_SAMPLE.md)を参照してください。Vueの取り込み・実機器処理・外部アプリ用入口は未実装です。
 
 ## 検証結果と未対応事項
 

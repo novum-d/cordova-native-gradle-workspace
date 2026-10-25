@@ -2,6 +2,10 @@
 
 CordovaのWeb画面からKotlinの機能へ入るプラグインです。Gradle設定はこのディレクトリに置かず、ホスト側の`native/gradle/`と編集用の`native/cordova-plugin-dev/`で管理します。
 
+構成方針は[WebView・クライアントAPI・Kotlinブリッジの仕様](../docs/CLIENT_API_SPEC.md)を参照してください。現在の`openFeature`は暫定画面を起動するAPIです。`sample.webview`では[手書きHTMLの通信サンプル](../docs/WEBVIEW_BRIDGE_SAMPLE.md)を開きます。機器処理の結果を返すクライアントAPIへの置き換えは未実装で、以下は現行動作を記載しています。
+
+Activityの起動要件には、このCordovaPlugin経由の起動と別アプリからの起動があります。外部アプリ用のサービス受付・公開設定・結果返却は未実装です。両経路をサービスの共通処理へ接続する方針は[起動要件](../docs/CLIENT_API_SPEC.md#activityの起動要件)に記載しています。
+
 ## 呼び出しの流れ
 
 `openFeature({id, args?}, success, error)` → `cordova/exec` → `KotlinPlugin.execute` → 起動要求をJSONとしてIntentへ格納 → `MainActivity`が処理IDを型付き画面へ解決、の順で処理します。

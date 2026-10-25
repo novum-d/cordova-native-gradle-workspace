@@ -6,6 +6,11 @@
 
 | 文書 | 内容 |
 | --- | --- |
+| [CLIENT_API_SPEC.md](CLIENT_API_SPEC.md) | CordovaPlugin・別アプリの2つのActivity起動経路、WebViewとKotlinの責務、Navigationの範囲、ゴルフの確定仕様・未確定事項。 |
+| [VUE_WEBVIEW_INTEGRATION.md](VUE_WEBVIEW_INTEGRATION.md) | Vue Routerによる画面切り替え、既存Vueの共有、ビルド成果物のassets配布、2つのWebViewの通信アダプター。 |
+| [WEB_TEAM_QUESTIONS.md](WEB_TEAM_QUESTIONS.md) | Vue組み込み検証前にWeb側へ共有する質問、業務APIまでの相談事項、他担当との確認事項。 |
+| [WEBVIEW_BRIDGE_SAMPLE.md](WEBVIEW_BRIDGE_SAMPLE.md) | 実装済みの双方向通信サンプル、起動手順、通信契約、検証結果と残る制約。 |
+| [WEBVIEW_BRIDGE_REVIEW.md](WEBVIEW_BRIDGE_REVIEW.md) | WebMessage双方向通信サンプル案のセキュリティ・ライフサイクル・既存構成との整合性レビュー。実装前の提案。 |
 | [CODE_OVERVIEW.md](CODE_OVERVIEW.md) | コード・設定の役割とファイル間の連携。 |
 | [DEPENDENCY_VERSION_SELECTION.md](DEPENDENCY_VERSION_SELECTION.md) | 依存ライブラリ・Pluginの採用方針とバージョン選定理由。 |
 | [DEPENDENCIES.md](DEPENDENCIES.md) | 通常依存の配置・共通bundleのapi公開・解決とコンパイルの確認。 |
@@ -16,7 +21,7 @@
 | [GIT_HOOKS.md](GIT_HOOKS.md) | Git pre-commit・detektの仕様・導入・ケース別検証。 |
 | [IMMUTABLE_COLLECTIONS.md](IMMUTABLE_COLLECTIONS.md) | 不変コレクションの導入と関連する静的解析ルール。 |
 | [COMPOSE_RUNTIME.md](COMPOSE_RUNTIME.md) | プラグイン導入前のエミュレーターでのCompose表示・操作確認。 |
-| [SERVICE_NAVIGATION.md](SERVICE_NAVIGATION.md) | IntentからのサービスID分岐、サービス別Navigation、ViewModelのSavedStateHandleによる引数復元。 |
+| [SERVICE_NAVIGATION.md](SERVICE_NAVIGATION.md) | 現在の暫定ネイティブ画面の起動・Navigation・引数復元と検証記録。 |
 | [KOTLIN_PLUGIN.md](KOTLIN_PLUGIN.md) | Webからプラグイン経由でComposeを起動する構成・編集方法・確認結果。 |
 | [KDOC.md](KDOC.md) | DokkaによるKDoc HTML生成・閲覧と表示確認。 |
 | [UNIT_TESTS.md](UNIT_TESTS.md) | JUnit・Coroutines Test・JaCoCoの配置と実行方法。 |

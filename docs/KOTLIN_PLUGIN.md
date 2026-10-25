@@ -1,8 +1,10 @@
 # Kotlinプラグインの構成と確認（2026-10-22）
 
+WebView主体のUI・画面遷移と、サービス処理を呼び出すJSブリッジの構成方針は[CLIENT_API_SPEC.md](CLIENT_API_SPEC.md)を参照してください。以下は暫定ネイティブ画面を起動する実装と確認記録です。
+
 ## 構成
 
-現在のMainActivityは、プラグインからIntentで受け取った処理IDに応じて[確認用ホーム・ゴルフ場釣り銭機サービスの画面](SERVICE_NAVIGATION.md)を直接表示します。後半のカウンタ操作・画像は、ナビゲーション導入前の検証記録です。
+現在のMainActivityは、プラグインからIntentで受け取った処理IDに応じて[確認用ホーム・ゴルフ場釣り銭機サービス・WebView通信サンプル](SERVICE_NAVIGATION.md)を直接表示します。後半のカウンタ操作・画像は、ナビゲーション導入前の検証記録です。
 
 `CordovaComposeApp`は動作確認用のCordovaアプリ本体、[kotlin-plugin](../kotlin-plugin/README.md)はWebからKotlin機能を呼ぶ入口です。
 
