@@ -4,7 +4,7 @@
 
 `kotlin-plugin`をWebからKotlin機能へ入る入口にしています。Webのボタンから`cordova/exec`を経由し、`CordovaPlugin`を継承したKTの`execute`が`startActivity`で`native/feature`の`MainActivity`を開きます。画面はDebug／Release共通で登録し、外部アプリには公開しません。アプリのランチャーはCordova標準のJava版`MainActivity`です。業務画面・DI初期化・カメラ・NFC処理は未実装です。[プラグインの構成と編集方法](kotlin-plugin/README.md)、[実行確認](docs/KOTLIN_PLUGIN.md)
 
-KotlinPluginのIntentから`{id, args?}`を受け取り、`nfc.read`・`nfc.write`・`camera.capture`に対応する画面を直接開きます。確認用の`home`も利用できます。機能別のNavigationと各画面のViewModelを持ち、引数は`SavedStateHandle`から復元して中央に表示します。[画面構成と引数](docs/NFC_NAVIGATION.md)を参照してください。NFC・Cameraの実機処理は未実装です。
+KotlinPluginのIntentから`{id, args?}`を受け取り、サービスIDの`golf-change.read-holder`でゴルフ場ID・ホルダー番号の読み取り画面を開きます。確認用の`home`も利用できます。サービス別のNavigationとViewModelを持ち、引数は`SavedStateHandle`から復元します。[サービス構成と引数](docs/SERVICE_NAVIGATION.md)を参照してください。実際の読み取り・解析・結果返却は未実装です。
 
 ## 開発ルール
 

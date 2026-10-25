@@ -1,8 +1,8 @@
 # Intentの処理ID分岐の検証（2026-10-25）
 
-[ログ一覧](../README.md) · [仕様・呼び出し方](../../NFC_NAVIGATION.md)
+[ログ一覧](../README.md) · [仕様・呼び出し方](../../SERVICE_NAVIGATION.md)
 
-以下はActivity側で要求JSONを独自保存していた段階の記録です。現在のNavigation・ViewModelへの集約後の記録は[viewmodel-navigation/](viewmodel-navigation/README.md)を参照してください。
+以下はActivity側で要求JSONを独自保存していた段階の記録です。現在のサービス単位の記録は[golf-service/](golf-service/README.md)、Navigation・ViewModelへ集約した段階の記録は[viewmodel-navigation/](viewmodel-navigation/README.md)を参照してください。
 
 Web→KotlinPlugin→明示的Intent→MainActivity→型付き画面の実際の経路を、API 35エミュレーターで確認しました。検証用のWebView接続・回転設定は後片付けし、エミュレーターも終了しています。
 

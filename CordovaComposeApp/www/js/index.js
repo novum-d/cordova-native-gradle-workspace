@@ -27,9 +27,7 @@ function onDeviceReady() {
     const status = document.getElementById('feature-status');
     const operations = [
         { button: 'open-feature', request: { id: 'home' } },
-        { button: 'open-nfc', request: { id: 'nfc.read', args: {} } },
-        { button: 'open-nfc-write', request: { id: 'nfc.write', args: {} } },
-        { button: 'open-camera', request: { id: 'camera.capture', args: {} } }
+        { button: 'open-golf-holder', request: { id: 'golf-change.read-holder', args: {} } }
     ];
     operations.forEach(function (operation) {
         const button = document.getElementById(operation.button);

@@ -29,7 +29,7 @@ featureのCompose Compilerを常時有効にしました。AGP・Kotlinは従来
 
 ## 画面遷移の依存
 
-featureへ`navigation-compose:2.8.9`と既存版のSerialization JSON 1.6.3、Kotlin Serialization Plugin 1.9.24を追加しています。型付きルートを生成・保存するための構成です。各画面のViewModelが`SavedStateHandle`から引数を受け取るため、既存と同じ2.8.7の`lifecycle-viewmodel-savedstate`を直接依存として明示しています。Navigation 3はKotlin 2系・新しいLifecycle／SavedStateなどを要求するため、既存のCordova／Kotlin基盤に合わせてNavigation 2.8系を選びました。[画面構成と引数](NFC_NAVIGATION.md)
+featureへ`navigation-compose:2.8.9`と既存版のSerialization JSON 1.6.3、Kotlin Serialization Plugin 1.9.24を追加しています。型付きルートを生成・保存するための構成です。各画面のViewModelが`SavedStateHandle`から引数を受け取るため、既存と同じ2.8.7の`lifecycle-viewmodel-savedstate`を直接依存として明示しています。Navigation 3はKotlin 2系・新しいLifecycle／SavedStateなどを要求するため、既存のCordova／Kotlin基盤に合わせてNavigation 2.8系を選びました。[画面構成と引数](SERVICE_NAVIGATION.md)
 
 ## Kotlinx Datetime
 

@@ -1,6 +1,6 @@
 # Best Practices and Security Alignment Update: Intentの振り分けと状態復元
 
-[検証概要](README.md) · [現在の仕様](../../../NFC_NAVIGATION.md)
+[検証概要](README.md) · [現在の仕様](../../../SERVICE_NAVIGATION.md)
 
 - **対象・優先度**: 低。同一アプリのCordovaプラグインから非公開Activityへ渡すJSON要求。
 - **実装**: KotlinPluginは単一の要求オブジェクトを検証し、既知の処理IDだけを固定コンポーネントへの明示的Intentへ格納する。ネストしたIntentや遷移先クラス名は受け取らない。

@@ -1,6 +1,8 @@
 # 機能別Navigation・ViewModelの起動・復元確認（2026-10-25）
 
-[Intent検証の一覧](../README.md) · [現在の仕様](../../../NFC_NAVIGATION.md)
+[Intent検証の一覧](../README.md) · [現在の仕様](../../../SERVICE_NAVIGATION.md)
+
+以下は機器別の処理ID・画面構成で検証した時点の記録です。現在はサービス単位へ変更し、[ゴルフ場釣り銭機サービスの検証](../golf-service/README.md)へ移行しています。
 
 Activity独自のSTATE_REQUESTを削除し、Navigationと各画面のSavedStateHandleへ保存・復元を集約した後の検証です。実際のCordova Web→KotlinPlugin→明示的Intent→Navigation→ViewModel経路をAPI 35エミュレーターで確認しました。
 

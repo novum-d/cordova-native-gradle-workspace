@@ -8,6 +8,7 @@ import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
+import org.junit.Assert.assertThrows
 import org.junit.Test
 
 /** JS・IntentのJSON境界と、処理IDによる型付き画面の振り分けを確認する。 */
@@ -20,46 +21,48 @@ class FeatureLaunchRequestTest {
         assertEquals(FeatureDestination.Home, request.toDestination())
     }
 
-    /** args省略のNFC要求を、nullを保持したままNFC画面へ渡す。 */
+    /** サービスIDから読み取り画面を選び、省略されたargsはnullのまま渡す。 */
     @Test
-    fun nfcIdSelectsNfcWithoutArgs() {
-        val request = FeatureLaunchRequest.fromJson("""{"id":"nfc.read"}""")
+    fun golfServiceIdSelectsHolderReadWithoutArgs() {
+        val request = FeatureLaunchRequest.fromJson("""{"id":"golf-change.read-holder"}""")
 
         assertNull(request.args)
-        assertEquals(FeatureDestination.NfcRead(id = "nfc.read"), request.toDestination())
+        assertEquals(FeatureDestination.GolfHolderRead(id = "golf-change.read-holder"), request.toDestination())
     }
 
-    /** 書き込み要求を読み取り画面と区別し、省略・空・構造化argsをIntent境界で保持する。 */
+    /** 旧来の機器名IDと対象外のNFC書き込みは、業務サービスの別名として受け付けない。 */
     @Test
-    fun nfcWriteSelectsWriteWithOptionalArgs() {
-        val arguments = listOf(null, JsonObject(emptyMap()), buildJsonObject { put("text", "書き込み %2F") })
-        arguments.forEach { args ->
-            val request = FeatureLaunchRequest.fromJson(FeatureLaunchRequest("nfc.write", args).toJson())
-
-            assertEquals(FeatureDestination.NfcWrite(id = "nfc.write", args = args), request.toDestination())
+    fun hardwareIdsAreUnsupported() {
+        listOf("nfc.read", "nfc.write", "camera.capture").forEach { id ->
+            assertThrows(IllegalArgumentException::class.java) {
+                FeatureLaunchRequest(id = id).toDestination()
+            }
         }
     }
 
-    /** 撮影要求をCamera画面へ振り分け、省略・空・構造化argsをIntent境界で保持する。 */
+    /** サービスの起動引数は省略・空・構造化JSONを区別し、読み取り対象の値を要求しない。 */
     @Test
-    fun cameraCaptureSelectsCameraWithOptionalArgs() {
-        val arguments = listOf(null, JsonObject(emptyMap()), buildJsonObject { put("source", "撮影 / ? #") })
+    fun golfServicePreservesOptionalArgs() {
+        val arguments = listOf(null, JsonObject(emptyMap()), buildJsonObject { put("source", "Web / ? #") })
         arguments.forEach { args ->
-            val request = FeatureLaunchRequest.fromJson(FeatureLaunchRequest("camera.capture", args).toJson())
+            val request = FeatureLaunchRequest.fromJson(FeatureLaunchRequest("golf-change.read-holder", args).toJson())
 
-            assertEquals(FeatureDestination.CameraCapture(id = "camera.capture", args = args), request.toDestination())
+            assertEquals(
+                FeatureDestination.GolfHolderRead(id = "golf-change.read-holder", args = args),
+                request.toDestination(),
+            )
         }
     }
 
     /** 空オブジェクトを省略と区別して、Intent保存と画面への変換の両方で保持する。 */
     @Test
     fun emptyArgsSurviveTheIntentBoundary() {
-        val request = FeatureLaunchRequest.fromJson("""{"id":"nfc.read","args":{}}""")
+        val request = FeatureLaunchRequest.fromJson("""{"id":"golf-change.read-holder","args":{}}""")
         val restored = FeatureLaunchRequest.fromJson(request.toJson())
 
         assertEquals(request, restored)
         assertEquals(
-            FeatureDestination.NfcRead(id = "nfc.read", args = JsonObject(emptyMap())),
+            FeatureDestination.GolfHolderRead(id = "golf-change.read-holder", args = JsonObject(emptyMap())),
             restored.toDestination(),
         )
     }
@@ -72,10 +75,13 @@ class FeatureLaunchRequestTest {
             put("count", 2)
             put("options", buildJsonObject { put("enabled", true) })
         }
-        val request = FeatureLaunchRequest(id = "nfc.read", args = args)
+        val request = FeatureLaunchRequest(id = "golf-change.read-holder", args = args)
         val restored = FeatureLaunchRequest.fromJson(request.toJson())
 
-        assertEquals(FeatureDestination.NfcRead(id = "nfc.read", args = args), restored.toDestination())
+        assertEquals(
+            FeatureDestination.GolfHolderRead(id = "golf-change.read-holder", args = args),
+            restored.toDestination(),
+        )
     }
 
     /** 未対応IDでホームなどへ暗黙にフォールバックしない。 */
@@ -99,6 +105,6 @@ class FeatureLaunchRequestTest {
     /** JSONオブジェクト以外のargsは拒否する。 */
     @Test(expected = SerializationException::class)
     fun nonObjectArgsAreRejected() {
-        FeatureLaunchRequest.fromJson("""{"id":"nfc.read","args":[]}""")
+        FeatureLaunchRequest.fromJson("""{"id":"golf-change.read-holder","args":[]}""")
     }
 }

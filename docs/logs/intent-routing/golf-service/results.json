@@ -1,0 +1,133 @@
+{
+  "webButtons": [
+    {
+      "id": "golf-change.read-holder",
+      "opened": true,
+      "backToCordova": true
+    }
+  ],
+  "newIntents": [
+    {
+      "id": "golf-change.read-holder",
+      "sameActivity": true,
+      "omittedEmptyStructuredArgs": true
+    }
+  ],
+  "repeatedIdenticalRequestAccepted": true,
+  "invalidRequests": [
+    {
+      "request": {
+        "id": "nfc.read"
+      },
+      "outcome": {
+        "ok": false,
+        "error": "Invalid feature request: unsupported id or invalid args"
+      }
+    },
+    {
+      "request": {
+        "id": "nfc.write"
+      },
+      "outcome": {
+        "ok": false,
+        "error": "Invalid feature request: unsupported id or invalid args"
+      }
+    },
+    {
+      "request": {
+        "id": "camera.capture"
+      },
+      "outcome": {
+        "ok": false,
+        "error": "Invalid feature request: unsupported id or invalid args"
+      }
+    },
+    {
+      "request": {
+        "id": 123
+      },
+      "outcome": {
+        "ok": false,
+        "error": "Invalid feature request: unsupported id or invalid args"
+      }
+    },
+    {
+      "request": {
+        "args": {}
+      },
+      "outcome": {
+        "ok": false,
+        "error": "Invalid feature request: unsupported id or invalid args"
+      }
+    },
+    {
+      "request": {
+        "id": "golf-change.read-holder",
+        "args": []
+      },
+      "outcome": {
+        "ok": false,
+        "error": "Invalid feature request: unsupported id or invalid args"
+      }
+    },
+    {
+      "request": {
+        "id": "golf-change.read-holder",
+        "args": "text"
+      },
+      "outcome": {
+        "ok": false,
+        "error": "Invalid feature request: unsupported id or invalid args"
+      }
+    },
+    {
+      "request": null,
+      "outcome": {
+        "ok": false,
+        "error": "Expected one request object with id and optional args"
+      }
+    }
+  ],
+  "replacementDoesNotKeepPreviousScreens": true,
+  "restoration": [
+    {
+      "id": "golf-change.read-holder",
+      "rotation": true,
+      "beforePid": "9117",
+      "afterPid": "9490",
+      "restored": true
+    }
+  ],
+  "status": "passed",
+  "webViewConnectionsClosed": true,
+  "scope": {
+    "service": "ゴルフ場釣り銭機",
+    "processId": "golf-change.read-holder",
+    "readTargets": [
+      "ゴルフ場ID",
+      "ホルダー番号"
+    ],
+    "hardwareReadImplemented": false,
+    "writeSupported": false
+  },
+  "buildsAndQuality": {
+    "nativeDebugAar": true,
+    "cordovaDebugApk": true,
+    "cordovaReleaseAab": true,
+    "nativeAndCordovaQualityAndLint": true,
+    "kdocHtml": true
+  },
+  "unitTests": {
+    "featureDebug": {
+      "tests": 17,
+      "failures": 0,
+      "errors": 0
+    },
+    "featureRelease": {
+      "tests": 17,
+      "failures": 0,
+      "errors": 0
+    }
+  },
+  "emulatorClosed": true
+}

@@ -70,7 +70,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     // 画面ごとのViewModelはSavedStateHandleからNavigationの引数を復元する。
     implementation(libs.androidx.lifecycle.viewmodel.savedstate)
-    // NFC・Camera画面の型付きルートと、任意のJSONオブジェクト引数を扱う。
+    // サービスごとの画面に渡す型付きルートと、任意のJSONオブジェクト引数を扱う。
     implementation(libs.androidx.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.androidx.webkit)

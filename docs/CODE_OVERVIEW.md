@@ -31,7 +31,7 @@ Git indexを自動更新する処理はありません。通常の`check`・`ktl
 | 管理元 | 役割 |
 | --- | --- |
 | [featureの設定](../native/feature/build.gradle.kts)・[dataの設定](../native/data/build.gradle.kts) | Android Libraryの依存・JVM target・コード生成・単体テスト・Dokkaを設定。依存方向はfeature → data |
-| [MainActivity](../native/feature/src/main/kotlin/dev/example/nativefeature/MainActivity.kt) | 起動Intentを検証してNavigationへ渡すActivity。要求JSONを重複保存せず、画面とargsの復元はNavigation・ViewModelが担当。詳細は[画面構成](NFC_NAVIGATION.md)を参照 |
+| [MainActivity](../native/feature/src/main/kotlin/dev/example/nativefeature/MainActivity.kt) | 起動Intentを検証してNavigationへ渡すActivity。要求JSONを重複保存せず、画面とargsの復元はNavigation・ViewModelが担当。詳細は[画面構成](SERVICE_NAVIGATION.md)を参照 |
 | feature・dataの`src/main/AndroidManifest.xml` | LibraryのManifest。featureのActivityは両variantで同一アプリから起動し、外部には公開しない |
 | 両モジュールの`src/test/kotlin/` | Mainの差し替え、仮想時間、Flow、DatetimeのJSON化を確認する環境テスト。各クラス・テストのKDocを参照 |
 | [check-android.sh](../scripts/check-android.sh) | native・Cordovaの品質チェック、単体テスト、Android Lintを順に実行 |

@@ -16,7 +16,7 @@
 | [GIT_HOOKS.md](GIT_HOOKS.md) | Git pre-commit・detektの仕様・導入・ケース別検証。 |
 | [IMMUTABLE_COLLECTIONS.md](IMMUTABLE_COLLECTIONS.md) | 不変コレクションの導入と関連する静的解析ルール。 |
 | [COMPOSE_RUNTIME.md](COMPOSE_RUNTIME.md) | プラグイン導入前のエミュレーターでのCompose表示・操作確認。 |
-| [NFC_NAVIGATION.md](NFC_NAVIGATION.md) | Intentからの処理ID分岐、機能別Navigation、ViewModelのSavedStateHandleによる引数復元。 |
+| [SERVICE_NAVIGATION.md](SERVICE_NAVIGATION.md) | IntentからのサービスID分岐、サービス別Navigation、ViewModelのSavedStateHandleによる引数復元。 |
 | [KOTLIN_PLUGIN.md](KOTLIN_PLUGIN.md) | Webからプラグイン経由でComposeを起動する構成・編集方法・確認結果。 |
 | [KDOC.md](KDOC.md) | DokkaによるKDoc HTML生成・閲覧と表示確認。 |
 | [UNIT_TESTS.md](UNIT_TESTS.md) | JUnit・Coroutines Test・JaCoCoの配置と実行方法。 |

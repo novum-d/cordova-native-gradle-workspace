@@ -9,13 +9,13 @@ CordovaのWeb画面からKotlinの機能へ入るプラグインです。Gradle�
 ```js
 // deviceready以降に呼ぶ。成功通知は起動要求の完了であり、画面から戻った結果ではない。
 window.KotlinPlugin.openFeature(
-    { id: 'nfc.read', args: { source: 'web' } },
+    { id: 'golf-change.read-holder', args: { source: 'web' } },
     function () { console.log('Kotlin screen opened'); },
     function (error) { console.error(error); }
 );
 ```
 
-`id`は必須のStringで、`nfc.read`はNFC読み取り、`nfc.write`はNFC書き込み、`camera.capture`はCamera撮影画面を直接開きます。確認用の`home`も利用できます。`args`は任意のJSONオブジェクトです。省略と`{}`を区別し、配列・文字列などを受け付けません。未対応IDや引数不正はエラーコールバックへ返し、Activityを起動しません。[型付き引数とIntentの仕様](../docs/NFC_NAVIGATION.md)
+`id`は必須のStringで、`golf-change.read-holder`はゴルフ場釣り銭機サービスのゴルフ場ID・ホルダー番号読み取り画面を直接開きます。旧機器名ID（`nfc.read`・`nfc.write`・`camera.capture`）は受け付けません。確認用の`home`も利用できます。`args`は任意のJSONオブジェクトです。省略と`{}`を区別し、配列・文字列などを受け付けません。未対応IDや引数不正はエラーコールバックへ返し、Activityを起動しません。[型付き引数とIntentの仕様](../docs/SERVICE_NAVIGATION.md)
 
 未知のactionは`execute`が`false`を返し、CordovaがエラーとしてJSへ通知します。起動時の例外もエラーコールバックへ返します。画面を閉じた結果をWebへ返す処理はありません。
 

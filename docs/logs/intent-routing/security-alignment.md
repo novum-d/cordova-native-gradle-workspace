@@ -1,6 +1,6 @@
 # Best Practices and Security Alignment Update: Intentの起動要求
 
-[検証記録一覧](README.md) · [画面と引数](../../NFC_NAVIGATION.md)
+[検証記録一覧](README.md) · [画面と引数](../../SERVICE_NAVIGATION.md)
 
 - **改善領域**: 受信Intentの型付きJSON検証、onCreate／onNewIntentの共通処理。
 - **影響・優先度**: 低。既存の非公開Activityへ渡す新しい起動要求について、不正な処理IDやargsで別画面を開かないようにする。

@@ -22,18 +22,14 @@ data class FeatureLaunchRequest(
     /** 処理IDを既知の型付き画面へ解決する。未対応IDで別の画面を開かない。 */
     fun toDestination(): FeatureDestination = when (id) {
         HOME -> FeatureDestination.Home
-        NFC_READ -> FeatureDestination.NfcRead(id = id, args = args)
-        NFC_WRITE -> FeatureDestination.NfcWrite(id = id, args = args)
-        CAMERA_CAPTURE -> FeatureDestination.CameraCapture(id = id, args = args)
+        GOLF_HOLDER_READ -> FeatureDestination.GolfHolderRead(id = id, args = args)
         else -> throw IllegalArgumentException("Unsupported feature process ID: $id")
     }
 
     /** JSとIntentの境界で使う処理IDと、型付きJSONへの変換を公開する。 */
     companion object {
         const val HOME = "home"
-        const val NFC_READ = "nfc.read"
-        const val NFC_WRITE = "nfc.write"
-        const val CAMERA_CAPTURE = "camera.capture"
+        const val GOLF_HOLDER_READ = "golf-change.read-holder"
 
         /** 必須idの欠落やargsの型違いを検出し、起動要求を復元する。 */
         fun fromJson(value: String): FeatureLaunchRequest = Json.decodeFromString<FeatureLaunchRequest>(value)

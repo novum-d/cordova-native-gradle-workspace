@@ -11,27 +11,13 @@ sealed interface FeatureDestination {
     data object Home : FeatureDestination
 
     /**
-     * NFC読み取り画面へ渡す処理IDと任意のJSONオブジェクト。
+     * ゴルフ場ID・ホルダー番号の読み取り画面へ渡す処理IDと任意のJSONオブジェクト。
      *
      * [id]は呼び出し元が指定する処理ID。[args]は省略時にnull、空オブジェクト指定時に{}を保持する。
      * argsの項目は未定のためJsonObjectで受け、文字列・配列などを誤って渡せないようにする。
      */
     @Serializable
-    data class NfcRead(
-        val id: String,
-        val args: JsonObject? = null,
-    ) : FeatureDestination
-
-    /** NFC書き込み画面へ処理IDと任意のJSONオブジェクトを渡す。 */
-    @Serializable
-    data class NfcWrite(
-        val id: String,
-        val args: JsonObject? = null,
-    ) : FeatureDestination
-
-    /** Camera撮影画面へ処理IDと任意のJSONオブジェクトを渡す。 */
-    @Serializable
-    data class CameraCapture(
+    data class GolfHolderRead(
         val id: String,
         val args: JsonObject? = null,
     ) : FeatureDestination

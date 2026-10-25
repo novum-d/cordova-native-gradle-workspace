@@ -45,7 +45,7 @@ body {
     width:100%;
 }
 
-/* 縦画面では起動ボタン4つを表示できる位置に、Cordovaのサンプル操作領域を置く。 */
+/* 縦画面ではサービス起動と確認用ホームのボタンを表示できる位置に、操作領域を置く。 */
 .app {
     background:url(../img/logo.png) no-repeat center top; /* 170px x 200px */
     position:absolute;             /* position in the center of the screen */

@@ -2,7 +2,7 @@
 
 ## 構成
 
-現在のMainActivityは、プラグインからIntentで受け取った処理IDに応じて[ホーム・NFC・Camera画面](NFC_NAVIGATION.md)を直接表示します。後半のカウンタ操作・画像は、ナビゲーション導入前の検証記録です。
+現在のMainActivityは、プラグインからIntentで受け取った処理IDに応じて[確認用ホーム・ゴルフ場釣り銭機サービスの画面](SERVICE_NAVIGATION.md)を直接表示します。後半のカウンタ操作・画像は、ナビゲーション導入前の検証記録です。
 
 `CordovaComposeApp`は動作確認用のCordovaアプリ本体、[kotlin-plugin](../kotlin-plugin/README.md)はWebからKotlin機能を呼ぶ入口です。
 
