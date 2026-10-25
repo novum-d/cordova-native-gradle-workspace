@@ -1,6 +1,6 @@
 # Gradle・Android Lintの確認結果（2026-10-19）
 
-後続の[Immutable Collections追加](IMMUTABLE_COLLECTIONS.md)でも全チェックと通常APKビルドを再実行しました。Lint件数は下表と同じで、全6構成でエラー0です。[追加後のログ](immutable-checks.log)、[追加後の件数](immutable-lint-results.json)
+後続の[Immutable Collections追加](IMMUTABLE_COLLECTIONS.md)でも全チェックと通常APKビルドを再実行しました。Lint件数は下表と同じで、全6構成でエラー0です。[追加後のログ](logs/immutable-collections/immutable-checks.log)、[追加後の件数](logs/immutable-collections/immutable-lint-results.json)
 
 日時API・通常依存の追加後にも再実行しました。現在の件数・依存配置は[追加記録](DEPENDENCIES.md)を参照してください。
 
@@ -29,7 +29,7 @@ npm run check:android
 
 アプリのインストール・起動は行いません。エミュレータで起動確認する場合は、別途`npm run cordova:run`を実行します。
 
-実行ログは[android-gradle-check.log](android-gradle-check.log)です。Lintのエラーを無視する設定、baseline、警告の一括抑制は追加していません。警告はビルドを止めず、エラーで失敗させます。
+実行ログは[android-gradle-check.log](logs/android-checks/android-gradle-check.log)です。Lintのエラーを無視する設定、baseline、警告の一括抑制は追加していません。警告はビルドを止めず、エラーで失敗させます。
 
 ## 実測結果
 
@@ -39,7 +39,7 @@ npm run check:android
 | native data | エラー0・警告42 | エラー0・警告28 |
 | Cordova app（依存先を含む） | エラー0・警告61 | エラー0・警告47 |
 
-件数はXMLレポートの生の指摘数で、同じCatalog項目への重複を含みます。アプリの件数には依存ライブラリの指摘も含まれ、上記を合算するものではありません。内訳と相対パスは[android-lint-results.json](android-lint-results.json)に保存しています。
+件数はXMLレポートの生の指摘数で、同じCatalog項目への重複を含みます。アプリの件数には依存ライブラリの指摘も含まれ、上記を合算するものではありません。内訳と相対パスは[android-lint-results.json](logs/android-checks/android-lint-results.json)に保存しています。
 
 HTMLレポートの出力先は、各variantの`debug`または`release`に応じて以下になります。
 
@@ -47,11 +47,11 @@ HTMLレポートの出力先は、各variantの`debug`または`release`に応�
 - `native/data/build/reports/lint-results-<variant>.html`
 - `CordovaComposeApp/platforms/android/app/build/reports/lint-results-<variant>.html`
 
-Lintの失敗も実行確認しました。一時initスクリプトで既存の`UnusedResources`警告だけをエラーへ変更し、`:app:lintDebug`が失敗することを確認しています。[期待どおり失敗したログ](android-lint-error-gate.log)の後、通常設定で再実行して成功しています。この一時的な重大度変更は通常のビルド設定には含めていません。
+Lintの失敗も実行確認しました。一時initスクリプトで既存の`UnusedResources`警告だけをエラーへ変更し、`:app:lintDebug`が失敗することを確認しています。[期待どおり失敗したログ](logs/android-checks/android-lint-error-gate.log)の後、通常設定で再実行して成功しています。この一時的な重大度変更は通常のビルド設定には含めていません。
 
-追加で、Catalog全体のライブラリ129 Artifact・Plugin 155 Artifactの解決と、型付きcompilerOptionsを使ったKotlin／Composeの検証ビルドも成功しました。[コンパイルログ](compiler-options-probe.log)
+追加で、Catalog全体のライブラリ129 Artifact・Plugin 155 Artifactの解決と、型付きcompilerOptionsを使ったKotlin／Composeの検証ビルドも成功しました。[コンパイルログ](logs/android-checks/compiler-options-probe.log)
 
-検証用ソースを除いた通常のDebug／Release APKの[ビルド](android-normal-build.log)も成功しました。検証用assetsの除外、Cordova hookの4テスト、Git hookセットアップの5テストも確認しています。
+検証用ソースを除いた通常のDebug／Release APKの[ビルド](logs/android-checks/android-normal-build.log)も成功しました。検証用assetsの除外、Cordova hookの4テスト、Git hookセットアップの5テストも確認しています。
 
 ## 残っている警告
 

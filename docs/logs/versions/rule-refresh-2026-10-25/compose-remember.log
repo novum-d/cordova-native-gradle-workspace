@@ -1,0 +1,23 @@
+
+> Task :detekt FAILED
+/private/var/folders/_z/0psds5k51gnfc1k9rs6mtjnc0000gn/T/cordova-rule-refresh-kq9udoms/native/feature/src/main/kotlin/Probe.kt:7:17: Using mutableIntStateOf is recommended over mutableStateOf<Int>, as it uses the Int primitive directly which is more performant.
+See https://mrmans0n.github.io/compose-rules/rules/#use-mutablestateof-type-specific-variants-when-possible for more information. [MutableStateAutoboxing]
+/private/var/folders/_z/0psds5k51gnfc1k9rs6mtjnc0000gn/T/cordova-rule-refresh-kq9udoms/native/feature/src/main/kotlin/Probe.kt:7:17: Using `mutableStateOf` in a @Composable function without it being inside of a remember function.
+If you don't remember the state instance, a new state instance will be created when the function is recomposed.
+See https://mrmans0n.github.io/compose-rules/rules/#state-should-be-remembered-in-composables for more information. [RememberMissing]
+
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':detekt'.
+> Analysis failed with 2 weighted issues.
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 268ms
+1 actionable task: 1 executed

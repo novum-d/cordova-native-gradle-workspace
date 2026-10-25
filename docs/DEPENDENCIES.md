@@ -69,9 +69,9 @@ npm run native:build
 
 以下は独自タスク・検証ソースを削除する前の記録です。現在のビルドでは、これらの検証ソースやassetsを生成・追加しません。
 
-native・Cordovaそれぞれ30構成で解決に成功し、両者の座標一覧も一致しました。結果は[native JSON](dependencies-resolution-native.json)・[Cordova JSON](dependencies-resolution-cordova.json)、ログは[native](dependencies-resolution-native.log)・[Cordova／APKビルド](dependencies-build.log)です。テスト依存は解決を確認したもので、実機でAndroidテストを実行したという意味ではありません。
+native・Cordovaそれぞれ30構成で解決に成功し、両者の座標一覧も一致しました。結果は[native JSON](logs/dependencies/dependencies-resolution-native.json)・[Cordova JSON](logs/dependencies/dependencies-resolution-cordova.json)、ログは[native](logs/dependencies/dependencies-resolution-native.log)・[Cordova／APKビルド](logs/dependencies/dependencies-build.log)です。テスト依存は解決を確認したもので、実機でAndroidテストを実行したという意味ではありません。
 
-通常の依存だけを使った検証ソースで、次を確認しています。[nativeログ](dependencies-native-compile.log)、[Cordovaログ](dependencies-cordova-compile.log)
+通常の依存だけを使った検証ソースで、次を確認しています。[nativeログ](logs/dependencies/dependencies-native-compile.log)、[Cordovaログ](logs/dependencies/dependencies-cordova-compile.log)
 
 - Compose、永続化・通信系のAPI参照と不変コレクションの操作
 - 日時の解析、タイムゾーン変換、epoch millisecondsとの変換
@@ -80,10 +80,10 @@ native・Cordovaそれぞれ30構成で解決に成功し、両者の座標一�
 
 当時の検証用ソースとassetsは専用プロパティを指定した実行時だけ追加していました。通常APKの前に両モジュールをcleanし、検証用assetsがAPKに残っていないことも確認しました。CordovaのApplicationでのHilt起動・実機での注入は未検証です。
 
-Catalog全項目のライブラリ・Pluginを別構成で解決する従来の検証も成功しました。[ログ](dependencies-catalog.log)
+Catalog全項目のライブラリ・Pluginを別構成で解決する従来の検証も成功しました。[ログ](logs/dependencies/dependencies-catalog.log)
 
 ## ビルド・品質
 
-通常のDebug／Release APKビルドと、native・Cordovaのdetekt／整形チェック／Android Lintに成功しました。[ビルドログ](dependencies-build.log)、[チェックログ](dependencies-checks.log)、[Lint件数](dependencies-lint-results.json)
+通常のDebug／Release APKビルドと、native・Cordovaのdetekt／整形チェック／Android Lintに成功しました。[ビルドログ](logs/dependencies/dependencies-build.log)、[チェックログ](logs/dependencies/dependencies-checks.log)、[Lint件数](logs/dependencies/dependencies-lint-results.json)
 
 Cordova hookの4テストが成功しました。

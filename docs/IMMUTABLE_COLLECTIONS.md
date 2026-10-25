@@ -45,8 +45,8 @@ val after = before.add("second")
 
 ## 検証結果
 
-- Kotlin 1.9.24／Compose Compiler 1.5.14での実コンパイル成功。[ログ](immutable-compile.log)
-- 検証用ソースをcleanした通常Debug／Release APKのビルド成功。[ログ](immutable-normal-build.log)
-- `npm run check:android`とCatalogの依存解決に成功。Android Lintは全6構成でエラー0。[ログ](immutable-checks.log)、[件数](immutable-lint-results.json)
-- Git hookの28ケースに成功し、全ケースでindex不変。新たにdata classの`var`検出／`val`許可、Composableの`List`・`Set`・`Map`・`MutableList`検出、不変コレクション許可を確認。[結果](git-hook-tests/results.json)
+- Kotlin 1.9.24／Compose Compiler 1.5.14での実コンパイル成功。[ログ](logs/immutable-collections/immutable-compile.log)
+- 検証用ソースをcleanした通常Debug／Release APKのビルド成功。[ログ](logs/immutable-collections/immutable-normal-build.log)
+- `npm run check:android`とCatalogの依存解決に成功。Android Lintは全6構成でエラー0。[ログ](logs/immutable-collections/immutable-checks.log)、[件数](logs/immutable-collections/immutable-lint-results.json)
+- Git hookの28ケースに成功し、全ケースでindex不変。新たにdata classの`var`検出／`val`許可、Composableの`List`・`Set`・`Map`・`MutableList`検出、不変コレクション許可を確認。[結果](logs/git-hooks/cases/results.json)
 - 独立したktlintのチェック・故意の整形違反の拒否・整形後の成功を確認。

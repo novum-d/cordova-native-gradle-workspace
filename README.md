@@ -10,6 +10,8 @@
 
 各ファイルのつながり、JSONの設定・npm scripts、生成物とテンプレートの役割は[コード・設定の概要](docs/CODE_OVERVIEW.md)にまとめています。
 
+解説文書は[ドキュメント一覧](docs/README.md)、実行ログ・結果JSON・画像は[用途別の検証ログ一覧](docs/logs/README.md)から確認できます。
+
 KDocをHTMLとして読むには`npm run docs:kdoc`を実行します。出力先・対象範囲・表示確認は[KDocドキュメント生成](docs/KDOC.md)を参照してください。
 
 ## 構成と依存方向
@@ -42,7 +44,7 @@ cordova-native-gradle-workspace/
 │   ├── data/build.gradle.kts / src/main/AndroidManifest.xml
 │   └── cordova-plugin-dev/build.gradle.kts      プラグイン元ソースの編集・コンパイル設定
 ├── scripts/                               環境設定・再現用コマンド
-└── docs/                                  実行ログ・検証レポート
+└── docs/                                  解説文書・logs/配下の用途別検証記録
 ```
 
 ```text
@@ -78,7 +80,7 @@ GradleはCatalogの`gradle`をWrapper生成・実行環境の選択・実行版�
 
 | 項目 | 今回の版 | 提示候補からの判断 | 判断理由となった原文・メタデータ（抜粋） | 原文のリンク |
 | --- | --- | --- | --- | --- |
-| Compose BOM | 2025.07.00 | 2024.06.00から更新。最新版2026.09.00はKotlin 2.1メタデータでコンパイルに失敗するため採用しない。2025.07.00はKotlin 1.9.24／Compiler 1.5.14でビルド成功を再確認 | 最新版での実測: `The binary version of its metadata is 2.1.0, expected version is 1.9.0.`<br>採用版での実測: `:feature:compileDebugKotlin`、`BUILD SUCCESSFUL` | [最新版の失敗ログ](docs/compose-bom-latest-probe.log)、[採用版の成功ログ](docs/compose-bom-selected-probe.log)、[2025.07.00 POM](https://dl.google.com/dl/android/maven2/androidx/compose/compose-bom/2025.07.00/compose-bom-2025.07.00.pom) |
+| Compose BOM | 2025.07.00 | 2024.06.00から更新。最新版2026.09.00はKotlin 2.1メタデータでコンパイルに失敗するため採用しない。2025.07.00はKotlin 1.9.24／Compiler 1.5.14でビルド成功を再確認 | 最新版での実測: `The binary version of its metadata is 2.1.0, expected version is 1.9.0.`<br>採用版での実測: `:feature:compileDebugKotlin`、`BUILD SUCCESSFUL` | [最新版の失敗ログ](docs/logs/versions/compose-bom-latest-probe.log)、[採用版の成功ログ](docs/logs/versions/compose-bom-selected-probe.log)、[2025.07.00 POM](https://dl.google.com/dl/android/maven2/androidx/compose/compose-bom/2025.07.00/compose-bom-2025.07.00.pom) |
 | Core KTX | 1.16.0 | compileSdk 35／AGP 8.7.3内で更新。1.17以降のKGP 2.0要件を避ける | 1.17.0: “requires use of Kotlin Gradle Plugin 2.0.0 or newer.” | [Core 1.17.0の変更点](https://developer.android.com/jetpack/androidx/releases/core?hl=en#1.17.0) |
 | Activity Compose | 1.10.1 | compileSdk 35内で更新。1.11のSDK 36／AGP 8.9.1要件を避ける | 1.11.0: “Activity is now compiled with API 36.”<br>同版のAAR: `minCompileSdk=36`、`minAndroidGradlePluginVersion=8.9.1` | [Activity 1.11.0の変更点](https://developer.android.com/jetpack/androidx/releases/activity?hl=en#1.11.0)、[1.11.0 AAR](https://dl.google.com/dl/android/maven2/androidx/activity/activity/1.11.0/activity-1.11.0.aar) |
 | Lifecycle Runtime KTX・Runtime Compose・ViewModel Compose | 2.8.7 | Kotlin 1.9系を維持。BOM側を更新してCompose Runtimeとの世代差を解消 | 2.8.6: “Lifecycle Runtime Compose now depends on Compose Runtime `1.7.1`”<br>2.8.7 Runtime KTXのPOM: `<artifactId>kotlin-stdlib</artifactId>` … `<version>1.8.22</version>` | [Lifecycle 2.8.6の依存更新](https://developer.android.com/jetpack/androidx/releases/lifecycle?hl=en#2.8.6)、[Runtime KTX 2.8.7 POM](https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-runtime-ktx-android/2.8.7/lifecycle-runtime-ktx-android-2.8.7.pom) |
@@ -97,12 +99,14 @@ GradleはCatalogの`gradle`をWrapper生成・実行環境の選択・実行版�
 | Timber | 5.0.1 | 公開安定版を維持 | 公開版: “5.0.1”<br>修正内容: “Fix TimberArgCount lint check false positive on some calls to `String.format`.” | [Timber 5.0.1の変更点](https://github.com/JakeWharton/timber/releases/tag/5.0.1) |
 | JUnit 4 | 4.13.2 | 維持 | 公式リリース名: “JUnit 4.13.2” | [JUnit 4.13.2の公開情報](https://github.com/junit-team/junit4/releases/tag/r4.13.2) |
 | AndroidX Test Core KTX / Ext JUnit KTX | 1.7.0 / 1.3.0 | Kotlinメタデータ1.9世代へ更新。Artifact解決確認済み | Core KTXの`androidx.test.core.app.ActivityScenarioKt.class`: `mv=[1,9,0]`<br>Ext JUnit KTXの`androidx.test.ext.junit.rules.ActivityScenarioRuleKt.class`: `mv=[1,9,0]` | [Core KTX 1.7.0 AAR](https://dl.google.com/dl/android/maven2/androidx/test/core-ktx/1.7.0/core-ktx-1.7.0.aar)、[Ext JUnit KTX 1.3.0 AAR](https://dl.google.com/dl/android/maven2/androidx/test/ext/junit-ktx/1.3.0/junit-ktx-1.3.0.aar) |
-| detekt Gradle Plugin | 1.23.8 | 確認時点の最新安定版を適用済み。通常解析と整形チェックの実行成功を再確認 | 公式リリース: “v1.23.8”、`Latest`<br>実測: `> Task :detekt`、`> Task :detektFormatCheck`、`BUILD SUCCESSFUL` | [detekt 1.23.8](https://github.com/detekt/detekt/releases/tag/v1.23.8)、[実行ログ](docs/quality-detekt-latest.log)、[品質タスクの検証](docs/GIT_HOOKS.md) |
+| detekt Gradle Plugin | 1.23.8 | 確認時点の最新安定版を適用済み。通常解析と整形チェックの実行成功を再確認 | 公式リリース: “v1.23.8”、`Latest`<br>実測: `> Task :detekt`、`> Task :detektFormatCheck`、`BUILD SUCCESSFUL` | [detekt 1.23.8](https://github.com/detekt/detekt/releases/tag/v1.23.8)、[実行ログ](docs/logs/versions/quality-detekt-latest.log)、[品質タスクの検証](docs/GIT_HOOKS.md) |
 | Dokka Gradle Plugin | 2.2.0 | KDocからHTMLを生成するビルド時のツール。DGP v2を使用し、アプリのKotlin 1.9.24を維持 | 公式の最小KGP要件: `KGP 1.9.0+`<br>実測結果はKDoc生成の記録を参照 | [2.2.0リリース](https://github.com/Kotlin/dokka/releases/tag/v2.2.0)、[KDoc生成](docs/KDOC.md) |
 
 Composeライブラリには個別版を付けず、BOMを利用します。画面系は`feature`、通信・永続化系は`data`へ追加しています。日時・不変コレクション・Coroutines Core／Android・Hilt Android・kotlin-result・Timberの7依存は、共有Catalogの`native-common` bundleへまとめ、両モジュールの`api(libs.bundles.native.common)`で利用側にも公開しています。単体テスト・Androidテスト依存と、Hilt/KSP・Serializationのコード生成も設定済みです。[配置一覧と解決結果](docs/DEPENDENCIES.md)を参照してください。
 
 Immutable Collectionsに合わせて、detektの`DataClassShouldBeImmutable`と`TwitterCompose.UnstableCollections`を有効にし、違反1件で停止する設定にしました。使い方とルールの範囲は[追加内容](docs/IMMUTABLE_COLLECTIONS.md)を参照してください。
+
+静的解析・整形は従来のルール設定を維持します。ルールの追加・有効化・閾値の変更は、目的と影響を提示して相談した後に行います。[静的解析と整形ルールの方針](docs/STATIC_ANALYSIS.md)を参照してください。
 
 最新版との比較方法と結果は[バージョンの追加検証](docs/VERSION_CHECKS.md)を参照してください。Compose BOM 2025.07.00はビルド成功を確認した採用版であり、互換性のある最新版の上限を特定したものではありません。
 
@@ -110,7 +114,7 @@ Immutable Collectionsに合わせて、detektの`DataClassShouldBeImmutable`と`
 
 Hilt・KSPをfeature・dataへ適用し、`ksp(libs.hilt.compiler)`を設定しました。dataにはKotlin Serialization Pluginも適用し、検証コードでRepositoryのFactory、Hilt ViewModelのModule／Factory、日時を含むSerializerの生成とコンパイルを確認しています。CordovaのApplicationをHilt化した実機での注入は、この検証には含めていません。通常のnative・Cordovaプロジェクトではdetekt・detekt-formattingを適用し、読み取り専用checkとpreCommitを実行できます。この2つのルートにあるktlintCheckはdetektFormatCheckへの互換名です。詳細は[Git hookのKotlin DSL実装](docs/GIT_HOOKS.md)を参照してください。両モジュールにJUnitの環境確認テストを追加しており、配置・実行方法は[単体テスト環境](docs/UNIT_TESTS.md)を参照してください。
 
-選定根拠: [Cordova公式対応表](https://cordova.apache.org/docs/en/latest/guide/platforms/android/index.html)、[14.0.1既定値](https://github.com/apache/cordova-android/blob/14.0.1/framework/cdv-gradle-config-defaults.json)、[Compose BOM POM](https://dl.google.com/dl/android/maven2/androidx/compose/compose-bom/2025.07.00/compose-bom-2025.07.00.pom)、[Core](https://developer.android.com/jetpack/androidx/releases/core)、[Activity](https://developer.android.com/jetpack/androidx/releases/activity)、[DataStore](https://developer.android.com/jetpack/androidx/releases/datastore)、[WorkManager](https://developer.android.com/jetpack/androidx/releases/work)、[Hilt 2.52 POM](https://repo.maven.apache.org/maven2/com/google/dagger/hilt-android/2.52/hilt-android-2.52.pom)、[kotlin-result移行説明](https://github.com/michaelbull/kotlin-result/releases/tag/2.0.0)。最終的な解決座標は[ライブラリ](docs/resolved-catalog-libraries.txt)・[プラグイン](docs/resolved-catalog-plugins.txt)を参照してください。
+選定根拠: [Cordova公式対応表](https://cordova.apache.org/docs/en/latest/guide/platforms/android/index.html)、[14.0.1既定値](https://github.com/apache/cordova-android/blob/14.0.1/framework/cdv-gradle-config-defaults.json)、[Compose BOM POM](https://dl.google.com/dl/android/maven2/androidx/compose/compose-bom/2025.07.00/compose-bom-2025.07.00.pom)、[Core](https://developer.android.com/jetpack/androidx/releases/core)、[Activity](https://developer.android.com/jetpack/androidx/releases/activity)、[DataStore](https://developer.android.com/jetpack/androidx/releases/datastore)、[WorkManager](https://developer.android.com/jetpack/androidx/releases/work)、[Hilt 2.52 POM](https://repo.maven.apache.org/maven2/com/google/dagger/hilt-android/2.52/hilt-android-2.52.pom)、[kotlin-result移行説明](https://github.com/michaelbull/kotlin-result/releases/tag/2.0.0)。最終的な解決座標は[ライブラリ](docs/logs/dependencies/resolved-catalog-libraries.txt)・[プラグイン](docs/logs/dependencies/resolved-catalog-plugins.txt)を参照してください。
 
 ## Catalog共有・プラグイン競合対策・hook
 

@@ -1,0 +1,25 @@
+
+> Task :detekt FAILED
+/private/var/folders/_z/0psds5k51gnfc1k9rs6mtjnc0000gn/T/cordova-rule-refresh-kq9udoms/native/feature/src/main/kotlin/Probe.kt:2:5: The function probe appears to be too complex based on Cognitive Complexity (complexity: 21). Defined complexity threshold for methods is set to '15' [CognitiveComplexMethod]
+/private/var/folders/_z/0psds5k51gnfc1k9rs6mtjnc0000gn/T/cordova-rule-refresh-kq9udoms/native/feature/src/main/kotlin/Probe.kt:2:5: Function probe is nested too deeply. [NestedBlockDepth]
+/private/var/folders/_z/0psds5k51gnfc1k9rs6mtjnc0000gn/T/cordova-rule-refresh-kq9udoms/native/feature/src/main/kotlin/Probe.kt:3:5: Two if statements which could be collapsed were detected. These statements can be merged to improve readability. [CollapsibleIfStatements]
+/private/var/folders/_z/0psds5k51gnfc1k9rs6mtjnc0000gn/T/cordova-rule-refresh-kq9udoms/native/feature/src/main/kotlin/Probe.kt:4:9: Two if statements which could be collapsed were detected. These statements can be merged to improve readability. [CollapsibleIfStatements]
+/private/var/folders/_z/0psds5k51gnfc1k9rs6mtjnc0000gn/T/cordova-rule-refresh-kq9udoms/native/feature/src/main/kotlin/Probe.kt:5:13: Two if statements which could be collapsed were detected. These statements can be merged to improve readability. [CollapsibleIfStatements]
+/private/var/folders/_z/0psds5k51gnfc1k9rs6mtjnc0000gn/T/cordova-rule-refresh-kq9udoms/native/feature/src/main/kotlin/Probe.kt:6:17: Two if statements which could be collapsed were detected. These statements can be merged to improve readability. [CollapsibleIfStatements]
+/private/var/folders/_z/0psds5k51gnfc1k9rs6mtjnc0000gn/T/cordova-rule-refresh-kq9udoms/native/feature/src/main/kotlin/Probe.kt:7:21: Two if statements which could be collapsed were detected. These statements can be merged to improve readability. [CollapsibleIfStatements]
+
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':detekt'.
+> Analysis failed with 7 weighted issues.
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 260ms
+1 actionable task: 1 executed

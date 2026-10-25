@@ -1,0 +1,23 @@
+# 検証ログ・証跡一覧
+
+[ドキュメント一覧へ戻る](../README.md)
+
+ログ・結果JSON・依存一覧・UI XML・スクリーンショットを、確認した目的ごとにまとめています。各フォルダのREADMEに、ファイルごとの内容を記載しています。
+
+これらは各文書に記載された検証時点の記録です。失敗ログには意図的な違反検出や互換性比較も含まれます。ログ内のコマンド・絶対パス・廃止済みタスク名は、当時の証跡として保持しています。
+
+| フォルダ | 調べられる内容 | 解説・実行方法 |
+| --- | --- | --- |
+| [environment/](environment/README.md) | 実行環境 | [VALIDATION.md](../VALIDATION.md) |
+| [build-integration/](build-integration/README.md) | native・Cordovaのビルドと構成 | [VALIDATION.md](../VALIDATION.md) |
+| [regeneration/](regeneration/README.md) | Cordova platform再生成・設定復元hook | [VALIDATION.md](../VALIDATION.md) |
+| [dependencies/](dependencies/README.md) | 依存関係の追加・解決・コンパイル | [DEPENDENCIES.md](../DEPENDENCIES.md) |
+| [versions/](versions/README.md) | 採用版と更新候補の比較 | [VERSION_CHECKS.md](../VERSION_CHECKS.md) |
+| [android-checks/](android-checks/README.md) | Gradle・Android Lintの品質確認 | [ANDROID_CHECKS.md](../ANDROID_CHECKS.md) |
+| [git-hooks/](git-hooks/README.md) | Git pre-commit・detektの動作確認 | [GIT_HOOKS.md](../GIT_HOOKS.md) |
+| [immutable-collections/](immutable-collections/README.md) | Immutable Collections導入の確認 | [IMMUTABLE_COLLECTIONS.md](../IMMUTABLE_COLLECTIONS.md) |
+| [compose-runtime/](compose-runtime/README.md) | Compose画面のエミュレーター実行 | [COMPOSE_RUNTIME.md](../COMPOSE_RUNTIME.md) |
+| [kotlin-plugin/](kotlin-plugin/README.md) | Kotlinプラグイン経由の画面起動 | [KOTLIN_PLUGIN.md](../KOTLIN_PLUGIN.md) |
+| [kdoc/](kdoc/README.md) | KDocのHTML表示確認 | [KDOC.md](../KDOC.md) |
+
+新しい検証記録も該当するフォルダへ置き、そのREADMEに目的を追記します。同じ検証で取得した画像やJSONはログと一緒に保管します。

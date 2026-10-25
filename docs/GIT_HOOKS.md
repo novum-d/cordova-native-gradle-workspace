@@ -174,9 +174,9 @@ TvApp同様に「stagedの`.kt`は実行のトリガー」であり、自動整�
 | Composableの`MutableList`引数 | 既存の`MutableParams`で失敗 | 期待どおり失敗 |
 | Composableの`ImmutableList`・`ImmutableSet`・`ImmutableMap`引数 | 不変コレクションを許可 | 成功 |
 
-全30ケースでindexの実行前後SHA-256が一致しました。旧一覧を事前に置いても削除され、新しい一覧が生成されないこと、違反に応じたdetekt標準HTMLを最後に直接開くこと、成功時とルール違反以外のエラーでは開かないことを確認しています。ブラウザ自動表示の無効化・CIは、実際に解析違反があるケースで検証しています。[結果JSON](git-hook-tests/results.json)。
+全30ケースでindexの実行前後SHA-256が一致しました。旧一覧を事前に置いても削除され、新しい一覧が生成されないこと、違反に応じたdetekt標準HTMLを最後に直接開くこと、成功時とルール違反以外のエラーでは開かないことを確認しています。ブラウザ自動表示の無効化・CIは、実際に解析違反があるケースで検証しています。[結果JSON](logs/git-hooks/cases/results.json)。
 
-当時の自動テストではOSの起動コマンドを差し替え、多数のタブを開かずに、開くファイルの実在と内容・呼び出し回数・実行順を検証します。初回9ケースの[旧実行ログ](git-hook-tests.log)や2026-10-19の[旧表示確認ログ](git-hook-browser-smoke.log)は、変更前の仕様の履歴です。
+当時の自動テストではOSの起動コマンドを差し替え、多数のタブを開かずに、開くファイルの実在と内容・呼び出し回数・実行順を検証します。初回9ケースの[旧実行ログ](logs/git-hooks/git-hook-tests.log)や2026-10-19の[旧表示確認ログ](logs/git-hooks/git-hook-browser-smoke.log)は、変更前の仕様の履歴です。
 
 上の表・結果JSONは削除前の検証記録です。検証用スクリプトとfixtureは現在のリポジトリには含めていません。
 

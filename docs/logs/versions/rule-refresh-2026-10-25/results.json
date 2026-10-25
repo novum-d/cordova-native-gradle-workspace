@@ -1,0 +1,146 @@
+{
+  "passed": 14,
+  "total": 14,
+  "results": [
+    {
+      "scenario": "valid-source",
+      "task": "detekt",
+      "expectedSuccess": true,
+      "expectedRule": null,
+      "exitCode": 0,
+      "passed": true,
+      "sourceUnchanged": true,
+      "gitIndexUnchanged": true
+    },
+    {
+      "scenario": "global-coroutine",
+      "task": "detekt",
+      "expectedSuccess": false,
+      "expectedRule": "GlobalCoroutineUsage",
+      "exitCode": 1,
+      "passed": true,
+      "sourceUnchanged": true,
+      "gitIndexUnchanged": true
+    },
+    {
+      "scenario": "unused-private",
+      "task": "detekt",
+      "expectedSuccess": false,
+      "expectedRule": "UnusedPrivateMember",
+      "exitCode": 1,
+      "passed": true,
+      "sourceUnchanged": true,
+      "gitIndexUnchanged": true
+    },
+    {
+      "scenario": "cognitive-complexity",
+      "task": "detekt",
+      "expectedSuccess": false,
+      "expectedRule": "CognitiveComplexMethod",
+      "exitCode": 1,
+      "passed": true,
+      "sourceUnchanged": true,
+      "gitIndexUnchanged": true
+    },
+    {
+      "scenario": "compose-remember",
+      "task": "detekt",
+      "expectedSuccess": false,
+      "expectedRule": "RememberMissing",
+      "exitCode": 1,
+      "passed": true,
+      "sourceUnchanged": true,
+      "gitIndexUnchanged": true
+    },
+    {
+      "scenario": "compose-modifier",
+      "task": "detekt",
+      "expectedSuccess": false,
+      "expectedRule": "ModifierNotUsedAtRoot",
+      "exitCode": 1,
+      "passed": true,
+      "sourceUnchanged": true,
+      "gitIndexUnchanged": true
+    },
+    {
+      "scenario": "private-preview",
+      "task": "detekt",
+      "expectedSuccess": true,
+      "expectedRule": null,
+      "exitCode": 0,
+      "passed": true,
+      "sourceUnchanged": true,
+      "gitIndexUnchanged": true
+    },
+    {
+      "scenario": "formatting-rejected",
+      "task": "detektFormatCheck",
+      "expectedSuccess": false,
+      "expectedRule": "NoSemicolons",
+      "exitCode": 1,
+      "passed": true,
+      "sourceUnchanged": true,
+      "gitIndexUnchanged": true
+    },
+    {
+      "scenario": "formatting-autocorrect",
+      "task": "detektFormat",
+      "expectedSuccess": true,
+      "expectedRule": null,
+      "exitCode": 0,
+      "passed": true,
+      "sourceUnchanged": false,
+      "gitIndexUnchanged": true
+    },
+    {
+      "scenario": "formatting-corrected",
+      "task": "detektFormatCheck",
+      "expectedSuccess": true,
+      "expectedRule": null,
+      "exitCode": 0,
+      "passed": true,
+      "sourceUnchanged": true,
+      "gitIndexUnchanged": true
+    },
+    {
+      "scenario": "formatting-idempotent",
+      "task": "detektFormat",
+      "expectedSuccess": true,
+      "expectedRule": null,
+      "exitCode": 0,
+      "passed": true,
+      "sourceUnchanged": true,
+      "gitIndexUnchanged": true
+    },
+    {
+      "scenario": "staged-formatting",
+      "task": "preCommit",
+      "expectedSuccess": false,
+      "expectedRule": "detektPreCommitStagedFormatCheck",
+      "exitCode": 1,
+      "passed": true,
+      "sourceUnchanged": true,
+      "gitIndexUnchanged": true
+    },
+    {
+      "scenario": "previous-formatting-comparison",
+      "task": "detektFormatCheck",
+      "expectedSuccess": true,
+      "expectedRule": null,
+      "exitCode": 0,
+      "passed": true,
+      "sourceUnchanged": true,
+      "gitIndexUnchanged": true
+    },
+    {
+      "scenario": "invalid-config",
+      "task": "detekt",
+      "expectedSuccess": false,
+      "expectedRule": "does not exist",
+      "exitCode": 1,
+      "passed": true,
+      "sourceUnchanged": true,
+      "gitIndexUnchanged": true
+    }
+  ]
+}

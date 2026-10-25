@@ -55,8 +55,8 @@ Cordova側のルートには集約Pluginを追加していません。両ホス�
 以下はDokka導入時の記録です。依存選定用の独自タスクは現在削除しており、`check:android`は整形・静的解析・単体テスト・Android Lintを実行します。
 
 - `npm run docs:kdoc`と`npm run docs:kdoc:cordova`が成功しました。集約HTMLと、Cordovaから生成したfeatureの個別HTMLで同じKDocを確認しました。
-- Chrome 155を専用の一時プロファイルで起動し、集約トップ → feature → パッケージ → MainActivity → onCreateのリンクを実際に操作しました。日本語の説明とスタイルの表示も確認しています。[トップの画面](kdoc/overview.png)、[MainActivityの画面](kdoc/main-activity.png)
-- 集約HTML全8ページ・内部参照113件を確認し、リンク先・表示リソースの欠落、JavaScriptエラーは0件でした。テストクラス・生成クラスが掲載されていないことも確認しました。[表示確認の結果](kdoc/display-check.json)。確認用ブラウザーとローカルHTTPサーバーは終了しています。
+- Chrome 155を専用の一時プロファイルで起動し、集約トップ → feature → パッケージ → MainActivity → onCreateのリンクを実際に操作しました。日本語の説明とスタイルの表示も確認しています。[トップの画面](logs/kdoc/overview.png)、[MainActivityの画面](logs/kdoc/main-activity.png)
+- 集約HTML全8ページ・内部参照113件を確認し、リンク先・表示リソースの欠落、JavaScriptエラーは0件でした。テストクラス・生成クラスが掲載されていないことも確認しました。[表示確認の結果](logs/kdoc/display-check.json)。確認用ブラウザーとローカルHTTPサーバーは終了しています。
 - `npm run check:android`が成功しました。両ホストのdetekt・整形チェック、Debug／Release Android Lint、nativeのfeature／data単体テスト4構成（各2件）、基盤検証を通過しています。
 - CordovaアプリのDebug／Release APKビルドと、30構成のモジュール依存解決が成功しました。アプリ・テストの依存にDokkaはなく、Kotlin標準ライブラリは1.9.24を維持しています。
 - 当時のbootstrapの12テストが成功し、新規生成したCordova platformでも共有LibraryのGradle設定を読み込めることを確認しました。検証専用コードは削除済みです。

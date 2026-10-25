@@ -25,7 +25,7 @@ featureのActivityはmain Manifestへ移し、Debug／Releaseの両方でプラ�
 
 [cordova-plugin-dev/build.gradle.kts](../native/cordova-plugin-dev/build.gradle.kts)は、プラグインの元ソースをsource setに直接登録します。`CordovaPlugin`と`CallbackContext`は`compileOnly(libs.cordova.framework)`、画面の型は`implementation(project(":feature"))`で解決します。
 
-cordova-plugin-devはnative専用です。Cordova側のSettingsへは追加せず、アプリはplugin.xmlで導入されたソースを直接コンパイルします。Cordova APIの実体は既存のCordovaLibが提供し、編集用のframework依存はAPKに追加しません。[ソース登録・依存範囲の照合結果](kotlin-plugin/source-model.json)
+cordova-plugin-devはnative専用です。Cordova側のSettingsへは追加せず、アプリはplugin.xmlで導入されたソースを直接コンパイルします。Cordova APIの実体は既存のCordovaLibが提供し、編集用のframework依存はAPKに追加しません。[ソース登録・依存範囲の照合結果](logs/kotlin-plugin/source-model.json)
 
 ## セットアップ・変更反映
 
@@ -49,11 +49,11 @@ npm run cordova:plugin -- --reinstall
 
 ## 確認結果
 
-- Android API 35エミュレータで`npm run cordova:run -- --target=emulator-5554`を実行しました。Webのボタンからプラグインを経由してCompose画面へ遷移し、カウンタが0から1へ更新され、戻る操作でWebへ復帰して成功メッセージが表示されました。クラッシュログはありません。[Web画面](kotlin-plugin/web.png)、[Compose画面](kotlin-plugin/compose.png)
+- Android API 35エミュレータで`npm run cordova:run -- --target=emulator-5554`を実行しました。Webのボタンからプラグインを経由してCompose画面へ遷移し、カウンタが0から1へ更新され、戻る操作でWebへ復帰して成功メッセージが表示されました。クラッシュログはありません。[Web画面](logs/kotlin-plugin/web.png)、[Compose画面](logs/kotlin-plugin/compose.png)
 - 確認用エミュレータは終了し、ADBの接続一覧が空であることを確認しました。
-- CordovaのDebug／Release APK、nativeのcordova-plugin-devのDebug／Release AARをビルドしました。両APKでActivityの`exported=false`と、プラグインクラスが1回だけ定義されることも照合しました。[APK照合結果](kotlin-plugin/artifact-check.json)。cordova-plugin-devを含む静的解析・整形確認・単体テスト・両variantのAndroid Lintが成功しました。
+- CordovaのDebug／Release APK、nativeのcordova-plugin-devのDebug／Release AARをビルドしました。両APKでActivityの`exported=false`と、プラグインクラスが1回だけ定義されることも照合しました。[APK照合結果](logs/kotlin-plugin/artifact-check.json)。cordova-plugin-devを含む静的解析・整形確認・単体テスト・両variantのAndroid Lintが成功しました。
 - 集約KDoc生成タスクが成功し、KotlinPluginとexecuteのHTMLが生成されました。
 - 両方のnode_modules・Cordova platform・pluginsがない日本語・空白入りの一時workspaceで、bootstrapだけでプラグインの復元・リンク導入・Cordova側のKotlinコンパイルが成功しました。Node・JDK・SDKと取得済みGradle・キャッシュは既存環境を利用しています。package.json・lockfileの変更がないこと、セットアップの再実行、明示的な再導入も確認しました。
-- 一時Gitリポジトリで、作業ファイルが整形済みでも未整形のプラグインがステージされている場合は、再ステージしない2回の試行を両方拒否しました。作業ファイルとindexは保持され、整形済み内容を再ステージすると成功しました。[一時workspaceの結果](kotlin-plugin/workspace-check.json)
+- 一時Gitリポジトリで、作業ファイルが整形済みでも未整形のプラグインがステージされている場合は、再ステージしない2回の試行を両方拒否しました。作業ファイルとindexは保持され、整形済み内容を再ステージすると成功しました。[一時workspaceの結果](logs/kotlin-plugin/workspace-check.json)
 
 Android Studio向けのソース登録とCordova APIの依存解決はGradleの設定と実コンパイルで確認しています。IDE画面での補完・参照移動の確認は、この記録には含めていません。

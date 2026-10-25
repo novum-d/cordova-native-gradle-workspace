@@ -1,0 +1,19 @@
+
+> Task :detekt FAILED
+/private/var/folders/_z/0psds5k51gnfc1k9rs6mtjnc0000gn/T/cordova-rule-refresh-kq9udoms/native/feature/src/main/kotlin/Probe.kt:5:15: This use of GlobalScope should be replaced by `CoroutineScope` or `coroutineScope`. [GlobalCoroutineUsage]
+
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':detekt'.
+> Analysis failed with 1 weighted issues.
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 277ms
+1 actionable task: 1 executed

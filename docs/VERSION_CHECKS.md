@@ -1,5 +1,7 @@
 # バージョンの追加検証（2026-10-19）
 
+現在のルール維持方針は[静的解析と整形ルール](STATIC_ANALYSIS.md)を参照してください。[追加ルールの試行記録](logs/versions/rule-refresh-2026-10-25/README.md)は採用を見送った案の記録であり、現在の設定には適用していません。
+
 以下は2026-10-19の検証記録です。専用スクリプト・比較用init scriptは削除済みで、通常の品質チェックはdetekt・detekt-formattingを使います。
 
 ## ktlint・detekt
@@ -18,9 +20,9 @@
   detekt detektFormatCheck --rerun-tasks --console=plain
 ```
 
-当時のktlintの検証では、一時GradleプロジェクトへKotlin JVM Plugin 1.9.24とktlint Pluginを適用しました。`native/feature/src`・`native/data/src`のコピーと小さな検証ソースを対象にするため、元の作業ファイルは整形していません。チェック時に不正なファイルが変更されないことも照合し、自動整形とその後のチェックは別のGradle呼び出しで実行しました。ログ中の1回の`BUILD FAILED`は故意の末尾空白を検出した期待どおりの結果です。[ktlint実行ログ](quality-ktlint-latest.log)
+当時のktlintの検証では、一時GradleプロジェクトへKotlin JVM Plugin 1.9.24とktlint Pluginを適用しました。`native/feature/src`・`native/data/src`のコピーと小さな検証ソースを対象にするため、元の作業ファイルは整形していません。チェック時に不正なファイルが変更されないことも照合し、自動整形とその後のチェックは別のGradle呼び出しで実行しました。ログ中の1回の`BUILD FAILED`は故意の末尾空白を検出した期待どおりの結果です。[ktlint実行ログ](logs/versions/quality-ktlint-latest.log)
 
-通常のnative・Cordovaルートの`ktlintCheck`は引き続きdetektFormatCheckへの互換名です。detekt-formattingに内包されたktlintを1.8.0へ差し替えたわけではありません。今回1.8.0を実行したのは上記の独立した検証です。[detekt実行ログ](quality-detekt-latest.log)
+通常のnative・Cordovaルートの`ktlintCheck`は引き続きdetektFormatCheckへの互換名です。detekt-formattingに内包されたktlintを1.8.0へ差し替えたわけではありません。今回1.8.0を実行したのは上記の独立した検証です。[detekt実行ログ](logs/versions/quality-detekt-latest.log)
 
 ## Compose BOM
 
@@ -28,8 +30,8 @@ Google Mavenの[公開版一覧](https://dl.google.com/dl/android/maven2/android
 
 | BOM | 結果 | 証跡 |
 | --- | --- | --- |
-| 最新版2026.09.00 | `:feature:compileDebugKotlin`で失敗。UI・Runtime・Foundation 1.12.1などのメタデータが2.1.0で、Kotlin 1.9.24では読み取れない。推移依存のstdlibも2.1.20へ更新される | [依存解決・失敗ログ](compose-bom-latest-probe.log) |
-| 採用版2025.07.00 | 同じ検証コードでfeature・dataのDebug AARビルド成功 | [成功ログ](compose-bom-selected-probe.log) |
+| 最新版2026.09.00 | `:feature:compileDebugKotlin`で失敗。UI・Runtime・Foundation 1.12.1などのメタデータが2.1.0で、Kotlin 1.9.24では読み取れない。推移依存のstdlibも2.1.20へ更新される | [依存解決・失敗ログ](logs/versions/compose-bom-latest-probe.log) |
+| 採用版2025.07.00 | 同じ検証コードでfeature・dataのDebug AARビルド成功 | [成功ログ](logs/versions/compose-bom-selected-probe.log) |
 
 BOM比較用のinit scriptと検証ソースは削除済みです。表・ログは当時の実測を記録しています。2025.07.00と最新版の間にある全BOMを検証したものではなく、2025.07.00が互換性のある最新版の上限という意味ではありません。
 
