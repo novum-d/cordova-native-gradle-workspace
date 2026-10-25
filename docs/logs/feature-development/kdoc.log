@@ -1,0 +1,87 @@
+
+> cordova-native-gradle-workspace@1.0.0 docs:kdoc
+> ./scripts/with-env.sh ./native/gradlew -p native :dokkaGeneratePublicationHtml
+
+Warning: SDK processing. This version only understands SDK XML versions up to 3 but an SDK XML file of version 4 was encountered. This can happen if you use versions of Android Studio and the command-line tools that were released at different times.
+> Task :feature:preBuild UP-TO-DATE
+> Task :feature:preDebugBuild UP-TO-DATE
+> Task :feature:generateDebugResValues UP-TO-DATE
+> Task :feature:generateDebugResources UP-TO-DATE
+> Task :feature:packageDebugResources
+> Task :feature:parseDebugLocalResources UP-TO-DATE
+> Task :feature:generateDebugRFile UP-TO-DATE
+> Task :data:preBuild UP-TO-DATE
+> Task :data:preDebugBuild UP-TO-DATE
+> Task :data:generateDebugResValues UP-TO-DATE
+> Task :data:generateDebugResources UP-TO-DATE
+> Task :data:packageDebugResources
+> Task :data:parseDebugLocalResources UP-TO-DATE
+> Task :data:generateDebugRFile UP-TO-DATE
+> Task :data:checkKotlinGradlePluginConfigurationErrors
+> Task :data:kspDebugKotlin NO-SOURCE
+> Task :data:compileDebugKotlin NO-SOURCE
+> Task :data:javaPreCompileDebug UP-TO-DATE
+> Task :data:compileDebugJavaWithJavac NO-SOURCE
+> Task :data:transformDebugClassesWithAsm UP-TO-DATE
+> Task :data:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :data:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :feature:checkKotlinGradlePluginConfigurationErrors
+> Task :feature:kspDebugKotlin UP-TO-DATE
+> Task :feature:javaPreCompileDebug UP-TO-DATE
+> Task :feature:preReleaseBuild UP-TO-DATE
+> Task :feature:generateReleaseResValues UP-TO-DATE
+> Task :feature:generateReleaseResources UP-TO-DATE
+> Task :feature:packageReleaseResources
+> Task :feature:parseReleaseLocalResources UP-TO-DATE
+> Task :feature:generateReleaseRFile UP-TO-DATE
+> Task :data:preReleaseBuild UP-TO-DATE
+> Task :data:generateReleaseResValues UP-TO-DATE
+> Task :data:generateReleaseResources UP-TO-DATE
+> Task :data:packageReleaseResources
+> Task :data:parseReleaseLocalResources UP-TO-DATE
+> Task :data:generateReleaseRFile UP-TO-DATE
+> Task :data:kspReleaseKotlin NO-SOURCE
+> Task :data:compileReleaseKotlin NO-SOURCE
+> Task :data:javaPreCompileRelease UP-TO-DATE
+> Task :data:compileReleaseJavaWithJavac NO-SOURCE
+> Task :data:transformReleaseClassesWithAsm UP-TO-DATE
+> Task :data:bundleLibCompileToJarRelease UP-TO-DATE
+> Task :data:bundleLibRuntimeToJarRelease UP-TO-DATE
+> Task :feature:kspReleaseKotlin UP-TO-DATE
+> Task :feature:javaPreCompileRelease UP-TO-DATE
+> Task :data:dokkaGenerateModuleHtml UP-TO-DATE
+> Task :data:processDebugJavaRes NO-SOURCE
+> Task :data:createFullJarDebug UP-TO-DATE
+> Task :data:processReleaseJavaRes NO-SOURCE
+> Task :data:createFullJarRelease UP-TO-DATE
+> Task :feature:compileDebugKotlin
+> Task :feature:compileDebugJavaWithJavac NO-SOURCE
+> Task :feature:transformDebugClassesWithAsm UP-TO-DATE
+> Task :feature:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :feature:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :feature:processDebugJavaRes UP-TO-DATE
+> Task :feature:createFullJarDebug UP-TO-DATE
+> Task :feature:compileReleaseKotlin
+> Task :feature:compileReleaseJavaWithJavac NO-SOURCE
+> Task :feature:transformReleaseClassesWithAsm UP-TO-DATE
+> Task :feature:bundleLibCompileToJarRelease UP-TO-DATE
+> Task :feature:bundleLibRuntimeToJarRelease UP-TO-DATE
+> Task :feature:processReleaseJavaRes UP-TO-DATE
+> Task :feature:createFullJarRelease UP-TO-DATE
+> Task :cordova-plugin-dev:dokkaGenerateModuleHtml
+> Task :feature:dokkaGenerateModuleHtml
+> Task :dokkaGeneratePublicationHtml
+
+> Task :logLinkDokkaGeneratePublicationHtml
+Generated Dokka HTML publication: http://localhost:63342/CordovaNativeLibraries/build/dokka/html/index.html
+
+[Incubating] Problems report is available at: file:///Users/novumd/repos/cordova-native-gradle-workspace/native/build/reports/problems/problems-report.html
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/8.13/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD SUCCESSFUL in 8s
+53 actionable tasks: 12 executed, 41 up-to-date

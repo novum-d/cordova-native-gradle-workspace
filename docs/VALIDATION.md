@@ -1,5 +1,7 @@
 # 検証結果（2026-10-17）
 
+後続で[開発専用dev-app](FEATURE_DEVELOPMENT.md)を追加しました。以下のAPKホスト数・構成は初回検証時点の記録です。
+
 2026-10-19に、Cordova CLIによるエミュレーター実行とComposeの表示・操作も確認しました。[実行記録](COMPOSE_RUNTIME.md)を参照してください。以下は初回からの検証記録です。依存選定用の独自タスク・コンパイル用fixture・Tooling API・hookなどの検証専用コードは削除済みで、結果表・ログは当時の証跡として保持しています。
 
 `~/repos/cordova-native-gradle-workspace`で、Cordova Android 14の基盤を維持したビルドを確認しました。

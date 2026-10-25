@@ -1,5 +1,6 @@
-// 共有Libraryとプラグイン編集環境のビルド基盤・集約KDocを設定する。
+// Library・開発ホストのビルド基盤と、Library・プラグインの集約KDocを設定する。
 plugins {
+    alias(libs.plugins.android.application) apply false
     alias(libs.plugins.android.library) apply false
     alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.dokka)

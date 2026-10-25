@@ -1,0 +1,28 @@
+{
+  "development": {
+    "apk": "native/dev-app/build/outputs/apk/debug/dev-app-debug.apk",
+    "sha256": "77b537b3c89f86ff63caa00f1b09a2b384cdb0a6ce22f24b8de6498e53f3c294",
+    "fixtureFiles": [
+      "assets/requests/golf-holder.json",
+      "assets/requests/golf-omitted-args.json",
+      "assets/requests/golf-structured-args.json",
+      "assets/requests/home.json",
+      "assets/requests/invalid-args.json",
+      "assets/requests/invalid-id.json",
+      "assets/requests/webview.json"
+    ],
+    "hasDevLauncher": true,
+    "hasIntentSample": true,
+    "featureActivityExported": false
+  },
+  "cordova": {
+    "apk": "CordovaComposeApp/platforms/android/app/build/outputs/apk/debug/app-debug.apk",
+    "sha256": "658f8cd1e42d5ff89cc7ede42f17d7b90ea1ee5bdc0f2a02a9d648d15f4eb832",
+    "fixtureFiles": [],
+    "hasDevLauncher": false,
+    "hasIntentSample": false,
+    "featureActivityExported": false
+  },
+  "developmentReleaseVariantAvailable": false,
+  "status": "passed"
+}

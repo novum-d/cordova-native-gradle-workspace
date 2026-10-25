@@ -39,6 +39,10 @@ Git indexを自動更新する処理はありません。通常の`check`・`ktl
 | [check-android.sh](../scripts/check-android.sh) | native・Cordovaの品質チェック、単体テスト、Android Lintを順に実行 |
 | [libs.versions.toml](../native/gradle/libs.versions.toml)・[gradle.properties](../native/gradle.properties)・[detekt設定](../native/gradle/config/detekt/) | 採用版、Gradle実行環境、静的解析・整形ルールの管理元 |
 
+## 開発専用APK
+
+[dev-app](../native/dev-app/build.gradle.kts)はnativeのSettingsにだけ登録するDebug APKです。ランチャーから固定の要求JSONをIntentでfeatureへ渡します。JSONごとの用途、source set、コマンドは[開発手順](FEATURE_DEVELOPMENT.md)を参照してください。ルートpackage.jsonの`dev:build`・`dev:install`もこのホストを対象にします。
+
 ## WebView通信サンプル
 
 [WebViewSampleScreen.kt](../native/feature/src/main/kotlin/dev/example/nativefeature/webview/WebViewSampleScreen.kt)がComposeの検証UIを持ち、[WebViewBridge.kt](../native/feature/src/main/kotlin/dev/example/nativefeature/webview/WebViewBridge.kt)が一つのWebViewの接続と解放を管理します。[WebMessage.kt](../native/feature/src/main/kotlin/dev/example/nativefeature/webview/WebMessage.kt)でJSONを解析し、[WebViewPolicy.kt](../native/feature/src/main/kotlin/dev/example/nativefeature/webview/WebViewPolicy.kt)と[SampleWebViewClient.kt](../native/feature/src/main/kotlin/dev/example/nativefeature/webview/SampleWebViewClient.kt)で配信先と通信先を絞ります。[index.html](../native/feature/src/main/assets/index.html)は固定のHTMLとJavaScript・CSPを持ちます。通信の流れと制約は[サンプル文書](WEBVIEW_BRIDGE_SAMPLE.md)を参照してください。
@@ -57,6 +61,8 @@ Git indexを自動更新する処理はありません。通常の`check`・`ktl
 | `cordova:plugin` | ローカルプラグインをリンク導入。JS・plugin.xml変更時は`-- --reinstall`で再導入 |
 | `cordova:prepare` | Cordovaの生成設定とWeb assetsを管理元から復元。ビルド・起動は行わない |
 | `cordova:build` | prepareを含めてAndroid APKをビルド。起動は行わない |
+| `dev:build` | dev-appのDebug APKだけをビルド。Cordovaのprepareは不要 |
+| `dev:install` | dev-appのDebug APKをビルドして接続端末へインストール |
 | `native:build` | native単独でfeature・data・cordova-plugin-devのDebug AARをビルド |
 | `test:unit` | nativeのfeature・dataでDebug／Releaseの単体テストを実行 |
 | `test:unit:cordova` | prepare後、Cordova側から同じ単体テストを実行 |

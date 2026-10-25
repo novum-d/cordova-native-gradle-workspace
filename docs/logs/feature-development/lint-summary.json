@@ -1,0 +1,39 @@
+{
+  "devAppLint": [
+    {
+      "id": "DataExtractionRules",
+      "severity": "Warning",
+      "message": "The attribute `android:allowBackup` is deprecated from Android 12 and higher and may be removed in future versions. Consider adding the attribute `android:dataExtractionRules` specifying an `@xml` resource which configures cloud backups and device transfers on Android 12 and higher."
+    }
+  ],
+  "unitTests": [
+    {
+      "module": "feature",
+      "variant": "Debug",
+      "tests": 26,
+      "failures": 0,
+      "errors": 0
+    },
+    {
+      "module": "feature",
+      "variant": "Release",
+      "tests": 26,
+      "failures": 0,
+      "errors": 0
+    },
+    {
+      "module": "data",
+      "variant": "Debug",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0
+    },
+    {
+      "module": "data",
+      "variant": "Release",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0
+    }
+  ]
+}

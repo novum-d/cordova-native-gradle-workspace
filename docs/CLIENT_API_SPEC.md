@@ -16,6 +16,8 @@ WebMessageによる双方向通信と[セキュリティレビュー](WEBVIEW_BR
 - NFC・Cameraは各サービスが利用する端末機能として扱います。
 - 現時点で確定している業務処理は、ゴルフ場ID・ホルダー番号の読み取りです。NFC書き込みは対象外です。
 
+[開発用dev-app](FEATURE_DEVELOPMENT.md)から同一APK内のMainActivityへIntentサンプルを渡すこともできます。これは開発ホスト内の検証経路で、以下の別アプリ向け業務受付は引き続き未実装です。
+
 ## Activityの起動要件
 
 | 起動元 | 経路 | 実装状況 |

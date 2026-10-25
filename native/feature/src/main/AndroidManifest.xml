@@ -1,7 +1,7 @@
-<!-- プラグインから明示的Intentで起動するCompose画面を、Debug・Release共通で登録する。 -->
+<!-- ホストから明示的Intentで起動するCompose画面を、Debug・Release共通で登録する。 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application>
-        <!-- 同一アプリのプラグインだけが起動する。ランチャーはCordovaアプリのまま。 -->
+        <!-- 同一アプリのホストだけが起動する。ランチャーはCordovaまたは開発用appで定義する。 -->
         <activity
             android:name="dev.example.nativefeature.MainActivity"
             android:exported="false" />

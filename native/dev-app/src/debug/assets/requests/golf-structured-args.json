@@ -1,0 +1,10 @@
+{
+  "id": "golf-change.read-holder",
+  "args": {
+    "source": "dev-app",
+    "text": "日本語 / ? & = # %2F +",
+    "options": {
+      "enabled": true
+    }
+  }
+}

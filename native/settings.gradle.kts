@@ -1,4 +1,4 @@
-// native単独ビルドで使うPlugin・ライブラリの取得元と、共有Libraryの構成を定義する。
+// native単独ビルドで使うPlugin・ライブラリの取得元と、モジュール構成を定義する。
 pluginManagement {
     repositories {
         google()
@@ -16,7 +16,7 @@ dependencyResolutionManagement {
     }
 }
 
-// このホストはAPKを持たず、共有Libraryとプラグインの編集用モジュールを読み込む。
+// 共有Library・プラグイン編集環境と、Cordovaなしで実行する開発専用APKを読み込む。
 rootProject.name = "CordovaNativeLibraries"
-include(":feature", ":data", ":cordova-plugin-dev")
+include(":feature", ":data", ":cordova-plugin-dev", ":dev-app")
 // libsはgradle/libs.versions.tomlからGradleが自動登録するため、手動で二重登録しない。

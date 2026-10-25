@@ -1,0 +1,106 @@
+
+> cordova-native-gradle-workspace@1.0.0 dev:install
+> ./scripts/with-env.sh ./native/gradlew -p native :dev-app:installDebug
+
+> Task :dev-app:checkKotlinGradlePluginConfigurationErrors
+> Task :data:preBuild UP-TO-DATE
+> Task :data:preDebugBuild UP-TO-DATE
+> Task :data:generateDebugResValues UP-TO-DATE
+> Task :data:generateDebugResources UP-TO-DATE
+> Task :data:packageDebugResources UP-TO-DATE
+> Task :data:compileDebugLibraryResources UP-TO-DATE
+> Task :data:parseDebugLocalResources UP-TO-DATE
+> Task :data:generateDebugRFile UP-TO-DATE
+> Task :data:writeDebugAarMetadata UP-TO-DATE
+> Task :dev-app:preBuild UP-TO-DATE
+> Task :dev-app:preDebugBuild UP-TO-DATE
+> Task :feature:preBuild UP-TO-DATE
+> Task :feature:preDebugBuild UP-TO-DATE
+> Task :feature:writeDebugAarMetadata UP-TO-DATE
+> Task :dev-app:checkDebugAarMetadata UP-TO-DATE
+> Task :dev-app:generateDebugResValues UP-TO-DATE
+> Task :feature:generateDebugResValues UP-TO-DATE
+> Task :feature:generateDebugResources UP-TO-DATE
+> Task :feature:packageDebugResources UP-TO-DATE
+> Task :dev-app:mapDebugSourceSetPaths UP-TO-DATE
+> Task :dev-app:generateDebugResources UP-TO-DATE
+> Task :dev-app:mergeDebugResources UP-TO-DATE
+> Task :dev-app:packageDebugResources UP-TO-DATE
+> Task :dev-app:parseDebugLocalResources UP-TO-DATE
+> Task :dev-app:createDebugCompatibleScreenManifests UP-TO-DATE
+> Task :data:extractDeepLinksDebug UP-TO-DATE
+> Task :data:processDebugManifest UP-TO-DATE
+> Task :dev-app:extractDeepLinksDebug UP-TO-DATE
+> Task :feature:extractDeepLinksDebug UP-TO-DATE
+> Task :feature:processDebugManifest UP-TO-DATE
+> Task :dev-app:processDebugMainManifest UP-TO-DATE
+> Task :dev-app:processDebugManifest UP-TO-DATE
+> Task :dev-app:processDebugManifestForPackage UP-TO-DATE
+> Task :feature:compileDebugLibraryResources UP-TO-DATE
+> Task :feature:parseDebugLocalResources UP-TO-DATE
+> Task :feature:generateDebugRFile UP-TO-DATE
+> Task :dev-app:processDebugResources UP-TO-DATE
+> Task :data:checkKotlinGradlePluginConfigurationErrors
+> Task :data:kspDebugKotlin NO-SOURCE
+> Task :data:compileDebugKotlin NO-SOURCE
+> Task :data:javaPreCompileDebug UP-TO-DATE
+> Task :data:compileDebugJavaWithJavac NO-SOURCE
+> Task :data:transformDebugClassesWithAsm UP-TO-DATE
+> Task :data:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :data:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :feature:checkKotlinGradlePluginConfigurationErrors
+> Task :feature:kspDebugKotlin UP-TO-DATE
+> Task :feature:compileDebugKotlin UP-TO-DATE
+> Task :feature:javaPreCompileDebug UP-TO-DATE
+> Task :feature:compileDebugJavaWithJavac NO-SOURCE
+> Task :feature:transformDebugClassesWithAsm UP-TO-DATE
+> Task :feature:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :dev-app:compileDebugKotlin UP-TO-DATE
+> Task :dev-app:javaPreCompileDebug UP-TO-DATE
+> Task :dev-app:compileDebugJavaWithJavac NO-SOURCE
+> Task :data:mergeDebugShaders UP-TO-DATE
+> Task :data:compileDebugShaders NO-SOURCE
+> Task :data:generateDebugAssets UP-TO-DATE
+> Task :data:packageDebugAssets UP-TO-DATE
+> Task :dev-app:mergeDebugShaders UP-TO-DATE
+> Task :dev-app:compileDebugShaders NO-SOURCE
+> Task :dev-app:generateDebugAssets UP-TO-DATE
+> Task :feature:mergeDebugShaders UP-TO-DATE
+> Task :feature:compileDebugShaders NO-SOURCE
+> Task :feature:generateDebugAssets UP-TO-DATE
+> Task :feature:packageDebugAssets UP-TO-DATE
+> Task :dev-app:mergeDebugAssets UP-TO-DATE
+> Task :dev-app:compressDebugAssets UP-TO-DATE
+> Task :data:processDebugJavaRes NO-SOURCE
+> Task :dev-app:processDebugJavaRes UP-TO-DATE
+> Task :feature:processDebugJavaRes UP-TO-DATE
+> Task :dev-app:mergeDebugJavaResource UP-TO-DATE
+> Task :dev-app:checkDebugDuplicateClasses UP-TO-DATE
+> Task :dev-app:desugarDebugFileDependencies UP-TO-DATE
+> Task :dev-app:mergeExtDexDebug UP-TO-DATE
+> Task :feature:bundleLibRuntimeToDirDebug UP-TO-DATE
+> Task :data:bundleLibRuntimeToDirDebug UP-TO-DATE
+> Task :dev-app:dexBuilderDebug UP-TO-DATE
+> Task :dev-app:mergeProjectDexDebug UP-TO-DATE
+> Task :dev-app:mergeLibDexDebug UP-TO-DATE
+> Task :data:mergeDebugJniLibFolders UP-TO-DATE
+> Task :data:mergeDebugNativeLibs NO-SOURCE
+> Task :data:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :dev-app:mergeDebugJniLibFolders UP-TO-DATE
+> Task :feature:mergeDebugJniLibFolders UP-TO-DATE
+> Task :feature:mergeDebugNativeLibs NO-SOURCE
+> Task :feature:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :dev-app:mergeDebugNativeLibs UP-TO-DATE
+> Task :dev-app:stripDebugDebugSymbols UP-TO-DATE
+> Task :dev-app:validateSigningDebug UP-TO-DATE
+> Task :dev-app:writeDebugAppMetadata UP-TO-DATE
+> Task :dev-app:writeDebugSigningConfigVersions UP-TO-DATE
+> Task :dev-app:packageDebug UP-TO-DATE
+> Task :dev-app:createDebugApkListingFileRedirect UP-TO-DATE
+
+> Task :dev-app:installDebug
+Installing APK 'dev-app-debug.apk' on 'Cordova_Compose_API_35(AVD) - 15' for :dev-app:debug
+Installed on 1 device.
+
+BUILD SUCCESSFUL in 2s
+76 actionable tasks: 4 executed, 72 up-to-date

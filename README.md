@@ -1,6 +1,6 @@
 # Cordova Android 14 / Kotlin Library Gradle統合検証
 
-`CordovaComposeApp`を唯一のAPKホストとして、同じ`native/feature`・`native/data`をCordovaからもnative単独からもビルドするworkspaceです。2026-10-17に新規作成しました。既存の業務プロジェクトは提供されていないため、Cordova標準テンプレートを検証ホストにしています。
+`CordovaComposeApp`をCordova連携用APKホスト、`native/dev-app`を開発専用Debug APKホストとして、同じ`native/feature`・`native/data`をCordovaからもnative単独からもビルドするworkspaceです。2026-10-17に新規作成しました。既存の業務プロジェクトは提供されていないため、Cordova標準テンプレートを検証ホストにしています。
 
 基本のUIと画面遷移はWebViewが担当し、フロントエンドのクライアントAPIからKotlinのJSブリッジへ処理ID・引数を渡してサービスの処理を実行する構成を想定しています。ネイティブのテキスト・ボタン・画面遷移は現在の動作確認用です。[構成方針とサービス仕様](docs/CLIENT_API_SPEC.md)に、Navigationを設ける範囲とゴルフ場ID・ホルダー番号の読み取り要件をまとめています。以下は現在の暫定実装の説明です。
 
@@ -9,6 +9,10 @@ Activityの起動要件はCordovaPlugin経由と別アプリからの2種類で�
 `kotlin-plugin`をWebからKotlin機能へ入る入口にしています。Webのボタンから`cordova/exec`を経由し、`CordovaPlugin`を継承したKTの`execute`が`startActivity`で`native/feature`の`MainActivity`を開きます。画面はDebug／Release共通で登録し、外部アプリには公開しません。アプリのランチャーはCordova標準のJava版`MainActivity`です。業務画面・DI初期化・カメラ・NFC処理は未実装です。[プラグインの構成と編集方法](kotlin-plugin/README.md)、[実行確認](docs/KOTLIN_PLUGIN.md)
 
 KotlinPluginのIntentから`{id, args?}`を受け取り、サービスIDの`golf-change.read-holder`でゴルフ場ID・ホルダー番号の読み取り画面を開きます。確認用の`home`と、双方向通信を検証する`sample.webview`も利用できます。サービス別のNavigationとViewModelを持ち、引数は`SavedStateHandle`から復元します。[サービス構成と引数](docs/SERVICE_NAVIGATION.md)を参照してください。実際の読み取り・解析・結果返却は未実装です。
+
+## featureだけで開発する
+
+Android Studioで`native/`を開き、`dev-app`のDebugをRunします。Intentサンプルを選ぶと既存MainActivityを起動できます。`npm run dev:build`・`npm run dev:install`も利用できます。[開発・Intentモックの手順](docs/FEATURE_DEVELOPMENT.md)を参照してください。
 
 ## 開発ルール
 
@@ -34,7 +38,7 @@ cordova-native-gradle-workspace/
 │       ├── settings.gradle                Cordovaがビルド時に再生成
 │       ├── cdv-gradle-name.gradle          共有settingsスクリプトへの参照
 │       ├── app/build-extras.gradle         共有appスクリプトへの参照
-│       ├── app/                           唯一のcom.android.application
+│       ├── app/                           Cordova側のcom.android.application
 │       └── CordovaLib/                     Cordova既存Library
 ├── kotlin-plugin/                         Cordovaプラグイン。Gradleファイルは置かない
 │   ├── plugin.xml / package.json           JS・Androidクラス・導入ソースの宣言
@@ -46,6 +50,7 @@ cordova-native-gradle-workspace/
 │   ├── gradle/libs.versions.toml           共有Catalogの管理元
 │   ├── gradle/settings-extras.gradle       CordovaへCatalog・モジュールを登録
 │   ├── gradle/build-extras.gradle          app依存と基盤版の照合
+│   ├── dev-app/                           Cordovaなしでfeatureを実行するDebug APK
 │   ├── feature/build.gradle.kts / src/main/AndroidManifest.xml
 │   ├── data/build.gradle.kts / src/main/AndroidManifest.xml
 │   └── cordova-plugin-dev/build.gradle.kts      プラグイン元ソースの編集・コンパイル設定
@@ -54,12 +59,14 @@ cordova-native-gradle-workspace/
 ```
 
 ```text
+native :dev-app ─implementation─> :feature ─implementation─> :data
+
 Cordova :app ──implementation──> :CordovaLib
              ├implementation──> :feature ──implementation──> :data
              └implementation──> :data
 ```
 
-`feature`・`data`はどちらも`com.android.library`です。`native/app`、LibraryのtargetSdk、追加Launcherはありません。通常の`feature`には確認用の`MainActivity.kt`があります。`data`には通常のKotlinソースがないため、コンパイルタスクは`NO-SOURCE`となります。
+`feature`・`data`はどちらも`com.android.library`です。`native/app`はありません。開発専用の`native/dev-app`が独自のDebugランチャーから同じfeatureを起動します。LibraryへtargetSdkは追加していません。通常の`feature`には確認用の`MainActivity.kt`があります。`data`には通常のKotlinソースがないため、コンパイルタスクは`NO-SOURCE`となります。
 
 Cordovaアプリはplugin.xml経由でKTを導入し、画面とデータ処理は共有Libraryへ依存します。`native/cordova-plugin-dev`は元の`kotlin-plugin/src/android`をsource setへ登録する編集・コンパイル用のAndroid Libraryで、Cordova側のSettingsには登録しません。プラグインクラスがAPKで二重に定義されることを防ぎます。
 
@@ -166,6 +173,8 @@ npm run cordova:run
 | `npm run cordova:prepare` | 設定・Web assets・共有Gradle設定を反映。ビルド・起動は行わない |
 | `npm run cordova:build` | prepareを含めてAndroid APKをビルド。起動は行わない |
 | `npm run cordova:plugin` | プラグインのリンク導入を復元。JS・plugin.xml変更時は`-- --reinstall`を付ける |
+| `npm run dev:build` | 開発専用Debug APKをビルド。Cordovaのprepareは不要 |
+| `npm run dev:install` | 開発専用Debug APKをビルド・インストール |
 | `npm run native:build` | native単独でfeature・data・cordova-plugin-devのDebug AARをビルド |
 | `npm run check:android` | 両ホストの静的解析・整形確認、native単体テスト、Android Lint。起動は行わない |
 | `npm run test:unit` | nativeのfeature・dataでDebug／Releaseの単体テストを実行 |

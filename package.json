@@ -17,6 +17,8 @@
     "test:unit:coverage": "./scripts/with-env.sh ./native/gradlew -p native :feature:createDebugUnitTestCoverageReport :data:createDebugUnitTestCoverageReport",
     "docs:kdoc": "./scripts/with-env.sh ./native/gradlew -p native :dokkaGeneratePublicationHtml",
     "docs:kdoc:cordova": "./scripts/cordova.sh prepare android && ./scripts/with-env.sh ./native/gradlew -p CordovaComposeApp/platforms/android :feature:dokkaGeneratePublicationHtml :data:dokkaGeneratePublicationHtml",
-    "check:android": "./scripts/check-android.sh"
+    "check:android": "./scripts/check-android.sh",
+    "dev:build": "./scripts/with-env.sh ./native/gradlew -p native :dev-app:assembleDebug",
+    "dev:install": "./scripts/with-env.sh ./native/gradlew -p native :dev-app:installDebug"
   }
 }

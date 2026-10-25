@@ -14,7 +14,7 @@ import dev.example.nativefeature.navigation.FeatureLaunchCommand
 import dev.example.nativefeature.navigation.FeatureNavigation
 
 /**
- * Cordovaプラグインからの起動要求を検証し、Navigationへ一度だけ渡すActivity。
+ * ホストからの起動要求を検証し、Navigationへ一度だけ渡すActivity。
  *
  * [onCreate]と[onNewIntent]で同じ起動要求を検証し、処理IDに対応する画面を直接開く。
  * 画面・引数の保存はNavigationと各画面のSavedStateHandleへ任せ、要求JSONは重複保存しない。
@@ -59,7 +59,7 @@ class MainActivity : ComponentActivity() {
         return true
     }
 
-    /** プラグインから処理ID・argsのJSONを受け取るIntentキー。 */
+    /** ホストから処理ID・argsのJSONを受け取るIntentキー。 */
     companion object {
         const val EXTRA_REQUEST = "dev.example.nativefeature.LAUNCH_REQUEST"
     }

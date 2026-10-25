@@ -1,0 +1,19 @@
+<!-- native単独のDebug APKだけに開発用ランチャーとWebView検証用の通信権限を追加する。 -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-permission android:name="android.permission.INTERNET" />
+    <application
+        android:allowBackup="false"
+        android:icon="@android:drawable/ic_menu_manage"
+        android:label="Feature Dev"
+        android:theme="@style/Theme.FeatureDev">
+        <!-- adb・Android Studioからの入口。featureのMainActivityは非公開のまま利用する。 -->
+        <activity
+            android:name=".DevLauncherActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>

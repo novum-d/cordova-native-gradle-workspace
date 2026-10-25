@@ -59,7 +59,7 @@ Kotlin: ボタン → NFC_DETECTED → ReplyProxy.postMessage → JS: NativeBrid
 
 README、仕様・コード概要・サービス起動・プラグイン・Vue連携・事前質問・レビュー・ログ一覧も、実装済み範囲を追記しています。
 
-MainActivityの実装・Manifest・Gradleは変更していません。APKのホストは既存のCordovaComposeApp/platforms/android/appであり、native/appはありません。既存のホストにINTERNET権限、featureにWebKit依存が設定済みです。
+WebMessageサンプル追加時にはMainActivityの実装・Manifest・Gradleを変更していません。この文書の検証APKは既存のCordovaComposeApp/platforms/android/appであり、native/appはありません。後続で追加した[開発専用dev-app](FEATURE_DEVELOPMENT.md)からも同じ画面を起動できます。既存のホストにINTERNET権限、featureにWebKit依存が設定済みです。
 
 ## 接続とライフサイクル
 

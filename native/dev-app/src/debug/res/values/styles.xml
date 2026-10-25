@@ -1,0 +1,6 @@
+<!-- 明るい検証画面でもステータスバーの時刻・アイコンを読めるようにする開発ホスト用テーマ。 -->
+<resources>
+    <style name="Theme.FeatureDev" parent="android:style/Theme.Material.Light.NoActionBar">
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+</resources>

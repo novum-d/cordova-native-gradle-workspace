@@ -1,0 +1,42 @@
+{
+  "uiCases": [
+    {
+      "sample": "golf-holder",
+      "received": true,
+      "backToLauncher": true
+    },
+    {
+      "sample": "golf-omitted-args",
+      "received": true,
+      "backToLauncher": true
+    },
+    {
+      "sample": "golf-structured-args",
+      "received": true,
+      "backToLauncher": true
+    }
+  ],
+  "newIntentReusesFeatureActivity": true,
+  "argsRestoredAfterRotation": true,
+  "invalidRequests": [
+    {
+      "sample": "invalid-id",
+      "rejectedWithoutCrash": true
+    },
+    {
+      "sample": "invalid-args",
+      "rejectedWithoutCrash": true
+    }
+  ],
+  "unknownSampleRejected": true,
+  "standardWebViewWithoutCordova": {
+    "ready": true,
+    "realApi": true,
+    "compose": true,
+    "nfcEvent": true
+  },
+  "coexistsWithCordova": true,
+  "status": "passed",
+  "launcherRotationDoesNotReplayRequest": true,
+  "latestFeatureArgsRestoredAfterProcessDeath": true
+}

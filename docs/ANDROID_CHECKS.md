@@ -25,6 +25,7 @@ npm run check:android
 - nativeのfeature・dataでDebug／Releaseの単体テスト
 - feature・data・CordovaアプリのDebug／Release Android Lint。アプリ側ではCordovaLibを含む依存先もチェック
 - native専用のcordova-plugin-devもDebug／Release Android Lintで確認。以下の過去の件数表には含まれない
+- 後続で追加した[開発専用dev-app](FEATURE_DEVELOPMENT.md)のDebug Android Lint。Release variantは作らず、過去の件数表には含めない
 - `--warning-mode all`によるGradle非推奨警告の表示
 
 アプリのインストール・起動は行いません。エミュレータで起動確認する場合は、別途`npm run cordova:run`を実行します。

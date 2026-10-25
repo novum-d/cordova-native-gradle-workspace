@@ -17,6 +17,7 @@
 | [git-hooks/](git-hooks/README.md) | Git pre-commit・detektの動作確認 | [GIT_HOOKS.md](../GIT_HOOKS.md) |
 | [immutable-collections/](immutable-collections/README.md) | Immutable Collections導入の確認 | [IMMUTABLE_COLLECTIONS.md](../IMMUTABLE_COLLECTIONS.md) |
 | [compose-runtime/](compose-runtime/README.md) | Compose画面のエミュレーター実行 | [COMPOSE_RUNTIME.md](../COMPOSE_RUNTIME.md) |
+| [feature-development/](feature-development/README.md) | Cordovaなしの開発ホスト・Intentモック・Debug限定配置 | [FEATURE_DEVELOPMENT.md](../FEATURE_DEVELOPMENT.md) |
 | [webview-bridge/](webview-bridge/README.md) | WebMessageの双方向通信・再接続・入力拒否とライフサイクル | [WEBVIEW_BRIDGE_SAMPLE.md](../WEBVIEW_BRIDGE_SAMPLE.md) |
 | [intent-routing/](intent-routing/README.md) | サービスID分岐・サービス別Navigation・ViewModelの引数受け取りと復元 | [SERVICE_NAVIGATION.md](../SERVICE_NAVIGATION.md) |
 | [nfc-navigation/](nfc-navigation/README.md) | 導入初期のホーム内サンプル遷移と引数の保存復元 | [SERVICE_NAVIGATION.md](../SERVICE_NAVIGATION.md) |

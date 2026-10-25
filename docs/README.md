@@ -11,6 +11,7 @@
 | [WEB_TEAM_QUESTIONS.md](WEB_TEAM_QUESTIONS.md) | Vue組み込み検証前にWeb側へ共有する質問、業務APIまでの相談事項、他担当との確認事項。 |
 | [WEBVIEW_BRIDGE_SAMPLE.md](WEBVIEW_BRIDGE_SAMPLE.md) | 実装済みの双方向通信サンプル、起動手順、通信契約、検証結果と残る制約。 |
 | [WEBVIEW_BRIDGE_REVIEW.md](WEBVIEW_BRIDGE_REVIEW.md) | WebMessage双方向通信サンプル案のセキュリティ・ライフサイクル・既存構成との整合性レビュー。実装前の提案。 |
+| [FEATURE_DEVELOPMENT.md](FEATURE_DEVELOPMENT.md) | Cordovaなしの開発APK、Android Studioでの実行、Debug限定のIntentサンプル。 |
 | [CODE_OVERVIEW.md](CODE_OVERVIEW.md) | コード・設定の役割とファイル間の連携。 |
 | [DEPENDENCY_VERSION_SELECTION.md](DEPENDENCY_VERSION_SELECTION.md) | 依存ライブラリ・Pluginの採用方針とバージョン選定理由。 |
 | [DEPENDENCIES.md](DEPENDENCIES.md) | 通常依存の配置・共通bundleのapi公開・解決とコンパイルの確認。 |

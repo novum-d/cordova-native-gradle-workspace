@@ -1,0 +1,381 @@
+> Task :dev-app:preBuild UP-TO-DATE
+> Task :dev-app:preDebugBuild UP-TO-DATE
+> Task :dev-app:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :dev-app:checkKotlinGradlePluginConfigurationErrors
+> Task :data:preBuild UP-TO-DATE
+> Task :data:preDebugBuild UP-TO-DATE
+> Task :data:generateDebugResValues UP-TO-DATE
+> Task :data:generateDebugResources UP-TO-DATE
+> Task :data:packageDebugResources UP-TO-DATE
+> Task :data:compileDebugLibraryResources UP-TO-DATE
+> Task :data:parseDebugLocalResources UP-TO-DATE
+> Task :data:generateDebugRFile UP-TO-DATE
+> Task :data:writeDebugAarMetadata UP-TO-DATE
+> Task :feature:preBuild UP-TO-DATE
+> Task :feature:preDebugBuild UP-TO-DATE
+> Task :feature:writeDebugAarMetadata UP-TO-DATE
+> Task :dev-app:checkDebugAarMetadata UP-TO-DATE
+> Task :dev-app:generateDebugResValues UP-TO-DATE
+> Task :feature:generateDebugResValues UP-TO-DATE
+> Task :feature:generateDebugResources UP-TO-DATE
+> Task :feature:packageDebugResources UP-TO-DATE
+> Task :dev-app:mapDebugSourceSetPaths UP-TO-DATE
+> Task :dev-app:generateDebugResources UP-TO-DATE
+> Task :dev-app:mergeDebugResources UP-TO-DATE
+> Task :dev-app:packageDebugResources UP-TO-DATE
+> Task :dev-app:parseDebugLocalResources UP-TO-DATE
+> Task :dev-app:createDebugCompatibleScreenManifests UP-TO-DATE
+> Task :data:extractDeepLinksDebug UP-TO-DATE
+> Task :data:processDebugManifest UP-TO-DATE
+> Task :dev-app:extractDeepLinksDebug UP-TO-DATE
+> Task :feature:extractDeepLinksDebug UP-TO-DATE
+> Task :feature:processDebugManifest UP-TO-DATE
+> Task :dev-app:processDebugMainManifest
+> Task :dev-app:processDebugManifest
+> Task :feature:compileDebugLibraryResources UP-TO-DATE
+> Task :feature:parseDebugLocalResources UP-TO-DATE
+> Task :feature:generateDebugRFile UP-TO-DATE
+> Task :data:checkKotlinGradlePluginConfigurationErrors
+> Task :data:kspDebugKotlin NO-SOURCE
+> Task :data:compileDebugKotlin NO-SOURCE
+> Task :data:javaPreCompileDebug UP-TO-DATE
+> Task :data:compileDebugJavaWithJavac NO-SOURCE
+> Task :data:transformDebugClassesWithAsm UP-TO-DATE
+> Task :data:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :data:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :feature:checkKotlinGradlePluginConfigurationErrors
+> Task :feature:kspDebugKotlin UP-TO-DATE
+> Task :feature:compileDebugKotlin UP-TO-DATE
+> Task :feature:javaPreCompileDebug UP-TO-DATE
+> Task :feature:compileDebugJavaWithJavac NO-SOURCE
+> Task :feature:transformDebugClassesWithAsm UP-TO-DATE
+> Task :feature:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :dev-app:javaPreCompileDebug UP-TO-DATE
+> Task :data:mergeDebugShaders UP-TO-DATE
+> Task :data:compileDebugShaders NO-SOURCE
+> Task :data:generateDebugAssets UP-TO-DATE
+> Task :data:packageDebugAssets UP-TO-DATE
+> Task :dev-app:mergeDebugShaders UP-TO-DATE
+> Task :dev-app:processDebugManifestForPackage
+> Task :dev-app:compileDebugShaders NO-SOURCE
+> Task :dev-app:generateDebugAssets UP-TO-DATE
+> Task :feature:mergeDebugShaders UP-TO-DATE
+> Task :feature:compileDebugShaders NO-SOURCE
+> Task :feature:generateDebugAssets UP-TO-DATE
+> Task :feature:packageDebugAssets UP-TO-DATE
+> Task :dev-app:mergeDebugAssets UP-TO-DATE
+> Task :dev-app:compressDebugAssets UP-TO-DATE
+> Task :data:processDebugJavaRes NO-SOURCE
+> Task :feature:processDebugJavaRes UP-TO-DATE
+> Task :dev-app:checkDebugDuplicateClasses UP-TO-DATE
+> Task :dev-app:desugarDebugFileDependencies UP-TO-DATE
+> Task :dev-app:mergeExtDexDebug UP-TO-DATE
+> Task :feature:bundleLibRuntimeToDirDebug UP-TO-DATE
+> Task :data:bundleLibRuntimeToDirDebug UP-TO-DATE
+> Task :data:mergeDebugJniLibFolders UP-TO-DATE
+> Task :dev-app:mergeLibDexDebug UP-TO-DATE
+> Task :data:mergeDebugNativeLibs NO-SOURCE
+> Task :data:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :dev-app:mergeDebugJniLibFolders UP-TO-DATE
+> Task :feature:mergeDebugJniLibFolders UP-TO-DATE
+> Task :feature:mergeDebugNativeLibs NO-SOURCE
+> Task :feature:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :dev-app:mergeDebugNativeLibs UP-TO-DATE
+> Task :dev-app:stripDebugDebugSymbols UP-TO-DATE
+> Task :dev-app:validateSigningDebug UP-TO-DATE
+> Task :dev-app:writeDebugAppMetadata UP-TO-DATE
+> Task :dev-app:writeDebugSigningConfigVersions UP-TO-DATE
+> Task :data:stripDebugDebugSymbols NO-SOURCE
+> Task :data:copyDebugJniLibsProjectAndLocalJars UP-TO-DATE
+> Task :data:extractDebugAnnotations UP-TO-DATE
+> Task :data:extractDeepLinksForAarDebug UP-TO-DATE
+> Task :data:mergeDebugGeneratedProguardFiles UP-TO-DATE
+> Task :data:mergeDebugConsumerProguardFiles UP-TO-DATE
+> Task :data:prepareDebugArtProfile UP-TO-DATE
+> Task :data:prepareLintJarForPublish UP-TO-DATE
+> Task :data:mergeDebugJavaResource UP-TO-DATE
+> Task :data:syncDebugLibJars UP-TO-DATE
+> Task :data:bundleDebugLocalLintAar UP-TO-DATE
+> Task :data:createFullJarDebug UP-TO-DATE
+> Task :data:preDebugAndroidTestBuild UP-TO-DATE
+> Task :data:generateDebugAndroidTestResValues UP-TO-DATE
+> Task :data:writeDebugLintModelMetadata
+> Task :data:generateDebugAndroidTestLintModel
+> Task :data:extractProguardFiles UP-TO-DATE
+> Task :data:generateDebugLintModel
+> Task :data:preDebugUnitTestBuild UP-TO-DATE
+> Task :data:generateDebugUnitTestLintModel
+> Task :data:lintAnalyzeDebug UP-TO-DATE
+> Task :data:lintAnalyzeDebugAndroidTest UP-TO-DATE
+> Task :data:lintAnalyzeDebugUnitTest UP-TO-DATE
+> Task :feature:stripDebugDebugSymbols NO-SOURCE
+> Task :feature:copyDebugJniLibsProjectAndLocalJars UP-TO-DATE
+> Task :feature:extractDebugAnnotations UP-TO-DATE
+> Task :feature:extractDeepLinksForAarDebug UP-TO-DATE
+> Task :feature:mergeDebugGeneratedProguardFiles UP-TO-DATE
+> Task :feature:mergeDebugConsumerProguardFiles UP-TO-DATE
+> Task :feature:prepareDebugArtProfile UP-TO-DATE
+> Task :feature:prepareLintJarForPublish UP-TO-DATE
+> Task :feature:mergeDebugJavaResource UP-TO-DATE
+> Task :feature:syncDebugLibJars
+> Task :feature:bundleDebugLocalLintAar
+> Task :dev-app:preDebugAndroidTestBuild SKIPPED
+> Task :dev-app:generateDebugAndroidTestResValues UP-TO-DATE
+> Task :feature:writeDebugLintModelMetadata
+> Task :dev-app:extractProguardFiles UP-TO-DATE
+> Task :feature:extractProguardFiles UP-TO-DATE
+> Task :feature:bundleLibRuntimeToJarDebug
+> Task :dev-app:processDebugResources
+> Task :feature:generateDebugLintModel
+> Task :dev-app:compileDebugKotlin UP-TO-DATE
+> Task :dev-app:compileDebugJavaWithJavac NO-SOURCE
+> Task :dev-app:processDebugJavaRes UP-TO-DATE
+> Task :dev-app:mergeDebugJavaResource UP-TO-DATE
+> Task :dev-app:dexBuilderDebug UP-TO-DATE
+> Task :dev-app:mergeProjectDexDebug UP-TO-DATE
+> Task :feature:createFullJarDebug
+> Task :dev-app:bundleDebugClassesToCompileJar
+> Task :dev-app:generateDebugLintReportModel
+> Task :dev-app:generateDebugAndroidTestLintModel
+> Task :dev-app:preDebugUnitTestBuild UP-TO-DATE
+> Task :dev-app:generateDebugUnitTestLintModel
+> Task :feature:preDebugAndroidTestBuild UP-TO-DATE
+> Task :feature:generateDebugAndroidTestResValues UP-TO-DATE
+> Task :feature:generateDebugAndroidTestLintModel
+> Task :feature:preDebugUnitTestBuild UP-TO-DATE
+> Task :feature:generateDebugUnitTestLintModel
+
+> Task :dev-app:tasks
+
+------------------------------------------------------------
+Tasks runnable from project ':dev-app'
+------------------------------------------------------------
+
+Android tasks
+-------------
+androidDependencies - Displays the Android dependencies of the project.
+signingReport - Displays the signing info for the base and test modules
+sourceSets - Prints out all the source sets defined in this project.
+
+Build tasks
+-----------
+assemble - Assemble main outputs for all the variants.
+assembleAndroidTest - Assembles all the Test applications.
+assembleUnitTest - Assembles all the unit test applications.
+build - Assembles and tests this project.
+buildDependents - Assembles and tests this project and all projects that depend on it.
+buildKotlinToolingMetadata - Build metadata json file containing information about the used Kotlin tooling
+buildNeeded - Assembles and tests this project and all projects it depends on.
+bundle - Assemble bundles for all the variants.
+clean - Deletes the build directory.
+compileDebugAndroidTestSources
+compileDebugSources
+compileDebugUnitTestSources
+
+Help tasks
+----------
+artifactTransforms - Displays the Artifact Transforms that can be executed in project ':dev-app'.
+buildEnvironment - Displays all buildscript dependencies declared in project ':dev-app'.
+dependencies - Displays all dependencies declared in project ':dev-app'.
+dependencyInsight - Displays the insight into a specific dependency in project ':dev-app'.
+help - Displays a help message.
+javaToolchains - Displays the detected java toolchains.
+kotlinDslAccessorsReport - Prints the Kotlin code for accessing the currently available project extensions and conventions.
+outgoingVariants - Displays the outgoing variants of project ':dev-app'.
+projects - Displays the sub-projects of project ':dev-app'.
+properties - Displays the properties of project ':dev-app'.
+resolvableConfigurations - Displays the configurations that can be resolved in project ':dev-app'.
+tasks - Displays the tasks runnable from project ':dev-app'.
+
+Install tasks
+-------------
+installDebug - Installs the Debug build.
+installDebugAndroidTest - Installs the android (on device) tests for the Debug build.
+uninstallAll - Uninstall all applications.
+uninstallDebug - Uninstalls the Debug build.
+uninstallDebugAndroidTest - Uninstalls the android (on device) tests for the Debug build.
+
+Verification tasks
+------------------
+check - Runs all checks.
+checkJetifier - Checks whether Jetifier is needed for the current project
+checkKotlinGradlePluginConfigurationErrors - Checks that Kotlin Gradle Plugin hasn't reported project configuration errors, failing otherwise. This task always runs before compileKotlin* or similar tasks.
+connectedAndroidTest - Installs and runs instrumentation tests for all flavors on connected devices.
+connectedCheck - Runs all device checks on currently connected devices.
+connectedDebugAndroidTest - Installs and runs the tests for debug on connected devices.
+deviceAndroidTest - Installs and runs instrumentation tests using all Device Providers.
+deviceCheck - Runs all device checks using Device Providers and Test Servers.
+lint - Runs lint on the default variant.
+lintDebug - Print text output from the corresponding lint report task
+lintFix - Runs lint on the default variant and applies any safe suggestions to the source code.
+test - Run unit tests for all variants.
+testDebugUnitTest - Run unit tests for the debug build.
+updateLintBaseline - Updates the lint baseline using the default variant.
+
+Other tasks
+-----------
+analyzeDebugAndroidTestDependencies
+analyzeDebugDependencies
+analyzeDebugUnitTestDependencies
+asarToCompatSplitsForDebug
+assembleDebug - Assembles main output for variant debug
+assembleDebugAndroidTest - Assembles main output for variant debugAndroidTest
+assembleDebugUnitTest - Assembles main output for variant debugUnitTest
+buildDebugPreBundle
+bundleDebug - Assembles bundle for variant debug
+bundleDebugClassesToCompileJar
+bundleDebugClassesToRuntimeJar
+bundleDebugResources
+checkDebugAarMetadata
+checkDebugAndroidTestAarMetadata
+checkDebugAndroidTestDuplicateClasses
+checkDebugDuplicateClasses
+checkDebugManifest
+compileDebugAndroidTestJavaWithJavac
+compileDebugAndroidTestKotlin - Compiles the debugAndroidTest kotlin.
+compileDebugAndroidTestShaders
+compileDebugArtProfile
+compileDebugJavaWithJavac
+compileDebugKotlin - Compiles the debug kotlin.
+compileDebugShaders
+compileDebugUnitTestJavaWithJavac
+compileDebugUnitTestKotlin - Compiles the debugUnitTest kotlin.
+compileLint
+compileLintChecks
+components - Displays the components produced by project ':dev-app'. [deprecated]
+compressDebugAndroidTestAssets
+compressDebugAssets
+consumeConfigAttr
+createDebugAndroidTestApkListingFileRedirect
+createDebugApkListingFileRedirect
+createDebugApksFromBundleListingFileRedirect
+createDebugBundleListingFileRedirect
+createDebugCompatibleScreenManifests
+createMockableJar
+dependentComponents - Displays the dependent components of components in project ':dev-app'. [deprecated]
+desugarDebugAndroidTestFileDependencies
+desugarDebugFileDependencies
+dexBuilderDebug
+dexBuilderDebugAndroidTest
+extractApksForDebug
+extractApksFromBundleForDebug
+extractDebugNativeDebugMetadata
+extractDebugNativeSymbolTables
+extractDeepLinksDebug
+extractProguardFiles
+generateDebugAndroidTestAssets
+generateDebugAndroidTestLintModel
+generateDebugAndroidTestResources
+generateDebugAndroidTestResValues
+generateDebugAndroidTestSources
+generateDebugAssets
+generateDebugFeatureMetadata
+generateDebugFeatureTransitiveDeps
+generateDebugLintModel
+generateDebugLintReportModel
+generateDebugManifestClass
+generateDebugResources
+generateDebugResValues
+generateDebugSources
+generateDebugUnitTestAssets
+generateDebugUnitTestLintModel
+generateDebugUnitTestResources
+generateDebugUnitTestSources
+javaPreCompileDebug
+javaPreCompileDebugAndroidTest
+javaPreCompileDebugUnitTest
+lintAnalyzeDebug - Run lint analysis on the debug component
+lintAnalyzeDebugAndroidTest - Run lint analysis on the debugAndroidTest component
+lintAnalyzeDebugUnitTest - Run lint analysis on the debugUnitTest component
+lintFixDebug - Fix lint on the debug variant
+lintReportDebug - Run lint on the debug variant
+makeApkFromBundleForDebug
+mapDebugAndroidTestSourceSetPaths
+mapDebugSourceSetPaths
+mergeDebugAndroidTestAssets
+mergeDebugAndroidTestGeneratedProguardFiles
+mergeDebugAndroidTestJavaResource
+mergeDebugAndroidTestJniLibFolders
+mergeDebugAndroidTestNativeLibs
+mergeDebugAndroidTestResources
+mergeDebugAndroidTestShaders
+mergeDebugArtProfile
+mergeDebugAssets
+mergeDebugGeneratedProguardFiles
+mergeDebugJavaResource
+mergeDebugJniLibFolders
+mergeDebugNativeDebugMetadata
+mergeDebugNativeLibs
+mergeDebugResources
+mergeDebugShaders
+mergeDebugStartupProfile
+mergeExtDexDebug
+mergeExtDexDebugAndroidTest
+mergeLibDexDebug
+mergeLibDexDebugAndroidTest
+mergeProjectDexDebug
+mergeProjectDexDebugAndroidTest
+model - Displays the configuration model of project ':dev-app'. [deprecated]
+packageDebug
+packageDebugAndroidTest
+packageDebugBundle
+packageDebugResources
+packageDebugUniversalApk
+parseDebugIntegrityConfig
+parseDebugLocalResources
+preBuild
+preDebugAndroidTestBuild
+preDebugBuild
+preDebugUnitTestBuild
+prepareLintJarForPublish
+processApplicationManifestDebugForBundle
+processDebugAndroidTestJavaRes
+processDebugAndroidTestManifest
+processDebugAndroidTestResources
+processDebugJavaRes
+processDebugMainManifest
+processDebugManifest
+processDebugManifestForInstantApp
+processDebugManifestForPackage
+processDebugResources
+processDebugUnitTestJavaRes
+processManifestDebugForFeature
+produceDebugBundleIdeListingFile
+resolveConfigAttr
+signDebugBundle
+signingConfigWriterDebug
+signingConfigWriterDebugAndroidTest
+stripDebugAndroidTestDebugSymbols
+stripDebugDebugSymbols
+updateLintBaselineDebug - Update the lint baseline using the debug variant
+validateSigningDebug
+validateSigningDebugAndroidTest
+writeDebugAndroidTestSigningConfigVersions
+writeDebugApplicationId
+writeDebugAppMetadata
+writeDebugModuleMetadata
+writeDebugSigningConfigVersions
+zipApksForDebug
+
+Rules
+-----
+Pattern: clean<TaskName>: Cleans the output files of a task.
+Pattern: build<ConfigurationName>: Assembles the artifacts of a configuration.
+
+> Task :dev-app:packageDebug
+> Task :dev-app:createDebugApkListingFileRedirect UP-TO-DATE
+> Task :dev-app:assembleDebug
+> Task :dev-app:lintAnalyzeDebugUnitTest
+> Task :dev-app:lintAnalyzeDebugAndroidTest
+> Task :feature:lintAnalyzeDebugAndroidTest
+> Task :feature:lintAnalyzeDebugUnitTest
+> Task :feature:lintAnalyzeDebug
+> Task :dev-app:lintAnalyzeDebug
+
+> Task :dev-app:lintReportDebug
+Wrote HTML report to file:///Users/novumd/repos/cordova-native-gradle-workspace/native/dev-app/build/reports/lint-results-debug.html
+
+> Task :dev-app:lintDebug
+
+BUILD SUCCESSFUL in 2s
+128 actionable tasks: 33 executed, 95 up-to-date
