@@ -9,10 +9,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import dagger.hilt.android.AndroidEntryPoint
+import dev.example.nativedata.nfc.NfcReaderModeController
 import dev.example.nativefeature.launch.FeatureLaunchRequest
 import dev.example.nativefeature.navigation.FeatureLaunchCommand
 import dev.example.nativefeature.navigation.FeatureNavigation
 import timber.log.Timber
+import javax.inject.Inject
 
 /**
  * ホストからの起動要求を検証し、Navigationへ一度だけ渡すHiltの注入入口となるActivity。
@@ -22,7 +24,15 @@ import timber.log.Timber
  */
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    /** Androidの検出ホストだけを制御し、業務の読み取りは画面のユースケースへ任せる。 */
+    private var nfcReaderMode: NfcReaderModeController? = null
     private var pendingCommand by mutableStateOf<FeatureLaunchCommand?>(null)
+
+    /** Activityの生成後、onResume前にHiltから検出ホストを受け取る。 */
+    @Inject
+    fun attachNfcReaderMode(controller: NfcReaderModeController) {
+        nfcReaderMode = controller
+    }
 
     /** 初回だけIntentを渡す。再生成時はNavigationの復元を優先し、古いIntentを再実行しない。 */
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,6 +49,18 @@ class MainActivity : ComponentActivity() {
                 )
             }
         }
+    }
+
+    /** 前面表示中だけ、購読中の汎用タグ検出要求をAndroidへ接続する。 */
+    override fun onResume() {
+        super.onResume()
+        requireNotNull(nfcReaderMode).resume(this)
+    }
+
+    /** 画面が背面へ移ると検出を解除する。 */
+    override fun onPause() {
+        requireNotNull(nfcReaderMode).pause()
+        super.onPause()
     }
 
     /** singleTopによる再利用時も、Intentを更新して新しい要求を同じ検証経路へ渡す。 */

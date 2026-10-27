@@ -7,6 +7,9 @@ interface NfcReadFailure {
     val cause: Throwable? get() = null
 }
 
+/** 検出購読の終了などによって、読取対象としての有効期間が終わった参照。 */
+interface NfcTargetExpired : NfcReadFailure
+
 /** 今回の読取対象でないタグ。FeliCa・MIFARE・SLIXなどの読取処理は実行しない。 */
 interface NfcUnsupportedTag : NfcReadFailure
 
@@ -45,6 +48,7 @@ interface NfcAccessDenied : NfcReadFailure {
  * featureが実装するFactoryをdataへ渡すことで、dataからfeatureへの逆依存を避ける。
  */
 interface NfcReadFailureFactory<out E : NfcReadFailure> {
+    fun targetExpired(): E
     fun unsupportedTag(): E
     fun invalidRange(range: NfcMemoryRange): E
     fun tagLost(cause: IOException): E

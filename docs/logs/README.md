@@ -12,6 +12,8 @@
 | [build-integration/](build-integration/README.md) | native・Cordovaのビルドと構成 | [VALIDATION.md](../VALIDATION.md) |
 | [regeneration/](regeneration/README.md) | Cordova platform再生成・設定復元hook | [VALIDATION.md](../VALIDATION.md) |
 | [dependencies/](dependencies/README.md) | 依存関係の追加・解決・コンパイル | [DEPENDENCIES.md](../DEPENDENCIES.md) |
+| [nfc-profile/](nfc-profile/README.md) | 型番Profileからの通信方式・メモリ構成の解決、範囲・応答検査と両ホストの確認 | [NFC_READER_DESIGN.md](../NFC_READER_DESIGN.md) |
+| [nfc-detection/](nfc-detection/README.md) | 汎用タグ検出・業務Repository・同じカードの2項目取得と画面接続 | [NFC_READER_DESIGN.md](../NFC_READER_DESIGN.md) |
 | [nfc-reading/](nfc-reading/README.md) | ICODE SLI分類・座標読取・ゴルフ場番号とホルダー番号の単体テスト、両ホストのビルド | [NFC_READING.md](../NFC_READING.md) |
 | [hilt/](hilt/README.md) | 両ホストのHilt初期化・ViewModel生成と引数復元 | [HILT.md](../HILT.md) |
 | [logging/](logging/README.md) | Timberの両ホスト初期化・Debug／Releaseの出力確認 | [LOGGING.md](../LOGGING.md) |

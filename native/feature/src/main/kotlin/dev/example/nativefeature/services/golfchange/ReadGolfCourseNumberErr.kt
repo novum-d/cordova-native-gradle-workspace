@@ -9,6 +9,7 @@ import dev.example.nativedata.nfc.NfcReadFailure
 import dev.example.nativedata.nfc.NfcReadFailureFactory
 import dev.example.nativedata.nfc.NfcResponseFormat
 import dev.example.nativedata.nfc.NfcTagLost
+import dev.example.nativedata.nfc.NfcTargetExpired
 import dev.example.nativedata.nfc.NfcUnsupportedTag
 import java.io.IOException
 
@@ -16,6 +17,9 @@ import java.io.IOException
 sealed interface ReadGolfCourseNumberErr {
     /** NFC読み取りで発生した失敗。共通interfaceでも同じ具体値を扱える。 */
     sealed interface NfcRead : ReadGolfCourseNumberErr, NfcReadFailure {
+        /** 購読が終了した、または次の検出へ進んだ古い対象。 */
+        data object TargetExpired : NfcRead, NfcTargetExpired
+
         /** 今回の読取対象でないタグ。 */
         data object UnsupportedTag : NfcRead, NfcUnsupportedTag
 
@@ -39,6 +43,7 @@ sealed interface ReadGolfCourseNumberErr {
 
         /** Readerがこのユースケースの具体型を直接生成するためのFactory。 */
         companion object : NfcReadFailureFactory<NfcRead> {
+            override fun targetExpired() = TargetExpired
             override fun unsupportedTag() = UnsupportedTag
             override fun invalidRange(range: NfcMemoryRange) = InvalidRange(range)
             override fun tagLost(cause: IOException) = TagLost(cause)

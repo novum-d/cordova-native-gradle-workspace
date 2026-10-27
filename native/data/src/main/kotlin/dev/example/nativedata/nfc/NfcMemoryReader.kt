@@ -1,6 +1,5 @@
 package dev.example.nativedata.nfc
 
-import android.nfc.TagLostException
 import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
@@ -14,44 +13,56 @@ import com.github.michaelbull.result.runCatching
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.withContext
-import java.io.IOException
-import java.util.concurrent.CancellationException
 import javax.inject.Inject
 import kotlin.coroutines.coroutineContext
 
 /**
- * ICODE SLIの必要ブロックだけを読み、指定された連続バイト列を返す。値の解釈や2バイト分割は行わない。
+ * Repositoryが選んだ型番Profileから通信手順・ブロック幅を決め、要求範囲の生バイトを返す。
+ * 現在の通信実装はISO 15693のAddressed Single Block READのみ。
  * 1呼び出しごとに接続し、成功・失敗・キャンセルのいずれでも、取得した接続を一度だけ閉じる。
  */
-class IcodeSliMemoryReader @Inject constructor() {
+internal class NfcMemoryReader @Inject constructor() {
     /**
-     * 0始まり・終了を含む範囲を読む。AndroidのTagはAndroidNfcTagAccessで包んで渡す。
+     * 0始まり・終了を含む範囲を読む。Profileと実タグのモデル・Android技術の整合も確認する。
      * ブロッキングI/OはDispatchers.IOで行い、キャンセルは結果型へ変換せず伝播する。
      */
     suspend fun <E : NfcReadFailure> read(
         tag: NfcTagAccess,
+        profile: NfcTagProfile,
         range: NfcMemoryRange,
         failures: NfcReadFailureFactory<E>,
     ): Result<ByteArray, E> = withContext(Dispatchers.IO) {
-        if (!range.isWithinIcodeSli()) {
+        if (!range.isWithin(profile.memory) || range.endInclusive.blockNumber > 0xFF) {
             return@withContext Err(failures.invalidRange(range))
         }
         nfcCall(failures) {
             val uid = tag.uid.copyOf()
-            if (classifyNfcTag(uid, tag.technologies) == NfcTagType.ICODE_SLI) uid else null
+            val actual = identifyNfcTagProfile(uid, tag.technologies)
+            if (actual?.model == profile.model && actual.protocol == profile.protocol) uid else null
         }.andThen { uid ->
             if (uid == null) {
                 Err(failures.unsupportedTag())
             } else {
-                nfcCall(failures) { tag.openNfcV() }.andThen { connection ->
-                    if (connection == null) {
-                        Err(failures.unsupportedTag())
-                    } else {
-                        useConnection(connection, failures) {
-                            readConnected(connection, uid, range, failures)
-                        }
-                    }
+                when (profile.protocol) {
+                    NfcReadProtocol.ISO_15693 -> readIso15693(tag, uid, profile.memory, range, failures)
                 }
+            }
+        }
+    }
+
+    /** 接続APIとコマンドの組合せを通信方式の分岐内に閉じ、接続の解放を一度だけ行う。 */
+    private suspend fun <E : NfcReadFailure> readIso15693(
+        tag: NfcTagAccess,
+        uid: ByteArray,
+        memory: NfcBlockMemory,
+        range: NfcMemoryRange,
+        failures: NfcReadFailureFactory<E>,
+    ): Result<ByteArray, E> = nfcCall(failures) { tag.openNfcV() }.andThen { connection ->
+        if (connection == null) {
+            Err(failures.unsupportedTag())
+        } else {
+            useConnection(connection, failures) {
+                readConnected(connection, uid, memory, range, failures)
             }
         }
     }
@@ -60,6 +71,7 @@ class IcodeSliMemoryReader @Inject constructor() {
     private suspend fun <E : NfcReadFailure> readConnected(
         connection: NfcVConnection,
         uid: ByteArray,
+        geometry: NfcBlockMemory,
         range: NfcMemoryRange,
         failures: NfcReadFailureFactory<E>,
     ): Result<ByteArray, E> {
@@ -67,7 +79,7 @@ class IcodeSliMemoryReader @Inject constructor() {
         return binding {
             context.ensureActive()
             nfcCall(failures) { connection.connect() }.bind()
-            val memory = ByteArray(range.byteCount)
+            val memory = ByteArray(range.byteCount(geometry))
             var written = 0
             for (block in range.start.blockNumber..range.endInclusive.blockNumber) {
                 context.ensureActive()
@@ -75,9 +87,13 @@ class IcodeSliMemoryReader @Inject constructor() {
                 // NFCAppの非Addressed READ（02 20 block）から対象指定を追加。CRCはAndroid側で付加される。
                 val request = byteArrayOf(0x22, 0x20) + uid + block.toByte()
                 val response = nfcCall(failures) { connection.transceive(request) }.bind()
-                val bytes = readBlockData(response, failures).bind()
+                val bytes = readBlockData(response, geometry.bytesPerBlock, failures).bind()
                 val from = if (block == range.start.blockNumber) range.start.byteOffset else 0
-                val until = if (block == range.endInclusive.blockNumber) range.endInclusive.byteOffset + 1 else 4
+                val until = if (block == range.endInclusive.blockNumber) {
+                    range.endInclusive.byteOffset + 1
+                } else {
+                    geometry.bytesPerBlock
+                }
                 bytes.copyInto(memory, destinationOffset = written, startIndex = from, endIndex = until)
                 written += until - from
             }
@@ -86,9 +102,10 @@ class IcodeSliMemoryReader @Inject constructor() {
     }
 }
 
-/** Optionなし応答のFlagsを検査し、4バイトのブロックデータだけを返す。 */
+/** Optionなし応答のFlagsとProfile由来のブロック幅を検査し、データだけを返す。 */
 private fun <E : NfcReadFailure> readBlockData(
     response: ByteArray,
+    bytesPerBlock: Int,
     failures: NfcReadFailureFactory<E>,
 ): Result<ByteArray, E> = when {
     response.isEmpty() -> Err(failures.responseFormat("Empty Read Single Block response"))
@@ -98,26 +115,9 @@ private fun <E : NfcReadFailure> readBlockData(
         } else {
             Err(failures.responseFormat("Expected response flags and one error code byte"))
         }
-    response.size != 5 -> Err(failures.responseFormat("Expected response flags and four data bytes"))
-    else -> Ok(response.copyOfRange(1, 5))
-}
-
-/** I/O例外だけを呼び出し元の具体型へする。キャンセル・JVM Error・予期しない実装例外は伝播する。 */
-private inline fun <T, E : NfcReadFailure> nfcCall(
-    failures: NfcReadFailureFactory<E>,
-    operation: () -> T,
-): Result<T, E> = runCatching(operation).mapError { cause -> nfcFailure(cause, failures) }
-
-/** TagLostはIOExceptionより先に分類し、プログラムの不具合を通信エラーへ隠さない。 */
-private fun <E : NfcReadFailure> nfcFailure(
-    cause: Throwable,
-    failures: NfcReadFailureFactory<E>,
-): E = when (cause) {
-    is CancellationException -> throw cause
-    is TagLostException -> failures.tagLost(cause)
-    is IOException -> failures.communication(cause)
-    is SecurityException -> failures.accessDenied(cause)
-    else -> throw cause
+    response.size != bytesPerBlock + 1 ->
+        Err(failures.responseFormat("Expected response flags and $bytesPerBlock data bytes"))
+    else -> Ok(response.copyOfRange(1, response.size))
 }
 
 /** connect途中の失敗でもcloseし、closeの失敗で先に発生した読取エラーやキャンセルを上書きしない。 */

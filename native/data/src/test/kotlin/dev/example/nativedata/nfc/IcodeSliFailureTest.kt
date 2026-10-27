@@ -13,7 +13,8 @@ import java.util.concurrent.CancellationException
 
 /** 不正応答・I/O・取消時に部分結果を返さず、接続を解放して原因を保持する。 */
 class IcodeSliFailureTest {
-    private val reader = IcodeSliMemoryReader()
+    private val reader = NfcMemoryReader()
+    private val profile = NfcTagProfiles.icodeSli
     private val range = NfcMemoryRange(NfcMemoryPosition(1, 2), NfcMemoryPosition(4, 3))
 
     /** Flagsのない空応答と、データ不足・過剰の正常応答を拒否する。 */
@@ -21,7 +22,10 @@ class IcodeSliFailureTest {
     fun rejectsEmptyShortAndOversizedResponses() = runTest {
         for (response in listOf(byteArrayOf(), byteArrayOf(0), ByteArray(4), ByteArray(6))) {
             val tag = FakeNfcTag().apply { respond = { response } }
-            assertEquals(FailureKind.RESPONSE_FORMAT, reader.read(tag, range, TestNfcFailures).unwrapError().kind)
+            assertEquals(
+                FailureKind.RESPONSE_FORMAT,
+                reader.read(tag, profile, range, TestNfcFailures).unwrapError().kind,
+            )
             assertEquals(1, tag.requests.size)
             assertEquals(1, tag.closeCount)
         }
@@ -31,7 +35,7 @@ class IcodeSliFailureTest {
     @Test
     fun returnsTagRejectionCodeInsteadOfMemoryBytes() = runTest {
         val tag = FakeNfcTag().apply { respond = { byteArrayOf(1, 0xA3.toByte()) } }
-        val failure = reader.read(tag, range, TestNfcFailures).unwrapError()
+        val failure = reader.read(tag, profile, range, TestNfcFailures).unwrapError()
 
         assertEquals(FailureKind.REJECTED, failure.kind)
         assertEquals(0xA3, failure.code)
@@ -43,7 +47,10 @@ class IcodeSliFailureTest {
     fun rejectsMalformedErrorResponses() = runTest {
         for (response in listOf(byteArrayOf(1), byteArrayOf(1, 2, 3))) {
             val tag = FakeNfcTag().apply { respond = { response } }
-            assertEquals(FailureKind.RESPONSE_FORMAT, reader.read(tag, range, TestNfcFailures).unwrapError().kind)
+            assertEquals(
+                FailureKind.RESPONSE_FORMAT,
+                reader.read(tag, profile, range, TestNfcFailures).unwrapError().kind,
+            )
             assertEquals(1, tag.closeCount)
         }
     }
@@ -53,7 +60,7 @@ class IcodeSliFailureTest {
     fun closesConnectionWhenConnectFails() = runTest {
         val cause = IOException("connect")
         val tag = FakeNfcTag().apply { connectFailure = cause }
-        val failure = reader.read(tag, range, TestNfcFailures).unwrapError()
+        val failure = reader.read(tag, profile, range, TestNfcFailures).unwrapError()
 
         assertEquals(FailureKind.COMMUNICATION, failure.kind)
         assertSame(cause, failure.cause)
@@ -68,7 +75,7 @@ class IcodeSliFailureTest {
         val tag = FakeNfcTag().apply {
             respond = { block -> if (block == 2) throw cause else ByteArray(5) }
         }
-        val failure = reader.read(tag, range, TestNfcFailures).unwrapError()
+        val failure = reader.read(tag, profile, range, TestNfcFailures).unwrapError()
 
         assertSame(cause, failure.cause)
         assertEquals(listOf(1, 2), tag.requests.map { it.last().toInt() })
@@ -81,7 +88,7 @@ class IcodeSliFailureTest {
         val cause = IOException("close")
         val tag = FakeNfcTag().apply { closeFailure = cause }
 
-        assertSame(cause, reader.read(tag, range, TestNfcFailures).unwrapError().cause)
+        assertSame(cause, reader.read(tag, profile, range, TestNfcFailures).unwrapError().cause)
         assertEquals(1, tag.closeCount)
     }
 
@@ -95,7 +102,7 @@ class IcodeSliFailureTest {
             closeFailure = closeCause
         }
 
-        assertSame(readCause, reader.read(tag, range, TestNfcFailures).unwrapError().cause)
+        assertSame(readCause, reader.read(tag, profile, range, TestNfcFailures).unwrapError().cause)
         assertSame(closeCause, readCause.suppressed.single())
         assertEquals(1, tag.closeCount)
     }
@@ -108,7 +115,7 @@ class IcodeSliFailureTest {
             closeFailure = IOException("close")
         }
 
-        assertEquals(FailureKind.RESPONSE_FORMAT, reader.read(tag, range, TestNfcFailures).unwrapError().kind)
+        assertEquals(FailureKind.RESPONSE_FORMAT, reader.read(tag, profile, range, TestNfcFailures).unwrapError().kind)
     }
 
     /** 先に返す読取失敗がある場合、close側の予期しない失敗でも置き換えない。 */
@@ -121,7 +128,7 @@ class IcodeSliFailureTest {
             closeFailure = closeCause
         }
 
-        assertSame(cause, reader.read(tag, range, TestNfcFailures).unwrapError().cause)
+        assertSame(cause, reader.read(tag, profile, range, TestNfcFailures).unwrapError().cause)
         assertSame(closeCause, cause.suppressed.single())
     }
 
@@ -130,7 +137,7 @@ class IcodeSliFailureTest {
     fun propagatesCancellationAndClosesConnection() = runTest {
         val cause = CancellationException("cancel")
         val tag = FakeNfcTag().apply { respond = { throw cause } }
-        val thrown = kotlin.runCatching { reader.read(tag, range, TestNfcFailures) }.exceptionOrNull()
+        val thrown = kotlin.runCatching { reader.read(tag, profile, range, TestNfcFailures) }.exceptionOrNull()
 
         assertTrue(thrown is CancellationException)
         // コルーチンのスタックトレース復元で例外が複製されても、元の原因を保持していること。
@@ -143,7 +150,7 @@ class IcodeSliFailureTest {
     fun propagatesFatalErrorAndClosesConnection() = runTest {
         val cause = AssertionError("fatal")
         val tag = FakeNfcTag().apply { respond = { throw cause } }
-        val thrown = kotlin.runCatching { reader.read(tag, range, TestNfcFailures) }.exceptionOrNull()
+        val thrown = kotlin.runCatching { reader.read(tag, profile, range, TestNfcFailures) }.exceptionOrNull()
 
         assertTrue(thrown is AssertionError)
         // コルーチンのスタックトレース復元で例外が複製されても、元の原因を保持していること。
@@ -157,7 +164,7 @@ class IcodeSliFailureTest {
         val cause = SecurityException("stale handle")
         val tag = FakeNfcTag().apply { connectFailure = cause }
 
-        assertEquals(FailureKind.ACCESS_DENIED, reader.read(tag, range, TestNfcFailures).unwrapError().kind)
+        assertEquals(FailureKind.ACCESS_DENIED, reader.read(tag, profile, range, TestNfcFailures).unwrapError().kind)
         assertEquals(1, tag.closeCount)
     }
 
@@ -172,7 +179,7 @@ class IcodeSliFailureTest {
             }
         }
         val thrown = kotlin.runCatching {
-            withContext(readingJob) { reader.read(tag, range, TestNfcFailures) }
+            withContext(readingJob) { reader.read(tag, profile, range, TestNfcFailures) }
         }.exceptionOrNull()
 
         assertTrue(thrown is CancellationException)
@@ -185,7 +192,7 @@ class IcodeSliFailureTest {
     fun reportsUnavailableNfcVConnection() = runTest {
         val tag = FakeNfcTag().apply { connectionAvailable = false }
 
-        assertEquals(FailureKind.UNSUPPORTED, reader.read(tag, range, TestNfcFailures).unwrapError().kind)
+        assertEquals(FailureKind.UNSUPPORTED, reader.read(tag, profile, range, TestNfcFailures).unwrapError().kind)
         assertEquals(0, tag.closeCount)
     }
 }

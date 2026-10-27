@@ -8,8 +8,9 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 
 /** 必要な物理ブロックだけを読み、開始・終了バイトを含む連続領域をそのまま取得する。 */
-class IcodeSliMemoryReaderTest {
-    private val reader = IcodeSliMemoryReader()
+class NfcMemoryReaderTest {
+    private val reader = NfcMemoryReader()
+    private val profile = NfcTagProfiles.icodeSli
 
     /** 同一ブロックの一部だけを取り出し、UID付きREADフレームを確認する。 */
     @Test
@@ -17,7 +18,7 @@ class IcodeSliMemoryReaderTest {
         val tag = FakeNfcTag()
         val range = NfcMemoryRange(NfcMemoryPosition(1, 1), NfcMemoryPosition(1, 2))
 
-        val result = reader.read(tag = tag, range = range, failures = TestNfcFailures)
+        val result = reader.read(tag = tag, profile = profile, range = range, failures = TestNfcFailures)
 
         assertArrayEquals(byteArrayOf(5, 6), result.unwrap())
         assertArrayEquals(byteArrayOf(0x22, 0x20) + tag.uid + 1.toByte(), tag.requests.single())
@@ -31,7 +32,7 @@ class IcodeSliMemoryReaderTest {
         val tag = FakeNfcTag()
         val range = NfcMemoryRange(NfcMemoryPosition(1, 2), NfcMemoryPosition(2, 1))
 
-        val result = reader.read(tag = tag, range = range, failures = TestNfcFailures)
+        val result = reader.read(tag = tag, profile = profile, range = range, failures = TestNfcFailures)
 
         assertArrayEquals(byteArrayOf(6, 7, 8, 9), result.unwrap())
         assertEquals(listOf(1, 2), tag.requests.map { it.last().toInt() })
@@ -44,7 +45,7 @@ class IcodeSliMemoryReaderTest {
         val tag = FakeNfcTag()
         val range = NfcMemoryRange(NfcMemoryPosition(1, 0), NfcMemoryPosition(1, 1))
 
-        assertArrayEquals(byteArrayOf(4, 5), reader.read(tag, range, TestNfcFailures).unwrap())
+        assertArrayEquals(byteArrayOf(4, 5), reader.read(tag, profile, range, TestNfcFailures).unwrap())
         assertEquals(listOf(1), tag.requests.map { it.last().toInt() })
     }
 
@@ -54,7 +55,10 @@ class IcodeSliMemoryReaderTest {
         val tag = FakeNfcTag()
         val range = NfcMemoryRange(NfcMemoryPosition(1, 2), NfcMemoryPosition(4, 3))
 
-        assertArrayEquals(ByteArray(14) { (it + 6).toByte() }, reader.read(tag, range, TestNfcFailures).unwrap())
+        assertArrayEquals(
+            ByteArray(14) { (it + 6).toByte() },
+            reader.read(tag, profile, range, TestNfcFailures).unwrap(),
+        )
         assertEquals(listOf(1, 2, 3, 4), tag.requests.map { it.last().toInt() })
         assertEquals(1, tag.connectCount)
         assertEquals(1, tag.closeCount)
@@ -66,7 +70,7 @@ class IcodeSliMemoryReaderTest {
         for ((block, offset, expected) in listOf(Triple(0, 0, 0), Triple(27, 3, 111))) {
             val tag = FakeNfcTag()
             val position = NfcMemoryPosition(block, offset)
-            val result = reader.read(tag, NfcMemoryRange(position, position), TestNfcFailures)
+            val result = reader.read(tag, profile, NfcMemoryRange(position, position), TestNfcFailures)
             assertArrayEquals(byteArrayOf(expected.toByte()), result.unwrap())
             assertEquals(1, tag.requests.size)
         }
@@ -78,7 +82,7 @@ class IcodeSliMemoryReaderTest {
         val tag = FakeNfcTag().apply { respond = { byteArrayOf(0, 0x80.toByte(), 0xFF.toByte(), 0, 1) } }
         val range = NfcMemoryRange(NfcMemoryPosition(2, 0), NfcMemoryPosition(2, 3))
 
-        val actual = reader.read(tag, range, TestNfcFailures).unwrap()
+        val actual = reader.read(tag, profile, range, TestNfcFailures).unwrap()
         assertArrayEquals(byteArrayOf(0x80.toByte(), 0xFF.toByte(), 0, 1), actual)
     }
 
@@ -97,7 +101,7 @@ class IcodeSliMemoryReaderTest {
         )
         for (range in invalid) {
             val tag = FakeNfcTag()
-            assertEquals(range, reader.read(tag, range, TestNfcFailures).unwrapError().range)
+            assertEquals(range, reader.read(tag, profile, range, TestNfcFailures).unwrapError().range)
             assertEquals(0, tag.openCount)
         }
     }
@@ -108,7 +112,7 @@ class IcodeSliMemoryReaderTest {
         val tag = FakeNfcTag(technologies = setOf("android.nfc.tech.NfcF"))
         val range = NfcMemoryRange(NfcMemoryPosition(1, 0), NfcMemoryPosition(1, 1))
 
-        assertEquals(FailureKind.UNSUPPORTED, reader.read(tag, range, TestNfcFailures).unwrapError().kind)
+        assertEquals(FailureKind.UNSUPPORTED, reader.read(tag, profile, range, TestNfcFailures).unwrapError().kind)
         assertEquals(0, tag.openCount)
     }
 }

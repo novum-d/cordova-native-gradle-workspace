@@ -15,6 +15,7 @@
 | [CODE_OVERVIEW.md](CODE_OVERVIEW.md) | コード・設定の役割とファイル間の連携。 |
 | [DEPENDENCY_VERSION_SELECTION.md](DEPENDENCY_VERSION_SELECTION.md) | 依存ライブラリ・Pluginの採用方針とバージョン選定理由。 |
 | [DEPENDENCIES.md](DEPENDENCIES.md) | 通常依存の配置・共通bundleのapi公開・解決とコンパイルの確認。 |
+| [NFC_READER_DESIGN.md](NFC_READER_DESIGN.md) | 汎用タグ検出、型番Profileからの通信方式・メモリ構成の解決、業務Repository・ユースケース・画面との連携。 |
 | [NFC_READING.md](NFC_READING.md) | ICODE SLI判定、ブロック・バイト座標による読取と業務ユースケース。 |
 | [HILT.md](HILT.md) | 両ホストのApplication、Hilt ViewModel、KSPコード生成とJavaPoetのクラスパス。 |
 | [LOGGING.md](LOGGING.md) | Timberの起動時初期化、Debug／Releaseの方針、ログの呼び出し・確認方法。 |

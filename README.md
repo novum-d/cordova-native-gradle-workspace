@@ -6,9 +6,9 @@
 
 Activityの起動要件はCordovaPlugin経由と別アプリからの2種類です。外部からサービス要求を受け付ける入口・公開契約は未実装で、現在のサービスActivityは`exported=false`です。詳細は[起動要件](docs/CLIENT_API_SPEC.md#activityの起動要件)を参照してください。
 
-`kotlin-plugin`をWebからKotlin機能へ入る入口にしています。Webのボタンから`cordova/exec`を経由し、`CordovaPlugin`を継承したKTの`execute`が`startActivity`で`native/feature`の`MainActivity`を開きます。画面はDebug／Release共通で登録し、外部アプリには公開しません。アプリのランチャーはCordova標準のJava版`MainActivity`です。ICODE SLIの判定・座標読取と、ゴルフ場番号（LSBファーストのInt）・ホルダー番号（28桁の16進String）のユースケースを追加しています。NFC検出から画面・Webへの接続とカメラ処理は未実装です。[プラグインの構成と編集方法](kotlin-plugin/README.md)、[実行確認](docs/KOTLIN_PLUGIN.md)
+`kotlin-plugin`をWebからKotlin機能へ入る入口にしています。Webのボタンから`cordova/exec`を経由し、`CordovaPlugin`を継承したKTの`execute`が`startActivity`で`native/feature`の`MainActivity`を開きます。画面はDebug／Release共通で登録し、外部アプリには公開しません。アプリのランチャーはCordova標準のJava版`MainActivity`です。ICODE SLIの判定・座標読取と、ゴルフ場番号（LSBファーストのInt）・ホルダー番号（28桁の16進String）のユースケースを追加しています。汎用NFC検出から業務ユースケース・画面への接続を実装しています。Webへの業務結果返却とカメラ処理は未実装です。[プラグインの構成と編集方法](kotlin-plugin/README.md)、[実行確認](docs/KOTLIN_PLUGIN.md)
 
-KotlinPluginのIntentから`{id, args?}`を受け取り、サービスIDの`golf-change.read-holder`でゴルフ場ID・ホルダー番号の読み取り画面を開きます。確認用の`home`と、双方向通信を検証する`sample.webview`も利用できます。サービス別のNavigationとViewModelを持ち、引数は`SavedStateHandle`から復元します。[サービス構成と引数](docs/SERVICE_NAVIGATION.md)を参照してください。[NFCの判定・読取とユースケース](docs/NFC_READING.md)は追加していますが、この画面のReader Mode・読取実行・Webへの結果返却は未接続です。
+KotlinPluginのIntentから`{id, args?}`を受け取り、サービスIDの`golf-change.read-holder`でゴルフ場ID・ホルダー番号の読み取り画面を開きます。確認用の`home`と、双方向通信を検証する`sample.webview`も利用できます。サービス別のNavigationとViewModelを持ち、引数は`SavedStateHandle`から復元します。[サービス構成と引数](docs/SERVICE_NAVIGATION.md)を参照してください。[NFCの判定・読取とユースケース](docs/NFC_READING.md)を接続し、ReaderModeによる検出・同じカードの2項目取得・画面表示まで実装しています。Webへの業務結果返却は未実装です。
 
 ## featureだけで開発する
 

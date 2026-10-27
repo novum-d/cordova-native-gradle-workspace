@@ -10,7 +10,8 @@ Activity側には起動要求JSONの保存キーや独自のonSaveInstanceState�
 ゴルフ場番号は、ICODE SLIのブロック1 Byte 0・1をLSBファーストで読むユースケースを提供します。
 ホルダー番号は、ブロック1 Byte 2〜ブロック4 Byte 3の14バイトを、
 合意した暫定方式として読取順・大文字・区切りなしの28桁16進Stringで返します。
-NFC検出からユースケース呼出・結果返却への接続は未実装で、各画面は画面名と受け取った引数を表示します。
+汎用のタグ検出とゴルフ用ユースケースを接続し、前面のゴルフ画面で2項目の番号・失敗を表示します。
+UI・ViewModelはRepositoryを直接呼びません。Webへの業務結果返却は未実装です。
 
 # Package dev.example.nativefeature
 
@@ -27,7 +28,8 @@ Web・Intent境界の要求JSONを型へ変換し、既知の処理IDを型付�
 # Package dev.example.nativefeature.services.golfchange
 
 ゴルフ場釣り銭機サービスのNavigation、ゴルフ場ID・ホルダー番号読み取り画面とViewModel、
-ゴルフ場番号・ホルダー番号の読み取りユースケース・メモリマップ・ユースケース固有のエラー契約を提供します。
+ゴルフ場番号・ホルダー番号の読み取りユースケース・ユースケース固有のエラー契約を提供します。
+メモリマップと対象に紐づくRepositoryはdata/golfが管理します。
 NFC書き込みは対象外です。本人確認（マイナンバー）は別サービスとして仕様確定後に追加します。
 
 # Package dev.example.nativefeature.home
@@ -37,3 +39,7 @@ NFC書き込みは対象外です。本人確認（マイナンバー）は別�
 # Package dev.example.nativefeature.common
 
 機能画面共通の、画面名・処理ID・argsを中央に表示するレイアウトを提供します。
+
+# Package dev.example.nativefeature.nfc
+
+ゴルフ以外の業務でも利用できる、汎用のタグ検出ユースケースと検出エラー契約を提供します。

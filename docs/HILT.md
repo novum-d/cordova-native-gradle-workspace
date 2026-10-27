@@ -25,7 +25,7 @@ HiltのApplicationは、注入先やModuleが見えるアプリモジュール�
 
 [GolfChangeNavigation](../native/feature/src/main/kotlin/dev/example/nativefeature/services/golfchange/GolfChangeNavigation.kt)では`hiltViewModel()`で取得します。Navigationの画面エントリに属するViewModelとなり、従来の`SavedStateHandle.toRoute()`で処理IDとargsを復元します。引数をHilt Moduleで別途提供する必要はありません。
 
-[NFC読取のユースケースとReader](NFC_READING.md)は`@Inject constructor`で生成できます。業務Repositoryはまだ実装していません。今後、具象クラスは`@Inject constructor`、インターフェースと実装の対応は`@Module`・`@InstallIn`・`@Binds`、外部ライブラリの生成は`@Provides`を必要に応じて追加します。スコープは実際に共有する寿命に合わせて選びます。現時点ではサンプル用の空のModuleやRepositoryを追加していません。
+[汎用タグ検出と業務Repository](NFC_READER_DESIGN.md)を追加しました。検出Repository・業務RepositoryのFactoryはdataの`NfcRepositoryModule`で`@Binds`します。検出要求の仲介は`@Singleton`、AndroidのReaderMode制御は`@ActivityScoped`です。MainActivityはメソッド注入で制御役を受け取ります。タグに紐づくRepository・引数なしの読取ユースケースは、検出ごとにFactoryで生成します。対象TagをSingletonへ保存せず、専用Session・独自Hilt Component・独自KSP生成は追加しません。
 
 ## Gradleとコード生成
 

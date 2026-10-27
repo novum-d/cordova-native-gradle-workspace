@@ -4,6 +4,7 @@ import java.io.IOException
 
 /** Readerが呼び出し元のFactoryで具体エラーを作ることを観測する、テスト用の分類。 */
 internal enum class FailureKind {
+    EXPIRED,
     UNSUPPORTED,
     RANGE,
     TAG_LOST,
@@ -23,6 +24,7 @@ internal data class TestNfcFailure(
 
 /** 本番ユースケースに依存せず、Readerの失敗分類と元の原因を検査するFactory。 */
 internal object TestNfcFailures : NfcReadFailureFactory<TestNfcFailure> {
+    override fun targetExpired() = TestNfcFailure(FailureKind.EXPIRED)
     override fun unsupportedTag() = TestNfcFailure(FailureKind.UNSUPPORTED)
     override fun invalidRange(range: NfcMemoryRange) = TestNfcFailure(FailureKind.RANGE, range = range)
     override fun tagLost(cause: IOException) = TestNfcFailure(FailureKind.TAG_LOST, cause)

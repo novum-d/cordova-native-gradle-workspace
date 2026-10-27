@@ -1,17 +1,31 @@
 package dev.example.nativedata.nfc
 
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertSame
 import org.junit.Test
 
 /** SLIと同じNFC-V・製品種別を持つSLIX系を区別し、未対応タグを誤って読み取らない。 */
-class NfcTagTypeTest {
+class NfcTagProfileTest {
+    /** 選択結果1つにモデル・通信手順・メモリ構成がそろい、呼出側でISO方式を組み合わせない。 */
+    @Test
+    fun resolvesTheSharedIcodeSliProfileFromTagMetadata() {
+        val tag = FakeNfcTag()
+        val profile = requireNotNull(identifyNfcTagProfile(tag.uid, tag.technologies))
+
+        assertSame(NfcTagProfiles.icodeSli, profile)
+        assertEquals(NfcTagModel.ICODE_SLI, profile.model)
+        assertEquals(NfcReadProtocol.ISO_15693, profile.protocol)
+        assertEquals("android.nfc.tech.NfcV", profile.protocol.androidTechnology)
+        assertEquals(NfcBlockMemory(blockCount = 28, bytesPerBlock = 4), profile.memory)
+    }
+
     /** UIDは表示用の逆順ではなく、UID0からの配列で判定する。 */
     @Test
     fun acceptsIcodeSliWithSerialNumberBitsPreserved() {
         for (serial in listOf(0x00, 0x07, 0x20, 0xC7)) {
             val tag = FakeNfcTag()
             tag.uid[4] = serial.toByte()
-            assertEquals(NfcTagType.ICODE_SLI, classifyNfcTag(tag.uid, tag.technologies))
+            assertEquals(NfcTagProfiles.icodeSli, identifyNfcTagProfile(tag.uid, tag.technologies))
         }
     }
 
@@ -21,7 +35,7 @@ class NfcTagTypeTest {
         for (type in listOf(0x10, 0x08, 0x18)) {
             val tag = FakeNfcTag()
             tag.uid[4] = type.toByte()
-            assertEquals(NfcTagType.OTHER, classifyNfcTag(tag.uid, tag.technologies))
+            assertEquals(null, identifyNfcTagProfile(tag.uid, tag.technologies))
         }
     }
 
@@ -31,7 +45,7 @@ class NfcTagTypeTest {
         for ((index, value) in listOf(7 to 0xE1, 6 to 0x02, 5 to 0x02, 5 to 0x03)) {
             val tag = FakeNfcTag()
             tag.uid[index] = value.toByte()
-            assertEquals(NfcTagType.OTHER, classifyNfcTag(tag.uid, tag.technologies))
+            assertEquals(null, identifyNfcTagProfile(tag.uid, tag.technologies))
         }
     }
 
@@ -46,7 +60,7 @@ class NfcTagTypeTest {
             tag.uid.reversedArray(),
         )
         for (uid in invalid) {
-            assertEquals(NfcTagType.OTHER, classifyNfcTag(uid, tag.technologies))
+            assertEquals(null, identifyNfcTagProfile(uid, tag.technologies))
         }
     }
 
@@ -55,7 +69,7 @@ class NfcTagTypeTest {
     fun rejectsFelicaAndMifareAndIsoDepAndUnknownTechnologies() {
         val uid = FakeNfcTag().uid
         for (technology in listOf("NfcF", "MifareClassic", "MifareUltralight", "NfcA", "IsoDep", "Unknown")) {
-            assertEquals(NfcTagType.OTHER, classifyNfcTag(uid, setOf("android.nfc.tech.$technology")))
+            assertEquals(null, identifyNfcTagProfile(uid, setOf("android.nfc.tech.$technology")))
         }
     }
 }

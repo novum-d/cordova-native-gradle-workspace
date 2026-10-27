@@ -1,7 +1,10 @@
 package dev.example.nativefeature.services.golfchange
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import dev.example.nativefeature.navigation.FeatureDestination
@@ -14,11 +17,12 @@ internal fun NavGraphBuilder.golfChangeNavigation(onClose: () -> Unit) {
     }
 }
 
-/** 読み取り画面に属するViewModelから、復元可能な処理ID・argsを表示へ渡す。 */
+/** 前面の画面だけが検出を購読し、引数と読取状態を表示へ渡す。 */
 @Composable
 private fun GolfHolderReadRoute(
     onBack: () -> Unit,
     viewModel: GolfHolderReadViewModel = hiltViewModel(),
 ) {
-    GolfHolderReadScreen(request = viewModel.request, onBack = onBack)
+    val state by viewModel.state.collectAsStateWithLifecycle(minActiveState = Lifecycle.State.RESUMED)
+    GolfHolderReadScreen(request = viewModel.request, state = state, onBack = onBack)
 }
