@@ -117,7 +117,7 @@ macOSは`open`、Windowsは`rundll32.exe`、デスクトップのあるLinuxは`
 
 ## 解析範囲とTvAppから調整した点
 
-`native/feature/src/**/*.kt`・`native/data/src/**/*.kt`・`native/dev-app/src/**/*.kt`・`kotlin-plugin/src/**/*.kt`を対象にします。`java`・`kotlin`双方の配置、test、androidTest、その他のsource setを含め、build/generatedは除外します。プラグインは管理元だけを検査し、Cordova platform内の導入先を重複して検査しません。Gradle Kotlin DSL自体（`.kts`）、検証用build/generatedコードも対象外です。
+`native/feature/src/**/*.kt`・`native/data/src/**/*.kt`・`native/dev-app/src/**/*.kt`・`native/host/src/**/*.kt`・`kotlin-plugin/src/**/*.kt`を対象にします。`java`・`kotlin`双方の配置、test、androidTest、その他のsource setを含め、build/generatedは除外します。プラグインは管理元だけを検査し、Cordova platform内の導入先を重複して検査しません。Gradle Kotlin DSL自体（`.kts`）、検証用build/generatedコードも対象外です。
 
 TvApp同様に「stagedの`.kt`は実行のトリガー」であり、自動整形・通常の静的解析は全対象ソースの**working tree**に対して行います。これに加えて、解析対象範囲内で追加・変更がstageされた`.kt`は、indexから取り出した内容全体の整形チェックを毎回行います。build/generatedなどの除外条件は作業ツリーと共通です。ステージ内容の静的解析・コンパイルは行いません。
 

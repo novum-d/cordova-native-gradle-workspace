@@ -1,0 +1,288 @@
+Warning: SDK processing. This version only understands SDK XML versions up to 3 but an SDK XML file of version 4 was encountered. This can happen if you use versions of Android Studio and the command-line tools that were released at different times.
+> Task :dev-app:preBuild UP-TO-DATE
+> Task :dev-app:preDebugBuild UP-TO-DATE
+> Task :dev-app:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :dev-app:checkKotlinGradlePluginConfigurationErrors
+> Task :data:preBuild UP-TO-DATE
+> Task :data:preDebugBuild UP-TO-DATE
+> Task :data:generateDebugResValues
+> Task :data:generateDebugResources
+> Task :data:packageDebugResources
+> Task :data:compileDebugLibraryResources
+> Task :feature:preBuild UP-TO-DATE
+> Task :feature:preDebugBuild UP-TO-DATE
+> Task :dev-app:generateDebugResValues
+> Task :feature:generateDebugResValues
+> Task :data:writeDebugAarMetadata
+> Task :feature:writeDebugAarMetadata
+> Task :feature:generateDebugResources
+> Task :data:parseDebugLocalResources
+> Task :dev-app:checkDebugAarMetadata
+> Task :feature:packageDebugResources
+> Task :data:generateDebugRFile
+> Task :dev-app:mapDebugSourceSetPaths
+> Task :dev-app:generateDebugResources
+> Task :dev-app:packageDebugResources
+> Task :dev-app:createDebugCompatibleScreenManifests
+> Task :data:extractDeepLinksDebug
+> Task :dev-app:parseDebugLocalResources
+> Task :dev-app:extractDeepLinksDebug
+> Task :feature:extractDeepLinksDebug
+> Task :feature:compileDebugLibraryResources
+> Task :data:checkKotlinGradlePluginConfigurationErrors
+> Task :data:kspDebugKotlin NO-SOURCE
+> Task :data:compileDebugKotlin NO-SOURCE
+> Task :feature:parseDebugLocalResources
+> Task :feature:checkKotlinGradlePluginConfigurationErrors
+> Task :data:javaPreCompileDebug
+> Task :data:compileDebugJavaWithJavac NO-SOURCE
+> Task :feature:javaPreCompileDebug
+> Task :data:processDebugManifest
+> Task :feature:processDebugManifest
+> Task :feature:generateDebugRFile
+> Task :dev-app:mergeDebugResources
+> Task :data:transformDebugClassesWithAsm
+> Task :dev-app:processDebugMainManifest
+> Task :dev-app:processDebugManifest
+> Task :dev-app:javaPreCompileDebug
+> Task :data:bundleLibRuntimeToJarDebug
+> Task :data:bundleLibCompileToJarDebug
+> Task :data:mergeDebugShaders
+> Task :data:compileDebugShaders NO-SOURCE
+> Task :data:generateDebugAssets UP-TO-DATE
+> Task :data:packageDebugAssets
+> Task :dev-app:mergeDebugShaders
+> Task :dev-app:compileDebugShaders NO-SOURCE
+> Task :dev-app:generateDebugAssets UP-TO-DATE
+> Task :feature:mergeDebugShaders
+> Task :feature:compileDebugShaders NO-SOURCE
+> Task :feature:generateDebugAssets UP-TO-DATE
+> Task :feature:packageDebugAssets
+> Task :dev-app:mergeDebugAssets
+> Task :data:processDebugJavaRes NO-SOURCE
+> Task :dev-app:compressDebugAssets
+> Task :dev-app:processDebugManifestForPackage
+> Task :dev-app:checkDebugDuplicateClasses
+> Task :feature:kspDebugKotlin
+> Task :dev-app:desugarDebugFileDependencies
+> Task :dev-app:processDebugResources
+> Task :feature:compileDebugKotlin
+> Task :feature:compileDebugJavaWithJavac
+> Task :feature:processDebugJavaRes
+> Task :data:bundleLibRuntimeToDirDebug
+> Task :data:mergeDebugJniLibFolders
+> Task :data:mergeDebugNativeLibs NO-SOURCE
+> Task :data:copyDebugJniLibsProjectOnly
+> Task :dev-app:mergeDebugJniLibFolders
+> Task :feature:mergeDebugJniLibFolders
+> Task :feature:mergeDebugNativeLibs NO-SOURCE
+> Task :feature:copyDebugJniLibsProjectOnly
+> Task :dev-app:validateSigningDebug
+> Task :feature:transformDebugClassesWithAsm
+> Task :dev-app:mergeDebugNativeLibs
+> Task :feature:bundleLibRuntimeToJarDebug
+> Task :feature:bundleLibCompileToJarDebug
+> Task :feature:bundleLibRuntimeToDirDebug
+> Task :dev-app:writeDebugAppMetadata
+> Task :dev-app:writeDebugSigningConfigVersions
+> Task :feature:preDebugUnitTestBuild UP-TO-DATE
+
+> Task :dev-app:stripDebugDebugSymbols
+Unable to strip the following libraries, packaging them as they are: libandroidx.graphics.path.so, libdatastore_shared_counter.so.
+
+> Task :data:preReleaseBuild UP-TO-DATE
+> Task :feature:javaPreCompileDebugUnitTest
+> Task :data:generateReleaseResValues
+> Task :data:generateReleaseResources
+> Task :data:packageReleaseResources
+> Task :feature:generateDebugUnitTestStubRFile
+> Task :data:javaPreCompileRelease
+> Task :data:parseReleaseLocalResources
+> Task :feature:preReleaseBuild UP-TO-DATE
+> Task :feature:generateReleaseResValues
+> Task :feature:generateReleaseResources
+> Task :feature:packageReleaseResources
+> Task :data:generateReleaseRFile
+> Task :feature:parseReleaseLocalResources
+> Task :feature:javaPreCompileRelease
+> Task :data:kspReleaseKotlin NO-SOURCE
+> Task :data:compileReleaseKotlin NO-SOURCE
+> Task :data:compileReleaseJavaWithJavac NO-SOURCE
+> Task :dev-app:mergeLibDexDebug
+> Task :data:processReleaseJavaRes NO-SOURCE
+> Task :data:transformReleaseClassesWithAsm
+> Task :data:bundleLibRuntimeToJarRelease
+> Task :feature:preReleaseUnitTestBuild UP-TO-DATE
+> Task :data:bundleLibCompileToJarRelease
+> Task :feature:javaPreCompileReleaseUnitTest
+> Task :feature:generateReleaseRFile
+> Task :detekt UP-TO-DATE
+> Task :dev-app:kspDebugKotlin
+> Task :feature:kspDebugUnitTestKotlin
+> Task :detektFormatCheck UP-TO-DATE
+> Task :data:stripDebugDebugSymbols NO-SOURCE
+> Task :data:copyDebugJniLibsProjectAndLocalJars
+> Task :feature:generateReleaseUnitTestStubRFile
+> Task :data:extractDebugAnnotations
+> Task :data:extractDeepLinksForAarDebug
+> Task :data:mergeDebugGeneratedProguardFiles
+> Task :data:mergeDebugConsumerProguardFiles
+> Task :data:prepareDebugArtProfile
+> Task :data:prepareLintJarForPublish
+> Task :data:createFullJarDebug
+> Task :data:preDebugAndroidTestBuild UP-TO-DATE
+> Task :data:generateDebugAndroidTestResValues
+> Task :data:writeDebugLintModelMetadata
+> Task :data:extractProguardFiles
+> Task :data:mergeDebugJavaResource
+> Task :data:generateDebugLintModel
+> Task :data:syncDebugLibJars
+> Task :data:bundleDebugLocalLintAar
+> Task :data:preDebugUnitTestBuild UP-TO-DATE
+> Task :dev-app:compileDebugKotlin
+> Task :data:generateDebugAndroidTestLintModel
+> Task :feature:compileDebugUnitTestKotlin
+> Task :feature:kspReleaseKotlin
+> Task :dev-app:compileDebugJavaWithJavac
+> Task :dev-app:mergeExtDexDebug
+> Task :feature:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :dev-app:hiltAggregateDepsDebug
+> Task :feature:hiltAggregateDepsDebugUnitTest
+> Task :data:lintAnalyzeDebug
+
+> Task :dev-app:hiltJavaCompileDebug
+ノート:/Users/novumd/repos/cordova-native-gradle-workspace/native/dev-app/build/generated/hilt/component_sources/debug/dev/example/nativehost/Hilt_NativeApplication.javaは推奨されないAPIを使用またはオーバーライドしています。
+ノート:詳細は、-Xlint:deprecationオプションを指定して再コンパイルしてください。
+
+> Task :dev-app:processDebugJavaRes
+> Task :feature:hiltJavaCompileDebugUnitTest NO-SOURCE
+> Task :feature:processDebugUnitTestJavaRes
+> Task :feature:transformDebugUnitTestClassesWithAsm
+> Task :dev-app:transformDebugClassesWithAsm
+> Task :dev-app:dexBuilderDebug
+> Task :dev-app:mergeProjectDexDebug
+> Task :dev-app:mergeDebugJavaResource
+> Task :feature:compileReleaseKotlin
+> Task :feature:testDebugUnitTest
+> Task :feature:compileReleaseJavaWithJavac
+> Task :feature:processReleaseJavaRes
+> Task :data:generateDebugUnitTestLintModel
+> Task :feature:transformReleaseClassesWithAsm
+> Task :feature:stripDebugDebugSymbols NO-SOURCE
+> Task :feature:copyDebugJniLibsProjectAndLocalJars
+> Task :feature:bundleLibRuntimeToJarRelease
+> Task :feature:bundleLibCompileToJarRelease
+> Task :feature:extractDebugAnnotations
+> Task :feature:extractDeepLinksForAarDebug
+> Task :feature:mergeDebugGeneratedProguardFiles
+> Task :feature:mergeDebugConsumerProguardFiles
+> Task :feature:prepareDebugArtProfile
+> Task :feature:prepareLintJarForPublish
+> Task :dev-app:packageDebug
+> Task :dev-app:createDebugApkListingFileRedirect
+> Task :dev-app:assembleDebug
+> Task :feature:createFullJarDebug
+> Task :feature:preDebugAndroidTestBuild UP-TO-DATE
+> Task :feature:generateDebugAndroidTestResValues
+> Task :feature:mergeDebugJavaResource
+> Task :feature:writeDebugLintModelMetadata
+> Task :feature:syncDebugLibJars
+> Task :feature:bundleDebugLocalLintAar
+> Task :feature:extractProguardFiles
+> Task :feature:kspReleaseUnitTestKotlin
+> Task :feature:generateDebugLintReportModel
+> Task :feature:generateDebugAndroidTestLintModel
+> Task :feature:generateDebugUnitTestLintModel
+> Task :data:processReleaseManifest
+> Task :data:mergeReleaseJniLibFolders
+> Task :data:generateReleaseLintModel
+> Task :data:mergeReleaseNativeLibs NO-SOURCE
+> Task :data:stripReleaseDebugSymbols NO-SOURCE
+> Task :data:extractDeepLinksForAarRelease
+> Task :data:copyReleaseJniLibsProjectAndLocalJars
+> Task :data:extractReleaseAnnotations
+> Task :data:mergeReleaseGeneratedProguardFiles
+> Task :data:mergeReleaseConsumerProguardFiles
+> Task :data:mergeReleaseShaders
+> Task :data:compileReleaseShaders NO-SOURCE
+> Task :data:generateReleaseAssets UP-TO-DATE
+> Task :data:packageReleaseAssets
+> Task :data:prepareReleaseArtProfile
+> Task :data:mergeReleaseJavaResource
+> Task :data:writeReleaseAarMetadata
+> Task :data:createFullJarRelease
+> Task :data:syncReleaseLibJars
+> Task :data:bundleReleaseLocalLintAar
+> Task :data:preReleaseUnitTestBuild UP-TO-DATE
+> Task :data:writeReleaseLintModelMetadata
+> Task :data:generateReleaseUnitTestLintModel
+> Task :feature:mergeReleaseJniLibFolders
+> Task :feature:processReleaseManifest
+> Task :feature:mergeReleaseNativeLibs NO-SOURCE
+> Task :feature:generateReleaseLintReportModel
+> Task :feature:stripReleaseDebugSymbols NO-SOURCE
+> Task :feature:extractDeepLinksForAarRelease
+> Task :feature:copyReleaseJniLibsProjectAndLocalJars
+> Task :feature:extractReleaseAnnotations
+> Task :feature:mergeReleaseGeneratedProguardFiles
+> Task :feature:mergeReleaseConsumerProguardFiles
+> Task :feature:mergeReleaseShaders
+> Task :feature:compileReleaseShaders NO-SOURCE
+> Task :feature:generateReleaseAssets UP-TO-DATE
+> Task :feature:packageReleaseAssets
+> Task :feature:prepareReleaseArtProfile
+> Task :feature:writeReleaseAarMetadata
+> Task :feature:mergeReleaseJavaResource
+> Task :feature:createFullJarRelease
+> Task :feature:syncReleaseLibJars
+> Task :feature:bundleReleaseLocalLintAar
+> Task :feature:writeReleaseLintModelMetadata
+> Task :dev-app:preDebugAndroidTestBuild SKIPPED
+> Task :dev-app:generateDebugAndroidTestResValues
+> Task :dev-app:extractProguardFiles
+> Task :dev-app:bundleDebugClassesToCompileJar
+> Task :feature:generateReleaseUnitTestLintModel
+> Task :data:lintAnalyzeDebugAndroidTest
+> Task :dev-app:generateDebugAndroidTestLintModel
+> Task :feature:generateDebugLintModel
+> Task :dev-app:generateDebugLintReportModel
+> Task :dev-app:preDebugUnitTestBuild UP-TO-DATE
+> Task :dev-app:generateDebugUnitTestLintModel
+> Task :feature:compileReleaseUnitTestKotlin
+> Task :feature:compileReleaseUnitTestJavaWithJavac NO-SOURCE
+> Task :data:lintAnalyzeDebugUnitTest
+> Task :feature:hiltAggregateDepsReleaseUnitTest
+> Task :feature:hiltJavaCompileReleaseUnitTest NO-SOURCE
+> Task :feature:processReleaseUnitTestJavaRes
+> Task :feature:transformReleaseUnitTestClassesWithAsm
+> Task :feature:lintAnalyzeDebugAndroidTest
+> Task :feature:testReleaseUnitTest
+> Task :data:lintAnalyzeRelease
+> Task :feature:lintAnalyzeDebugUnitTest
+> Task :data:lintAnalyzeReleaseUnitTest
+> Task :feature:lintAnalyzeReleaseUnitTest
+> Task :feature:lintAnalyzeDebug
+> Task :feature:lintReportDebug
+> Task :feature:lintDebug
+> Task :dev-app:lintAnalyzeDebugAndroidTest
+> Task :dev-app:lintAnalyzeDebugUnitTest
+> Task :feature:lintAnalyzeRelease
+> Task :dev-app:lintAnalyzeDebug
+> Task :feature:lintReportRelease
+> Task :feature:lintRelease
+
+> Task :dev-app:lintReportDebug
+Wrote HTML report to file:///Users/novumd/repos/cordova-native-gradle-workspace/native/dev-app/build/reports/lint-results-debug.html
+
+> Task :dev-app:lintDebug
+
+[Incubating] Problems report is available at: file:///Users/novumd/repos/cordova-native-gradle-workspace/native/build/reports/problems/problems-report.html
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/8.13/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD SUCCESSFUL in 34s
+218 actionable tasks: 216 executed, 2 up-to-date

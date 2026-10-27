@@ -1,0 +1,313 @@
+> Task :data:clean
+> Task :feature:clean
+> Task :data:preBuild UP-TO-DATE
+> Task :data:preDebugBuild UP-TO-DATE
+> Task :data:checkKotlinGradlePluginConfigurationErrors
+> Task :data:generateDebugResValues
+> Task :data:generateDebugResources
+> Task :data:packageDebugResources
+> Task :data:preDebugUnitTestBuild UP-TO-DATE
+> Task :data:preReleaseBuild UP-TO-DATE
+> Task :data:generateReleaseResValues
+> Task :data:javaPreCompileDebugUnitTest
+> Task :data:generateReleaseResources
+> Task :data:javaPreCompileDebug
+> Task :data:packageReleaseResources
+> Task :data:preReleaseUnitTestBuild UP-TO-DATE
+> Task :feature:preBuild UP-TO-DATE
+> Task :feature:preDebugBuild UP-TO-DATE
+> Task :data:javaPreCompileReleaseUnitTest
+> Task :feature:checkKotlinGradlePluginConfigurationErrors
+> Task :data:javaPreCompileRelease
+> Task :feature:generateDebugResValues
+> Task :feature:generateDebugResources
+> Task :data:parseDebugLocalResources
+> Task :data:parseReleaseLocalResources
+> Task :feature:packageDebugResources
+> Task :feature:preDebugUnitTestBuild UP-TO-DATE
+> Task :feature:preReleaseBuild UP-TO-DATE
+> Task :feature:javaPreCompileDebugUnitTest
+> Task :feature:javaPreCompileDebug
+> Task :feature:generateReleaseResValues
+> Task :feature:parseDebugLocalResources
+> Task :feature:generateReleaseResources
+> Task :feature:packageReleaseResources
+> Task :data:generateDebugRFile
+> Task :data:generateReleaseRFile
+> Task :feature:generateDebugRFile
+> Task :feature:parseReleaseLocalResources
+> Task :data:generateDebugUnitTestStubRFile
+> Task :data:generateReleaseUnitTestStubRFile
+> Task :feature:preReleaseUnitTestBuild UP-TO-DATE
+> Task :feature:javaPreCompileReleaseUnitTest
+> Task :feature:javaPreCompileRelease
+> Task :feature:generateReleaseRFile
+> Task :feature:generateDebugUnitTestStubRFile
+> Task :data:kspDebugKotlin
+> Task :data:kspReleaseKotlin
+> Task :detekt
+> Task :feature:generateReleaseUnitTestStubRFile
+> Task :data:compileReleaseKotlin
+> Task :data:compileDebugKotlin
+
+> Task :detektFormatCheck
+................................................
+
+48 kotlin files were analyzed.
+Complexity Report:
+	- 2,719 lines of code (loc)
+	- 2,056 source lines of code (sloc)
+	- 1,380 logical lines of code (lloc)
+	- 294 comment lines of code (cloc)
+	- 382 cyclomatic complexity (mcc)
+	- 161 cognitive complexity
+	- 0 number of total code smells
+	- 14% comment source ratio
+	- 276 mcc per 1,000 lloc
+	- 0 code smells per 1,000 lloc
+
+Project Statistics:
+	- number of properties: 221
+	- number of functions: 187
+	- number of classes: 92
+	- number of packages: 13
+	- number of kt files: 48
+
+Successfully generated HTML report at file:///Users/novumd/repos/cordova-native-gradle-workspace/native/build/reports/detekt/detektFormatCheck.html
+
+> Task :data:compileDebugJavaWithJavac
+> Task :data:processDebugJavaRes
+> Task :data:transformDebugClassesWithAsm
+> Task :data:compileReleaseJavaWithJavac
+> Task :data:processReleaseJavaRes
+> Task :data:bundleLibRuntimeToJarDebug
+> Task :data:bundleLibCompileToJarDebug
+> Task :data:mergeDebugJniLibFolders
+> Task :data:transformReleaseClassesWithAsm
+> Task :data:bundleLibRuntimeToJarRelease
+> Task :data:bundleLibCompileToJarRelease
+> Task :data:kspDebugUnitTestKotlin
+> Task :data:mergeDebugNativeLibs NO-SOURCE
+> Task :data:stripDebugDebugSymbols NO-SOURCE
+> Task :data:copyDebugJniLibsProjectAndLocalJars
+> Task :data:extractDebugAnnotations
+> Task :data:extractDeepLinksForAarDebug UP-TO-DATE
+> Task :data:mergeDebugGeneratedProguardFiles UP-TO-DATE
+> Task :data:mergeDebugConsumerProguardFiles UP-TO-DATE
+> Task :data:mergeDebugShaders
+> Task :data:compileDebugShaders NO-SOURCE
+> Task :data:generateDebugAssets UP-TO-DATE
+> Task :data:packageDebugAssets
+> Task :data:prepareDebugArtProfile UP-TO-DATE
+> Task :data:prepareLintJarForPublish UP-TO-DATE
+> Task :data:createFullJarDebug
+> Task :data:writeDebugAarMetadata
+> Task :data:preDebugAndroidTestBuild UP-TO-DATE
+> Task :data:generateDebugAndroidTestResValues
+> Task :data:writeDebugLintModelMetadata
+> Task :data:kspReleaseUnitTestKotlin
+> Task :data:extractProguardFiles
+> Task :data:processDebugManifest
+> Task :data:processReleaseManifest
+> Task :data:mergeDebugJavaResource
+> Task :data:generateDebugLintReportModel
+> Task :data:syncDebugLibJars
+> Task :data:bundleDebugLocalLintAar
+> Task :data:generateDebugAndroidTestLintModel
+> Task :data:generateDebugUnitTestLintModel
+> Task :data:generateReleaseLintReportModel
+> Task :data:mergeReleaseJniLibFolders
+> Task :data:mergeReleaseNativeLibs NO-SOURCE
+> Task :data:stripReleaseDebugSymbols NO-SOURCE
+> Task :data:copyReleaseJniLibsProjectAndLocalJars
+> Task :data:extractDeepLinksForAarRelease UP-TO-DATE
+> Task :data:extractReleaseAnnotations
+> Task :data:mergeReleaseGeneratedProguardFiles UP-TO-DATE
+> Task :data:mergeReleaseConsumerProguardFiles UP-TO-DATE
+> Task :data:mergeReleaseShaders
+> Task :data:compileReleaseShaders NO-SOURCE
+> Task :data:generateReleaseAssets UP-TO-DATE
+> Task :data:packageReleaseAssets
+> Task :data:prepareReleaseArtProfile UP-TO-DATE
+> Task :data:mergeReleaseJavaResource
+> Task :data:writeReleaseAarMetadata
+> Task :data:createFullJarRelease
+> Task :data:syncReleaseLibJars
+> Task :data:bundleReleaseLocalLintAar
+> Task :data:writeReleaseLintModelMetadata
+> Task :data:generateReleaseUnitTestLintModel
+> Task :data:generateDebugLintModel
+> Task :feature:mergeDebugJniLibFolders
+> Task :feature:mergeDebugNativeLibs NO-SOURCE
+> Task :feature:stripDebugDebugSymbols NO-SOURCE
+> Task :feature:copyDebugJniLibsProjectAndLocalJars
+> Task :feature:extractDeepLinksForAarDebug UP-TO-DATE
+> Task :feature:mergeDebugShaders
+> Task :feature:compileDebugShaders NO-SOURCE
+> Task :feature:generateDebugAssets UP-TO-DATE
+> Task :feature:packageDebugAssets
+> Task :feature:prepareDebugArtProfile UP-TO-DATE
+> Task :feature:prepareLintJarForPublish UP-TO-DATE
+> Task :feature:preDebugAndroidTestBuild UP-TO-DATE
+> Task :feature:writeDebugAarMetadata
+> Task :feature:generateDebugAndroidTestResValues
+> Task :feature:writeDebugLintModelMetadata
+> Task :feature:processDebugManifest
+> Task :feature:extractProguardFiles
+> Task :data:generateReleaseLintModel
+> Task :feature:mergeReleaseJniLibFolders
+> Task :feature:mergeReleaseNativeLibs NO-SOURCE
+> Task :feature:stripReleaseDebugSymbols NO-SOURCE
+> Task :feature:copyReleaseJniLibsProjectAndLocalJars
+> Task :feature:extractDeepLinksForAarRelease UP-TO-DATE
+> Task :feature:processReleaseManifest
+> Task :feature:mergeReleaseShaders
+> Task :feature:compileReleaseShaders NO-SOURCE
+> Task :feature:generateReleaseAssets UP-TO-DATE
+> Task :feature:packageReleaseAssets
+> Task :feature:prepareReleaseArtProfile UP-TO-DATE
+> Task :feature:writeReleaseAarMetadata
+> Task :feature:writeReleaseLintModelMetadata
+> Task :dev-app:preBuild UP-TO-DATE
+> Task :dev-app:preDebugBuild UP-TO-DATE
+> Task :dev-app:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :dev-app:checkKotlinGradlePluginConfigurationErrors
+> Task :data:compileDebugLibraryResources
+> Task :dev-app:checkDebugAarMetadata UP-TO-DATE
+> Task :dev-app:generateDebugResValues UP-TO-DATE
+> Task :dev-app:mapDebugSourceSetPaths UP-TO-DATE
+> Task :dev-app:generateDebugResources UP-TO-DATE
+> Task :dev-app:mergeDebugResources UP-TO-DATE
+> Task :dev-app:packageDebugResources UP-TO-DATE
+> Task :dev-app:parseDebugLocalResources UP-TO-DATE
+> Task :dev-app:createDebugCompatibleScreenManifests UP-TO-DATE
+> Task :data:extractDeepLinksDebug
+> Task :dev-app:extractDeepLinksDebug UP-TO-DATE
+> Task :feature:extractDeepLinksDebug
+> Task :feature:kspDebugKotlin
+> Task :dev-app:processDebugMainManifest UP-TO-DATE
+> Task :data:compileDebugUnitTestKotlin
+> Task :data:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :data:compileReleaseUnitTestKotlin
+> Task :data:compileReleaseUnitTestJavaWithJavac NO-SOURCE
+> Task :dev-app:processDebugManifest UP-TO-DATE
+> Task :dev-app:processDebugManifestForPackage UP-TO-DATE
+> Task :feature:compileDebugLibraryResources
+> Task :data:hiltAggregateDepsReleaseUnitTest
+> Task :data:hiltAggregateDepsDebugUnitTest
+> Task :dev-app:javaPreCompileDebug UP-TO-DATE
+> Task :data:hiltJavaCompileDebugUnitTest NO-SOURCE
+> Task :data:processDebugUnitTestJavaRes
+> Task :data:hiltJavaCompileReleaseUnitTest NO-SOURCE
+> Task :data:processReleaseUnitTestJavaRes
+> Task :data:transformDebugUnitTestClassesWithAsm
+> Task :data:transformReleaseUnitTestClassesWithAsm
+> Task :dev-app:processDebugResources UP-TO-DATE
+> Task :feature:kspReleaseKotlin
+> Task :data:lintAnalyzeDebugAndroidTest
+> Task :feature:compileDebugKotlin
+> Task :data:testDebugUnitTest
+> Task :data:lintAnalyzeDebug
+> Task :data:lintAnalyzeDebugUnitTest
+> Task :data:testReleaseUnitTest
+> Task :feature:compileDebugJavaWithJavac
+> Task :feature:processDebugJavaRes
+> Task :data:lintReportDebug
+> Task :feature:transformDebugClassesWithAsm
+> Task :feature:extractDebugAnnotations
+> Task :data:lintDebug
+> Task :feature:mergeDebugGeneratedProguardFiles UP-TO-DATE
+> Task :feature:mergeDebugConsumerProguardFiles UP-TO-DATE
+> Task :feature:mergeDebugJavaResource
+> Task :feature:bundleLibCompileToJarDebug
+> Task :feature:bundleLibRuntimeToJarDebug
+> Task :feature:generateDebugLintReportModel
+> Task :feature:syncDebugLibJars
+> Task :feature:bundleDebugLocalLintAar
+> Task :feature:createFullJarDebug
+> Task :feature:generateDebugAndroidTestLintModel
+> Task :feature:generateDebugUnitTestLintModel
+> Task :dev-app:mergeDebugShaders UP-TO-DATE
+> Task :dev-app:compileDebugShaders NO-SOURCE
+> Task :dev-app:generateDebugAssets UP-TO-DATE
+> Task :dev-app:mergeDebugAssets UP-TO-DATE
+> Task :dev-app:compressDebugAssets UP-TO-DATE
+> Task :dev-app:checkDebugDuplicateClasses UP-TO-DATE
+> Task :dev-app:desugarDebugFileDependencies UP-TO-DATE
+> Task :feature:kspDebugUnitTestKotlin
+> Task :dev-app:mergeExtDexDebug UP-TO-DATE
+> Task :data:copyDebugJniLibsProjectOnly
+> Task :dev-app:mergeDebugJniLibFolders UP-TO-DATE
+> Task :dev-app:validateSigningDebug UP-TO-DATE
+> Task :feature:copyDebugJniLibsProjectOnly
+> Task :dev-app:writeDebugAppMetadata UP-TO-DATE
+> Task :data:bundleLibRuntimeToDirDebug
+> Task :dev-app:mergeDebugNativeLibs UP-TO-DATE
+> Task :dev-app:stripDebugDebugSymbols UP-TO-DATE
+> Task :dev-app:writeDebugSigningConfigVersions UP-TO-DATE
+> Task :feature:bundleLibRuntimeToDirDebug
+> Task :dev-app:kspDebugKotlin
+> Task :feature:compileReleaseKotlin
+> Task :data:lintAnalyzeRelease
+> Task :feature:compileDebugUnitTestKotlin
+> Task :feature:compileReleaseJavaWithJavac
+> Task :feature:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :feature:hiltAggregateDepsDebugUnitTest
+> Task :feature:hiltJavaCompileDebugUnitTest NO-SOURCE
+> Task :feature:processDebugUnitTestJavaRes
+> Task :feature:processReleaseJavaRes
+> Task :feature:generateReleaseLintReportModel
+> Task :feature:transformDebugUnitTestClassesWithAsm
+> Task :feature:transformReleaseClassesWithAsm
+> Task :feature:extractReleaseAnnotations
+> Task :data:lintAnalyzeReleaseUnitTest
+> Task :feature:lintAnalyzeDebugAndroidTest
+> Task :feature:testDebugUnitTest
+> Task :feature:bundleLibRuntimeToJarRelease
+> Task :feature:bundleLibCompileToJarRelease
+> Task :data:lintReportRelease
+> Task :data:lintRelease
+> Task :feature:mergeReleaseGeneratedProguardFiles UP-TO-DATE
+> Task :feature:mergeReleaseConsumerProguardFiles UP-TO-DATE
+> Task :feature:mergeReleaseJavaResource
+> Task :feature:createFullJarRelease
+> Task :feature:syncReleaseLibJars
+> Task :feature:bundleReleaseLocalLintAar
+> Task :dev-app:compileDebugKotlin
+> Task :feature:kspReleaseUnitTestKotlin
+> Task :dev-app:mergeLibDexDebug
+> Task :feature:generateReleaseUnitTestLintModel
+> Task :dev-app:compileDebugJavaWithJavac UP-TO-DATE
+> Task :dev-app:hiltAggregateDepsDebug UP-TO-DATE
+> Task :dev-app:hiltJavaCompileDebug UP-TO-DATE
+> Task :dev-app:processDebugJavaRes UP-TO-DATE
+> Task :dev-app:mergeDebugJavaResource UP-TO-DATE
+> Task :dev-app:transformDebugClassesWithAsm
+> Task :dev-app:dexBuilderDebug UP-TO-DATE
+> Task :dev-app:mergeProjectDexDebug UP-TO-DATE
+> Task :dev-app:packageDebug
+> Task :dev-app:createDebugApkListingFileRedirect UP-TO-DATE
+> Task :dev-app:assembleDebug
+> Task :feature:compileReleaseUnitTestKotlin
+> Task :feature:compileReleaseUnitTestJavaWithJavac NO-SOURCE
+> Task :feature:hiltAggregateDepsReleaseUnitTest
+> Task :feature:hiltJavaCompileReleaseUnitTest NO-SOURCE
+> Task :feature:processReleaseUnitTestJavaRes
+> Task :feature:transformReleaseUnitTestClassesWithAsm
+> Task :feature:lintAnalyzeDebug
+> Task :feature:lintAnalyzeDebugUnitTest
+> Task :feature:testReleaseUnitTest
+> Task :feature:lintReportDebug
+> Task :feature:lintDebug
+> Task :feature:lintAnalyzeRelease
+> Task :feature:lintAnalyzeReleaseUnitTest
+> Task :feature:lintReportRelease
+> Task :feature:lintRelease
+> Task :data:dokkaGenerateModuleHtml
+> Task :cordova-plugin-dev:dokkaGenerateModuleHtml
+> Task :feature:dokkaGenerateModuleHtml
+> Task :dokkaGeneratePublicationHtml
+> Task :logLinkDokkaGeneratePublicationHtml SKIPPED
+
+BUILD SUCCESSFUL in 15s
+242 actionable tasks: 190 executed, 52 up-to-date

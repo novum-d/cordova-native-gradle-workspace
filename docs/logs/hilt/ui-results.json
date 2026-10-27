@@ -1,0 +1,98 @@
+[
+  {
+    "case": "dev-debug",
+    "bounds": "[0,0][1080,2400]",
+    "texts": [
+      "ゴルフ場ID・ホルダー番号 読み取り画面",
+      "処理ID: golf-change.read-holder",
+      "args: {\"source\":\"dev-app\",\"text\":\"日本語 / ? & = # %2F +\",\"options\":{\"enabled\":true}}",
+      "戻る"
+    ]
+  },
+  {
+    "case": "dev-debug-rotated",
+    "bounds": "[0,0][2400,1080]",
+    "texts": [
+      "ゴルフ場ID・ホルダー番号 読み取り画面",
+      "処理ID: golf-change.read-holder",
+      "args: {\"source\":\"dev-app\",\"text\":\"日本語 / ? & = # %2F +\",\"options\":{\"enabled\":true}}",
+      "戻る"
+    ]
+  },
+  {
+    "case": "dev-debug-restored",
+    "bounds": "[0,0][1080,2400]",
+    "texts": [
+      "ゴルフ場ID・ホルダー番号 読み取り画面",
+      "処理ID: golf-change.read-holder",
+      "args: {\"source\":\"dev-app\",\"text\":\"日本語 / ? & = # %2F +\",\"options\":{\"enabled\":true}}",
+      "戻る"
+    ]
+  },
+  {
+    "case": "cordova-debug",
+    "bounds": "[0,0][1080,2400]",
+    "texts": [
+      "ゴルフ場ID・ホルダー番号 読み取り画面",
+      "処理ID: golf-change.read-holder",
+      "args: {}",
+      "戻る",
+      "CordovaComposeApp"
+    ]
+  },
+  {
+    "case": "cordova-debug-rotated",
+    "bounds": "[0,0][2400,1080]",
+    "texts": [
+      "ゴルフ場ID・ホルダー番号 読み取り画面",
+      "処理ID: golf-change.read-holder",
+      "args: {}",
+      "戻る",
+      "CordovaComposeApp"
+    ]
+  },
+  {
+    "case": "cordova-debug-restored",
+    "bounds": "[0,0][1080,2400]",
+    "texts": [
+      "ゴルフ場ID・ホルダー番号 読み取り画面",
+      "処理ID: golf-change.read-holder",
+      "args: {}",
+      "戻る",
+      "CordovaComposeApp"
+    ]
+  },
+  {
+    "case": "cordova-release",
+    "bounds": "[0,0][1080,2400]",
+    "texts": [
+      "ゴルフ場ID・ホルダー番号 読み取り画面",
+      "処理ID: golf-change.read-holder",
+      "args: {}",
+      "戻る",
+      "CordovaComposeApp"
+    ]
+  },
+  {
+    "case": "cordova-release-rotated",
+    "bounds": "[0,0][2400,1080]",
+    "texts": [
+      "ゴルフ場ID・ホルダー番号 読み取り画面",
+      "処理ID: golf-change.read-holder",
+      "args: {}",
+      "戻る",
+      "CordovaComposeApp"
+    ]
+  },
+  {
+    "case": "cordova-release-restored",
+    "bounds": "[0,0][1080,2400]",
+    "texts": [
+      "ゴルフ場ID・ホルダー番号 読み取り画面",
+      "処理ID: golf-change.read-holder",
+      "args: {}",
+      "戻る",
+      "CordovaComposeApp"
+    ]
+  }
+]

@@ -5,6 +5,9 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    // Hilt・KSPの実体は各ホストのルートでCatalogから読み込む。
+    id("com.google.devtools.ksp")
+    id("com.google.dagger.hilt.android")
 }
 
 // Cordovaと共有する基盤版を使い、アプリIDだけを分けて同時インストールできるようにする。
@@ -18,6 +21,10 @@ android {
         targetSdk = libs.versions.target.sdk.get().toInt()
         versionCode = 1
         versionName = "1.0-dev"
+    }
+    // HiltのApplicationはLibraryではなく各APKで生成するため、共通ソースを直接コンパイルする。
+    sourceSets.named("main") {
+        java.srcDir("../host/src/main/kotlin")
     }
     buildFeatures { compose = true }
     composeOptions { kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get() }
@@ -40,6 +47,9 @@ tasks.withType<KotlinJvmCompile>().configureEach {
 // 画面を複製せず既存featureへ依存し、ランチャーのCompose UIだけをこのモジュールに持つ。
 dependencies {
     implementation(project(":feature"))
+    // APK側でHiltのルートと全Libraryの注入先を集約する。
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.ui)
     implementation(libs.compose.foundation)

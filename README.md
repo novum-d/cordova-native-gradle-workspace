@@ -6,15 +6,19 @@
 
 Activityの起動要件はCordovaPlugin経由と別アプリからの2種類です。外部からサービス要求を受け付ける入口・公開契約は未実装で、現在のサービスActivityは`exported=false`です。詳細は[起動要件](docs/CLIENT_API_SPEC.md#activityの起動要件)を参照してください。
 
-`kotlin-plugin`をWebからKotlin機能へ入る入口にしています。Webのボタンから`cordova/exec`を経由し、`CordovaPlugin`を継承したKTの`execute`が`startActivity`で`native/feature`の`MainActivity`を開きます。画面はDebug／Release共通で登録し、外部アプリには公開しません。アプリのランチャーはCordova標準のJava版`MainActivity`です。業務画面・DI初期化・カメラ・NFC処理は未実装です。[プラグインの構成と編集方法](kotlin-plugin/README.md)、[実行確認](docs/KOTLIN_PLUGIN.md)
+`kotlin-plugin`をWebからKotlin機能へ入る入口にしています。Webのボタンから`cordova/exec`を経由し、`CordovaPlugin`を継承したKTの`execute`が`startActivity`で`native/feature`の`MainActivity`を開きます。画面はDebug／Release共通で登録し、外部アプリには公開しません。アプリのランチャーはCordova標準のJava版`MainActivity`です。ICODE SLIの判定・座標読取と、ゴルフ場番号（LSBファーストのInt）・ホルダー番号（28桁の16進String）のユースケースを追加しています。NFC検出から画面・Webへの接続とカメラ処理は未実装です。[プラグインの構成と編集方法](kotlin-plugin/README.md)、[実行確認](docs/KOTLIN_PLUGIN.md)
 
-KotlinPluginのIntentから`{id, args?}`を受け取り、サービスIDの`golf-change.read-holder`でゴルフ場ID・ホルダー番号の読み取り画面を開きます。確認用の`home`と、双方向通信を検証する`sample.webview`も利用できます。サービス別のNavigationとViewModelを持ち、引数は`SavedStateHandle`から復元します。[サービス構成と引数](docs/SERVICE_NAVIGATION.md)を参照してください。実際の読み取り・解析・結果返却は未実装です。
+KotlinPluginのIntentから`{id, args?}`を受け取り、サービスIDの`golf-change.read-holder`でゴルフ場ID・ホルダー番号の読み取り画面を開きます。確認用の`home`と、双方向通信を検証する`sample.webview`も利用できます。サービス別のNavigationとViewModelを持ち、引数は`SavedStateHandle`から復元します。[サービス構成と引数](docs/SERVICE_NAVIGATION.md)を参照してください。[NFCの判定・読取とユースケース](docs/NFC_READING.md)は追加していますが、この画面のReader Mode・読取実行・Webへの結果返却は未接続です。
 
 ## featureだけで開発する
 
 Android Studioで`native/`を開き、`dev-app`のDebugをRunします。Intentサンプルを選ぶと既存MainActivityを起動できます。`npm run dev:build`・`npm run dev:install`も利用できます。[開発・Intentモックの手順](docs/FEATURE_DEVELOPMENT.md)を参照してください。
 
 ## 開発ルール
+
+Hiltは共通の`NativeApplication`を両APKでコンパイルし、featureのActivity・ViewModelへ注入する構成です。設定の連携と追加方法は[Hiltのセットアップ](docs/HILT.md)を参照してください。
+
+TimberはAndroidX Startupでアプリ起動時に初期化します。DebuggableなホストにDebugTreeを登録し、ReleaseではTreeを追加しません。Cordovaと開発用APKで共通の設定です。[ログの呼び出し・確認方法](docs/LOGGING.md)を参照してください。
 
 コメント・KDocの記述方針は[プロジェクトルール](AGENTS.md)を参照してください。手書きのコード・設定には処理のまとまりごとの概要説明を必須とし、KDocで概要が分かる場合は通常コメントの重複を求めません。JSONの説明方法と生成ファイルの扱いも同文書に定めています。
 
@@ -97,6 +101,7 @@ GradleはCatalogの`gradle`をWrapper生成・実行環境の選択・実行版�
 | Core KTX | 1.16.0 | compileSdk 35／AGP 8.7.3内で更新。1.17以降のKGP 2.0要件を避ける | 1.17.0: “requires use of Kotlin Gradle Plugin 2.0.0 or newer.” | [Core 1.17.0の変更点](https://developer.android.com/jetpack/androidx/releases/core?hl=en#1.17.0) |
 | Activity Compose | 1.10.1 | compileSdk 35内で更新。1.11のSDK 36／AGP 8.9.1要件を避ける | 1.11.0: “Activity is now compiled with API 36.”<br>同版のAAR: `minCompileSdk=36`、`minAndroidGradlePluginVersion=8.9.1` | [Activity 1.11.0の変更点](https://developer.android.com/jetpack/androidx/releases/activity?hl=en#1.11.0)、[1.11.0 AAR](https://dl.google.com/dl/android/maven2/androidx/activity/activity/1.11.0/activity-1.11.0.aar) |
 | Lifecycle Runtime KTX・Runtime Compose・ViewModel Compose | 2.8.7 | Kotlin 1.9系を維持。BOM側を更新してCompose Runtimeとの世代差を解消 | 2.8.6: “Lifecycle Runtime Compose now depends on Compose Runtime `1.7.1`”<br>2.8.7 Runtime KTXのPOM: `<artifactId>kotlin-stdlib</artifactId>` … `<version>1.8.22</version>` | [Lifecycle 2.8.6の依存更新](https://developer.android.com/jetpack/androidx/releases/lifecycle?hl=en#2.8.6)、[Runtime KTX 2.8.7 POM](https://dl.google.com/dl/android/maven2/androidx/lifecycle/lifecycle-runtime-ktx-android/2.8.7/lifecycle-runtime-ktx-android-2.8.7.pom) |
+| Navigation Compose | **2.8.9** | 型付きルート・SavedStateHandleによる引数復元に使用。Kotlin 1.9.24を維持し、2.9系のKGP 2.0.0要件を避ける。Compose BOMの対象外なので個別指定する | 2.8.9 POM: `<artifactId>kotlin-stdlib</artifactId>` … `<version>1.8.22</version>`。2.9.0-beta01: “requires KGP 2.0.0 or newer.” | [Navigation 2.8.9](https://developer.android.com/jetpack/androidx/releases/navigation#2.8.9)、[2.8.9 POM](https://dl.google.com/dl/android/maven2/androidx/navigation/navigation-compose/2.8.9/navigation-compose-2.8.9.pom)、[2.9系のKGP要件](https://developer.android.com/jetpack/androidx/releases/navigation#2.9.0-beta01) |
 | WebKit | 1.12.1 | Cordova指定版を維持 | Cordova 14.0.1の既定値: `"ANDROIDX_WEBKIT_VERSION": "1.12.1"` | [Cordova 14.0.1の既定値](https://github.com/apache/cordova-android/blob/14.0.1/framework/cdv-gradle-config-defaults.json) |
 | DataStore Preferences・Core | 1.1.7 | 1.1系の修正を反映。1.2系のstdlib 2.0への移行を避ける | 1.1.7: “Fixed missing Proguard rules issue”<br>1.2.0のPOM: `<artifactId>kotlin-stdlib</artifactId>` … `<version>2.0.21</version>` | [DataStore 1.1.7の修正](https://developer.android.com/jetpack/androidx/releases/datastore?hl=en#1.1.7)、[Core JVM 1.2.0 POM](https://dl.google.com/dl/android/maven2/androidx/datastore/datastore-core-jvm/1.2.0/datastore-core-jvm-1.2.0.pom) |
 | WorkManager Runtime KTX | 2.10.5 | SDK 35内の修正版。2.11系のKotlin 2.1メタデータを避ける | `work-runtime:2.10.5`のAAR: `minCompileSdk=35`<br>`work-runtime:2.11.0`の`androidx.work.CoroutineWorker.class`: `mv=[2,1,0]` | [Runtime 2.10.5 AAR](https://dl.google.com/dl/android/maven2/androidx/work/work-runtime/2.10.5/work-runtime-2.10.5.aar)、[Runtime 2.11.0 AAR](https://dl.google.com/dl/android/maven2/androidx/work/work-runtime/2.11.0/work-runtime-2.11.0.aar) |
@@ -108,14 +113,16 @@ GradleはCatalogの`gradle`をWrapper生成・実行環境の選択・実行版�
 | OkHttp・Logging Interceptor | 4.12.0 | Kotlin 1.9基盤で同版に統一 | Logging InterceptorのPOM: `<artifactId>okhttp</artifactId>` … `<version>4.12.0</version>`、`<artifactId>kotlin-stdlib-jdk8</artifactId>` … `<version>1.8.21</version>` | [Logging Interceptor 4.12.0 POM](https://repo.maven.apache.org/maven2/com/squareup/okhttp3/logging-interceptor/4.12.0/logging-interceptor-4.12.0.pom) |
 | kotlin-result | 2.0.1 | Kotlin 1.9対応の2系へ更新。既存1系から移す場合はinline value class化に伴うAPI修正が必要 | 2.0.0: “The base `Result` class is now modelled as an inline value class.”<br>2.0.1 JVMのPOM: `<artifactId>kotlin-stdlib</artifactId>` … `<version>1.9.22</version>` | [2.0.0の移行説明](https://github.com/michaelbull/kotlin-result/releases/tag/2.0.0)、[2.0.1 JVM POM](https://repo.maven.apache.org/maven2/com/michael-bull/kotlin-result/kotlin-result-jvm/2.0.1/kotlin-result-jvm-2.0.1.pom) |
 | Hilt Android・Compiler・Plugin | 2.52 | stdlib 1.9.24世代へ更新。2.53の本体は2.0 Beta系へ進む。両モジュールに適用し、KSPコード生成も確認 | `hilt-android:2.52`のPOM: `<artifactId>kotlin-stdlib</artifactId>` … `<version>1.9.24</version>`<br>`hilt-android:2.53`のPOM: `<artifactId>kotlin-stdlib</artifactId>` … `<version>2.0.0-Beta5</version>` | [Hilt Android 2.52 POM](https://repo.maven.apache.org/maven2/com/google/dagger/hilt-android/2.52/hilt-android-2.52.pom)、[2.53 POM](https://repo.maven.apache.org/maven2/com/google/dagger/hilt-android/2.53/hilt-android-2.53.pom) |
+| AndroidX Hilt Navigation Compose | **1.2.0** | Kotlin 1.9.24を維持し、NavigationのエントリからHilt ViewModelを取得する。1.3系はKotlin 2.0を対象とするため採用しない | 1.2.0の公開情報: `androidx.hilt:hilt-*:1.2.0`。1.3.0-alpha01: `target Kotlin 2.0` | [Hiltリリース](https://developer.android.com/jetpack/androidx/releases/hilt)、[セットアップ](docs/HILT.md) |
 | KSP Plugin | 1.9.24-1.0.20 | Kotlin Compiler 1.9.24用。両モジュールに適用し、KSPコード生成も確認 | “KSP 1.0.20 for kotlin compiler version 1.9.24” | [KSP 1.9.24-1.0.20の公開情報](https://github.com/google/ksp/releases/tag/1.9.24-1.0.20) |
 | Timber | 5.0.1 | 公開安定版を維持 | 公開版: “5.0.1”<br>修正内容: “Fix TimberArgCount lint check false positive on some calls to `String.format`.” | [Timber 5.0.1の変更点](https://github.com/JakeWharton/timber/releases/tag/5.0.1) |
+| AndroidX Startup Runtime | 1.2.0 | 2026-10-27にTimberの共通初期化用として追加。featureのManifestから両ホストの起動時に実行する | 公式リリース: `androidx.startup:startup-runtime:1.2.0` | [Startup 1.2.0](https://developer.android.com/jetpack/androidx/releases/startup#1.2.0)、[ログのセットアップ](docs/LOGGING.md) |
 | JUnit 4 | 4.13.2 | 維持 | 公式リリース名: “JUnit 4.13.2” | [JUnit 4.13.2の公開情報](https://github.com/junit-team/junit4/releases/tag/r4.13.2) |
 | AndroidX Test Core KTX / Ext JUnit KTX | 1.7.0 / 1.3.0 | Kotlinメタデータ1.9世代へ更新。Artifact解決確認済み | Core KTXの`androidx.test.core.app.ActivityScenarioKt.class`: `mv=[1,9,0]`<br>Ext JUnit KTXの`androidx.test.ext.junit.rules.ActivityScenarioRuleKt.class`: `mv=[1,9,0]` | [Core KTX 1.7.0 AAR](https://dl.google.com/dl/android/maven2/androidx/test/core-ktx/1.7.0/core-ktx-1.7.0.aar)、[Ext JUnit KTX 1.3.0 AAR](https://dl.google.com/dl/android/maven2/androidx/test/ext/junit-ktx/1.3.0/junit-ktx-1.3.0.aar) |
 | detekt Gradle Plugin | 1.23.8 | 確認時点の最新安定版を適用済み。通常解析と整形チェックの実行成功を再確認 | 公式リリース: “v1.23.8”、`Latest`<br>実測: `> Task :detekt`、`> Task :detektFormatCheck`、`BUILD SUCCESSFUL` | [detekt 1.23.8](https://github.com/detekt/detekt/releases/tag/v1.23.8)、[実行ログ](docs/logs/versions/quality-detekt-latest.log)、[品質タスクの検証](docs/GIT_HOOKS.md) |
 | Dokka Gradle Plugin | 2.2.0 | KDocからHTMLを生成するビルド時のツール。DGP v2を使用し、アプリのKotlin 1.9.24を維持 | 公式の最小KGP要件: `KGP 1.9.0+`<br>実測結果はKDoc生成の記録を参照 | [2.2.0リリース](https://github.com/Kotlin/dokka/releases/tag/v2.2.0)、[KDoc生成](docs/KDOC.md) |
 
-Composeライブラリには個別版を付けず、BOMを利用します。画面系は`feature`、通信・永続化系は`data`へ追加しています。日時・不変コレクション・Coroutines Core／Android・Hilt Android・kotlin-result・Timberの7依存は、共有Catalogの`native-common` bundleへまとめ、両モジュールの`api(libs.bundles.native.common)`で利用側にも公開しています。単体テスト・Androidテスト依存と、Hilt/KSP・Serializationのコード生成も設定済みです。[配置一覧と解決結果](docs/DEPENDENCIES.md)を参照してください。
+BOMの管理対象であるCompose UI・Foundation・Material3等には個別版を付けません。Navigation ComposeとHilt Navigation Composeは管理対象外なので、Catalogで個別に版を指定します。画面系は`feature`、通信・永続化系は`data`へ追加しています。日時・不変コレクション・Coroutines Core／Android・Hilt Android・kotlin-result・Timberの7依存は、共有Catalogの`native-common` bundleへまとめ、両モジュールの`api(libs.bundles.native.common)`で利用側にも公開しています。単体テスト・Androidテスト依存と、Hilt/KSP・Serializationのコード生成も設定済みです。[配置一覧と解決結果](docs/DEPENDENCIES.md)を参照してください。
 
 Immutable Collectionsに合わせて、detektの`DataClassShouldBeImmutable`と`TwitterCompose.UnstableCollections`を有効にし、違反1件で停止する設定にしました。使い方とルールの範囲は[追加内容](docs/IMMUTABLE_COLLECTIONS.md)を参照してください。
 
@@ -125,7 +132,7 @@ Immutable Collectionsに合わせて、detektの`DataClassShouldBeImmutable`と`
 
 単体テストにはJUnit 4と`kotlinx-coroutines-test:1.8.1`を使用します。Coroutines本体とテスト支援の版をそろえ、JaCoCo 0.8.14でカバレッジを収集します。AppCompatはCordova由来の既存依存を使用します。
 
-Hilt・KSPをfeature・dataへ適用し、`ksp(libs.hilt.compiler)`を設定しました。dataにはKotlin Serialization Pluginも適用し、検証コードでRepositoryのFactory、Hilt ViewModelのModule／Factory、日時を含むSerializerの生成とコンパイルを確認しています。CordovaのApplicationをHilt化した実機での注入は、この検証には含めていません。通常のnative・Cordovaプロジェクトではdetekt・detekt-formattingを適用し、読み取り専用checkとpreCommitを実行できます。この2つのルートにあるktlintCheckはdetektFormatCheckへの互換名です。詳細は[Git hookのKotlin DSL実装](docs/GIT_HOOKS.md)を参照してください。両モジュールにJUnitの環境確認テストを追加しており、配置・実行方法は[単体テスト環境](docs/UNIT_TESTS.md)を参照してください。
+Hilt・KSPをfeature・dataへ適用し、`ksp(libs.hilt.compiler)`を設定しました。dataにはKotlin Serialization Pluginも適用し、検証コードでRepositoryのFactory、Hilt ViewModelのModule／Factory、日時を含むSerializerの生成とコンパイルを確認しています。その後、両ホストのApplicationと既存画面のHilt ViewModelを設定しました。現在の構成・実行確認は[Hiltのセットアップ](docs/HILT.md)を参照してください。通常のnative・Cordovaプロジェクトではdetekt・detekt-formattingを適用し、読み取り専用checkとpreCommitを実行できます。この2つのルートにあるktlintCheckはdetektFormatCheckへの互換名です。詳細は[Git hookのKotlin DSL実装](docs/GIT_HOOKS.md)を参照してください。両モジュールにJUnitの環境確認テストを追加しており、配置・実行方法は[単体テスト環境](docs/UNIT_TESTS.md)を参照してください。
 
 選定根拠: [Cordova公式対応表](https://cordova.apache.org/docs/en/latest/guide/platforms/android/index.html)、[14.0.1既定値](https://github.com/apache/cordova-android/blob/14.0.1/framework/cdv-gradle-config-defaults.json)、[Compose BOM POM](https://dl.google.com/dl/android/maven2/androidx/compose/compose-bom/2025.07.00/compose-bom-2025.07.00.pom)、[Core](https://developer.android.com/jetpack/androidx/releases/core)、[Activity](https://developer.android.com/jetpack/androidx/releases/activity)、[DataStore](https://developer.android.com/jetpack/androidx/releases/datastore)、[WorkManager](https://developer.android.com/jetpack/androidx/releases/work)、[Hilt 2.52 POM](https://repo.maven.apache.org/maven2/com/google/dagger/hilt-android/2.52/hilt-android-2.52.pom)、[kotlin-result移行説明](https://github.com/michaelbull/kotlin-result/releases/tag/2.0.0)。最終的な解決座標は[ライブラリ](docs/logs/dependencies/resolved-catalog-libraries.txt)・[プラグイン](docs/logs/dependencies/resolved-catalog-plugins.txt)を参照してください。
 
@@ -135,7 +142,7 @@ nativeはGradle標準の`gradle/libs.versions.toml`自動読込を使います�
 
 シェルからは`./scripts/catalog-version.sh gradle`などで同じCatalogの版を取得します。`[versions]`内の`name = "value"`形式をsh・awkで読み取ります。CordovaのhookはCLIから呼ばれるJavaScript関数として実装しています。
 
-nativeルートだけがAGP・KotlinをCatalogの版付きaliasで宣言します。共有LibraryのAGP・KotlinはversionなしのPlugin IDを使います。Cordova側では既存`buildscript`クラスパスをそのまま使うため、既知でない版のPluginが既にクラスパスにあるという競合を避けられます。Hilt・KSP・Serializationは利用するLibraryの`plugins`でCatalogのaliasから宣言します。
+nativeルートはAGP・Kotlin・Hilt・KSPをCatalogの版付きaliasで宣言し、共有Libraryでは版なしのPlugin IDを使います。Cordova側は既存のAGP・Kotlinの`buildscript`クラスパスへ、SettingsからHilt・KSPを追加します。Hiltを親側で解決し、JavaPoetの版の競合も防ぎます。Serializationは利用するLibraryの`plugins`でCatalogのaliasから宣言します。
 
 Cordova 14.0.1の`ProjectBuilder.prepBuildFiles()`は**build時にsettings.gradleを上書き**します。生成されるsettingsは`cdv-gradle-name.gradle`を読み込むため、このファイルに共有settingsへの相対参照をhookで登録します。Appの`build-extras.gradle`からも共有app設定へ相対参照を登録します。
 

@@ -7,7 +7,10 @@ MainActivityはKotlinPluginのIntentから処理ID（String）と任意のargs�
 Navigationへ一度だけ渡します。対応する処理IDはhome・golf-change.read-holderです。
 画面・引数の復元はNavigationと各画面のViewModelのSavedStateHandleが担当し、
 Activity側には起動要求JSONの保存キーや独自のonSaveInstanceStateを持ちません。
-ゴルフ場ID・ホルダー番号の実際の読み取りと結果返却は未実装で、各画面は画面名と受け取った引数を中央に表示します。
+ゴルフ場番号は、ICODE SLIのブロック1 Byte 0・1をLSBファーストで読むユースケースを提供します。
+ホルダー番号は、ブロック1 Byte 2〜ブロック4 Byte 3の14バイトを、
+合意した暫定方式として読取順・大文字・区切りなしの28桁16進Stringで返します。
+NFC検出からユースケース呼出・結果返却への接続は未実装で、各画面は画面名と受け取った引数を表示します。
 
 # Package dev.example.nativefeature
 
@@ -23,7 +26,8 @@ Web・Intent境界の要求JSONを型へ変換し、既知の処理IDを型付�
 
 # Package dev.example.nativefeature.services.golfchange
 
-ゴルフ場釣り銭機サービスのNavigation、ゴルフ場ID・ホルダー番号読み取り画面とViewModelを提供します。
+ゴルフ場釣り銭機サービスのNavigation、ゴルフ場ID・ホルダー番号読み取り画面とViewModel、
+ゴルフ場番号・ホルダー番号の読み取りユースケース・メモリマップ・ユースケース固有のエラー契約を提供します。
 NFC書き込みは対象外です。本人確認（マイナンバー）は別サービスとして仕様確定後に追加します。
 
 # Package dev.example.nativefeature.home

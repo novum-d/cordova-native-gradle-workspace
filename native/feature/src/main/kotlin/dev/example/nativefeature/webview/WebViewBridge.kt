@@ -37,8 +37,6 @@ internal class WebViewBridge {
     var session: String = UUID.randomUUID().toString()
         private set
 
-    /** サンプル専用Treeを使い、ホストのログ初期化の有無に依存しない。 */
-    private val logger = Timber.DebugTree()
     private var webView: WebView? = null
     private var replyProxy: JavaScriptReplyProxy? = null
     private var supported = false
@@ -167,7 +165,7 @@ internal class WebViewBridge {
                     return
                 }
                 state = state.copy(user = decoded)
-                if (debugLogging) logger.d("Sample user id=%d, name=%s", decoded.id, decoded.name)
+                if (debugLogging) Timber.d("Sample user id=%d, name=%s", decoded.id, decoded.name)
             }
         }
     }
@@ -193,7 +191,7 @@ internal class WebViewBridge {
 
     /** 攻撃者の入力をそのまま記録せず、ページごとのログ量も制限する。 */
     private fun reject() {
-        if (rejectionCount++ < MAX_REJECTION_LOGS) logger.w("Rejected WebView message")
+        if (rejectionCount++ < MAX_REJECTION_LOGS) Timber.w("Rejected WebView message")
     }
 
     private companion object {

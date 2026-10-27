@@ -10,7 +10,7 @@ Version Catalogで想定していたライブラリを、通常の`feature`・`d
 
 | 配置先 | 依存・設定 |
 | --- | --- |
-| feature | Core KTX、Compose BOM・UI・Foundation・Layout・Material3・Preview、Activity Compose、Navigation Compose、Lifecycle Runtime KTX／Compose・ViewModel Compose／SavedState、WebKit、dataプロジェクト |
+| feature | Core KTX、Startup Runtime、Compose BOM・UI・Foundation・Layout・Material3・Preview、Activity Compose、Navigation Compose・Hilt Navigation Compose、Lifecycle Runtime KTX／Compose・ViewModel Compose／SavedState、WebKit、dataプロジェクト |
 | featureのDebugのみ | Compose UI Tooling。Releaseへは追加しない |
 | data | DataStore Preferences・Core、Serialization JSON、WorkManager、Retrofit、OkHttp・Logging Interceptor |
 | 両方のapi | `libs.bundles.native.common`。Coroutines Core・Android、Immutable Collections、Kotlinx Datetime、kotlin-result、Hilt Android、Timber |
@@ -25,11 +25,15 @@ Version Catalogで想定していたライブラリを、通常の`feature`・`d
 
 2026-10-20に[単体テスト環境](UNIT_TESTS.md)を整備しました。両モジュールの`src/test/`に環境確認テストを追加し、JUnit 4・Coroutines TestとAGPのJaCoCo連携で実行・レポート生成を行います。Coroutines Testは`testImplementation`で、JaCoCoはビルド時ツールです。
 
-featureのCompose Compilerを常時有効にしました。AGP・Kotlinは従来のnative／Cordova基盤を使い、Hilt・KSP・Serializationは利用するモジュールのCatalog aliasで適用します。Hilt用にCordovaの生成GradleやApplicationを書き換える処理は追加していません。
+featureのCompose Compilerを常時有効にしました。AGP・Kotlinは従来のnative／Cordova基盤を使い、Hilt・KSPは両ホストのルートでCatalogの版を読み込み、各モジュールへ版なしのPlugin IDで適用します。Serializationは各モジュールのCatalog aliasで適用します。CordovaのApplicationはconfig.xmlのedit-configから登録し、両APKで共通ソースをコンパイルします。[Hiltのセットアップ](HILT.md)を参照してください。
 
 ## 画面遷移の依存
 
-featureへ`navigation-compose:2.8.9`と既存版のSerialization JSON 1.6.3、Kotlin Serialization Plugin 1.9.24を追加しています。型付きルートを生成・保存するための構成です。各画面のViewModelが`SavedStateHandle`から引数を受け取るため、既存と同じ2.8.7の`lifecycle-viewmodel-savedstate`を直接依存として明示しています。Navigation 3はKotlin 2系・新しいLifecycle／SavedStateなどを要求するため、既存のCordova／Kotlin基盤に合わせてNavigation 2.8系を選びました。[画面構成と引数](SERVICE_NAVIGATION.md)
+featureへ`navigation-compose:2.8.9`と既存版のSerialization JSON 1.6.3、Kotlin Serialization Plugin 1.9.24を追加しています。型付きルートを生成・保存するための構成です。Navigation ComposeとHilt Navigation ComposeはCompose BOMの対象外で、Catalogの`navigation`・`androidx-hilt`からそれぞれ個別に版を指定します。各画面のViewModelが`SavedStateHandle`から引数を受け取るため、既存と同じ2.8.7の`lifecycle-viewmodel-savedstate`を直接依存として明示しています。Navigation 3はKotlin 2系・新しいLifecycle／SavedStateなどを要求するため、既存のCordova／Kotlin基盤に合わせてNavigation 2.8系を選びました。[画面構成と引数](SERVICE_NAVIGATION.md)
+
+## ログの初期化
+
+TimberはAndroidX Startupから起動時に初期化します。Startup Runtime 1.2.0はfeatureの`implementation`で、共通bundleには含めません。Treeの登録条件と使い方は[ログのセットアップ](LOGGING.md)を参照してください。
 
 ## Kotlinx Datetime
 
@@ -82,7 +86,7 @@ native・Cordovaそれぞれ30構成で解決に成功し、両者の座標一�
 - `@Serializable`な日時レコードのSerializer生成とJSON化
 - `@Inject` RepositoryのFactory、`@HiltViewModel`のModule・Factory生成とコンパイル
 
-当時の検証用ソースとassetsは専用プロパティを指定した実行時だけ追加していました。通常APKの前に両モジュールをcleanし、検証用assetsがAPKに残っていないことも確認しました。CordovaのApplicationでのHilt起動・実機での注入は未検証です。
+当時の検証用ソースとassetsは専用プロパティを指定した実行時だけ追加していました。通常APKの前に両モジュールをcleanし、検証用assetsがAPKに残っていないことも確認しました。当時はCordovaのApplicationでのHilt起動・注入を確認していません。その後のホスト初期化と実行確認は[Hiltのセットアップ](HILT.md)にまとめています。
 
 Catalog全項目のライブラリ・Pluginを別構成で解決する従来の検証も成功しました。[ログ](logs/dependencies/dependencies-catalog.log)
 

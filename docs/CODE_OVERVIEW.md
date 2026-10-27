@@ -9,7 +9,7 @@
 1. [bootstrap.sh](../scripts/bootstrap.sh)がルートとアプリ側のnpm依存を復元し、Catalog指定のGradleとWrapperを用意します。不完全なCordova platformは退避して再生成し、正常なplatformはprepareします。最後に[setup-kotlin-plugin.sh](../scripts/setup-kotlin-plugin.sh)でプラグインをリンク導入します。
 2. [with-env.sh](../scripts/with-env.sh)がJDK・SDK・Gradleの環境を子プロセスへ渡します。[cordova.sh](../scripts/cordova.sh)はその環境で、ルートに導入したCLIをアプリディレクトリから実行します。[catalog-version.sh](../scripts/catalog-version.sh)は各シェルが必要とする版をTOMLから取り出します。
 3. [config.xml](../CordovaComposeApp/config.xml)のhookから[copy-gradle-extras.js](../CordovaComposeApp/hooks/copy-gradle-extras.js)を呼び、生成されたGradleファイルへ共有設定の参照を登録します。管理マーカー外の既存設定は保持します。
-4. [settings-extras.gradle](../native/gradle/settings-extras.gradle)がSettings評価時にCatalog・feature・dataを登録し、[build-extras.gradle](../native/gradle/build-extras.gradle)がapp依存・実効版の照合・Lint設定・Git hookの品質タスクを追加します。native単独では[settings.gradle.kts](../native/settings.gradle.kts)と[build.gradle.kts](../native/build.gradle.kts)が入口です。
+4. [settings-extras.gradle](../native/gradle/settings-extras.gradle)がSettings評価時にCatalog・feature・dataとルートのHilt・KSP依存を登録し、[build-extras.gradle](../native/gradle/build-extras.gradle)がapp依存・HiltとKSPの適用・共通Applicationのsource set・実効版の照合・Lint設定・Git hookの品質タスクを追加します。native単独では[settings.gradle.kts](../native/settings.gradle.kts)と[build.gradle.kts](../native/build.gradle.kts)が入口です。
 
 通常の起動は`npm run cordova:run`で行います。`cordova.sh`から`run android --emulator`を呼び、CLIがprepare・ビルド・インストール・起動を実行します。変更のたびにplatform・pluginを削除する処理や、事前のprepareは不要です。変更監視は行わないため、変更後に再実行します。
 
@@ -33,6 +33,10 @@ Git indexを自動更新する処理はありません。通常の`check`・`ktl
 | 管理元 | 役割 |
 | --- | --- |
 | [featureの設定](../native/feature/build.gradle.kts)・[dataの設定](../native/data/build.gradle.kts) | Android Libraryの依存・JVM target・コード生成・単体テスト・Dokkaを設定。依存方向はfeature → data |
+| [NativeApplication](../native/host/src/main/kotlin/dev/example/nativehost/NativeApplication.kt) | 両APKで直接コンパイルするHiltルート。詳細は[Hiltの構成](HILT.md)を参照 |
+| [dataのNFC処理](../native/data/src/main/kotlin/dev/example/nativedata/nfc/) | ICODE SLI判定・必要なブロックの読取・連続ByteArrayの切り出し・接続解放。詳細は[NFC読取](NFC_READING.md)を参照 |
+| [ゴルフ場番号ユースケース](../native/feature/src/main/kotlin/dev/example/nativefeature/services/golfchange/ReadGolfCourseNumberUseCase.kt) | 業務座標とLSBファーストのInt変換。失敗はユースケース固有の階層型で返す |
+| [ホルダー番号ユースケース](../native/feature/src/main/kotlin/dev/example/nativefeature/services/golfchange/ReadGolfHolderNumberUseCase.kt) | 固定領域の14バイトを読取順・大文字・区切りなし28桁の16進Stringで返す |
 | [MainActivity](../native/feature/src/main/kotlin/dev/example/nativefeature/MainActivity.kt) | 起動Intentを検証してNavigationへ渡すActivity。要求JSONを重複保存せず、画面とargsの復元はNavigation・ViewModelが担当。詳細は[画面構成](SERVICE_NAVIGATION.md)を参照 |
 | feature・dataの`src/main/AndroidManifest.xml` | LibraryのManifest。featureのActivityは両variantで同一アプリから起動し、外部には公開しない |
 | 両モジュールの`src/test/kotlin/` | Mainの差し替え、仮想時間、Flow、DatetimeのJSON化と、起動要求・WebMessage・URL許可の契約テスト。各クラス・テストのKDocを参照 |

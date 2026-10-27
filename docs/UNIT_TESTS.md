@@ -4,7 +4,7 @@
 
 `native/feature`・`native/data`のローカルJVM単体テストを、JDK 17で実行します。Android SDKはコンパイルに必要ですが、実機・エミュレータの起動は不要です。native単独ビルドとCordovaホストから、同じテストソースを実行できます。
 
-導入前は両モジュールにJUnit 4の依存だけがあり、テストコードはありませんでした。通常の本体コードはCompose動作確認用Activityで、dataには業務ロジックがありません。今回追加した4テストは環境の動作確認であり、業務ロジック・画面・NFC機能を検証するものではありません。
+導入当初の4テストは環境の動作確認です。その後、画面引数・WebMessage・Timberに加え、[NFCのタグ分類・範囲読取・業務ユースケース](NFC_READING.md)のテストを追加しています。NFCテストは模擬接続で送信フレーム・応答・解放を確認し、実タグでの通信成功とは区別します。
 
 | 項目 | 設定 |
 | --- | --- |
@@ -12,7 +12,7 @@
 | Coroutinesのテスト支援 | `kotlinx-coroutines-test:1.8.1`。本体の`coroutines`版を参照 |
 | Main Dispatcher | featureの`MainDispatcherRule`でテスト用Dispatcherに差し替え、終了時に復元 |
 | カバレッジ | JaCoCo 0.8.14。AGP 8.7.3の`enableUnitTestCoverage`を各build typeで有効化 |
-| DI | Hiltは既存のまま。通常の単体テストではコンストラクタに依存を渡してインスタンスを作る |
+| DI | [Hiltの設定](HILT.md)はアプリ起動で使用。通常の単体テストではコンストラクタに依存を渡してインスタンスを作る |
 | Android API・UI | 現在のJVMテストでは使用しない。Robolectric、Compose UIテスト、実機テストの追加は今回の対象外 |
 
 版は[`libs.versions.toml`](../native/gradle/libs.versions.toml)、テスト依存とカバレッジ設定は各モジュールの`build.gradle.kts`に置きます。MockK等のモックライブラリは追加せず、必要な依存は手書きのFakeで差し替える方針です。通常のJVM単体テストにHiltのAndroidテスト用依存は不要です。[Hiltの単体テストの説明](https://developer.android.com/training/dependency-injection/hilt-testing)
@@ -67,7 +67,7 @@ nativeとCordovaはモジュールの`build/`ディレクトリを共有する�
 
 Releaseのカバレッジは、各モジュールの`createReleaseUnitTestCoverageReport`を実行します。
 
-カバレッジは本体コードを対象にします。環境確認テストが成功しても業務ロジックをカバーしたことにはならず、現在のfeatureではActivityを実行しないため未カバーになり、dataは業務クラスがないため空のレポートになります。現段階でカバレッジ率の下限は設定していません。
+カバレッジは本体コードを対象にします。環境確認テストが成功しても業務ロジックをカバーしたことにはならず、現在のfeatureではActivityを実行しないため未カバーになり、NFCのReader・ユースケースはJVMテストで検証する処理が計測対象になります。現段階でカバレッジ率の下限は設定していません。
 
 Coroutines Testはテスト専用、JaCoCoはテスト実行・レポート用です。
 

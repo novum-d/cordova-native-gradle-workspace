@@ -15,6 +15,9 @@
 | [CODE_OVERVIEW.md](CODE_OVERVIEW.md) | コード・設定の役割とファイル間の連携。 |
 | [DEPENDENCY_VERSION_SELECTION.md](DEPENDENCY_VERSION_SELECTION.md) | 依存ライブラリ・Pluginの採用方針とバージョン選定理由。 |
 | [DEPENDENCIES.md](DEPENDENCIES.md) | 通常依存の配置・共通bundleのapi公開・解決とコンパイルの確認。 |
+| [NFC_READING.md](NFC_READING.md) | ICODE SLI判定、ブロック・バイト座標による読取と業務ユースケース。 |
+| [HILT.md](HILT.md) | 両ホストのApplication、Hilt ViewModel、KSPコード生成とJavaPoetのクラスパス。 |
+| [LOGGING.md](LOGGING.md) | Timberの起動時初期化、Debug／Releaseの方針、ログの呼び出し・確認方法。 |
 | [VERSION_CHECKS.md](VERSION_CHECKS.md) | Compose BOM・ktlint・detektの採用版と比較候補の検証。 |
 | [VALIDATION.md](VALIDATION.md) | 初回のnative・Cordova統合とplatform再生成の検証。 |
 | [ANDROID_CHECKS.md](ANDROID_CHECKS.md) | Gradle非推奨API・Android Lint・品質チェックの結果。 |

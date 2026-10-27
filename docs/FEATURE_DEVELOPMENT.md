@@ -74,7 +74,7 @@ featureはLibraryのまま、MainActivityは`exported=false`を維持します�
 
 Intentモックは起動要求の固定データです。NFCの実機処理やWeb APIの応答をモックへ切り替える機能は追加していません。機器実装を切り替える必要ができた段階で、DIやFlavorの使い方を判断します。
 
-CordovaPluginそのものの起動連携やコールバックを確認するときは、従来のCordovaホストも実行します。HiltやSDK等のホスト初期化が今後必要になった場合は、開発ホストにも必要な初期化を追加します。
+CordovaPluginそのものの起動連携やコールバックを確認するときは、従来のCordovaホストも実行します。HiltはCordovaと共通の[NativeApplication](../native/host/src/main/kotlin/dev/example/nativehost/NativeApplication.kt)を開発ホストでもコンパイルし、初期化します。[Hiltのセットアップ](HILT.md)を参照してください。
 
 ## 検証
 

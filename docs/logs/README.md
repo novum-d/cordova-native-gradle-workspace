@@ -12,6 +12,9 @@
 | [build-integration/](build-integration/README.md) | native・Cordovaのビルドと構成 | [VALIDATION.md](../VALIDATION.md) |
 | [regeneration/](regeneration/README.md) | Cordova platform再生成・設定復元hook | [VALIDATION.md](../VALIDATION.md) |
 | [dependencies/](dependencies/README.md) | 依存関係の追加・解決・コンパイル | [DEPENDENCIES.md](../DEPENDENCIES.md) |
+| [nfc-reading/](nfc-reading/README.md) | ICODE SLI分類・座標読取・ゴルフ場番号とホルダー番号の単体テスト、両ホストのビルド | [NFC_READING.md](../NFC_READING.md) |
+| [hilt/](hilt/README.md) | 両ホストのHilt初期化・ViewModel生成と引数復元 | [HILT.md](../HILT.md) |
+| [logging/](logging/README.md) | Timberの両ホスト初期化・Debug／Releaseの出力確認 | [LOGGING.md](../LOGGING.md) |
 | [versions/](versions/README.md) | 採用版と更新候補の比較 | [VERSION_CHECKS.md](../VERSION_CHECKS.md) |
 | [android-checks/](android-checks/README.md) | Gradle・Android Lintの品質確認 | [ANDROID_CHECKS.md](../ANDROID_CHECKS.md) |
 | [git-hooks/](git-hooks/README.md) | Git pre-commit・detektの動作確認 | [GIT_HOOKS.md](../GIT_HOOKS.md) |

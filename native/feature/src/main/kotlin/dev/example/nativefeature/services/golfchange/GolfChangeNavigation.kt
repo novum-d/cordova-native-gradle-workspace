@@ -1,7 +1,7 @@
 package dev.example.nativefeature.services.golfchange
 
 import androidx.compose.runtime.Composable
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import dev.example.nativefeature.navigation.FeatureDestination
@@ -18,7 +18,7 @@ internal fun NavGraphBuilder.golfChangeNavigation(onClose: () -> Unit) {
 @Composable
 private fun GolfHolderReadRoute(
     onBack: () -> Unit,
-    viewModel: GolfHolderReadViewModel = viewModel(),
+    viewModel: GolfHolderReadViewModel = hiltViewModel(),
 ) {
     GolfHolderReadScreen(request = viewModel.request, onBack = onBack)
 }

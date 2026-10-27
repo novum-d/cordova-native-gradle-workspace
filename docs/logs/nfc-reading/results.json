@@ -1,0 +1,84 @@
+{
+  "checkedAt": "2026-10-27",
+  "nativeTests": {
+    "data": {
+      "Debug": {
+        "tests": 29,
+        "failures": 0,
+        "errors": 0
+      },
+      "Release": {
+        "tests": 29,
+        "failures": 0,
+        "errors": 0
+      }
+    },
+    "feature": {
+      "Debug": {
+        "tests": 42,
+        "failures": 0,
+        "errors": 0
+      },
+      "Release": {
+        "tests": 42,
+        "failures": 0,
+        "errors": 0
+      }
+    }
+  },
+  "cordovaTests": {
+    "data": {
+      "Debug": {
+        "tests": 29,
+        "failures": 0,
+        "errors": 0
+      },
+      "Release": {
+        "tests": 29,
+        "failures": 0,
+        "errors": 0
+      }
+    },
+    "feature": {
+      "Debug": {
+        "tests": 42,
+        "failures": 0,
+        "errors": 0
+      },
+      "Release": {
+        "tests": 42,
+        "failures": 0,
+        "errors": 0
+      }
+    }
+  },
+  "verification": {
+    "tagClassification": "simulated UID and technologies",
+    "memoryRead": "simulated connection",
+    "courseNumber": "little-endian unsigned 16-bit Int",
+    "holderRange": "14 bytes from block 1 byte 2 through block 4 byte 3",
+    "holderStringRepresentation": "uppercase hexadecimal, 28 characters, no separators, reading order",
+    "holderUseCaseImplemented": true,
+    "physicalNfcTagVerified": false,
+    "nativeApkDebug": true,
+    "cordovaApkDebugAndRelease": true,
+    "detektAndFormatting": true,
+    "androidLintDebugAndRelease": true,
+    "holderFormatApproved": true,
+    "kdocGenerated": true,
+    "readerModeWired": false,
+    "webResultReturnImplemented": false
+  },
+  "holderUseCaseTests": {
+    "Debug": {
+      "tests": 7,
+      "failures": 0,
+      "errors": 0
+    },
+    "Release": {
+      "tests": 7,
+      "failures": 0,
+      "errors": 0
+    }
+  }
+}

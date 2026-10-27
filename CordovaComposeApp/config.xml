@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <!-- アプリの識別情報と、再生成されるAndroid platformへ渡すSDK設定・連携hookの管理元。 -->
-<widget id="dev.example.cordovanative" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="dev.example.cordovanative" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
     <name>CordovaComposeApp</name>
     <description>
         A sample Apache Cordova application that responds to the deviceready event.
@@ -14,6 +14,10 @@
     <allow-intent href="https://*/*" />
     <!-- Cordova Android 14に合わせる。CLIが設定を再生成するため、platform内を直接変更しない。 -->
     <platform name="android">
+        <!-- prepareで生成Manifestへ共通Applicationを登録し、APK側でHiltのルートを生成する。 -->
+        <edit-config file="app/src/main/AndroidManifest.xml" target="/manifest/application" mode="merge">
+            <application android:name="dev.example.nativehost.NativeApplication" />
+        </edit-config>
         <preference name="GradlePluginKotlinEnabled" value="true" />
         <preference name="android-minSdkVersion" value="24" />
         <preference name="android-compileSdkVersion" value="35" />

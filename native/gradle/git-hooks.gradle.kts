@@ -46,7 +46,7 @@ val autoCorrectConfig = workspaceDir.resolve("native/gradle/config/detekt/autoco
 check(detektConfig.isFile && formattingConfig.isFile && autoCorrectConfig.isFile) { "Missing native/gradle/config/detekt YAML in $workspaceDir" }
 
 // Library・開発ホスト・Cordovaプラグインの管理元へ同じ検査を適用し、生成先は重複検査しない。
-val kotlinSourceRoots = listOf("native/feature/src", "native/data/src", "native/dev-app/src", "kotlin-plugin/src")
+val kotlinSourceRoots = listOf("native/feature/src", "native/data/src", "native/dev-app/src", "native/host/src", "kotlin-plugin/src")
 // 本体・テストを含むsrc全体を対象とし、生成ディレクトリは解析から外す。
 fun nativeKotlinSources(baseDir: File) = files(kotlinSourceRoots.map { relative ->
     fileTree(baseDir.resolve(relative)) {

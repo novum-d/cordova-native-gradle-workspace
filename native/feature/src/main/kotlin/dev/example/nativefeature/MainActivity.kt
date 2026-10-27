@@ -2,23 +2,25 @@ package dev.example.nativefeature
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import dagger.hilt.android.AndroidEntryPoint
 import dev.example.nativefeature.launch.FeatureLaunchRequest
 import dev.example.nativefeature.navigation.FeatureLaunchCommand
 import dev.example.nativefeature.navigation.FeatureNavigation
+import timber.log.Timber
 
 /**
- * ホストからの起動要求を検証し、Navigationへ一度だけ渡すActivity。
+ * ホストからの起動要求を検証し、Navigationへ一度だけ渡すHiltの注入入口となるActivity。
  *
  * [onCreate]と[onNewIntent]で同じ起動要求を検証し、処理IDに対応する画面を直接開く。
  * 画面・引数の保存はNavigationと各画面のSavedStateHandleへ任せ、要求JSONは重複保存しない。
  */
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private var pendingCommand by mutableStateOf<FeatureLaunchCommand?>(null)
 
@@ -51,7 +53,7 @@ class MainActivity : ComponentActivity() {
         val resolved = try {
             FeatureLaunchRequest.fromJson(requireNotNull(requestJson)).toDestination()
         } catch (error: IllegalArgumentException) {
-            Log.w("FeatureLaunch", "Invalid feature launch request", error)
+            Timber.tag("FeatureLaunch").w(error, "Invalid feature launch request")
             finish()
             return false
         }

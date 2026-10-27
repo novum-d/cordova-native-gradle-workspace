@@ -14,6 +14,21 @@ if (catalogs.findByName('libs') != null) {
 }
 catalogs.create('libs') { from(files(catalogFile)) }
 
+// 生成されたroot build.gradleを編集せず、AGPと同じクラスパスへHilt・KSPを登録する。
+// CatalogはbeforeProject時点では未登録のため、クラスパスの解決直前に参照する。
+// 親側の古いJavaPoetを子のHiltが読み込む問題も、通常の依存解決で防ぐ。
+gradle.beforeProject { target ->
+    if (target.path == ':') {
+        target.buildscript.configurations.classpath.withDependencies { dependencies ->
+            def sharedCatalog = target.extensions.getByType(org.gradle.api.artifacts.VersionCatalogsExtension).named('libs')
+            ['ksp': 'com.google.devtools.ksp:symbol-processing-gradle-plugin',
+             'hilt': 'com.google.dagger:hilt-android-gradle-plugin'].each { alias, artifact ->
+                dependencies.add(target.dependencies.create("${artifact}:${sharedCatalog.findVersion(alias).get().requiredVersion}"))
+            }
+        }
+    }
+}
+
 // Gradle上のプロジェクト名を、workspaceのnative配下にある実体へ結び付ける。
 ['feature', 'data'].each { name ->
     def dir = new File(nativeDir, name)

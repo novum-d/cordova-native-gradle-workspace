@@ -25,9 +25,19 @@ if (gradle.gradleVersion != catalog.findVersion('gradle').get().requiredVersion)
 }
 
 // APKホストは既存の:appだけとし、共有Libraryをそこへ組み込む。
+apply plugin: 'com.google.devtools.ksp'
+apply plugin: 'com.google.dagger.hilt.android'
+
+// 共通Applicationの元ソースをAPKで直接コンパイルし、featureとdataのHilt定義を集約する。
+android.sourceSets.named('main') {
+    java.srcDir(new File(rootDir, '../../../native/host/src/main/kotlin'))
+}
+
 dependencies {
     implementation(project(':feature'))
     implementation(project(':data'))
+    implementation(catalog.findLibrary('hilt-android').get())
+    add('ksp', catalog.findLibrary('hilt-compiler').get())
 }
 
 // Cordovaはextras読込後にabortOnError=falseを設定するため、DSLの確定時にエラー停止を有効化する。

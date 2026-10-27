@@ -1,0 +1,191 @@
+Warning: SDK processing. This version only understands SDK XML versions up to 3 but an SDK XML file of version 4 was encountered. This can happen if you use versions of Android Studio and the command-line tools that were released at different times.
+> Task :detekt
+
+> Task :detektFormatCheck
+..............................
+
+30 kotlin files were analyzed.
+Complexity Report:
+	- 1,624 lines of code (loc)
+	- 1,251 source lines of code (sloc)
+	- 804 logical lines of code (lloc)
+	- 171 comment lines of code (cloc)
+	- 222 cyclomatic complexity (mcc)
+	- 95 cognitive complexity
+	- 0 number of total code smells
+	- 13% comment source ratio
+	- 276 mcc per 1,000 lloc
+	- 0 code smells per 1,000 lloc
+
+Project Statistics:
+	- number of properties: 95
+	- number of functions: 95
+	- number of classes: 34
+	- number of packages: 12
+	- number of kt files: 30
+
+Successfully generated HTML report at file:///Users/novumd/repos/cordova-native-gradle-workspace/native/build/reports/detekt/detektFormatCheck.html
+
+> Task :dev-app:preBuild UP-TO-DATE
+> Task :dev-app:preDebugBuild UP-TO-DATE
+> Task :dev-app:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :dev-app:checkKotlinGradlePluginConfigurationErrors
+> Task :data:preBuild UP-TO-DATE
+> Task :data:preDebugBuild UP-TO-DATE
+> Task :data:generateDebugResValues UP-TO-DATE
+> Task :data:generateDebugResources UP-TO-DATE
+> Task :data:packageDebugResources
+> Task :data:compileDebugLibraryResources UP-TO-DATE
+> Task :data:parseDebugLocalResources UP-TO-DATE
+> Task :data:generateDebugRFile UP-TO-DATE
+> Task :data:writeDebugAarMetadata UP-TO-DATE
+> Task :feature:preBuild UP-TO-DATE
+> Task :feature:preDebugBuild UP-TO-DATE
+> Task :feature:writeDebugAarMetadata UP-TO-DATE
+> Task :dev-app:checkDebugAarMetadata UP-TO-DATE
+> Task :dev-app:generateDebugResValues UP-TO-DATE
+> Task :feature:generateDebugResValues UP-TO-DATE
+> Task :feature:generateDebugResources UP-TO-DATE
+> Task :feature:packageDebugResources
+> Task :dev-app:mapDebugSourceSetPaths UP-TO-DATE
+> Task :dev-app:generateDebugResources UP-TO-DATE
+> Task :dev-app:mergeDebugResources UP-TO-DATE
+> Task :dev-app:packageDebugResources UP-TO-DATE
+> Task :dev-app:parseDebugLocalResources UP-TO-DATE
+> Task :dev-app:createDebugCompatibleScreenManifests UP-TO-DATE
+> Task :data:extractDeepLinksDebug UP-TO-DATE
+> Task :data:processDebugManifest UP-TO-DATE
+> Task :dev-app:extractDeepLinksDebug UP-TO-DATE
+> Task :feature:extractDeepLinksDebug UP-TO-DATE
+> Task :feature:processDebugManifest UP-TO-DATE
+> Task :dev-app:processDebugMainManifest UP-TO-DATE
+> Task :dev-app:processDebugManifest UP-TO-DATE
+> Task :dev-app:processDebugManifestForPackage UP-TO-DATE
+> Task :feature:compileDebugLibraryResources UP-TO-DATE
+> Task :feature:parseDebugLocalResources UP-TO-DATE
+> Task :feature:generateDebugRFile UP-TO-DATE
+> Task :dev-app:processDebugResources UP-TO-DATE
+> Task :data:checkKotlinGradlePluginConfigurationErrors
+> Task :data:kspDebugKotlin NO-SOURCE
+> Task :data:compileDebugKotlin NO-SOURCE
+> Task :data:javaPreCompileDebug UP-TO-DATE
+> Task :data:compileDebugJavaWithJavac NO-SOURCE
+> Task :data:transformDebugClassesWithAsm UP-TO-DATE
+> Task :data:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :data:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :feature:checkKotlinGradlePluginConfigurationErrors
+> Task :feature:javaPreCompileDebug UP-TO-DATE
+> Task :dev-app:javaPreCompileDebug UP-TO-DATE
+> Task :data:mergeDebugShaders UP-TO-DATE
+> Task :data:compileDebugShaders NO-SOURCE
+> Task :data:generateDebugAssets UP-TO-DATE
+> Task :data:packageDebugAssets UP-TO-DATE
+> Task :dev-app:mergeDebugShaders UP-TO-DATE
+> Task :dev-app:compileDebugShaders NO-SOURCE
+> Task :dev-app:generateDebugAssets UP-TO-DATE
+> Task :feature:mergeDebugShaders UP-TO-DATE
+> Task :feature:compileDebugShaders NO-SOURCE
+> Task :feature:generateDebugAssets UP-TO-DATE
+> Task :feature:packageDebugAssets UP-TO-DATE
+> Task :dev-app:mergeDebugAssets UP-TO-DATE
+> Task :dev-app:compressDebugAssets UP-TO-DATE
+> Task :data:processDebugJavaRes NO-SOURCE
+> Task :dev-app:checkDebugDuplicateClasses UP-TO-DATE
+> Task :dev-app:desugarDebugFileDependencies UP-TO-DATE
+> Task :dev-app:mergeExtDexDebug UP-TO-DATE
+> Task :data:bundleLibRuntimeToDirDebug UP-TO-DATE
+> Task :data:mergeDebugJniLibFolders UP-TO-DATE
+> Task :data:mergeDebugNativeLibs NO-SOURCE
+> Task :data:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :dev-app:mergeDebugJniLibFolders UP-TO-DATE
+> Task :feature:mergeDebugJniLibFolders UP-TO-DATE
+> Task :feature:mergeDebugNativeLibs NO-SOURCE
+> Task :feature:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :dev-app:mergeDebugNativeLibs UP-TO-DATE
+> Task :dev-app:stripDebugDebugSymbols UP-TO-DATE
+> Task :dev-app:validateSigningDebug UP-TO-DATE
+> Task :dev-app:writeDebugAppMetadata UP-TO-DATE
+> Task :dev-app:writeDebugSigningConfigVersions UP-TO-DATE
+> Task :feature:preDebugUnitTestBuild UP-TO-DATE
+> Task :feature:generateDebugUnitTestStubRFile UP-TO-DATE
+> Task :feature:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :data:preReleaseBuild UP-TO-DATE
+> Task :data:generateReleaseResValues UP-TO-DATE
+> Task :data:generateReleaseResources UP-TO-DATE
+> Task :data:packageReleaseResources
+> Task :data:parseReleaseLocalResources UP-TO-DATE
+> Task :data:generateReleaseRFile UP-TO-DATE
+> Task :data:kspReleaseKotlin NO-SOURCE
+> Task :data:compileReleaseKotlin NO-SOURCE
+> Task :data:javaPreCompileRelease UP-TO-DATE
+> Task :data:compileReleaseJavaWithJavac NO-SOURCE
+> Task :data:transformReleaseClassesWithAsm UP-TO-DATE
+> Task :data:bundleLibRuntimeToJarRelease UP-TO-DATE
+> Task :data:processReleaseJavaRes NO-SOURCE
+> Task :feature:preReleaseBuild UP-TO-DATE
+> Task :data:bundleLibCompileToJarRelease UP-TO-DATE
+> Task :feature:generateReleaseResValues UP-TO-DATE
+> Task :feature:generateReleaseResources UP-TO-DATE
+> Task :feature:packageReleaseResources
+> Task :feature:parseReleaseLocalResources UP-TO-DATE
+> Task :feature:generateReleaseRFile UP-TO-DATE
+> Task :feature:javaPreCompileRelease UP-TO-DATE
+> Task :feature:preReleaseUnitTestBuild UP-TO-DATE
+> Task :feature:generateReleaseUnitTestStubRFile UP-TO-DATE
+> Task :feature:javaPreCompileReleaseUnitTest UP-TO-DATE
+> Task :feature:kspDebugKotlin
+> Task :feature:kspReleaseKotlin
+> Task :feature:compileDebugKotlin
+> Task :feature:compileDebugJavaWithJavac UP-TO-DATE
+> Task :feature:processDebugJavaRes UP-TO-DATE
+> Task :feature:transformDebugClassesWithAsm
+> Task :feature:bundleLibRuntimeToJarDebug
+> Task :feature:bundleLibCompileToJarDebug
+> Task :feature:bundleLibRuntimeToDirDebug
+> Task :feature:compileReleaseKotlin
+> Task :feature:compileReleaseJavaWithJavac UP-TO-DATE
+> Task :feature:processReleaseJavaRes UP-TO-DATE
+> Task :feature:transformReleaseClassesWithAsm
+> Task :dev-app:kspDebugKotlin
+> Task :feature:bundleLibRuntimeToJarRelease
+> Task :feature:bundleLibCompileToJarRelease
+> Task :dev-app:compileDebugKotlin UP-TO-DATE
+> Task :dev-app:compileDebugJavaWithJavac UP-TO-DATE
+> Task :feature:kspDebugUnitTestKotlin
+> Task :dev-app:hiltAggregateDepsDebug UP-TO-DATE
+> Task :dev-app:hiltJavaCompileDebug UP-TO-DATE
+> Task :dev-app:processDebugJavaRes UP-TO-DATE
+> Task :dev-app:mergeDebugJavaResource UP-TO-DATE
+> Task :dev-app:transformDebugClassesWithAsm UP-TO-DATE
+> Task :dev-app:dexBuilderDebug UP-TO-DATE
+> Task :dev-app:mergeProjectDexDebug UP-TO-DATE
+> Task :feature:compileDebugUnitTestKotlin UP-TO-DATE
+> Task :feature:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :feature:hiltAggregateDepsDebugUnitTest UP-TO-DATE
+> Task :feature:hiltJavaCompileDebugUnitTest NO-SOURCE
+> Task :feature:processDebugUnitTestJavaRes UP-TO-DATE
+> Task :dev-app:mergeLibDexDebug
+> Task :feature:transformDebugUnitTestClassesWithAsm UP-TO-DATE
+> Task :feature:testDebugUnitTest
+> Task :dev-app:packageDebug
+> Task :dev-app:createDebugApkListingFileRedirect UP-TO-DATE
+> Task :dev-app:assembleDebug
+> Task :feature:kspReleaseUnitTestKotlin
+> Task :feature:compileReleaseUnitTestKotlin UP-TO-DATE
+> Task :feature:compileReleaseUnitTestJavaWithJavac NO-SOURCE
+> Task :feature:hiltAggregateDepsReleaseUnitTest UP-TO-DATE
+> Task :feature:hiltJavaCompileReleaseUnitTest NO-SOURCE
+> Task :feature:processReleaseUnitTestJavaRes UP-TO-DATE
+> Task :feature:transformReleaseUnitTestClassesWithAsm UP-TO-DATE
+> Task :feature:testReleaseUnitTest
+
+[Incubating] Problems report is available at: file:///Users/novumd/repos/cordova-native-gradle-workspace/native/build/reports/problems/problems-report.html
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/8.13/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD SUCCESSFUL in 6s
+122 actionable tasks: 27 executed, 95 up-to-date

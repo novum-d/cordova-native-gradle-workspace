@@ -9,8 +9,9 @@ plugins {
     id("org.jetbrains.kotlin.android")
     // 型付き画面引数のserializerを生成し、Navigationの保存・復元で利用する。
     alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.ksp)
-    alias(libs.plugins.hilt)
+    // Hilt・KSPの実体は各ホストのルートでCatalogから読み込む。
+    id("com.google.devtools.ksp")
+    id("com.google.dagger.hilt.android")
     alias(libs.plugins.dokka)
 }
 
@@ -57,6 +58,8 @@ dependencies {
     api(libs.bundles.native.common)
     implementation(project(":data"))
     implementation(libs.androidx.core.ktx)
+    // ホスト共通の起動時初期化をManifestから登録し、TimberのTreeを一度だけ用意する。
+    implementation(libs.androidx.startup.runtime)
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.ui)
     implementation(libs.compose.foundation)
@@ -72,6 +75,8 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.savedstate)
     // サービスごとの画面に渡す型付きルートと、任意のJSONオブジェクト引数を扱う。
     implementation(libs.androidx.navigation.compose)
+    // Navigationの各エントリを所有者として、SavedStateHandle付きのHilt ViewModelを生成する。
+    implementation(libs.hilt.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.androidx.webkit)
     // Hiltのコード生成は各モジュールで実行し、Compilerをapiへ公開しない。

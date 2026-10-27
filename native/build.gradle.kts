@@ -3,6 +3,9 @@ plugins {
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.android.library) apply false
     alias(libs.plugins.kotlin.android) apply false
+    // AGPと同じ親クラスパスで解決し、Hiltが必要なJavaPoetも正しい版へそろえる。
+    alias(libs.plugins.ksp) apply false
+    alias(libs.plugins.hilt) apply false
     alias(libs.plugins.dokka)
 }
 

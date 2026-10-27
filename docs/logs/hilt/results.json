@@ -1,0 +1,60 @@
+{
+  "checkedAt": "2026-10-27",
+  "device": "API 35 emulator",
+  "results": [
+    {
+      "host": "dev-debug",
+      "application": "dev.example.nativehost.NativeApplication",
+      "debuggable": true,
+      "hiltViewModelDisplayed": true,
+      "savedStateArgumentsRestoredAfterRotation": true,
+      "timberInitializationLogs": 1,
+      "appCrashDetected": false
+    },
+    {
+      "host": "cordova-debug",
+      "application": "dev.example.nativehost.NativeApplication",
+      "debuggable": true,
+      "hiltViewModelDisplayed": true,
+      "savedStateArgumentsRestoredAfterRotation": true,
+      "timberInitializationLogs": 1,
+      "appCrashDetected": false
+    },
+    {
+      "host": "cordova-release",
+      "application": "dev.example.nativehost.NativeApplication",
+      "debuggable": false,
+      "hiltViewModelDisplayed": true,
+      "savedStateArgumentsRestoredAfterRotation": true,
+      "timberInitializationLogs": 0,
+      "appCrashDetected": false
+    }
+  ],
+  "emulatorStopRequested": true,
+  "emulatorStopped": true,
+  "buildChecks": {
+    "nativeDevAppDebug": true,
+    "featureUnitTestsDebugAndRelease": true,
+    "nativeDetektAndFormatting": true,
+    "featureLintDebugAndRelease": true,
+    "devAppLintDebug": true,
+    "cordovaApkDebugAndRelease": true,
+    "cordovaLintDebugAndRelease": true,
+    "cordovaDetektAndFormatting": true,
+    "cordovaPrepareRestoredIntegration": true
+  },
+  "featureUnitTests": {
+    "Debug": {
+      "tests": 30,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "Release": {
+      "tests": 30,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  }
+}

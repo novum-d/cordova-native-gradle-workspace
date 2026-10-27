@@ -23,9 +23,11 @@ Web: openFeature({id, args?}, success, error)
 | `home` | 確認用のホーム画面 | 引数を使用しないためなし |
 | `sample.webview` | 手書きHTMLの双方向通信サンプル | 保存する画面引数なし。WebView接続は画面の寿命で管理 |
 
-各機能画面は画面名・処理ID・argsを中央に表示し、「戻る」でCordovaへ戻ります。現在の確定仕様はゴルフ場ID・ホルダー番号の読み取りです。この2項目は読み取りによって取得する値で、Webからの必須引数にはしていません。実際の読み取り、データ形式の解析、結果のWeb返却、権限要求は未実装です。
+各機能画面は画面名・処理ID・argsを中央に表示し、「戻る」でCordovaへ戻ります。現在の確定仕様はゴルフ場ID・ホルダー番号の読み取りです。この2項目は読み取りによって取得する値で、Webからの必須引数にはしていません。[SLI判定・座標読取とユースケース](NFC_READING.md)を追加しています。この画面でのNFC検出・読取実行・Webへの結果返却は未接続です。
 
 NFC書き込みは対象外です。`nfc.read`・`nfc.write`・`camera.capture`は受け付けず、サービス名と処理を表すIDを使います。本人確認（マイナンバー）は別サービスとして追加する想定ですが、処理ID・画面・引数が未確定のため、今回の受付や画面には追加していません。
+
+MainActivityは`@AndroidEntryPoint`、GolfHolderReadViewModelは`@HiltViewModel`で、画面内の`hiltViewModel()`から生成します。Navigationのエントリに属する`SavedStateHandle`をHiltが提供します。[Hiltのホスト設定](HILT.md)を参照してください。
 
 ## JSからの利用
 

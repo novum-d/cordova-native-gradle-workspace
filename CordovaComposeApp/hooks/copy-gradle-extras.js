@@ -45,7 +45,8 @@ module.exports = function (context) {
     for (const relative of ["native/gradle/libs.versions.toml", "native/gradle/settings-extras.gradle",
         "native/gradle/build-extras.gradle", "native/feature/build.gradle.kts", "native/data/build.gradle.kts",
         "native/gradle/git-hooks.gradle.kts", "native/gradle/config/detekt/detekt.yml",
-        "native/gradle/config/detekt/formatting.yml", "native/gradle/config/detekt/autocorrect.yml"]) {
+        "native/gradle/config/detekt/formatting.yml", "native/gradle/config/detekt/autocorrect.yml",
+        "native/host/src/main/kotlin/dev/example/nativehost/NativeApplication.kt"]) {
         if (!fs.existsSync(path.join(workspace, relative))) throw new Error(`Required integration file missing: ${relative}`);
     }
     const packageVersion = require(path.join(appDir, "node_modules/cordova-android/package.json")).version;

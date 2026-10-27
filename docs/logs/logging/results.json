@@ -1,0 +1,52 @@
+{
+  "checkedAt": "2026-10-27",
+  "device": "API 35 emulator",
+  "results": [
+    {
+      "host": "dev-debug",
+      "debuggable": true,
+      "initializerMetadataCount": 1,
+      "initializationLogsAfterTwoActivityStarts": 1,
+      "processRunning": true,
+      "appCrashDetected": false
+    },
+    {
+      "host": "cordova-debug",
+      "debuggable": true,
+      "initializerMetadataCount": 1,
+      "initializationLogsAfterTwoActivityStarts": 1,
+      "processRunning": true,
+      "appCrashDetected": false
+    },
+    {
+      "host": "cordova-release",
+      "debuggable": false,
+      "initializerMetadataCount": 1,
+      "initializationLogsAfterTwoActivityStarts": 0,
+      "processRunning": true,
+      "appCrashDetected": false
+    }
+  ],
+  "unitTests": {
+    "Debug": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0
+    },
+    "Release": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0
+    }
+  },
+  "buildChecks": {
+    "nativeFeatureUnitTests": true,
+    "nativeDetektAndFormatting": true,
+    "nativeFeatureLintDebugAndRelease": true,
+    "devAppDebugBuild": true,
+    "cordovaApkDebugAndRelease": true,
+    "cordovaDetektAndFormatting": true,
+    "cordovaAppLintDebugAndRelease": true
+  },
+  "emulatorStopped": true
+}
