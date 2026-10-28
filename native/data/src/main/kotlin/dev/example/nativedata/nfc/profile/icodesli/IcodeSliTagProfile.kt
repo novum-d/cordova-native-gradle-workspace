@@ -10,9 +10,13 @@ import dev.example.nativedata.nfc.profile.NfcTagProfile
  * 転記のSLI2ICS20と資料のSL2 ICS20は照合待ちのため、正式品番の確定値としては保存しない。
  */
 internal object IcodeSliTagProfile {
+    /** SLIユーザー領域固有の構成。同じ数値でも汎用のニブル幅などとは共有しない。 */
+    private const val USER_MEMORY_BLOCK_COUNT = 28
+    private const val BYTES_PER_BLOCK = 4
+
     val profile = NfcTagProfile(
         model = NfcTagModel.ICODE_SLI,
         protocol = NfcReadProtocol.ISO_15693,
-        memory = NfcBlockMemory(blockCount = 28, bytesPerBlock = 4),
+        memory = NfcBlockMemory(blockCount = USER_MEMORY_BLOCK_COUNT, bytesPerBlock = BYTES_PER_BLOCK),
     )
 }

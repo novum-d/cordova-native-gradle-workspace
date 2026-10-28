@@ -8,14 +8,14 @@
 
 ```mermaid
 flowchart TD
-    UI[Compose画面] --> VM[GolfHolderReadViewModel]
+    UI[Compose画面] --> VM[GolfCardReadViewModel]
     VM --> Golf[ObserveGolfCardUseCase]
     Golf --> Detect[ObserveNfcTagsUseCase 汎用タグ検出]
     Detect --> DetectionRepo[NfcTagDetectionRepository]
     DetectionRepo --> Source[NfcTagDetectionSource]
     Host[Activityの前面表示とNfcReaderModeController] --> Source
     Golf --> Read[ゴルフ場番号・ホルダー番号の読取ユースケース]
-    Read --> CardRepo[GolfCardRepository 業務項目の生バイト取得]
+    Read --> CardRepo[GolfCardRepository Int・Stringの業務値取得]
     CardRepo --> CommonReader[NfcCardReader 共通の範囲読取]
     CommonReader --> Profile[実タグから型番Profileを選択・業務配置の対応モデルと照合]
     Profile --> IO[NfcMemoryDataSource Profileの通信方式・メモリ構成でREAD・close]
@@ -28,10 +28,13 @@ UI・ViewModelはRepositoryを直接呼びません。ViewModelは業務ユー�
 | [data/nfc](../native/data/src/main/kotlin/dev/example/nativedata/nfc/) | 汎用検出の契約・実装、Androidの検出ホスト、対象参照、型番Profile・範囲検査・通信 |
 | [data/err/nfc](../native/data/src/main/kotlin/dev/example/nativedata/err/nfc/) | 検出・読取の共通エラー契約と生成・分類処理 |
 | [data/di/nfc](../native/data/src/main/kotlin/dev/example/nativedata/di/nfc/) | Repositoryのbindingと型番判定器のSet登録 |
-| [feature/nfc](../native/feature/src/main/kotlin/dev/example/nativefeature/nfc/) | ゴルフに依存しない検出ユースケースと、その発生元を示す検出エラー |
+| [feature/usecase/nfc](../native/feature/src/main/kotlin/dev/example/nativefeature/usecase/nfc/) | ゴルフに依存しない検出ユースケース |
+| [feature/err](../native/feature/src/main/kotlin/dev/example/nativefeature/err/) | 発生元のユースケースを示す検出・読取エラー |
 | [data/repository/card](../native/data/src/main/kotlin/dev/example/nativedata/repository/card/) | 業務ごとのRepository生成の入口。共通NFCのFactoryへ生成を委譲する |
-| [data/repository/golf](../native/data/src/main/kotlin/dev/example/nativedata/repository/golf/) | 業務Repositoryの契約・生成、固定座標の解決、生バイトの取得 |
-| [feature/services/golfchange](../native/feature/src/main/kotlin/dev/example/nativefeature/services/golfchange/) | 同じタグからの2項目取得、Int・Stringへの解釈、ゴルフの画面状態と表示 |
+| [data/repository/golf](../native/data/src/main/kotlin/dev/example/nativedata/repository/golf/) | 固定座標の解決・読取と、バイト列からInt・Stringの業務値への変換 |
+| [feature/usecase/golfchange](../native/feature/src/main/kotlin/dev/example/nativefeature/usecase/golfchange/) | 業務値の取得と、同じタグから2項目を読む順序の制御 |
+| [feature/model/golfchange](../native/feature/src/main/kotlin/dev/example/nativefeature/model/golfchange/) | 読取結果と画面状態の型 |
+| [feature/ui/golfchange](../native/feature/src/main/kotlin/dev/example/nativefeature/ui/golfchange/) | 画面・ViewModelによる状態の表示 |
 
 別の業務でも`ObserveNfcTagsUseCase`を再利用できます。検出Repositoryが`GolfCardRepository`を返す構成にはしていません。検出と業務の読み取りをつなぐのは各業務のユースケースです。
 
@@ -53,7 +56,7 @@ UI・ViewModelはRepositoryを直接呼びません。ViewModelは業務ユー�
 | `err/nfc/` | 検出・読取失敗の共通interface・Factory、例外の分類処理 |
 | `di/nfc/` | Repository・業務Factoryのbindingと型番判定器のSet登録 |
 | `repository/card/` | 業務Repository生成の公開契約とDefault実装 |
-| `repository/golf/` | ゴルフのRepository契約・Default実装と固定座標 |
+| `repository/golf/` | ゴルフのRepository契約・Default実装、固定座標・業務値への変換 |
 
 ## 対象参照と引数なしAPI
 
@@ -70,14 +73,14 @@ val holder = readers.holderNum(target)()
 実装ではゴルフ場番号が失敗した時点で今回の処理を終えます。ホルダー番号も成功した場合だけ完了イベントを通知し、部分成功や別カードの値を組み合わせません。
 
 ```kotlin
-/** 生成時に固定した対象から、業務項目の生バイトを取得する。 */
+/** 生成時に固定した対象から、解釈済みの業務値を取得する。 */
 interface GolfCardRepository<out E : NfcReadErr> {
-    suspend fun readGolfCourseNum(): Result<ByteArray, E>
-    suspend fun readGolfCardHolderNum(): Result<ByteArray, E>
+    suspend fun readGolfCourseNum(): Result<Int, E>
+    suspend fun readGolfCardHolderNum(): Result<String, E>
 }
 ```
 
-戻り値は2バイト・14バイトです。ゴルフ場番号のLSBファーストIntへの変換、ホルダー番号の28桁の大文字16進Stringへの変換は、それぞれの読取ユースケースに残しています。
+戻り値はInt・Stringです。[GolfCardDecoder](../native/data/src/main/kotlin/dev/example/nativedata/repository/golf/GolfCardDecoder.kt)が、共通Readerから取得した2バイト・14バイトをそれぞれの業務値へ変換します。固定範囲の切り出しと応答検査はReader側で完了している前提です。ユースケースはバイト順・符号補正・16進表現の生成を扱わず、Repositoryの取得結果を返します。
 
 ## 型番Profileと通信方式
 
@@ -116,7 +119,8 @@ memoryDataSource.read(
 | [DefaultCardRepositoryFactory.kt](../native/data/src/main/kotlin/dev/example/nativedata/repository/card/DefaultCardRepositoryFactory.kt) | 共通NFCのFactoryを使い、業務Repositoryを生成する |
 | [NfcCardReaderFactory.kt](../native/data/src/main/kotlin/dev/example/nativedata/nfc/card/NfcCardReaderFactory.kt) | 対象タグ・エラーFactory・DataSourceを組み合わせて共通Readerを生成する |
 | [DefaultNfcCardReader.kt](../native/data/src/main/kotlin/dev/example/nativedata/nfc/card/DefaultNfcCardReader.kt) | 対象の有効期間・排他・Profile識別・モデル照合・範囲読取を担当する |
-| [DefaultGolfCardRepository.kt](../native/data/src/main/kotlin/dev/example/nativedata/repository/golf/DefaultGolfCardRepository.kt) | ゴルフの項目を範囲と対応モデルへ変換し、共通Readerへ委譲する |
+| [DefaultGolfCardRepository.kt](../native/data/src/main/kotlin/dev/example/nativedata/repository/golf/DefaultGolfCardRepository.kt) | 共通Readerへ固定範囲の読取を委譲し、成功値をDecoderでInt・Stringへ変換する |
+| [GolfCardDecoder.kt](../native/data/src/main/kotlin/dev/example/nativedata/repository/golf/GolfCardDecoder.kt) | LSBファーストの数値変換と、ホルダーの28桁16進表現をdata内部で行う |
 | [GolfCardField.kt](../native/data/src/main/kotlin/dev/example/nativedata/repository/golf/GolfCardField.kt) | SLIで発行された業務カードの固定座標を管理する |
 | [DefaultNfcTagDetectionRepository.kt](../native/data/src/main/kotlin/dev/example/nativedata/nfc/detection/DefaultNfcTagDetectionRepository.kt) | 検出Sourceの通知を、呼出元固有の検出結果へ変換する |
 

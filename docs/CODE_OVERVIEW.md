@@ -35,12 +35,14 @@ Git indexを自動更新する処理はありません。通常の`check`・`ktl
 | [featureの設定](../native/feature/build.gradle.kts)・[dataの設定](../native/data/build.gradle.kts) | Android Libraryの依存・JVM target・コード生成・単体テスト・Dokkaを設定。依存方向はfeature → data |
 | [NativeApplication](../native/host/src/main/kotlin/dev/example/nativehost/NativeApplication.kt) | 両APKで直接コンパイルするHiltルート。詳細は[Hiltの構成](HILT.md)を参照 |
 | [dataのNFC処理](../native/data/src/main/kotlin/dev/example/nativedata/nfc/) | 登録された判定器によるProfile選択・Profileからの通信方式とメモリ構成の解決・必要なブロックの読取・切り出し・解放。詳細は[NFC読取](NFC_READING.md)を参照 |
+| [汎用バイト定数](../native/data/src/main/kotlin/dev/example/nativedata/constant/binary/BinaryConstants.kt)・[ISO 15693定数](../native/data/src/main/kotlin/dev/example/nativedata/nfc/protocol/Iso15693Constants.kt) | バイト演算の基本定義と、通信方式固有のフラグ・応答形式を分けて管理する |
 | [業務カードのFactory](../native/data/src/main/kotlin/dev/example/nativedata/repository/card/) | `createGolfCard()`等の生成入口。共通NFCのFactoryと業務Repositoryを組み合わせる |
-| [dataの業務Repository](../native/data/src/main/kotlin/dev/example/nativedata/repository/golf/) | 業務項目の物理範囲を解決し、対象とエラー文脈を固定した共通NFC Repositoryへ読取を委譲する |
-| [汎用タグ検出ユースケース](../native/feature/src/main/kotlin/dev/example/nativefeature/nfc/ObserveNfcTagsUseCase.kt) | ゴルフ以外にも再利用する検出の入口。UIからRepositoryを直接呼ばない |
-| [ゴルフ場番号ユースケース](../native/feature/src/main/kotlin/dev/example/nativefeature/services/golfchange/ReadGolfCourseNumUseCase.kt) | Repositoryから取得した2バイトのLSBファーストInt変換。失敗はユースケース固有の階層型で返す |
-| [ホルダー番号ユースケース](../native/feature/src/main/kotlin/dev/example/nativefeature/services/golfchange/ReadGolfHolderNumUseCase.kt) | 固定領域の14バイトを読取順・大文字・区切りなし28桁の16進Stringで返す |
+| [dataの業務Repository](../native/data/src/main/kotlin/dev/example/nativedata/repository/golf/) | 共通NFC Readerへ固定範囲の読取を委譲し、DecoderでInt・Stringの業務値へ変換する |
+| [汎用タグ検出ユースケース](../native/feature/src/main/kotlin/dev/example/nativefeature/usecase/nfc/ObserveNfcTagsUseCase.kt) | ゴルフ以外にも再利用する検出の入口。UIからRepositoryを直接呼ばない |
+| [ゴルフ場番号ユースケース](../native/feature/src/main/kotlin/dev/example/nativefeature/usecase/golfchange/ReadGolfCourseNumUseCase.kt) | RepositoryからIntの番号を取得する。失敗はユースケース固有の階層型で返す |
+| [ホルダー番号ユースケース](../native/feature/src/main/kotlin/dev/example/nativefeature/usecase/golfchange/ReadGolfHolderNumUseCase.kt) | Repositoryが解釈したホルダー番号をStringで取得する。バイト列の変換はdata内部へ閉じる |
 | [MainActivity](../native/feature/src/main/kotlin/dev/example/nativefeature/MainActivity.kt) | 起動Intentを検証してNavigationへ渡すActivity。要求JSONを重複保存せず、画面とargsの復元はNavigation・ViewModelが担当。詳細は[画面構成](SERVICE_NAVIGATION.md)を参照 |
+| [起動要求の解決](../native/feature/src/main/kotlin/dev/example/nativefeature/usecase/launch/ResolveFeatureLaunchUseCase.kt) | 要求の存在確認・解析・画面解決をResultでつなぎ、UIで成功時の遷移と失敗時の終了を処理する |
 | feature・dataの`src/main/AndroidManifest.xml` | LibraryのManifest。featureのActivityは両variantで同一アプリから起動し、外部には公開しない |
 | 両モジュールの`src/test/kotlin/` | Mainの差し替え、仮想時間、Flow、DatetimeのJSON化と、起動要求・WebMessage・URL許可の契約テスト。各クラス・テストのKDocを参照 |
 | [check-android.sh](../scripts/check-android.sh) | native・Cordovaの品質チェック、単体テスト、Android Lintを順に実行 |
@@ -52,7 +54,7 @@ Git indexを自動更新する処理はありません。通常の`check`・`ktl
 
 ## WebView通信サンプル
 
-[WebViewSampleScreen.kt](../native/feature/src/main/kotlin/dev/example/nativefeature/webview/WebViewSampleScreen.kt)がComposeの検証UIを持ち、[WebViewBridge.kt](../native/feature/src/main/kotlin/dev/example/nativefeature/webview/WebViewBridge.kt)が一つのWebViewの接続と解放を管理します。[WebMessage.kt](../native/feature/src/main/kotlin/dev/example/nativefeature/webview/WebMessage.kt)でJSONを解析し、[WebViewPolicy.kt](../native/feature/src/main/kotlin/dev/example/nativefeature/webview/WebViewPolicy.kt)と[SampleWebViewClient.kt](../native/feature/src/main/kotlin/dev/example/nativefeature/webview/SampleWebViewClient.kt)で配信先と通信先を絞ります。[index.html](../native/feature/src/main/assets/index.html)は固定のHTMLとJavaScript・CSPを持ちます。通信の流れと制約は[サンプル文書](WEBVIEW_BRIDGE_SAMPLE.md)を参照してください。
+[WebViewSampleScreen.kt](../native/feature/src/main/kotlin/dev/example/nativefeature/ui/webview/WebViewSampleScreen.kt)がComposeの検証UIを持ち、[WebViewBridge.kt](../native/feature/src/main/kotlin/dev/example/nativefeature/webview/WebViewBridge.kt)が一つのWebViewの接続と解放を管理します。[WebMessage.kt](../native/feature/src/main/kotlin/dev/example/nativefeature/webview/WebMessage.kt)でJSONを解析し、[WebViewPolicy.kt](../native/feature/src/main/kotlin/dev/example/nativefeature/webview/WebViewPolicy.kt)と[SampleWebViewClient.kt](../native/feature/src/main/kotlin/dev/example/nativefeature/webview/SampleWebViewClient.kt)で配信先と通信先を絞ります。[index.html](../native/feature/src/main/assets/index.html)は固定のHTMLとJavaScript・CSPを持ちます。通信の流れと制約は[サンプル文書](WEBVIEW_BRIDGE_SAMPLE.md)を参照してください。
 
 ## JSONの説明
 

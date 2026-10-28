@@ -13,6 +13,9 @@ import androidx.webkit.WebMessageCompat
 import androidx.webkit.WebViewAssetLoader
 import androidx.webkit.WebViewCompat
 import androidx.webkit.WebViewFeature
+import com.github.michaelbull.result.getOrElse
+import com.github.michaelbull.result.runCatching
+import kotlinx.coroutines.CancellationException
 import timber.log.Timber
 import java.util.UUID
 
@@ -170,14 +173,15 @@ internal class WebViewBridge {
         }
     }
 
-    /** ReplyProxyの送信はUIスレッドで行い、接続が失われた場合は送信を無効にする。 */
+    /** ReplyProxyの送信失敗をResultで扱い、取消・JVM Errorは伝播して接続の失敗と混同しない。 */
     private fun send(type: String): Boolean {
         val proxy = replyProxy ?: return false
         if (!WebViewFeature.isFeatureSupported(WebViewFeature.WEB_MESSAGE_LISTENER)) return false
-        return try {
+        return runCatching {
             proxy.postMessage(WebMessageCodec.encode(type, session))
             true
-        } catch (_: RuntimeException) {
+        }.getOrElse { cause ->
+            if (cause is CancellationException || cause !is RuntimeException) throw cause
             disconnect("通信が切断されました。再読み込みしてください")
             false
         }

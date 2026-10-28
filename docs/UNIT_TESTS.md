@@ -6,6 +6,8 @@
 
 導入当初の4テストは環境の動作確認です。その後、画面引数・WebMessage・Timberに加え、[NFCのタグ分類・範囲読取・業務ユースケース](NFC_READING.md)のテストを追加しています。NFCテストは模擬接続で送信フレーム・応答・解放を確認します。汎用検出の購読・取消・再購読・追加タグ破棄・古い参照の拒否と、同じカードからの2項目取得・具体エラーの保持も検証します。型番Profileに応じた範囲・長さ・応答検査・切り出しと、実タグの技術・モデルの不一致拒否も検証します。業務に依存しない範囲読取と、同じタグを指す複数の共通Readerの排他・エラー文脈の独立性も検証します。型番判定器の登録追加・技術別の振分け・複数一致の拒否・識別の非同期待機も確認します。実タグでの通信成功とは区別します。
 
+格納形式の変換はdataの[GolfCardDecoderTest](../native/data/src/test/kotlin/dev/example/nativedata/repository/golf/GolfCardDecoderTest.kt)で検証します。LSBファースト・符号境界・先頭0・上位ビット・空白や0x00の保持を確認し、業務Repositoryのテストで固定範囲の通信からInt・Stringの取得まで接続します。featureの模擬Repositoryは解釈済みのInt・Stringを返し、ユースケースの処理順序と具体的なエラーを確認します。
+
 | 項目 | 設定 |
 | --- | --- |
 | テストフレームワーク | JUnit 4.13.2（既存構成を使用） |
@@ -19,13 +21,13 @@
 
 ## サービス画面引数のテスト
 
-featureの[FeatureDestinationTest](../native/feature/src/test/kotlin/dev/example/nativefeature/FeatureDestinationTest.kt)に5件の契約テストを追加しています。args省略・空オブジェクト・日本語と予約文字を含む構造化JSONの保持、必須idの欠落、argsへの配列指定を確認します。既存の環境確認テストとは別のテストクラスです。[FeatureLaunchRequestTest](../native/feature/src/test/kotlin/dev/example/nativefeature/FeatureLaunchRequestTest.kt)には、処理IDの分岐とJSON境界の10件を追加しています。サービスIDによる読み取り画面への分岐、旧機器名IDの拒否、省略・空・構造化argsを確認します。ViewModelの`SavedStateHandle.toRoute()`はAndroidのBundleを使うため、実際のWeb→Plugin→Intent→Navigation→ViewModelの経路と復元をエミュレーターで確認します。[仕様と検証](SERVICE_NAVIGATION.md)
+featureの[FeatureDestinationTest](../native/feature/src/test/kotlin/dev/example/nativefeature/navigation/FeatureDestinationTest.kt)に5件の契約テストを追加しています。args省略・空オブジェクト・日本語と予約文字を含む構造化JSONの保持、必須idの欠落、argsへの配列指定を確認します。既存の環境確認テストとは別のテストクラスです。[FeatureLaunchRequestTest](../native/feature/src/test/kotlin/dev/example/nativefeature/launch/FeatureLaunchRequestTest.kt)には、処理IDの分岐とJSON境界の10件を追加しています。サービスIDによる読み取り画面への分岐、旧機器名IDの拒否、省略・空・構造化argsを確認します。ViewModelの`SavedStateHandle.toRoute()`はAndroidのBundleを使うため、実際のWeb→Plugin→Intent→Navigation→ViewModelの経路と復元をエミュレーターで確認します。[仕様と検証](SERVICE_NAVIGATION.md)
 
 ## 配置
 
 | ファイル | 目的 |
 | --- | --- |
-| [featureのMainDispatcherRule](../native/feature/src/test/kotlin/dev/example/nativefeature/MainDispatcherRule.kt) | `Dispatchers.Main`の差し替え・復元。将来のViewModelテストでも使用可能 |
+| [featureのMainDispatcherRule](../native/feature/src/test/kotlin/dev/example/nativefeature/testing/MainDispatcherRule.kt) | `Dispatchers.Main`の差し替え・復元。将来のViewModelテストでも使用可能 |
 | [featureの環境確認テスト](../native/feature/src/test/kotlin/dev/example/nativefeature/LocalUnitTestEnvironmentTest.kt) | Main上の処理と`runTest`がスケジューラを共有すること、仮想時間で状態が変わること、テスト間で時刻がリセットされることを確認 |
 | [dataの環境確認テスト](../native/data/src/test/kotlin/dev/example/nativedata/LocalUnitTestEnvironmentTest.kt) | Flowの待機を仮想時間で処理できること、テストソースにもSerialization Pluginが適用され、Datetimeを含むレコードをJSON化・復元できることを確認 |
 

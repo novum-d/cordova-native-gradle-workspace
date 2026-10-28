@@ -20,6 +20,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.github.michaelbull.result.getOrElse
+import com.github.michaelbull.result.runCatching
 import dev.example.nativefeature.MainActivity
 import java.io.IOException
 
@@ -76,9 +78,10 @@ class DevLauncherActivity : ComponentActivity() {
 
     /** 不正要求もそのまま渡し、feature側の本物の検証処理で拒否されることを確認する。 */
     private fun openSample(sample: IntentSample) {
-        val json = try {
+        val json = runCatching {
             assets.open("requests/${sample.key}.json").bufferedReader().use { it.readText() }
-        } catch (_: IOException) {
+        }.getOrElse { cause ->
+            if (cause !is IOException) throw cause
             status = "サンプルを読み込めませんでした。assetsを確認してください。"
             return
         }

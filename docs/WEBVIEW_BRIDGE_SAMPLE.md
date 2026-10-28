@@ -46,16 +46,16 @@ Kotlin: ボタン → NFC_DETECTED → ReplyProxy.postMessage → JS: NativeBrid
 
 | 変更・追加ファイル | 内容 |
 | --- | --- |
-| [WebViewSampleScreen.kt](../native/feature/src/main/kotlin/dev/example/nativefeature/webview/WebViewSampleScreen.kt) | Composeの仮UI、AndroidView、Lifecycleとの接続・解放 |
+| [WebViewSampleScreen.kt](../native/feature/src/main/kotlin/dev/example/nativefeature/ui/webview/WebViewSampleScreen.kt) | Composeの仮UI、AndroidView、Lifecycleとの接続・解放 |
 | [WebViewBridge.kt](../native/feature/src/main/kotlin/dev/example/nativefeature/webview/WebViewBridge.kt) | WebView生成、対応API確認、リスナー、受信検証、ReplyProxy・状態・寿命の管理 |
 | [WebMessage.kt](../native/feature/src/main/kotlin/dev/example/nativefeature/webview/WebMessage.kt) | UIから独立したJSON解析とネイティブ送信JSON生成 |
 | [WebViewPolicy.kt](../native/feature/src/main/kotlin/dev/example/nativefeature/webview/WebViewPolicy.kt) | HTTPS・host・実効port・path・ページ識別子の許可判定 |
 | [SampleWebViewClient.kt](../native/feature/src/main/kotlin/dev/example/nativefeature/webview/SampleWebViewClient.kt) | WebSettings、AssetLoader配信、ページ遷移・通信先制限、読み込み・TLS・レンダラーエラー処理 |
 | [index.html](../native/feature/src/main/assets/index.html) | 手書きHTML・JS、公開API呼び出し、返信受信、CustomEvent、CSP |
-| [FeatureDestination.kt](../native/feature/src/main/kotlin/dev/example/nativefeature/navigation/FeatureDestination.kt)・[FeatureNavigation.kt](../native/feature/src/main/kotlin/dev/example/nativefeature/navigation/FeatureNavigation.kt)・[FeatureLaunchRequest.kt](../native/feature/src/main/kotlin/dev/example/nativefeature/launch/FeatureLaunchRequest.kt) | 既存のMainActivityからsample.webviewを開く型付きルート |
+| [FeatureDestination.kt](../native/feature/src/main/kotlin/dev/example/nativefeature/navigation/FeatureDestination.kt)・[FeatureNavHost.kt](../native/feature/src/main/kotlin/dev/example/nativefeature/navigation/FeatureNavHost.kt)・[FeatureLaunchRequest.kt](../native/feature/src/main/kotlin/dev/example/nativefeature/launch/FeatureLaunchRequest.kt) | 既存のMainActivityからsample.webviewを開く型付きルート |
 | [Cordovaのindex.html](../CordovaComposeApp/www/index.html)・[index.js](../CordovaComposeApp/www/js/index.js) | 起動ボタンと要求の追加 |
 | [プラグインJS](../kotlin-plugin/www/kotlin-plugin.js) | 検証用処理IDのJSDoc更新 |
-| [WebMessageCodecTest.kt](../native/feature/src/test/kotlin/dev/example/nativefeature/webview/WebMessageCodecTest.kt)・[WebViewPolicyTest.kt](../native/feature/src/test/kotlin/dev/example/nativefeature/webview/WebViewPolicyTest.kt)・[FeatureLaunchRequestTest.kt](../native/feature/src/test/kotlin/dev/example/nativefeature/FeatureLaunchRequestTest.kt) | メッセージの境界・URL偽装・処理IDの契約テスト |
+| [WebMessageCodecTest.kt](../native/feature/src/test/kotlin/dev/example/nativefeature/webview/WebMessageCodecTest.kt)・[WebViewPolicyTest.kt](../native/feature/src/test/kotlin/dev/example/nativefeature/webview/WebViewPolicyTest.kt)・[FeatureLaunchRequestTest.kt](../native/feature/src/test/kotlin/dev/example/nativefeature/launch/FeatureLaunchRequestTest.kt) | メッセージの境界・URL偽装・処理IDの契約テスト |
 
 README、仕様・コード概要・サービス起動・プラグイン・Vue連携・事前質問・レビュー・ログ一覧も、実装済み範囲を追記しています。
 

@@ -1,6 +1,9 @@
 package dev.example.nativefeature.webview
 
+import com.github.michaelbull.result.getOrElse
+import com.github.michaelbull.result.runCatching
 import java.net.URI
+import java.net.URISyntaxException
 
 /** 検証ページとAPIだけを許可する。オリジンが一致しても別ページへブリッジを公開しない。 */
 internal object WebViewPolicy {
@@ -40,6 +43,9 @@ internal object WebViewPolicy {
     ): Boolean = uri.scheme.equals("https", ignoreCase = true) && uri.host.equals(host, ignoreCase = true) &&
         uri.port in setOf(-1, 443) && uri.rawUserInfo == null
 
-    /** 壊れたURLも呼び出し元へ例外を返さず拒否する。 */
-    private fun parse(url: String): URI? = runCatching { URI(url) }.getOrNull()
+    /** URL構文の失敗だけを未解決とし、取消・JVM Errorなどを不正URLへ隠さない。 */
+    private fun parse(url: String): URI? = runCatching { URI(url) }.getOrElse { cause ->
+        if (cause !is URISyntaxException) throw cause
+        null
+    }
 }

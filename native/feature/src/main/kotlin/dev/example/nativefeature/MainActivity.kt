@@ -8,11 +8,16 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import com.github.michaelbull.result.Result
+import com.github.michaelbull.result.map
+import com.github.michaelbull.result.onFailure
+import com.github.michaelbull.result.onSuccess
 import dagger.hilt.android.AndroidEntryPoint
 import dev.example.nativedata.nfc.detection.NfcReaderModeController
-import dev.example.nativefeature.launch.FeatureLaunchRequest
+import dev.example.nativefeature.err.launch.ResolveFeatureLaunchErr
 import dev.example.nativefeature.navigation.FeatureLaunchCommand
-import dev.example.nativefeature.navigation.FeatureNavigation
+import dev.example.nativefeature.navigation.FeatureNavHost
+import dev.example.nativefeature.usecase.launch.ResolveFeatureLaunchUseCase
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -26,21 +31,26 @@ import javax.inject.Inject
 class MainActivity : ComponentActivity() {
     /** Androidの検出ホストだけを制御し、業務の読み取りは画面のユースケースへ任せる。 */
     private var nfcReaderMode: NfcReaderModeController? = null
+    private var resolveFeatureLaunch: ResolveFeatureLaunchUseCase? = null
     private var pendingCommand by mutableStateOf<FeatureLaunchCommand?>(null)
 
-    /** Activityの生成後、onResume前にHiltから検出ホストを受け取る。 */
+    /** Activityの生成後、起動要求の解決とNFC検出に必要な依存をHiltから受け取る。 */
     @Inject
-    fun attachNfcReaderMode(controller: NfcReaderModeController) {
+    fun attachDependencies(
+        controller: NfcReaderModeController,
+        launchResolver: ResolveFeatureLaunchUseCase,
+    ) {
         nfcReaderMode = controller
+        resolveFeatureLaunch = launchResolver
     }
 
     /** 初回だけIntentを渡す。再生成時はNavigationの復元を優先し、古いIntentを再実行しない。 */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (savedInstanceState == null && !acceptRequest(intent.getStringExtra(EXTRA_REQUEST))) return
+        if (savedInstanceState == null && acceptRequest(intent.getStringExtra(EXTRA_REQUEST)).isErr) return
         setContent {
             MaterialTheme {
-                FeatureNavigation(
+                FeatureNavHost(
                     command = pendingCommand,
                     onCommandHandled = { handled ->
                         if (pendingCommand === handled) pendingCommand = null
@@ -70,18 +80,19 @@ class MainActivity : ComponentActivity() {
         acceptRequest(intent.getStringExtra(EXTRA_REQUEST))
     }
 
-    /** 不正な要求では終了し、正常時は同じ内容の再要求も独立した遷移として受け付ける。 */
-    private fun acceptRequest(requestJson: String?): Boolean {
-        val resolved = try {
-            FeatureLaunchRequest.fromJson(requireNotNull(requestJson)).toDestination()
-        } catch (error: IllegalArgumentException) {
-            Timber.tag("FeatureLaunch").w(error, "Invalid feature launch request")
-            finish()
-            return false
-        }
-        pendingCommand = FeatureLaunchCommand(resolved)
-        return true
-    }
+    /** 型付きの結果を保ち、成功時の遷移要求と失敗時のログ・終了をUI境界で実行する。 */
+    private fun acceptRequest(requestJson: String?): Result<Unit, ResolveFeatureLaunchErr> =
+        requireNotNull(resolveFeatureLaunch)(requestJson)
+            .onSuccess { resolved -> pendingCommand = FeatureLaunchCommand(resolved) }
+            .onFailure { err ->
+                Timber.tag("FeatureLaunch").w(
+                    err.cause,
+                    "Invalid feature launch request (%s)",
+                    err.javaClass.simpleName,
+                )
+                finish()
+            }
+            .map { }
 
     /** ホストから処理ID・argsのJSONを受け取るIntentキー。 */
     companion object {

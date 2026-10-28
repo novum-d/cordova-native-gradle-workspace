@@ -1,8 +1,12 @@
 package dev.example.kotlinplugin
 
 import android.content.Intent
+import com.github.michaelbull.result.getOrElse
+import com.github.michaelbull.result.onFailure
+import com.github.michaelbull.result.runCatching
 import dev.example.nativefeature.MainActivity
 import dev.example.nativefeature.launch.FeatureLaunchRequest
+import kotlinx.coroutines.CancellationException
 import org.apache.cordova.CallbackContext
 import org.apache.cordova.CordovaPlugin
 import org.json.JSONArray
@@ -29,22 +33,24 @@ class KotlinPlugin : CordovaPlugin() {
             callbackContext.error("Expected one request object with id and optional args")
             return true
         }
-        val request = try {
+        val request = runCatching {
             FeatureLaunchRequest.fromJson(payload.toString()).also { it.toDestination() }
-        } catch (_: IllegalArgumentException) {
+        }.getOrElse { cause ->
+            if (cause !is IllegalArgumentException) throw cause
             callbackContext.error("Invalid feature request: unsupported id or invalid args")
             return true
         }
         val activity = cordova.activity
         activity.runOnUiThread {
-            try {
+            runCatching {
                 // 受信したIntentや遷移先クラス名は転送せず、検証した要求だけを固定のActivityへ渡す。
                 val intent = Intent(activity, MainActivity::class.java)
                     .putExtra(MainActivity.EXTRA_REQUEST, request.toJson())
                     .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
                 activity.startActivity(intent)
                 callbackContext.success()
-            } catch (error: RuntimeException) {
+            }.onFailure { error ->
+                if (error is CancellationException || error !is RuntimeException) throw error
                 callbackContext.error("${error.javaClass.simpleName}: ${error.message}")
             }
         }

@@ -1,5 +1,7 @@
 package dev.example.nativedata.nfc.detection
 
+import com.github.michaelbull.result.getOrElse
+import com.github.michaelbull.result.runCatching
 import dev.example.nativedata.nfc.memory.NfcTagAccess
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
@@ -21,24 +23,24 @@ class NfcTagDetectionSource @Inject constructor() {
     private val pendingRequest = MutableStateFlow<NfcDetectionRequest?>(null)
     internal val requests = pendingRequest.asStateFlow()
 
-    /** 終了・キャンセル時に要求を解除し、次の購読へ古い検出結果を渡さない。 */
+    /** 失敗を再送出する前に対象・要求を解放し、次の購読へ古い検出結果を渡さない。 */
     internal fun observe(): Flow<NfcDetectionSignal> = flow {
         observationMutex.withLock {
             val request = NfcDetectionRequest()
             pendingRequest.value = request
-            try {
+            runCatching {
                 for (signal in request.signals) {
-                    try {
+                    runCatching {
                         emit(signal)
-                    } finally {
+                    }.also {
                         // 下流の読取処理が戻ったら、その操作の対象参照を失効させる。
                         (signal as? NfcDetectionSignal.TagFound)?.tag?.invalidate()
-                    }
+                    }.getOrElse { throw it }
                 }
-            } finally {
+            }.also {
                 pendingRequest.value = null
                 request.signals.cancel()
-            }
+            }.getOrElse { throw it }
         }
     }
 }

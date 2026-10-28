@@ -10,7 +10,6 @@ import dev.example.nativedata.nfc.testing.TestNfcErrFactory
 import dev.example.nativedata.nfc.testing.testNfcCardReaderFactory
 import dev.example.nativedata.repository.card.DefaultCardRepositoryFactory
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -21,14 +20,14 @@ import java.io.IOException
 class GolfCardRepositoryTest {
     private val repositories = DefaultCardRepositoryFactory(testNfcCardReaderFactory())
 
-    /** 業務座標はdata側で選び、範囲外や隣の項目を混ぜない。 */
+    /** 業務座標の範囲だけを読み、業務値へ変換して返す。 */
     @Test
     fun readsOnlyTheConfiguredBusinessRanges() = runTest {
         val tag = FakeNfcTag()
         val repository = repositories.createGolfCard(DetectedNfcTagHandle(tag), TestNfcErrFactory)
 
-        assertArrayEquals(byteArrayOf(4, 5), repository.readGolfCourseNum().unwrap())
-        assertArrayEquals(ByteArray(14) { (it + 6).toByte() }, repository.readGolfCardHolderNum().unwrap())
+        assertEquals(1284, repository.readGolfCourseNum().unwrap())
+        assertEquals("060708090A0B0C0D0E0F10111213", repository.readGolfCardHolderNum().unwrap())
         assertEquals(listOf(1, 1, 2, 3, 4), tag.requests.map { it.last().toInt() })
         assertEquals(2, tag.closeCount)
     }
@@ -41,8 +40,8 @@ class GolfCardRepositoryTest {
         val first = repositories.createGolfCard(DetectedNfcTagHandle(firstTag), TestNfcErrFactory)
         val second = repositories.createGolfCard(DetectedNfcTagHandle(secondTag), TestNfcErrFactory)
 
-        assertArrayEquals(byteArrayOf(20, 21), second.readGolfCourseNum().unwrap())
-        assertArrayEquals(byteArrayOf(4, 5), first.readGolfCourseNum().unwrap())
+        assertEquals(5396, second.readGolfCourseNum().unwrap())
+        assertEquals(1284, first.readGolfCourseNum().unwrap())
         assertEquals(1, firstTag.openCount)
         assertEquals(1, secondTag.openCount)
     }

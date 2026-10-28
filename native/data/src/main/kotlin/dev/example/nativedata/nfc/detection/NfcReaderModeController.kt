@@ -7,6 +7,9 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.nfc.NfcAdapter
 import android.os.Build
+import com.github.michaelbull.result.getOrElse
+import com.github.michaelbull.result.onFailure
+import com.github.michaelbull.result.runCatching
 import dagger.hilt.android.scopes.ActivityScoped
 import dev.example.nativedata.nfc.memory.DefaultNfcTagAccess
 import kotlinx.coroutines.CoroutineScope
@@ -43,7 +46,10 @@ class NfcReaderModeController @Inject constructor(private val source: NfcTagDete
         observation = null
     }
 
-    /** NFC無効時にも要求を維持し、設定で有効へ戻したら検出を再開する。 */
+    /**
+     * NFC無効時にも要求を維持し、設定で有効へ戻したら検出を再開する。
+     * 外側のrunCatchingは権限拒否の通知中・取消待機中の例外も捕捉し、解放後に再送出する。
+     */
     private suspend fun observeRequest(
         activity: Activity,
         request: NfcDetectionRequest,
@@ -63,29 +69,47 @@ class NfcReaderModeController @Inject constructor(private val source: NfcTagDete
             }
         }
         var registered = false
-        try {
-            registerReceiver(activity, receiver)
-            registered = true
-            changes.trySend(Unit)
-            changes.receiveAsFlow().collect {
-                if (adapter.isEnabled) {
-                    enableReader(activity, adapter, request)
-                } else {
-                    adapter.disableReaderMode(activity)
-                    request.signals.send(NfcDetectionSignal.Disabled)
-                }
+        runCatching {
+            runCatching {
+                registerReceiver(activity, receiver)
+                registered = true
+                changes.trySend(Unit)
+                observeAdapterChanges(activity, adapter, request, changes)
+            }.getOrElse { cause ->
+                if (cause !is SecurityException) throw cause
+                request.signals.send(NfcDetectionSignal.AccessDenied(cause))
+                awaitCancellation()
             }
-        } catch (cause: SecurityException) {
-            request.signals.send(NfcDetectionSignal.AccessDenied(cause))
-            awaitCancellation()
-        } finally {
+        }.also {
             if (registered) activity.unregisterReceiver(receiver)
             changes.close()
-            // 権限拒否時にも、先に発生した失敗やキャンセルを置き換えない。
-            try {
+            disableReaderOnClose(activity, adapter)
+        }.getOrElse { throw it }
+    }
+
+    /** 終了時の権限拒否だけを無視し、先に起きた読取失敗・取消を置き換えない。 */
+    private fun disableReaderOnClose(
+        activity: Activity,
+        adapter: NfcAdapter,
+    ) {
+        runCatching { adapter.disableReaderMode(activity) }.onFailure { cause ->
+            if (cause !is SecurityException) throw cause
+        }
+    }
+
+    /** 有効・無効の通知を処理する。権限拒否の分類と購読終了時の解放は呼出元へ任せる。 */
+    private suspend fun observeAdapterChanges(
+        activity: Activity,
+        adapter: NfcAdapter,
+        request: NfcDetectionRequest,
+        changes: Channel<Unit>,
+    ) {
+        changes.receiveAsFlow().collect {
+            if (adapter.isEnabled) {
+                enableReader(activity, adapter, request)
+            } else {
                 adapter.disableReaderMode(activity)
-            } catch (_: SecurityException) {
-                // 開始が拒否された場合、終了も拒否されることがある。
+                request.signals.send(NfcDetectionSignal.Disabled)
             }
         }
     }

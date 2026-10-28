@@ -1,5 +1,8 @@
 package dev.example.nativefeature.webview
 
+import com.github.michaelbull.result.getOrElse
+import com.github.michaelbull.result.runCatching
+import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
@@ -31,7 +34,10 @@ internal object WebMessageCodec {
     /** 不正・未知・逆方向のメッセージはnullにし、受信データを例外やログへ持ち出さない。 */
     fun decode(raw: String): WebMessage? {
         if (raw.length > MAX_MESSAGE_LENGTH || !hasSafeDepth(raw)) return null
-        val root = runCatching { Json.parseToJsonElement(raw) }.getOrNull() as? JsonObject ?: return null
+        val root = runCatching { Json.parseToJsonElement(raw) }.getOrElse { cause ->
+            if (cause !is SerializationException) throw cause
+            null
+        } as? JsonObject ?: return null
         val session = root.string("session")?.takeIf { it.length == 36 } ?: return null
         val payload = root["payload"] as? JsonObject ?: return null
         return when (root.string("type")) {

@@ -1,13 +1,16 @@
 package dev.example.nativedata.nfc.detection
 
 import com.github.michaelbull.result.Result
+import com.github.michaelbull.result.runCatching
 import com.github.michaelbull.result.unwrap
 import com.github.michaelbull.result.unwrapError
 import dev.example.nativedata.err.nfc.NfcDetectionErr
 import dev.example.nativedata.err.nfc.NfcDetectionErrFactory
 import dev.example.nativedata.nfc.testing.FakeNfcTag
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.async
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runCurrent
@@ -152,6 +155,36 @@ class NfcTagDetectionRepositoryTest {
         assertTrue(activeDuringRead)
         assertFalse(target.isActive)
         job.cancelAndJoin()
+    }
+
+    /** 下流の実装例外・JVM Error・取消を同じ原因で伝播し、先にタグと要求を解放する。 */
+    @Test
+    fun releasesTargetAndRequestBeforeRethrowingTheOriginalCause() = runTest {
+        val causes = listOf(
+            IllegalStateException("consumer failed"),
+            AssertionError("consumer failed"),
+            CancellationException("consumer cancelled"),
+        )
+        for (cause in causes) {
+            val results = mutableListOf<DetectedNfcTagHandle>()
+            val collection = backgroundScope.async {
+                runCatching {
+                    repository.observeTags(DetectionErrFactory).collect { result ->
+                        results.add(result.unwrap() as DetectedNfcTagHandle)
+                        throw cause
+                    }
+                }
+            }
+            runCurrent()
+            val request = requireNotNull(source.requests.value)
+            assertTrue(request.onTag(FakeNfcTag()))
+            runCurrent()
+
+            assertSame(cause, collection.await().unwrapError())
+            assertFalse(results.single().isActive)
+            assertNull(source.requests.value)
+            assertFalse(request.onTag(FakeNfcTag()))
+        }
     }
 }
 

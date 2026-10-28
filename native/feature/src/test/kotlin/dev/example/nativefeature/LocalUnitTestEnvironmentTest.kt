@@ -1,5 +1,6 @@
 package dev.example.nativefeature
 
+import dev.example.nativefeature.testing.MainDispatcherRule
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay

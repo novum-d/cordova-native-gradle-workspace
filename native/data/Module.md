@@ -3,10 +3,16 @@
 汎用NFCタグ検出・読取・通信・永続化・日時処理などを扱うAndroid Libraryです。
 featureから参照され、画面側への依存は持ちません。
 
+# Package dev.example.nativedata.constant.binary
+
+カード・通信方式に依存しないバイト幅・符号補正マスク・ニブル幅・16進表現の定数をまとめます。
+業務項目のバイト位置や、プロトコルのフラグ・コマンド番号はここへ混ぜません。
+
 # Package dev.example.nativedata.nfc.detection
 
 業務に依存しないタグ検出の契約・実装、対象参照、ReaderModeの制御を提供します。
 検出通知の処理が終わると対象参照を無効化し、最後のタグを保存しません。
+runCatching直後のalsoで対象・要求を解放し、失敗・取消はその後で再送出します。
 
 # Package dev.example.nativedata.nfc.profile
 
@@ -27,8 +33,13 @@ ICODE SLIのProfileと、UID・Android技術による型番判定器を提供し
 # Package dev.example.nativedata.nfc.memory
 
 座標・範囲・メモリ構成、Android NFC APIとの接続、NfcMemoryDataSourceの範囲読取を提供します。
-Profileの通信方式・ブロック幅で要求範囲のByteArrayを返し、値の業務上の意味・文字列化はfeatureへ任せます。
+Profileの通信方式・ブロック幅で要求範囲のByteArrayを返し、値の解釈・文字列化は業務Repositoryへ任せます。
 FeliCa・MIFAREなどの読取と、書き込み・認証は実装していません。
+
+# Package dev.example.nativedata.nfc.protocol
+
+ISO 15693のUID長・プレフィックス、Read Single Blockの要求フラグ・コマンド・応答形式を定義します。
+現在の標準コマンドで指定できる最大ブロック番号も、汎用のバイトマスクとは別の定数で表します。
 
 # Package dev.example.nativedata.err.nfc
 
@@ -42,7 +53,9 @@ feature固有の具体エラーを逆依存なしに生成し、取消や予期�
 # Package dev.example.nativedata.repository.golf
 
 検出した対象と呼出元のエラーFactoryに紐づく、引数なしの業務Repositoryを提供します。
-物理座標を内部で解決して2バイト・14バイトを返し、値の解釈はfeatureへ任せます。
+物理座標を内部で解決し、GolfCardDecoderで取得バイト列を業務値へ変換します。
+ゴルフ場番号は0..65535のInt、ホルダー番号は大文字・区切りなしの28桁16進Stringで返します。
+型番・座標・格納順・Byteの符号補正は公開APIへ持ち出しません。
 
 # Package dev.example.nativedata.repository.card
 

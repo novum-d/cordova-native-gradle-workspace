@@ -19,6 +19,7 @@ sealed interface FeatureDestination {
      *
      * [id]は呼び出し元が指定する処理ID。[args]は省略時にnull、空オブジェクト指定時に{}を保持する。
      * argsの項目は未定のためJsonObjectで受け、文字列・配列などを誤って渡せないようにする。
+     * この型の名前はNavigationのシリアル名に使うため、画面・ViewModelの改名に合わせて変更しない。
      */
     @Serializable
     data class GolfHolderRead(

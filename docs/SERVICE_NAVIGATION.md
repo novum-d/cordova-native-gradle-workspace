@@ -19,7 +19,7 @@ Web: openFeature({id, args?}, success, error)
 
 | 処理ID | 表示する画面 | ViewModel |
 | --- | --- | --- |
-| `golf-change.read-holder` | ゴルフ場ID・ホルダー番号 読み取り画面 | GolfHolderReadViewModel |
+| `golf-change.read-holder` | ゴルフ場ID・ホルダー番号 読み取り画面 | GolfCardReadViewModel |
 | `home` | 確認用のホーム画面 | 引数を使用しないためなし |
 | `sample.webview` | 手書きHTMLの双方向通信サンプル | 保存する画面引数なし。WebView接続は画面の寿命で管理 |
 
@@ -27,7 +27,7 @@ Web: openFeature({id, args?}, success, error)
 
 NFC書き込みは対象外です。`nfc.read`・`nfc.write`・`camera.capture`は受け付けず、サービス名と処理を表すIDを使います。本人確認（マイナンバー）は別サービスとして追加する想定ですが、処理ID・画面・引数が未確定のため、今回の受付や画面には追加していません。
 
-MainActivityは`@AndroidEntryPoint`、GolfHolderReadViewModelは`@HiltViewModel`で、画面内の`hiltViewModel()`から生成します。Navigationのエントリに属する`SavedStateHandle`をHiltが提供します。[Hiltのホスト設定](HILT.md)を参照してください。
+MainActivityは`@AndroidEntryPoint`、GolfCardReadViewModelは`@HiltViewModel`で、画面内の`hiltViewModel()`から生成します。Navigationのエントリに属する`SavedStateHandle`をHiltが提供します。[Hiltのホスト設定](HILT.md)を参照してください。
 
 ## JSからの利用
 
@@ -67,21 +67,62 @@ data class FeatureLaunchRequest(
 
 ## フォルダと責務
 
-`native/feature/src/main/kotlin/dev/example/nativefeature/`をサービスと共通処理で整理しています。
+`native/feature/src/main/kotlin/dev/example/nativefeature/`を、表示・遷移・ユースケース・エラー・モデルの役割で整理しています。各役割の配下を、業務・サービスごとに分けます。
 
 | 配置先 | 責務 |
 | --- | --- |
 | [MainActivity.kt](../native/feature/src/main/kotlin/dev/example/nativefeature/MainActivity.kt) | Intentの受け取り・検証、一時的なコマンドの受け渡し |
 | [launch/](../native/feature/src/main/kotlin/dev/example/nativefeature/launch/) | 起動要求のJSON変換と処理IDの解決 |
 | [navigation/](../native/feature/src/main/kotlin/dev/example/nativefeature/navigation/) | 共通NavHost、型付きルート、JSON用NavType |
-| [services/golfchange/](../native/feature/src/main/kotlin/dev/example/nativefeature/services/golfchange/) | ゴルフ場釣り銭機サービスのNavigation・ViewModel・画面 |
-| [home/](../native/feature/src/main/kotlin/dev/example/nativefeature/home/) | 確認用ホームの表示 |
+| [navigation/golfchange/](../native/feature/src/main/kotlin/dev/example/nativefeature/navigation/golfchange/) | ゴルフ場釣り銭機サービスの画面登録・前面表示中の状態購読 |
+| [ui/golfchange/](../native/feature/src/main/kotlin/dev/example/nativefeature/ui/golfchange/) | ゴルフの読取画面とViewModel |
+| [ui/home/](../native/feature/src/main/kotlin/dev/example/nativefeature/ui/home/) | 確認用ホームの表示 |
+| [ui/webview/](../native/feature/src/main/kotlin/dev/example/nativefeature/ui/webview/) | WebView通信のサンプル画面 |
 | [webview/](../native/feature/src/main/kotlin/dev/example/nativefeature/webview/) | 検証用WebView・WebMessageの解析・接続と読み込み制御 |
-| [common/](../native/feature/src/main/kotlin/dev/example/nativefeature/common/) | 画面名・処理ID・argsを中央に表示する共通レイアウト |
+| [ui/common/](../native/feature/src/main/kotlin/dev/example/nativefeature/ui/common/) | 画面名・処理ID・argsを中央に表示する共通レイアウト |
+| [usecase/](../native/feature/src/main/kotlin/dev/example/nativefeature/usecase/) | 汎用NFC検出とゴルフの読取処理・ユースケース生成Factory |
+| [err/](../native/feature/src/main/kotlin/dev/example/nativefeature/err/) | 発生元を示すユースケース固有エラー |
+| [model/golfchange/](../native/feature/src/main/kotlin/dev/example/nativefeature/model/golfchange/) | 読取結果イベントと画面状態 |
 
 NavHostとNavControllerは一つです。`golfChangeNavigation()`でサービス単位に画面を登録し、ViewModelは各NavBackStackEntryに属します。Activity共有のViewModelで引数を使い回しません。
 
-本人確認など新しいサービスを追加するときは、`services/`配下に専用のNavigation・ViewModel・画面をまとめ、サービス名を含む処理IDと型付きルートを登録します。NFC・Cameraは各サービスから利用する機器処理として扱い、共有できる処理は実装する段階で共通化します。
+本人確認など新しいサービスを追加するときは、`navigation/<サービス名>/`に画面登録、`ui/<サービス名>/`に画面・ViewModelを置き、サービス名を含む処理IDと型付きルートを登録します。サービス固有のユースケース・エラー・モデルは`usecase/<サービス名>/`・`err/<サービス名>/`・`model/<サービス名>/`へまとめます。汎用タグ検出は`usecase/nfc/`・`err/nfc/`で管理します。NFC・Cameraは各サービスから利用する機器処理として扱い、共有できる処理は実装する段階で共通化します。
+
+共通のUI部品は`ui/common/`へ置きます。`FeatureRequestLayout`は表示用のレイアウトなので、ユースケースや起動処理と同じcommonフォルダへ混在させません。`launch/FeatureLaunchRequest.kt`は全サービス共通の起動境界として、要求JSONの変換・検証と型付きルートの選択をまとめます。Activityからは`usecase/launch/ResolveFeatureLaunchUseCase`を経由してこの処理を呼び、Resultの成功値をNavigationへ渡します。
+
+共通NavHostは`FeatureNavHost`、共通レイアウトは`FeatureRequestLayout`と呼びます。ゴルフ画面は2項目の取得を表す`GolfCardReadScreen`・`GolfCardReadViewModel`とし、読取結果の`GolfCardReadEvent`・画面状態の`GolfCardReadUiState`は個別ファイルへ分けています。起動ID・Intentのキー・JSONの形式・型付きルートのシリアル名は維持しています。
+
+テストは`launch/`・`navigation/`・`usecase/golfchange/`など、本体の責務に対応する配置です。Main差し替え用のRuleと共用の模擬Repository等は`src/test/.../testing/`へまとめています。
+
+## 起動要求のROPとUI境界
+
+[ResolveFeatureLaunchUseCase](../native/feature/src/main/kotlin/dev/example/nativefeature/usecase/launch/ResolveFeatureLaunchUseCase.kt)は`Result<FeatureDestination, ResolveFeatureLaunchErr>`を返します。要求の存在確認・JSON解析・画面解決を`toResultOr`・`andThen`で接続し、失敗した段階で後続処理を止めます。
+
+| エラー型 | 発生箇所 |
+| --- | --- |
+| `ResolveFeatureLaunchErr.Request.Missing` | Intentの要求Extraが未指定 |
+| `ResolveFeatureLaunchErr.Request.InvalidJson` | JSON構文、必須項目、値の型が不正 |
+| `ResolveFeatureLaunchErr.Destination.UnsupportedId` | 解析済みの処理IDに対応する画面がない |
+
+`MainActivity.acceptRequest()`は`Result<Unit, ResolveFeatureLaunchErr>`を返します。`onSuccess`で一時的な遷移コマンドを設定し、`onFailure`で原因をログへ記録してActivityを終了します。初回起動では`isErr`を確認して画面生成を止め、再要求では同じ成功・失敗処理を再利用します。Booleanを返す必然性はなく、以前は続行可否へ情報を縮約していました。Cordovaの`execute()`のBooleanは、actionを処理したかを通知するSDK契約として扱います。
+
+`kotlin-result.runCatching`はThrowableを捕捉するため、JSON入力のIllegalArgumentExceptionなど、想定した例外だけを失敗値として扱います。取消・JVM Error・想定外の実装例外は伝播します。プラグインの起動、開発用assets読込、WebView送信・JSON／URL解析、ReaderModeの権限拒否もkotlin-resultの関数で扱います。
+
+検出対象・検出要求・ReaderModeの後始末は、`runCatching`の直後の`also`で成功・失敗の両方に対して実行し、その後の`getOrElse`で元の失敗を再送出します。後始末を、例外を再送出する`mapError`・`onFailure`より後ろへ置きません。ReaderModeは権限拒否の通知・取消待機も外側の`runCatching`で囲み、待機中にキャンセルされても解除処理へ進む構成です。
+
+```kotlin
+runCatching {
+    observe()
+}.also {
+    release()
+}.getOrElse { throw it }
+```
+
+この書き方ではブロックから外側の関数を抜ける非局所returnを使いません。処理を早期終了する場合は`return@runCatching`などの局所returnでResultへ戻し、後始末を通過させます。通信接続のread／closeが両方失敗する場合の優先順位・suppressedの扱いは、既存の接続管理処理で維持しています。
+
+[ResolveFeatureLaunchUseCaseTest](../native/feature/src/test/kotlin/dev/example/nativefeature/usecase/launch/ResolveFeatureLaunchUseCaseTest.kt)で、未指定・不正形式・未対応IDと、既知の画面・省略／空／構造化argsの保持を確認します。
+
+両ホストのビルド・テスト・静的検査と、エミュレーターでの正常起動・不正要求・WebView通信を確認しました。[確認記録](logs/launch-rop/README.md)を参照してください。
 
 [JsonObjectNavType](../native/feature/src/main/kotlin/dev/example/nativefeature/navigation/JsonObjectNavType.kt)と共通の`featureArgumentTypes`を、画面登録と`SavedStateHandle.toRoute()`の両方で使います。BundleにはJSON文字列を保存し、ルート出力時だけURIエンコードします。二重デコードを避け、日本語・予約文字・`%2F`を保持します。
 
@@ -120,7 +161,7 @@ npm run cordova:build
 npm run check:android
 ```
 
-[FeatureLaunchRequestTest](../native/feature/src/test/kotlin/dev/example/nativefeature/FeatureLaunchRequestTest.kt)の10件でサービスID分岐・旧IDの拒否・JSON境界を、[FeatureDestinationTest](../native/feature/src/test/kotlin/dev/example/nativefeature/FeatureDestinationTest.kt)の5件で引数の保存形式を確認します。
+[FeatureLaunchRequestTest](../native/feature/src/test/kotlin/dev/example/nativefeature/launch/FeatureLaunchRequestTest.kt)の10件でサービスID分岐・旧IDの拒否・JSON境界を、[FeatureDestinationTest](../native/feature/src/test/kotlin/dev/example/nativefeature/navigation/FeatureDestinationTest.kt)の5件で引数の保存形式を確認します。
 
 以前の機器別構成での実機経路の記録は[機能別Navigation・ViewModelの検証](logs/intent-routing/viewmodel-navigation/README.md)にまとめています。以前のActivity独自保存による記録は[初期のIntent分岐](logs/intent-routing/README.md)、ホーム内サンプル遷移は[導入初期](logs/nfc-navigation/README.md)として区別します。
 

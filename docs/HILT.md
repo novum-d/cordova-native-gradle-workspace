@@ -21,9 +21,9 @@ HiltのApplicationは、注入先やModuleが見えるアプリモジュール�
 
 ## 画面・ViewModelへの注入
 
-[featureのMainActivity](../native/feature/src/main/kotlin/dev/example/nativefeature/MainActivity.kt)を`@AndroidEntryPoint`にしました。[GolfHolderReadViewModel](../native/feature/src/main/kotlin/dev/example/nativefeature/services/golfchange/GolfHolderReadViewModel.kt)は`@HiltViewModel`と`@Inject constructor`を使い、Hiltから`SavedStateHandle`を受け取ります。
+[featureのMainActivity](../native/feature/src/main/kotlin/dev/example/nativefeature/MainActivity.kt)を`@AndroidEntryPoint`にしました。[GolfCardReadViewModel](../native/feature/src/main/kotlin/dev/example/nativefeature/ui/golfchange/GolfCardReadViewModel.kt)は`@HiltViewModel`と`@Inject constructor`を使い、Hiltから`SavedStateHandle`を受け取ります。
 
-[GolfChangeNavigation](../native/feature/src/main/kotlin/dev/example/nativefeature/services/golfchange/GolfChangeNavigation.kt)では`hiltViewModel()`で取得します。Navigationの画面エントリに属するViewModelとなり、従来の`SavedStateHandle.toRoute()`で処理IDとargsを復元します。引数をHilt Moduleで別途提供する必要はありません。
+[GolfChangeNavigation](../native/feature/src/main/kotlin/dev/example/nativefeature/navigation/golfchange/GolfChangeNavigation.kt)では`hiltViewModel()`で取得します。Navigationの画面エントリに属するViewModelとなり、従来の`SavedStateHandle.toRoute()`で処理IDとargsを復元します。引数をHilt Moduleで別途提供する必要はありません。
 
 [汎用タグ検出と業務Repository](NFC_READER_DESIGN.md)を追加しました。検出Repositoryと`CardRepositoryFactory`はdataの`NfcRepositoryModule`で`@Binds`します。業務生成の実装は`DefaultCardRepositoryFactory`で、内部の`NfcCardReaderFactory`は`@Inject constructor`で生成します。業務Factory・ReaderFactoryと各読取実装は別ファイルです。検出要求の仲介は`@Singleton`、AndroidのReaderMode制御は`@ActivityScoped`です。MainActivityはメソッド注入で制御役を受け取ります。型番識別は`NfcTagIdentificationModule`で`@IntoSet`登録した判定器を`NfcTagProfileResolver`へ注入します。ResolverはSingletonですが、Tagや識別結果を保持しません。タグに紐づくReader・業務Repository・引数なしの読取ユースケースは、検出ごとにFactoryで生成します。対象TagをSingletonへ保存せず、専用Session・独自Hilt Component・独自KSP生成は追加しません。
 

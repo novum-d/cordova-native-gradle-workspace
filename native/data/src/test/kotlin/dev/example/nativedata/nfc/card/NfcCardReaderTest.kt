@@ -1,5 +1,7 @@
 package dev.example.nativedata.nfc.card
 
+import com.github.michaelbull.result.getOrElse
+import com.github.michaelbull.result.runCatching
 import com.github.michaelbull.result.unwrap
 import com.github.michaelbull.result.unwrapError
 import dev.example.nativedata.err.nfc.NfcReadErrFactory
@@ -99,7 +101,7 @@ class NfcCardReaderTest {
         val position = NfcMemoryPosition(1, 0)
         val range = NfcMemoryRange(position, position)
         val firstRead = async { first.read(NfcTagModel.ICODE_SLI, range) }
-        try {
+        runCatching {
             withContext(Dispatchers.IO) { assertTrue(started.await(2, TimeUnit.SECONDS)) }
             assertTrue(target.readMutex.isLocked)
             val secondRead = async { second.read(NfcTagModel.ICODE_SLI, range) }
@@ -110,8 +112,8 @@ class NfcCardReaderTest {
             assertArrayEquals(byteArrayOf(4), firstRead.await().unwrap())
             assertArrayEquals(byteArrayOf(4), secondRead.await().unwrap())
             assertEquals(2, tag.closeCount)
-        } finally {
+        }.also {
             release.countDown()
-        }
+        }.getOrElse { throw it }
     }
 }

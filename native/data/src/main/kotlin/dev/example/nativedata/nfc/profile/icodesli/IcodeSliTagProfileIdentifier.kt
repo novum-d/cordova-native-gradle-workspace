@@ -3,6 +3,7 @@ package dev.example.nativedata.nfc.profile.icodesli
 import dev.example.nativedata.nfc.memory.NfcTagAccess
 import dev.example.nativedata.nfc.profile.NfcTagProfile
 import dev.example.nativedata.nfc.profile.NfcTagProfileIdentifier
+import dev.example.nativedata.nfc.protocol.Iso15693Constants
 import javax.inject.Inject
 
 /**
@@ -18,10 +19,24 @@ internal class IcodeSliTagProfileIdentifier @Inject constructor() : NfcTagProfil
         val uid = tag.uid.copyOf()
         return when {
             !tag.technologies.containsAll(requiredTechnologies) -> null
-            uid.size != 8 -> null
-            !uid.copyOfRange(5, 8).contentEquals(byteArrayOf(0x01, 0x04, 0xE0.toByte())) -> null
-            uid[4].toInt() and 0x18 != 0 -> null
+            uid.size != Iso15693Constants.UID_BYTE_COUNT -> null
+            !uid.copyOfRange(UID_HEADER_START_OFFSET, Iso15693Constants.UID_BYTE_COUNT)
+                .contentEquals(expectedUidHeader) -> null
+            uid[UID_VARIANT_OFFSET].toInt() and UID_VARIANT_MASK != SLI_VARIANT_BITS -> null
             else -> IcodeSliTagProfile.profile
         }
+    }
+
+    /** 既知のSLIを識別するUIDの配置・製品条件。共通Resolverや汎用バイト定数へ混ぜない。 */
+    private companion object {
+        const val UID_HEADER_START_OFFSET = 5
+        const val PRODUCT_CODE: Byte = 0x01
+        const val NXP_MANUFACTURER_CODE: Byte = 0x04
+        const val UID_VARIANT_OFFSET = 4
+        const val UID_VARIANT_MASK = 0x18
+        const val SLI_VARIANT_BITS = 0x00
+
+        // 比較専用として非公開に保ち、呼出元へ可変の配列を渡さない。
+        val expectedUidHeader = byteArrayOf(PRODUCT_CODE, NXP_MANUFACTURER_CODE, Iso15693Constants.UID_PREFIX.toByte())
     }
 }

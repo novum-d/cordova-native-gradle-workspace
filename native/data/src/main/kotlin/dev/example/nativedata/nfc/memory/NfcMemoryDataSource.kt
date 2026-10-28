@@ -10,6 +10,7 @@ import com.github.michaelbull.result.map
 import com.github.michaelbull.result.mapError
 import com.github.michaelbull.result.onFailure
 import com.github.michaelbull.result.runCatching
+import dev.example.nativedata.constant.binary.BinaryConstants
 import dev.example.nativedata.err.nfc.NfcReadErr
 import dev.example.nativedata.err.nfc.NfcReadErrFactory
 import dev.example.nativedata.err.nfc.nfcCall
@@ -17,6 +18,7 @@ import dev.example.nativedata.err.nfc.nfcErr
 import dev.example.nativedata.nfc.profile.NfcReadProtocol
 import dev.example.nativedata.nfc.profile.NfcTagProfile
 import dev.example.nativedata.nfc.profile.NfcTagProfileResolver
+import dev.example.nativedata.nfc.protocol.Iso15693Constants
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.ensureActive
@@ -41,7 +43,7 @@ internal class NfcMemoryDataSource @Inject constructor(
         range: NfcMemoryRange,
         errFactory: NfcReadErrFactory<E>,
     ): Result<ByteArray, E> = withContext(Dispatchers.IO) {
-        if (!range.isWithin(profile.memory) || range.endInclusive.blockNum > 0xFF) {
+        if (!range.isWithin(profile.memory) || range.endInclusive.blockNum > Iso15693Constants.MAX_SINGLE_BLOCK_NUM) {
             return@withContext Err(errFactory.invalidRange(range))
         }
         nfcCall(errFactory) {
@@ -68,7 +70,7 @@ internal class NfcMemoryDataSource @Inject constructor(
         errFactory: NfcReadErrFactory<E>,
     ): Result<ByteArray, E> {
         // UIDの長さは共通Resolverではなく、ISO 15693の送信形式として検査する。
-        if (uid.size != 8) return Err(errFactory.unsupportedTag())
+        if (uid.size != Iso15693Constants.UID_BYTE_COUNT) return Err(errFactory.unsupportedTag())
         return nfcCall(errFactory) { tag.openNfcV() }.andThen { connection ->
             if (connection == null) {
                 Err(errFactory.unsupportedTag())
@@ -99,9 +101,11 @@ internal class NfcMemoryDataSource @Inject constructor(
             var written = 0
             for (block in range.start.blockNum..range.endInclusive.blockNum) {
                 context.ensureActive()
-                // 22=高速・Addressed・Optionなし、20=Read Single Block。UIDは送信順のまま使用する。
-                // NFCAppの非Addressed READ（02 20 block）から対象指定を追加。CRCはAndroid側で付加される。
-                val request = byteArrayOf(0x22, 0x20) + uid + block.toByte()
+                // UIDは送信順のまま使用する。CRCはAndroid側で付加される。
+                val request = byteArrayOf(
+                    Iso15693Constants.READ_REQUEST_FLAGS,
+                    Iso15693Constants.READ_SINGLE_BLOCK_COMMAND,
+                ) + uid + block.toByte()
                 val response = nfcCall(errFactory) { connection.transceive(request) }.bind()
                 val bytes = readBlockData(response, geometry.bytesPerBlock, errFactory).bind()
                 val from = if (block == range.start.blockNum) range.start.byteOffset else 0
@@ -125,15 +129,19 @@ private fun <E : NfcReadErr> readBlockData(
     errFactory: NfcReadErrFactory<E>,
 ): Result<ByteArray, E> = when {
     response.isEmpty() -> Err(errFactory.responseFormat("Empty Read Single Block response"))
-    response[0].toInt() and 0x01 != 0 ->
-        if (response.size == 2) {
-            Err(errFactory.commandRejected(response[1].toInt() and 0xFF))
+    response[Iso15693Constants.RESPONSE_FLAGS_OFFSET].toInt() and Iso15693Constants.RESPONSE_ERROR_FLAG_MASK != 0 ->
+        if (response.size == Iso15693Constants.ERROR_RESPONSE_BYTE_COUNT) {
+            Err(
+                errFactory.commandRejected(
+                    response[Iso15693Constants.ERROR_CODE_OFFSET].toInt() and BinaryConstants.UNSIGNED_BYTE_MASK,
+                ),
+            )
         } else {
             Err(errFactory.responseFormat("Expected response flags and one error code byte"))
         }
-    response.size != bytesPerBlock + 1 ->
+    response.size != bytesPerBlock + Iso15693Constants.RESPONSE_FLAGS_BYTE_COUNT ->
         Err(errFactory.responseFormat("Expected response flags and $bytesPerBlock data bytes"))
-    else -> Ok(response.copyOfRange(1, response.size))
+    else -> Ok(response.copyOfRange(Iso15693Constants.RESPONSE_FLAGS_BYTE_COUNT, response.size))
 }
 
 /** connect途中の失敗でもcloseし、closeの失敗で先に発生した読取エラーやキャンセルを上書きしない。 */

@@ -20,26 +20,75 @@ UI・ViewModelはRepositoryを直接呼びません。Webへの業務結果返�
 # Package dev.example.nativefeature.launch
 
 Web・Intent境界の要求JSONを型へ変換し、既知の処理IDを型付き画面へ解決します。
+サービス共通の起動境界として配置し、業務ユースケースの実行やUIの描画は担当しません。
+
+# Package dev.example.nativefeature.usecase.launch
+
+ResolveFeatureLaunchUseCaseが、未指定の起動要求・JSON形式不正・未対応IDをResultの具体的なエラー型で返します。
+要求JSONの解析と画面解決をandThenでつなぎ、成功・失敗時のUI操作はMainActivityへ任せます。
+
+# Package dev.example.nativefeature.err.launch
+
+ResolveFeatureLaunchErrが起動要求の受信・解析・画面選択の失敗を分類します。
+取消・JVM Error・予期しない例外を入力エラーへ変換しません。
 
 # Package dev.example.nativefeature.navigation
 
-共通NavHost、型付き画面、任意JSON引数の保存・復元を担当します。
+FeatureNavHost、型付き画面、任意JSON引数の保存・復元を担当します。
+FeatureDestinationの型名とシリアル名は、保存済み画面の復元に使う契約として維持します。
 
-# Package dev.example.nativefeature.services.golfchange
+# Package dev.example.nativefeature.navigation.golfchange
 
-ゴルフ場釣り銭機サービスのNavigation、ゴルフ場ID・ホルダー番号読み取り画面とViewModel、
-ゴルフ場番号・ホルダー番号の読み取りユースケース・ユースケース固有のエラー契約を提供します。
-メモリマップと対象に紐づくRepositoryはdata/repository/golfが管理します。
-NFC書き込みは対象外です。本人確認（マイナンバー）は別サービスとして仕様確定後に追加します。
+ゴルフ場釣り銭機サービスの画面登録と、前面表示中の画面状態の購読を担当します。
+起動IDのgolf-change.read-holderを、従来と同じ型付きルートへ対応付けます。
 
-# Package dev.example.nativefeature.home
+# Package dev.example.nativefeature.ui.golfchange
+
+GolfCardReadScreenとGolfCardReadViewModelが、ゴルフ場番号・ホルダー番号の取得結果を表示します。
+ViewModelは業務ユースケースを購読し、Repository・Android Tagへ直接依存しません。
+
+# Package dev.example.nativefeature.ui.home
 
 確認用のhome処理IDで開くホーム画面を提供します。
 
-# Package dev.example.nativefeature.common
+# Package dev.example.nativefeature.ui.common
 
-機能画面共通の、画面名・処理ID・argsを中央に表示するレイアウトを提供します。
+FeatureRequestLayoutが、画面名・処理ID・argsと各機能の内容を中央に表示する共通レイアウトを提供します。
 
-# Package dev.example.nativefeature.nfc
+# Package dev.example.nativefeature.ui.webview
 
-ゴルフ以外の業務でも利用できる、汎用のタグ検出ユースケースと検出エラー契約を提供します。
+WebMessage双方向通信を確認するComposeのサンプル画面を提供します。
+
+# Package dev.example.nativefeature.usecase.nfc
+
+ゴルフ以外の業務でも利用できる汎用のタグ検出ユースケースを提供します。
+
+# Package dev.example.nativefeature.usecase.golfchange
+
+同じ対象の読取ユースケースを生成するFactory、2項目を直列に取得する業務ユースケース、
+ゴルフ場番号・ホルダー番号を取得する個別ユースケースを提供します。
+メモリマップ・バイト列の解釈・対象に紐づくRepositoryはdata/repository/golfが管理します。
+ユースケースはInt・Stringと具体的な失敗を受け取り、ビット演算は行いません。NFC書き込みは対象外です。
+
+# Package dev.example.nativefeature.err.nfc
+
+汎用タグ検出ユースケース固有のエラー契約を定義します。
+
+# Package dev.example.nativefeature.err.golfchange
+
+ゴルフ場番号・ホルダー番号の読取ユースケース固有のエラー契約を定義します。
+具体的な原因は各ユースケースの階層内に保ち、dataの共通契約も実装します。
+
+# Package dev.example.nativefeature.model.golfchange
+
+ユースケースが返すGolfCardReadEventと、画面が使うGolfCardReadUiStateを別ファイルで定義します。
+読取の実行やUIの描画は担当しません。
+
+# Package dev.example.nativefeature.logging
+
+StartupによるTimberの初期化と、実際のホストAPKに応じたログ出力の設定を提供します。
+
+# Package dev.example.nativefeature.webview
+
+WebViewの接続・解放、WebMessageの変換、URLと読み込みの制御を提供します。
+Compose画面はui.webviewへ置き、通信の管理と表示の責務を分けます。
