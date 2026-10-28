@@ -1,10 +1,10 @@
 package dev.example.nativefeature.nfc
 
-import dev.example.nativedata.nfc.NfcDetectionAccessDenied
-import dev.example.nativedata.nfc.NfcDetectionFailure
-import dev.example.nativedata.nfc.NfcDetectionFailureFactory
-import dev.example.nativedata.nfc.NfcDisabled
-import dev.example.nativedata.nfc.NfcNotSupported
+import dev.example.nativedata.nfc.detection.NfcDetectionAccessDenied
+import dev.example.nativedata.nfc.detection.NfcDetectionFailure
+import dev.example.nativedata.nfc.detection.NfcDetectionFailureFactory
+import dev.example.nativedata.nfc.detection.NfcDisabled
+import dev.example.nativedata.nfc.detection.NfcNotSupported
 
 /** 汎用タグ検出ユースケースの失敗契約。読取の失敗と発生元を区別する。 */
 sealed interface ObserveNfcTagsErr {

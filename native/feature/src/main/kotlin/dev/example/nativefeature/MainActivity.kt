@@ -9,7 +9,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import dagger.hilt.android.AndroidEntryPoint
-import dev.example.nativedata.nfc.NfcReaderModeController
+import dev.example.nativedata.nfc.detection.NfcReaderModeController
 import dev.example.nativefeature.launch.FeatureLaunchRequest
 import dev.example.nativefeature.navigation.FeatureLaunchCommand
 import dev.example.nativefeature.navigation.FeatureNavigation

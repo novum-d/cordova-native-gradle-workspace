@@ -1,9 +1,9 @@
 package dev.example.nativedata.card
 
 import dev.example.nativedata.golf.GolfCardRepository
-import dev.example.nativedata.nfc.DetectedNfcTag
-import dev.example.nativedata.nfc.NfcReadFailure
-import dev.example.nativedata.nfc.NfcReadFailureFactory
+import dev.example.nativedata.nfc.detection.DetectedNfcTag
+import dev.example.nativedata.nfc.failure.NfcReadFailure
+import dev.example.nativedata.nfc.failure.NfcReadFailureFactory
 
 /** 業務カードごとのRepositoryを生成する入口。IC型番から業務の種類を推測しない。 */
 interface CardRepositoryFactory {

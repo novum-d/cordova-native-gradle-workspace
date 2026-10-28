@@ -1,7 +1,7 @@
 package dev.example.nativedata.golf
 
 import com.github.michaelbull.result.Result
-import dev.example.nativedata.nfc.NfcReadFailure
+import dev.example.nativedata.nfc.failure.NfcReadFailure
 
 /** 生成時に固定した対象から業務項目の生バイトを取得する。型番・座標は公開しない。 */
 interface GolfCardRepository<out E : NfcReadFailure> {

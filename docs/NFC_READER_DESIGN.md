@@ -16,9 +16,9 @@ flowchart TD
     Host[Activityの前面表示とNfcReaderModeController] --> Source
     Golf --> Read[ゴルフ場番号・ホルダー番号の読取ユースケース]
     Read --> CardRepo[GolfCardRepository 業務項目の生バイト取得]
-    CardRepo --> CommonRepo[NfcCardRepository 共通の範囲読取]
-    CommonRepo --> Profile[実タグから型番Profileを選択・業務配置の対応モデルと照合]
-    Profile --> IO[NfcMemoryReader Profileの通信方式・メモリ構成でREAD・close]
+    CardRepo --> CommonReader[NfcCardReader 共通の範囲読取]
+    CommonReader --> Profile[実タグから型番Profileを選択・業務配置の対応モデルと照合]
+    Profile --> IO[NfcMemoryDataSource Profileの通信方式・メモリ構成でREAD・close]
 ```
 
 UI・ViewModelはRepositoryを直接呼びません。ViewModelは業務ユースケースを購読して画面状態へ反映します。ActivityはAndroid固有のReaderModeの有効化・解除だけを担当し、業務の読み取り順序・Repository生成・エラー処理には関与しません。
@@ -32,6 +32,22 @@ UI・ViewModelはRepositoryを直接呼びません。ViewModelは業務ユー�
 | [feature/services/golfchange](../native/feature/src/main/kotlin/dev/example/nativefeature/services/golfchange/) | 同じタグからの2項目取得、Int・Stringへの解釈、ゴルフの画面状態と表示 |
 
 別の業務でも`ObserveNfcTagsUseCase`を再利用できます。検出Repositoryが`GolfCardRepository`を返す構成にはしていません。検出と業務の読み取りをつなぐのは各業務のユースケースです。
+
+## NFC配下の配置
+
+共通の生バイト読取は`NfcCardReader`、接続・送受信・応答検査は`NfcMemoryDataSource`と呼びます。業務データを扱う`GolfCardRepository`等の名前は維持しています。今回の改名と配置整理では、読取順序・判定条件・対象の寿命・排他・エラー契約は変更していません。
+
+`native/data/src/main/kotlin/dev/example/nativedata/nfc/`を次の責務で分けています。テストも同じ分類とし、共用の模擬タグ・エラーFactory等は`src/test/.../nfc/testing/`、業務Repositoryのテストは`src/test/.../golf/`に置きます。
+
+| ディレクトリ | 主な内容 |
+| --- | --- |
+| `detection/` | 検出契約・対象参照・検出Source・ReaderMode制御・検出失敗 |
+| `profile/` | 型番・通信方式・メモリ構成の型、判定器の契約と共通Resolver |
+| `profile/icodesli/` | SLI固有のProfileと判定器 |
+| `reader/` | `NfcCardReader`の契約・Default実装・生成Factory |
+| `memory/` | `NfcMemoryDataSource`、座標・範囲・メモリ構成、Android接続API |
+| `failure/` | 読取失敗の共通interface・Factory、例外の分類処理 |
+| `di/` | Repository・業務Factoryのbindingと型番判定器のSet登録 |
 
 ## 対象参照と引数なしAPI
 
@@ -59,18 +75,18 @@ interface GolfCardRepository<out E : NfcReadFailure> {
 
 ## 型番Profileと通信方式
 
-[dataのNfcTagProfile](../native/data/src/main/kotlin/dev/example/nativedata/nfc/NfcTagProfile.kt)へ、モデル・通信方式・ユーザーメモリ構成をまとめています。共通の`DefaultNfcCardRepository`が、登録された判定器を持つ`NfcTagProfileResolver`を通して実タグからProfileを選び、内部の[NfcMemoryReader](../native/data/src/main/kotlin/dev/example/nativedata/nfc/NfcMemoryReader.kt)へ1つの仕様情報として渡します。
+[dataのNfcTagProfile](../native/data/src/main/kotlin/dev/example/nativedata/nfc/profile/NfcTagProfile.kt)へ、モデル・通信方式・ユーザーメモリ構成をまとめています。共通の`DefaultNfcCardReader`が、登録された判定器を持つ`NfcTagProfileResolver`を通して実タグからProfileを選び、内部の[NfcMemoryDataSource](../native/data/src/main/kotlin/dev/example/nativedata/nfc/memory/NfcMemoryDataSource.kt)へ1つの仕様情報として渡します。
 
 | モデル | Profile内の通信方式 | 必要なAndroid技術 | ユーザー領域 |
 | --- | --- | --- | --- |
 | ICODE SLI | ISO/IEC 15693 | NfcV | 28ブロック×4バイト、ブロック0〜27 |
 
-通信方式をユースケースから別途指定したり、型番と方式を呼出側で組み合わせたりしません。Profileとモデルの型はdataモジュールのinternalです。Readerも実タグの技術・モデルとProfileの対応を確認してから接続します。
+通信方式をユースケースから別途指定したり、型番と方式を呼出側で組み合わせたりしません。Profileとモデルの型はdataモジュールのinternalです。DataSourceも実タグの技術・モデルとProfileの対応を確認してから接続します。
 
-共通Repository内の呼び出しは次の形です。`profile`に方式とメモリ構成が含まれるため、通信方式やブロック幅の引数を重ねて渡しません。
+共通Reader内の呼び出しは次の形です。`profile`に方式とメモリ構成が含まれるため、通信方式やブロック幅の引数を重ねて渡しません。
 
 ```kotlin
-reader.read(
+memoryDataSource.read(
     tag = target.access,
     profile = profile,
     range = range,
@@ -80,11 +96,11 @@ reader.read(
 
 範囲検査・バイト数計算・ブロック境界の切り出し・正常応答の長さはProfileのメモリ構成を参照します。ISO 15693の送受信ではUID付きSingle Block READだけを実装し、ブロック番号が1バイトに収まらない拡張READへ自動では切り替えません。
 
-型番Profileと業務レイアウトは別の責務です。モデルが一致しても、発行サービスの配置が同じとは限りません。ゴルフの固定座標はdata/golfで管理し、`DefaultGolfCardRepository`が配置の対応モデルを`expectedModel`として共通Repositoryへ渡します。共通側で実タグと照合するため、将来別モデルへ対応してもSLI用の座標を無条件に流用しません。現在登録されているSLI判定器はTagのメタデータだけを使い、追加のRFコマンドを送りません。共通ResolverはUIDの書式を固定せず、型番ごとの判定器をHiltのSetで受け取ります。[追加手順と共通部の責務](NFC_TAG_IDENTIFICATION.md)を参照してください。
+型番Profileと業務レイアウトは別の責務です。モデルが一致しても、発行サービスの配置が同じとは限りません。ゴルフの固定座標はdata/golfで管理し、`DefaultGolfCardRepository`が配置の対応モデルを`expectedModel`として共通Readerへ渡します。共通側で実タグと照合するため、将来別モデルへ対応してもSLI用の座標を無条件に流用しません。現在登録されているSLI判定器はTagのメタデータだけを使い、追加のRFコマンドを送りません。共通ResolverはUIDの書式を固定せず、型番ごとの判定器をHiltのSetで受け取ります。[追加手順と共通部の責務](NFC_TAG_IDENTIFICATION.md)を参照してください。
 
 共有済みTagInfoの転記は`ICODE SLI(SLI2ICS20)`で、資料の表記は`SL2 ICS20`です。原レポートとの照合待ちの正式品番を確定値としてコードへ登録せず、`ICODE_SLI`として扱います。28×4バイトのユーザー領域とISO 15693対応は[NXPのSLI仕様 §1.1・§3.2](https://www.nxp.com/docs/en/data-sheet/058031.pdf)と照合しています。
 
-## FactoryとRepository実装の分離
+## FactoryとReader・Repository実装の分離
 
 生成と読取の実装は別ファイルです。公開する業務Factoryの契約も、実装と分けています。
 
@@ -92,22 +108,22 @@ reader.read(
 | --- | --- |
 | [CardRepositoryFactory.kt](../native/data/src/main/kotlin/dev/example/nativedata/card/CardRepositoryFactory.kt) | 業務カードの生成契約。現在は`createGolfCard()`を提供 |
 | [DefaultCardRepositoryFactory.kt](../native/data/src/main/kotlin/dev/example/nativedata/card/DefaultCardRepositoryFactory.kt) | 共通NFCのFactoryを使い、業務Repositoryを生成する |
-| [NfcCardRepositoryFactory.kt](../native/data/src/main/kotlin/dev/example/nativedata/nfc/NfcCardRepositoryFactory.kt) | 対象タグ・エラーFactory・Readerを組み合わせて共通Repositoryを生成する |
-| [DefaultNfcCardRepository.kt](../native/data/src/main/kotlin/dev/example/nativedata/nfc/DefaultNfcCardRepository.kt) | 対象の有効期間・排他・Profile識別・モデル照合・範囲読取を担当する |
-| [DefaultGolfCardRepository.kt](../native/data/src/main/kotlin/dev/example/nativedata/golf/DefaultGolfCardRepository.kt) | ゴルフの項目を範囲と対応モデルへ変換し、共通Repositoryへ委譲する |
+| [NfcCardReaderFactory.kt](../native/data/src/main/kotlin/dev/example/nativedata/nfc/reader/NfcCardReaderFactory.kt) | 対象タグ・エラーFactory・DataSourceを組み合わせて共通Readerを生成する |
+| [DefaultNfcCardReader.kt](../native/data/src/main/kotlin/dev/example/nativedata/nfc/reader/DefaultNfcCardReader.kt) | 対象の有効期間・排他・Profile識別・モデル照合・範囲読取を担当する |
+| [DefaultGolfCardRepository.kt](../native/data/src/main/kotlin/dev/example/nativedata/golf/DefaultGolfCardRepository.kt) | ゴルフの項目を範囲と対応モデルへ変換し、共通Readerへ委譲する |
 | [GolfCardField.kt](../native/data/src/main/kotlin/dev/example/nativedata/golf/GolfCardField.kt) | SLIで発行された業務カードの固定座標を管理する |
-| [DefaultNfcTagDetectionRepository.kt](../native/data/src/main/kotlin/dev/example/nativedata/nfc/DefaultNfcTagDetectionRepository.kt) | 検出Sourceの通知を、呼出元固有の検出結果へ変換する |
+| [DefaultNfcTagDetectionRepository.kt](../native/data/src/main/kotlin/dev/example/nativedata/nfc/detection/DefaultNfcTagDetectionRepository.kt) | 検出Sourceの通知を、呼出元固有の検出結果へ変換する |
 
 `DefaultCardRepositoryFactory.createGolfCard()`の組み立ては次のとおりです。
 
 ```kotlin
-val nfcRepository = nfcRepositories.create(target, failures)
-return DefaultGolfCardRepository(nfcRepository)
+val nfcReader = nfcReaders.create(target, failures)
+return DefaultGolfCardRepository(nfcReader)
 ```
 
-生成時には通信しません。Profileの識別は共通Repositoryの読取時に行い、識別で起きる失敗も指定されたユースケースのエラーFactoryで直接生成します。Factoryがタグや生成済みRepositoryをキャッシュすることもありません。
+生成時には通信しません。Profileの識別は共通Readerの読取時に行い、識別で起きる失敗も指定されたユースケースのエラーFactoryで直接生成します。Factoryがタグや生成済みRepositoryをキャッシュすることもありません。
 
-`NfcCardRepository`とそのFactory・実装はdata内部の型です。featureは公開された`CardRepositoryFactory`と業務Repositoryの契約を使い、物理範囲・モデル・通信方式へ依存しません。現時点で生成対象の業務カードはゴルフだけで、社員証等の例示用の実装は追加していません。
+`NfcCardReader`とそのFactory・実装はdata内部の型です。featureは公開された`CardRepositoryFactory`と業務Repositoryの契約を使い、物理範囲・モデル・通信方式へ依存しません。現時点で生成対象の業務カードはゴルフだけで、社員証等の例示用の実装は追加していません。
 
 ## 保持する範囲と寿命
 
@@ -118,7 +134,7 @@ return DefaultGolfCardRepository(nfcRepository)
 - 追加タグは受信待ちのときだけ受け付けます。読み取り中の検出を蓄積せず、同じ処理の途中で対象を差し替えません。対象は検出通知の処理内で使い切ります。firstで参照を持ち出したり、検出Flowへbuffer・conflate・shareIn等を追加して処理を切り離したりしないでください。
 - 複数の検出購読は直列化します。画面ではRESUMEDの間だけ購読し、購読終了で要求を解除します。
 
-Hiltは`CardRepositoryFactory`を`DefaultCardRepositoryFactory`へ`@Binds`し、内部の`NfcCardRepositoryFactory`とReaderは`@Inject constructor`で生成します。`@Singleton`は検出要求の仲介役と、判定器の集合を持つResolverに使い、タグに紐づくRepositoryへは付けません。ResolverはTagや識別結果を保存しません。ReaderModeの制御は`@ActivityScoped`です。タグごとにユースケースを組み立てるFactoryはfeature側にあり、dataからfeatureへの逆依存は作りません。
+Hiltは`CardRepositoryFactory`を`DefaultCardRepositoryFactory`へ`@Binds`し、内部の`NfcCardReaderFactory`・Readerの依存であるDataSourceは`@Inject constructor`で生成します。`@Singleton`は検出要求の仲介役と、判定器の集合を持つResolverに使い、タグに紐づくReader・業務Repositoryへは付けません。ResolverはTagや識別結果を保存しません。ReaderModeの制御は`@ActivityScoped`です。タグごとにユースケースを組み立てるFactoryはfeature側にあり、dataからfeatureへの逆依存は作りません。
 
 ReaderModeの解除と、通信接続のcloseは別の責務です。実行中のブロッキングI/Oをキャンセル時に即時closeする仕組みは追加していません。現在はブロック間で取消を確認し、I/Oが戻ってから解放・取消伝播します。
 
@@ -134,7 +150,7 @@ ReaderModeの解除と、通信接続のcloseは別の責務です。実行中�
 
 ## 今後の拡張
 
-現在はICODE SLIのProfileと、Profileを受け取る`NfcMemoryReader`のISO 15693経路を実装しています。旧`IcodeSliMemoryReader`は置き換えました。型番ごとのRepository・Readerや、未確定製品のProfile・鍵・認証は追加していません。
+現在はICODE SLIのProfileと、Profileを受け取る`NfcMemoryDataSource`のISO 15693経路を実装しています。旧`IcodeSliMemoryReader`は置き換えました。型番ごとのRepository・Readerや、未確定製品のProfile・鍵・認証は追加していません。
 
 他製品へ対応するときは、業務項目のAPIを保ち、型番の識別条件・Profile・発行書式に応じた業務レイアウトを追加します。現状のメモリ形状は均一なブロックだけなので、ページ・セクタ・サービス等の座標や保護領域は対象仕様が確定してから拡張します。通信経路が増えて独立した検証が必要なら、手順単位のDataSourceへ分離します。RF技術だけからコマンド・認証方式を決めません。
 
@@ -152,4 +168,6 @@ ReaderModeの解除と、通信接続のcloseは別の責務です。実行中�
 
 ## 生成・実装分離の検証
 
-両ホストのビルド・単体テスト・Lint・静的解析と、共通Repositoryの範囲読取・排他・エラー文脈を確認しました。[検証記録](logs/card-repository-factory/README.md)を参照してください。
+両ホストのビルド・単体テスト・Lint・静的解析と、共通Readerの範囲読取・排他・エラー文脈を確認しました。[検証記録](logs/card-repository-factory/README.md)を参照してください。
+
+2026-10-28の改名・配置整理では、着手時のKotlinコードと照合し、命名・package・import・コメント・整形以外の処理差分がないことを確認しました。native・Cordovaの両ホストで、Debug／Releaseそれぞれdata 72件・feature 46件の単体テストがすべて成功しました。開発アプリのDebugとCordovaのDebug／ReleaseのAPKビルド、Android Lint、detekt・整形チェック、nativeのKDoc生成も成功しています。

@@ -2,15 +2,15 @@ package dev.example.nativefeature.services.golfchange
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import dev.example.nativedata.nfc.NfcAccessDenied
-import dev.example.nativedata.nfc.NfcCommandRejected
-import dev.example.nativedata.nfc.NfcCommunication
-import dev.example.nativedata.nfc.NfcInvalidRange
-import dev.example.nativedata.nfc.NfcReadFailure
-import dev.example.nativedata.nfc.NfcResponseFormat
-import dev.example.nativedata.nfc.NfcTagLost
-import dev.example.nativedata.nfc.NfcTargetExpired
-import dev.example.nativedata.nfc.NfcUnsupportedTag
+import dev.example.nativedata.nfc.failure.NfcAccessDenied
+import dev.example.nativedata.nfc.failure.NfcCommandRejected
+import dev.example.nativedata.nfc.failure.NfcCommunication
+import dev.example.nativedata.nfc.failure.NfcInvalidRange
+import dev.example.nativedata.nfc.failure.NfcReadFailure
+import dev.example.nativedata.nfc.failure.NfcResponseFormat
+import dev.example.nativedata.nfc.failure.NfcTagLost
+import dev.example.nativedata.nfc.failure.NfcTargetExpired
+import dev.example.nativedata.nfc.failure.NfcUnsupportedTag
 import dev.example.nativefeature.common.FeatureRequestScreen
 import dev.example.nativefeature.navigation.FeatureDestination
 import dev.example.nativefeature.nfc.ObserveNfcTagsErr

@@ -22,7 +22,7 @@
 
 ## 型番Profileとタグ判定
 
-[NfcTagProfileResolver](../native/data/src/main/kotlin/dev/example/nativedata/nfc/NfcTagProfileResolver.kt)が登録済みの判定器を呼び、一意のProfileを選びます。現在登録している[IcodeSliTagProfileIdentifier](../native/data/src/main/kotlin/dev/example/nativedata/nfc/IcodeSliTagProfileIdentifier.kt)は、通信せずに次を確認します。
+[NfcTagProfileResolver](../native/data/src/main/kotlin/dev/example/nativedata/nfc/profile/NfcTagProfileResolver.kt)が登録済みの判定器を呼び、一意のProfileを選びます。現在登録している[IcodeSliTagProfileIdentifier](../native/data/src/main/kotlin/dev/example/nativedata/nfc/profile/icodesli/IcodeSliTagProfileIdentifier.kt)は、通信せずに次を確認します。
 
 - 選択するProfileの通信方式が必要とする技術`android.nfc.tech.NfcV`がある。
 - UIDが8バイトで、UID7＝E0、UID6＝04、UID5＝01。
@@ -42,7 +42,7 @@ SLIのProfileにユーザー領域を28ブロック・各4バイトと定義し�
 
 ## 通信・解放・取消
 
-`DefaultGolfCardRepository`は項目の固定範囲を共通の`NfcCardRepository`へ渡します。共通実装がタグの有効期間・排他・Profileと業務配置の対応モデルを確認します。内部の`NfcMemoryReader`は、共通Repositoryが選択したProfileで通信方式を決め、Dispatchers.IOで実行し、1回の呼び出しごとに接続・切断します。複数ユースケース間で接続や読取済みブロックをキャッシュしません。
+`DefaultGolfCardRepository`は項目の固定範囲を共通の`NfcCardReader`へ渡します。共通実装がタグの有効期間・排他・Profileと業務配置の対応モデルを確認します。内部の`NfcMemoryDataSource`は、共通Readerが選択したProfileで通信方式を決め、Dispatchers.IOで実行し、1回の呼び出しごとに接続・切断します。複数ユースケース間で接続や読取済みブロックをキャッシュしません。
 
 フレームは`22 20 <UID0〜7> <block>`です。高速・Addressed・OptionなしのRead Single Blockで対象UIDを指定します。NFCAppの`02 20 <block>`から、対象指定を追加した点が異なります。CRCはAndroidに任せ、Single Block READを必要ブロックへ順番に送ります。[Android NfcV](https://developer.android.com/reference/android/nfc/tech/NfcV)
 
@@ -50,7 +50,7 @@ SLIのProfileにユーザー領域を28ブロック・各4バイトと定義し�
 
 connect途中の失敗も含め、取得した接続を一度だけcloseします。読取とcloseの両方がI/Oで失敗した場合は読取側を返し、close原因は元の例外のsuppressedへ残します。読取成功後のclose失敗もエラーです。CancellationExceptionとJVMのErrorは読取Errへ変換しません。
 
-キャンセルはブロック間でも検査します。ただし、実行中のブロッキングtransceiveを、この実装が別スレッドから即時closeして中断する仕組みは追加していません。実行中I/Oが戻った後に解放・キャンセル伝播します。画面終了時は検出要求とReaderModeを解除しますが、実行中I/Oの即時中断は保証しません。終了した対象への新しい読み取りはTargetExpiredで拒否します。
+キャンセルはブロック間でも検査します。Scopeが持つContextとの取り違えを避けるため、`currentCoroutineContext()`で現在実行中のコルーチンのContextを取得し、`ensureActive()`で取消を確認します。ただし、実行中のブロッキングtransceiveを、この実装が別スレッドから即時closeして中断する仕組みは追加していません。実行中I/Oが戻った後に解放・キャンセル伝播します。画面終了時は検出要求とReaderModeを解除しますが、実行中I/Oの即時中断は保証しません。終了した対象への新しい読み取りはTargetExpiredで拒否します。
 
 ## 業務データ
 
@@ -77,7 +77,7 @@ val holderResult: Result<String, ReadGolfHolderNumberErr> = readHolderNumber()
 
 ゴルフ場番号の例は`ReadGolfCourseNumberErr.NfcRead.Communication`です。ホルダー番号では`ReadGolfHolderNumberErr.NfcRead.Communication`です。外側がユースケース、次がデータ処理、最後が原因です。`Err`は外側だけに付けます。
 
-`NfcReadFailureFactory`をReaderへ渡し、各ユースケースの具体型を失敗箇所で直接生成します。dataからfeatureへ依存せず、共通の具体エラーからユースケース型へ包み直しません。同じ値を`NfcCommunication`・`NfcTagLost`などの共通interfaceとしても処理できます。
+`NfcReadFailureFactory`をReader・DataSourceへ渡し、各ユースケースの具体型を失敗箇所で直接生成します。dataからfeatureへ依存せず、共通の具体エラーからユースケース型へ包み直しません。同じ値を`NfcCommunication`・`NfcTagLost`などの共通interfaceとしても処理できます。
 
 対象参照の期限切れ、範囲不正、対象外タグ、タグ離脱、I/O、応答形式不正、タグのエラーコード、Androidのアクセス拒否を区別します。無応答だけでタグ離脱と断定しません。元の例外はcauseで保持し、予期しないプログラム例外は通信エラーへ隠さず伝播します。
 

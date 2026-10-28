@@ -2,7 +2,7 @@ package dev.example.nativefeature.services.golfchange
 
 import com.github.michaelbull.result.unwrap
 import com.github.michaelbull.result.unwrapError
-import dev.example.nativedata.nfc.NfcCommunication
+import dev.example.nativedata.nfc.failure.NfcCommunication
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertSame

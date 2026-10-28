@@ -3,10 +3,10 @@ package dev.example.nativefeature.services.golfchange
 import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
-import dev.example.nativedata.nfc.DetectedNfcTag
-import dev.example.nativedata.nfc.NfcDetectionFailure
-import dev.example.nativedata.nfc.NfcDetectionFailureFactory
-import dev.example.nativedata.nfc.NfcTagDetectionRepository
+import dev.example.nativedata.nfc.detection.DetectedNfcTag
+import dev.example.nativedata.nfc.detection.NfcDetectionFailure
+import dev.example.nativedata.nfc.detection.NfcDetectionFailureFactory
+import dev.example.nativedata.nfc.detection.NfcTagDetectionRepository
 import dev.example.nativefeature.nfc.ObserveNfcTagsErr
 import dev.example.nativefeature.nfc.ObserveNfcTagsUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi

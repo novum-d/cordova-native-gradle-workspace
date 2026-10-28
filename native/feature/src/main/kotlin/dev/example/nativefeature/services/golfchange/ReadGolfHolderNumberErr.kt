@@ -1,16 +1,16 @@
 package dev.example.nativefeature.services.golfchange
 
-import dev.example.nativedata.nfc.NfcAccessDenied
-import dev.example.nativedata.nfc.NfcCommandRejected
-import dev.example.nativedata.nfc.NfcCommunication
-import dev.example.nativedata.nfc.NfcInvalidRange
-import dev.example.nativedata.nfc.NfcMemoryRange
-import dev.example.nativedata.nfc.NfcReadFailure
-import dev.example.nativedata.nfc.NfcReadFailureFactory
-import dev.example.nativedata.nfc.NfcResponseFormat
-import dev.example.nativedata.nfc.NfcTagLost
-import dev.example.nativedata.nfc.NfcTargetExpired
-import dev.example.nativedata.nfc.NfcUnsupportedTag
+import dev.example.nativedata.nfc.failure.NfcAccessDenied
+import dev.example.nativedata.nfc.failure.NfcCommandRejected
+import dev.example.nativedata.nfc.failure.NfcCommunication
+import dev.example.nativedata.nfc.failure.NfcInvalidRange
+import dev.example.nativedata.nfc.failure.NfcReadFailure
+import dev.example.nativedata.nfc.failure.NfcReadFailureFactory
+import dev.example.nativedata.nfc.failure.NfcResponseFormat
+import dev.example.nativedata.nfc.failure.NfcTagLost
+import dev.example.nativedata.nfc.failure.NfcTargetExpired
+import dev.example.nativedata.nfc.failure.NfcUnsupportedTag
+import dev.example.nativedata.nfc.memory.NfcMemoryRange
 import java.io.IOException
 
 /** ホルダー番号読取の失敗契約。修飾名からユースケース・データ処理・原因を識別する。 */

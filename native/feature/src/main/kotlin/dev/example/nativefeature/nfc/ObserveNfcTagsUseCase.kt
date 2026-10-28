@@ -1,8 +1,8 @@
 package dev.example.nativefeature.nfc
 
 import com.github.michaelbull.result.Result
-import dev.example.nativedata.nfc.DetectedNfcTag
-import dev.example.nativedata.nfc.NfcTagDetectionRepository
+import dev.example.nativedata.nfc.detection.DetectedNfcTag
+import dev.example.nativedata.nfc.detection.NfcTagDetectionRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

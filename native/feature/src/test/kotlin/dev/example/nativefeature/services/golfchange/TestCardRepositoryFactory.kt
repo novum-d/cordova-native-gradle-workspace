@@ -2,9 +2,9 @@ package dev.example.nativefeature.services.golfchange
 
 import dev.example.nativedata.card.CardRepositoryFactory
 import dev.example.nativedata.golf.GolfCardRepository
-import dev.example.nativedata.nfc.DetectedNfcTag
-import dev.example.nativedata.nfc.NfcReadFailure
-import dev.example.nativedata.nfc.NfcReadFailureFactory
+import dev.example.nativedata.nfc.detection.DetectedNfcTag
+import dev.example.nativedata.nfc.failure.NfcReadFailure
+import dev.example.nativedata.nfc.failure.NfcReadFailureFactory
 import java.io.IOException
 
 /** 対象ごとの返却値と履歴を設定し、模擬Repositoryの生成だけを担当する。 */
