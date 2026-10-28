@@ -3,9 +3,9 @@ package dev.example.nativefeature.services.golfchange
 import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
+import dev.example.nativedata.err.nfc.NfcDetectionErr
+import dev.example.nativedata.err.nfc.NfcDetectionErrFactory
 import dev.example.nativedata.nfc.detection.DetectedNfcTag
-import dev.example.nativedata.nfc.detection.NfcDetectionFailure
-import dev.example.nativedata.nfc.detection.NfcDetectionFailureFactory
 import dev.example.nativedata.nfc.detection.NfcTagDetectionRepository
 import dev.example.nativefeature.nfc.ObserveNfcTagsErr
 import dev.example.nativefeature.nfc.ObserveNfcTagsUseCase
@@ -67,7 +67,7 @@ class ObserveGolfCardUseCaseTest {
 
     /** 検出失敗時は読取を開始せず、汎用検出ユースケースの発生元を保持する。 */
     @Test
-    fun preservesDetectionFailureAndDoesNotStartReading() = runTest {
+    fun preservesDetectionErrAndDoesNotStartReading() = runTest {
         val result = async { useCase().first() }
         detection.events.send(TestDetection.Disabled)
 
@@ -80,34 +80,34 @@ class ObserveGolfCardUseCaseTest {
     fun stopsBeforeHolderWhenCourseReadFails() = runTest {
         val target = TestDetectedTag()
         val cause = IOException("course")
-        repositories.failure = cause
+        repositories.err = cause
         val result = async { useCase().first() }
         detection.events.send(TestDetection.TagFound(target))
         val event = result.await() as GolfCardReadEvent.CourseReadFailed
 
-        assertTrue(event.failure is ReadGolfCourseNumberErr.NfcRead.Communication)
-        assertSame(cause, event.failure.cause)
+        assertTrue(event.err is ReadGolfCourseNumErr.NfcRead.Communication)
+        assertSame(cause, event.err.cause)
         assertEquals(listOf(target to "course"), repositories.calls)
     }
 
     /** ホルダーの失敗をゴルフ場番号の失敗へ変換しない。部分成功を完了扱いしない。 */
     @Test
-    fun preservesHolderFailureWithoutReturningPartialSuccess() = runTest {
+    fun preservesHolderErrWithoutReturningPartialSuccess() = runTest {
         val cause = IOException("holder")
-        repositories.failure = cause
+        repositories.err = cause
         repositories.failHolderOnly = true
         val result = async { useCase().first() }
         detection.events.send(TestDetection.TagFound(TestDetectedTag()))
         val event = result.await() as GolfCardReadEvent.HolderReadFailed
 
-        assertTrue(event.failure is ReadGolfHolderNumberErr.NfcRead.Communication)
-        assertSame(cause, event.failure.cause)
+        assertTrue(event.err is ReadGolfHolderNumErr.NfcRead.Communication)
+        assertSame(cause, event.err.cause)
         assertEquals(listOf("course", "holder"), repositories.calls.map { it.second })
     }
 
     /** 失敗しても検出購読を終了せず、次のカードで成功できる。 */
     @Test
-    fun keepsObservingAfterAReadFailure() = runTest {
+    fun keepsObservingAfterAReadErr() = runTest {
         repositories.unsupported = true
         val events = mutableListOf<GolfCardReadEvent>()
         val job = backgroundScope.launch { useCase().collect { events.add(it) } }
@@ -124,7 +124,7 @@ class ObserveGolfCardUseCaseTest {
 
     /** 画面の購読終了を模したキャンセルが、読取と検出まで届く。 */
     @Test
-    fun propagatesCancellationInsteadOfTurningItIntoAReadFailure() = runTest {
+    fun propagatesCancellationInsteadOfTurningItIntoAReadErr() = runTest {
         repositories.beforeRead = { awaitCancellation() }
         val results = mutableListOf<GolfCardReadEvent>()
         val job = backgroundScope.launch { useCase().collect { results.add(it) } }
@@ -139,15 +139,15 @@ class ObserveGolfCardUseCaseTest {
 
     /** NFC非搭載・検出拒否も、汎用の検出ユースケースで具体型を生成する。 */
     @Test
-    fun exposesGenericDetectionFailuresWithOriginalCause() = runTest {
+    fun exposesGenericDetectionErrsWithOriginalCause() = runTest {
         val results = async { ObserveNfcTagsUseCase(detection)().take(2).toList() }
         val cause = SecurityException("reader mode denied")
         detection.events.send(TestDetection.NotSupported)
         detection.events.send(TestDetection.Denied(cause))
-        val failures = results.await().map { it.error }
+        val errFactory = results.await().map { it.error }
 
-        assertSame(ObserveNfcTagsErr.NfcDetection.NotSupported, failures.first())
-        assertSame(cause, (failures.last() as ObserveNfcTagsErr.NfcDetection.AccessDenied).cause)
+        assertSame(ObserveNfcTagsErr.NfcDetection.NotSupported, errFactory.first())
+        assertSame(cause, (errFactory.last() as ObserveNfcTagsErr.NfcDetection.AccessDenied).cause)
     }
 }
 
@@ -164,17 +164,17 @@ private class TestTagDetectionRepository : NfcTagDetectionRepository {
     val events = Channel<TestDetection>(Channel.RENDEZVOUS)
     var finishedCollections = 0
 
-    override fun <E : NfcDetectionFailure> observeTags(
-        failures: NfcDetectionFailureFactory<E>,
+    override fun <E : NfcDetectionErr> observeTags(
+        errFactory: NfcDetectionErrFactory<E>,
     ): Flow<Result<DetectedNfcTag, E>> = flow {
         try {
             for (event in events) {
                 emit(
                     when (event) {
                         is TestDetection.TagFound -> Ok(event.target)
-                        TestDetection.Disabled -> Err(failures.disabled())
-                        TestDetection.NotSupported -> Err(failures.notSupported())
-                        is TestDetection.Denied -> Err(failures.accessDenied(event.cause))
+                        TestDetection.Disabled -> Err(errFactory.disabled())
+                        TestDetection.NotSupported -> Err(errFactory.notSupported())
+                        is TestDetection.Denied -> Err(errFactory.accessDenied(event.cause))
                     },
                 )
             }

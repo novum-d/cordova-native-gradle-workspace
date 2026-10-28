@@ -10,13 +10,14 @@
 
 | 配置 | 責務 |
 | --- | --- |
-| [data/nfc](../native/data/src/main/kotlin/dev/example/nativedata/nfc/) | Android Tagとの接続、SLI判定、範囲検査、READ・応答検査、連続ByteArrayの取得、共通の失敗契約 |
-| [data/card](../native/data/src/main/kotlin/dev/example/nativedata/card/) | 業務Repositoryの生成契約と、共通Factoryを使う生成実装 |
-| [data/golf](../native/data/src/main/kotlin/dev/example/nativedata/golf/) | 対象タグに紐づくRepository、業務項目と固定座標の対応 |
+| [data/nfc](../native/data/src/main/kotlin/dev/example/nativedata/nfc/) | Android Tagとの接続、SLI判定、範囲検査、READ・応答検査、連続ByteArrayの取得 |
+| [data/err/nfc](../native/data/src/main/kotlin/dev/example/nativedata/err/nfc/) | 検出・読取の共通エラー契約と生成・分類処理 |
+| [data/repository/card](../native/data/src/main/kotlin/dev/example/nativedata/repository/card/) | 業務Repositoryの生成契約と、共通Factoryを使う生成実装 |
+| [data/repository/golf](../native/data/src/main/kotlin/dev/example/nativedata/repository/golf/) | 対象タグに紐づくRepository、業務項目と固定座標の対応 |
 | [feature/nfc](../native/feature/src/main/kotlin/dev/example/nativefeature/nfc/) | 汎用タグ検出ユースケース・検出エラー |
 | [ObserveGolfCardUseCase](../native/feature/src/main/kotlin/dev/example/nativefeature/services/golfchange/ObserveGolfCardUseCase.kt) | 同じ対象から2項目を取得し、画面へ結果を通知 |
-| [ReadGolfCourseNumberUseCase](../native/feature/src/main/kotlin/dev/example/nativefeature/services/golfchange/ReadGolfCourseNumberUseCase.kt) | ゴルフ場番号の取得と符号なし数値への解釈 |
-| [ReadGolfHolderNumberUseCase](../native/feature/src/main/kotlin/dev/example/nativefeature/services/golfchange/ReadGolfHolderNumberUseCase.kt) | ホルダー番号の14バイト取得と、28桁の16進文字列への表現 |
+| [ReadGolfCourseNumUseCase](../native/feature/src/main/kotlin/dev/example/nativefeature/services/golfchange/ReadGolfCourseNumUseCase.kt) | ゴルフ場番号の取得と符号なし数値への解釈 |
+| [ReadGolfHolderNumUseCase](../native/feature/src/main/kotlin/dev/example/nativefeature/services/golfchange/ReadGolfHolderNumUseCase.kt) | ホルダー番号の14バイト取得と、28桁の16進文字列への表現 |
 
 画面→ViewModel→`ObserveGolfCardUseCase`→汎用検出ユースケース→検出Repositoryの順で呼び出します。検出後はFactoryで同じ対象に紐づく読取ユースケースを作り、引数なしの`suspend operator fun invoke()`で2項目を順番に取得します。固定座標・型番判定はdataへ隠します。ReaderModeはActivityの前面表示と購読に合わせて制御し、画面に番号・失敗の案内を表示します。Webへの業務結果返却は未実装です。NFCは通常権限で、ハードウェアは必須にしていません。
 
@@ -34,7 +35,7 @@ Profileが得られない、または複数の判定器が一致した場合は�
 
 ## 座標指定
 
-位置は`NfcMemoryPosition(blockNumber, byteOffset)`、範囲は`NfcMemoryRange(start, endInclusive)`で指定します。開始・終了とも0始まりで、終了バイトを含みます。
+位置は`NfcMemoryPosition(blockNum, byteOffset)`、範囲は`NfcMemoryRange(start, endInclusive)`で指定します。開始・終了とも0始まりで、終了バイトを含みます。
 
 SLIのProfileにユーザー領域を28ブロック・各4バイトと定義します。範囲検査と長さ計算はこの形状を受け取り、座標の型へSLIの値を固定しません。ICODE SLIのユーザー領域はブロック0〜27です。負数、28以上、バイト位置4以上、開始と終了の逆転を通信前に拒否します。ブロック番号を1バイトに格納できても、SLIの領域内とは判断しません。[SLIデータシート §3.2](https://www.nxp.com/docs/en/data-sheet/058031.pdf#page=7)
 
@@ -61,23 +62,23 @@ connect途中の失敗も含め、取得した接続を一度だけcloseしま�
 
 ゴルフ場番号はByte 0が下位です。`01 02`は513、`FF FF`は65535になります。ホルダー番号は、文字コード・パディングが「任意の書式」としか定義されていないため、合意した暫定方式として16進文字列を返します。例えば先頭の`30 31 20 00`は`30312000`です。ASCIIへの復号、空白・0x00の削除、2バイト単位への分割は行いません。先頭・末尾の0や上位ビットも保持し、常に28桁で返します。
 
-両ユースケースはHiltのコンストラクタ注入に対応しています。検出済みのAndroid Tagは`AndroidNfcTagAccess(tag)`で包み、コルーチンから各インスタンスを関数として呼び出せます。
+両ユースケースはHiltのコンストラクタ注入に対応しています。検出済みのAndroid Tagは`DefaultNfcTagAccess(tag)`で包み、コルーチンから各インスタンスを関数として呼び出せます。`NfcTagAccess`の標準実装として扱い、内部のNFC-V接続も`DefaultNfcVConnection`へ委譲します。
 
 ```kotlin
 // 汎用検出で得た同じtargetから、業務側のFactoryで組み立てる。
-val readCourseNumber = readers.courseNumber(target)
-val readHolderNumber = readers.holderNumber(target)
-val courseResult: Result<Int, ReadGolfCourseNumberErr> = readCourseNumber()
-val holderResult: Result<String, ReadGolfHolderNumberErr> = readHolderNumber()
+val readCourseNum = readers.courseNum(target)
+val readHolderNum = readers.holderNum(target)
+val courseResult: Result<Int, ReadGolfCourseNumErr> = readCourseNum()
+val holderResult: Result<String, ReadGolfHolderNumErr> = readHolderNum()
 ```
 
 それぞれ別の接続で読み取ります。画面の業務ユースケースはゴルフ場番号の失敗時にはホルダーを読まず、両方成功した場合だけ完了を通知します。検出参照は検出Flowのmap・collect内で使い切り、処理が戻ると失効します。複数項目を1つの結果としてWebへ返す処理は含めません。
 
 ## エラーの型
 
-ゴルフ場番号の例は`ReadGolfCourseNumberErr.NfcRead.Communication`です。ホルダー番号では`ReadGolfHolderNumberErr.NfcRead.Communication`です。外側がユースケース、次がデータ処理、最後が原因です。`Err`は外側だけに付けます。
+ゴルフ場番号の例は`ReadGolfCourseNumErr.NfcRead.Communication`です。ホルダー番号では`ReadGolfHolderNumErr.NfcRead.Communication`です。外側がユースケース、次がデータ処理、最後が原因です。ユースケースの階層では`Err`は外側だけに付けます。独立した共通契約の最上位型は`NfcReadErr`・`NfcDetectionErr`とし、原因の共通interfaceである`NfcTagLost`などには`Err`を付けません。
 
-`NfcReadFailureFactory`をReader・DataSourceへ渡し、各ユースケースの具体型を失敗箇所で直接生成します。dataからfeatureへ依存せず、共通の具体エラーからユースケース型へ包み直しません。同じ値を`NfcCommunication`・`NfcTagLost`などの共通interfaceとしても処理できます。
+`NfcReadErrFactory`をReader・DataSourceへ渡し、各ユースケースの具体型を失敗箇所で直接生成します。dataからfeatureへ依存せず、共通の具体エラーからユースケース型へ包み直しません。同じ値を`NfcCommunication`・`NfcTagLost`などの共通interfaceとしても処理できます。
 
 対象参照の期限切れ、範囲不正、対象外タグ、タグ離脱、I/O、応答形式不正、タグのエラーコード、Androidのアクセス拒否を区別します。無応答だけでタグ離脱と断定しません。元の例外はcauseで保持し、予期しないプログラム例外は通信エラーへ隠さず伝播します。
 

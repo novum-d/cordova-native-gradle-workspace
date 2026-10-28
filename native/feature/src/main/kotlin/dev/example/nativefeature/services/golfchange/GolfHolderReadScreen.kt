@@ -2,15 +2,15 @@ package dev.example.nativefeature.services.golfchange
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import dev.example.nativedata.nfc.failure.NfcAccessDenied
-import dev.example.nativedata.nfc.failure.NfcCommandRejected
-import dev.example.nativedata.nfc.failure.NfcCommunication
-import dev.example.nativedata.nfc.failure.NfcInvalidRange
-import dev.example.nativedata.nfc.failure.NfcReadFailure
-import dev.example.nativedata.nfc.failure.NfcResponseFormat
-import dev.example.nativedata.nfc.failure.NfcTagLost
-import dev.example.nativedata.nfc.failure.NfcTargetExpired
-import dev.example.nativedata.nfc.failure.NfcUnsupportedTag
+import dev.example.nativedata.err.nfc.NfcAccessDenied
+import dev.example.nativedata.err.nfc.NfcCommandRejected
+import dev.example.nativedata.err.nfc.NfcCommunication
+import dev.example.nativedata.err.nfc.NfcInvalidRange
+import dev.example.nativedata.err.nfc.NfcReadErr
+import dev.example.nativedata.err.nfc.NfcResponseFormat
+import dev.example.nativedata.err.nfc.NfcTagLost
+import dev.example.nativedata.err.nfc.NfcTargetExpired
+import dev.example.nativedata.err.nfc.NfcUnsupportedTag
 import dev.example.nativefeature.common.FeatureRequestScreen
 import dev.example.nativefeature.navigation.FeatureDestination
 import dev.example.nativefeature.nfc.ObserveNfcTagsErr
@@ -36,19 +36,19 @@ internal fun GolfHolderReadScreen(
 private fun GolfHolderReadState.message(): String = when (this) {
     GolfHolderReadState.Waiting -> "カードをかざしてください"
     is GolfHolderReadState.ResultReceived -> when (val result = event) {
-        is GolfCardReadEvent.ReadCompleted -> "ゴルフ場番号: ${result.courseNumber}\nホルダー番号: ${result.holderNumber}"
-        is GolfCardReadEvent.DetectionFailed -> when (result.failure) {
+        is GolfCardReadEvent.ReadCompleted -> "ゴルフ場番号: ${result.courseNum}\nホルダー番号: ${result.holderNum}"
+        is GolfCardReadEvent.DetectionFailed -> when (result.err) {
             ObserveNfcTagsErr.NfcDetection.NotSupported -> "この端末はNFCに対応していません"
             ObserveNfcTagsErr.NfcDetection.Disabled -> "端末設定でNFCを有効にして、カードをかざしてください"
             is ObserveNfcTagsErr.NfcDetection.AccessDenied -> "NFCの検出を開始できませんでした"
         }
-        is GolfCardReadEvent.CourseReadFailed -> "ゴルフ場番号: ${readFailureMessage(result.failure)}"
-        is GolfCardReadEvent.HolderReadFailed -> "ホルダー番号: ${readFailureMessage(result.failure)}"
+        is GolfCardReadEvent.CourseReadFailed -> "ゴルフ場番号: ${readErrMessage(result.err)}"
+        is GolfCardReadEvent.HolderReadFailed -> "ホルダー番号: ${readErrMessage(result.err)}"
     }
 }
 
 /** 発生元の具体型を保ったまま、共通の性質で案内を選ぶ。カード番号自体はログへ出さない。 */
-private fun readFailureMessage(failure: NfcReadFailure): String = when (failure) {
+private fun readErrMessage(err: NfcReadErr): String = when (err) {
     is NfcTargetExpired -> "読み取りが終了しています。もう一度かざしてください"
     is NfcUnsupportedTag -> "対応していないカードです"
     is NfcTagLost -> "カードが離れました。もう一度かざしてください"

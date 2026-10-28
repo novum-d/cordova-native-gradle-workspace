@@ -29,7 +29,7 @@ Web・Intent境界の要求JSONを型へ変換し、既知の処理IDを型付�
 
 ゴルフ場釣り銭機サービスのNavigation、ゴルフ場ID・ホルダー番号読み取り画面とViewModel、
 ゴルフ場番号・ホルダー番号の読み取りユースケース・ユースケース固有のエラー契約を提供します。
-メモリマップと対象に紐づくRepositoryはdata/golfが管理します。
+メモリマップと対象に紐づくRepositoryはdata/repository/golfが管理します。
 NFC書き込みは対象外です。本人確認（マイナンバー）は別サービスとして仕様確定後に追加します。
 
 # Package dev.example.nativefeature.home

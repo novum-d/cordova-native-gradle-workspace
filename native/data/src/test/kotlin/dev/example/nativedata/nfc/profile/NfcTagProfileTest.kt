@@ -28,7 +28,7 @@ class NfcTagProfileTest {
 
     /** UIDは表示用の逆順ではなく、UID0からの配列で判定する。 */
     @Test
-    fun acceptsIcodeSliWithSerialNumberBitsPreserved() = runTest {
+    fun acceptsIcodeSliWithSerialNumBitsPreserved() = runTest {
         for (serial in listOf(0x00, 0x07, 0x20, 0xC7)) {
             val tag = FakeNfcTag()
             tag.uid[4] = serial.toByte()

@@ -3,9 +3,9 @@ package dev.example.nativedata.nfc.memory
 import com.github.michaelbull.result.unwrap
 import com.github.michaelbull.result.unwrapError
 import dev.example.nativedata.nfc.profile.icodesli.IcodeSliTagProfile
-import dev.example.nativedata.nfc.testing.FailureKind
+import dev.example.nativedata.nfc.testing.ErrKind
 import dev.example.nativedata.nfc.testing.FakeNfcTag
-import dev.example.nativedata.nfc.testing.TestNfcFailures
+import dev.example.nativedata.nfc.testing.TestNfcErrFactory
 import dev.example.nativedata.nfc.testing.testNfcProfileResolver
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertArrayEquals
@@ -23,7 +23,7 @@ class NfcMemoryDataSourceTest {
         val tag = FakeNfcTag()
         val range = NfcMemoryRange(NfcMemoryPosition(1, 1), NfcMemoryPosition(1, 2))
 
-        val result = dataSource.read(tag = tag, profile = profile, range = range, failures = TestNfcFailures)
+        val result = dataSource.read(tag = tag, profile = profile, range = range, errFactory = TestNfcErrFactory)
 
         assertArrayEquals(byteArrayOf(5, 6), result.unwrap())
         assertArrayEquals(byteArrayOf(0x22, 0x20) + tag.uid + 1.toByte(), tag.requests.single())
@@ -37,7 +37,7 @@ class NfcMemoryDataSourceTest {
         val tag = FakeNfcTag()
         val range = NfcMemoryRange(NfcMemoryPosition(1, 2), NfcMemoryPosition(2, 1))
 
-        val result = dataSource.read(tag = tag, profile = profile, range = range, failures = TestNfcFailures)
+        val result = dataSource.read(tag = tag, profile = profile, range = range, errFactory = TestNfcErrFactory)
 
         assertArrayEquals(byteArrayOf(6, 7, 8, 9), result.unwrap())
         assertEquals(listOf(1, 2), tag.requests.map { it.last().toInt() })
@@ -46,11 +46,11 @@ class NfcMemoryDataSourceTest {
 
     /** ゴルフ場番号の2バイトを読み、ブロック1以外を取得しない。 */
     @Test
-    fun readsCourseNumberCoordinates() = runTest {
+    fun readsCourseNumCoordinates() = runTest {
         val tag = FakeNfcTag()
         val range = NfcMemoryRange(NfcMemoryPosition(1, 0), NfcMemoryPosition(1, 1))
 
-        assertArrayEquals(byteArrayOf(4, 5), dataSource.read(tag, profile, range, TestNfcFailures).unwrap())
+        assertArrayEquals(byteArrayOf(4, 5), dataSource.read(tag, profile, range, TestNfcErrFactory).unwrap())
         assertEquals(listOf(1), tag.requests.map { it.last().toInt() })
     }
 
@@ -62,7 +62,7 @@ class NfcMemoryDataSourceTest {
 
         assertArrayEquals(
             ByteArray(14) { (it + 6).toByte() },
-            dataSource.read(tag, profile, range, TestNfcFailures).unwrap(),
+            dataSource.read(tag, profile, range, TestNfcErrFactory).unwrap(),
         )
         assertEquals(listOf(1, 2, 3, 4), tag.requests.map { it.last().toInt() })
         assertEquals(1, tag.connectCount)
@@ -75,7 +75,7 @@ class NfcMemoryDataSourceTest {
         for ((block, offset, expected) in listOf(Triple(0, 0, 0), Triple(27, 3, 111))) {
             val tag = FakeNfcTag()
             val position = NfcMemoryPosition(block, offset)
-            val result = dataSource.read(tag, profile, NfcMemoryRange(position, position), TestNfcFailures)
+            val result = dataSource.read(tag, profile, NfcMemoryRange(position, position), TestNfcErrFactory)
             assertArrayEquals(byteArrayOf(expected.toByte()), result.unwrap())
             assertEquals(1, tag.requests.size)
         }
@@ -87,7 +87,7 @@ class NfcMemoryDataSourceTest {
         val tag = FakeNfcTag().apply { respond = { byteArrayOf(0, 0x80.toByte(), 0xFF.toByte(), 0, 1) } }
         val range = NfcMemoryRange(NfcMemoryPosition(2, 0), NfcMemoryPosition(2, 3))
 
-        val actual = dataSource.read(tag, profile, range, TestNfcFailures).unwrap()
+        val actual = dataSource.read(tag, profile, range, TestNfcErrFactory).unwrap()
         assertArrayEquals(byteArrayOf(0x80.toByte(), 0xFF.toByte(), 0, 1), actual)
     }
 
@@ -106,7 +106,7 @@ class NfcMemoryDataSourceTest {
         )
         for (range in invalid) {
             val tag = FakeNfcTag()
-            assertEquals(range, dataSource.read(tag, profile, range, TestNfcFailures).unwrapError().range)
+            assertEquals(range, dataSource.read(tag, profile, range, TestNfcErrFactory).unwrapError().range)
             assertEquals(0, tag.openCount)
         }
     }
@@ -117,7 +117,7 @@ class NfcMemoryDataSourceTest {
         val tag = FakeNfcTag(technologies = setOf("android.nfc.tech.NfcF"))
         val range = NfcMemoryRange(NfcMemoryPosition(1, 0), NfcMemoryPosition(1, 1))
 
-        assertEquals(FailureKind.UNSUPPORTED, dataSource.read(tag, profile, range, TestNfcFailures).unwrapError().kind)
+        assertEquals(ErrKind.UNSUPPORTED, dataSource.read(tag, profile, range, TestNfcErrFactory).unwrapError().kind)
         assertEquals(0, tag.openCount)
     }
 }

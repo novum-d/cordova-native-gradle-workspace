@@ -25,29 +25,35 @@ UI・ViewModelはRepositoryを直接呼びません。ViewModelは業務ユー�
 
 | 配置 | 責務 |
 | --- | --- |
-| [data/nfc](../native/data/src/main/kotlin/dev/example/nativedata/nfc/) | 汎用検出の契約・実装、Androidの検出ホスト、対象参照、型番Profile・範囲検査・通信、共通の失敗契約 |
+| [data/nfc](../native/data/src/main/kotlin/dev/example/nativedata/nfc/) | 汎用検出の契約・実装、Androidの検出ホスト、対象参照、型番Profile・範囲検査・通信 |
+| [data/err/nfc](../native/data/src/main/kotlin/dev/example/nativedata/err/nfc/) | 検出・読取の共通エラー契約と生成・分類処理 |
+| [data/di/nfc](../native/data/src/main/kotlin/dev/example/nativedata/di/nfc/) | Repositoryのbindingと型番判定器のSet登録 |
 | [feature/nfc](../native/feature/src/main/kotlin/dev/example/nativefeature/nfc/) | ゴルフに依存しない検出ユースケースと、その発生元を示す検出エラー |
-| [data/card](../native/data/src/main/kotlin/dev/example/nativedata/card/) | 業務ごとのRepository生成の入口。共通NFCのFactoryへ生成を委譲する |
-| [data/golf](../native/data/src/main/kotlin/dev/example/nativedata/golf/) | 業務Repositoryの契約・生成、固定座標の解決、生バイトの取得 |
+| [data/repository/card](../native/data/src/main/kotlin/dev/example/nativedata/repository/card/) | 業務ごとのRepository生成の入口。共通NFCのFactoryへ生成を委譲する |
+| [data/repository/golf](../native/data/src/main/kotlin/dev/example/nativedata/repository/golf/) | 業務Repositoryの契約・生成、固定座標の解決、生バイトの取得 |
 | [feature/services/golfchange](../native/feature/src/main/kotlin/dev/example/nativefeature/services/golfchange/) | 同じタグからの2項目取得、Int・Stringへの解釈、ゴルフの画面状態と表示 |
 
 別の業務でも`ObserveNfcTagsUseCase`を再利用できます。検出Repositoryが`GolfCardRepository`を返す構成にはしていません。検出と業務の読み取りをつなぐのは各業務のユースケースです。
 
-## NFC配下の配置
+## data内のNFC関連の配置
 
 共通の生バイト読取は`NfcCardReader`、接続・送受信・応答検査は`NfcMemoryDataSource`と呼びます。業務データを扱う`GolfCardRepository`等の名前は維持しています。今回の改名と配置整理では、読取順序・判定条件・対象の寿命・排他・エラー契約は変更していません。
 
-`native/data/src/main/kotlin/dev/example/nativedata/nfc/`を次の責務で分けています。テストも同じ分類とし、共用の模擬タグ・エラーFactory等は`src/test/.../nfc/testing/`、業務Repositoryのテストは`src/test/.../golf/`に置きます。
+独自の失敗契約は`NfcReadErr`・`NfcDetectionErr`、生成契約は`NfcReadErrFactory`・`NfcDetectionErrFactory`で統一します。番号を表す独自識別子は`Num`を使い、`ReadGolfCourseNumUseCase`・`ReadGolfHolderNumUseCase`・`blockNum`などとします。
+
+`native/data/src/main/kotlin/dev/example/nativedata/`では、NFCの実装を`nfc/`、DI設定を`di/nfc/`、検出・読取の共通エラーを`err/nfc/`へまとめます。テストも責務ごとに分類し、共用の模擬タグ・エラーFactory等は`src/test/.../nfc/testing/`、業務Repositoryのテストは`src/test/.../repository/golf/`に置きます。ユースケース固有のエラーは引き続きfeature内で定義します。
 
 | ディレクトリ | 主な内容 |
 | --- | --- |
-| `detection/` | 検出契約・対象参照・検出Source・ReaderMode制御・検出失敗 |
-| `profile/` | 型番・通信方式・メモリ構成の型、判定器の契約と共通Resolver |
-| `profile/icodesli/` | SLI固有のProfileと判定器 |
-| `reader/` | `NfcCardReader`の契約・Default実装・生成Factory |
-| `memory/` | `NfcMemoryDataSource`、座標・範囲・メモリ構成、Android接続API |
-| `failure/` | 読取失敗の共通interface・Factory、例外の分類処理 |
-| `di/` | Repository・業務Factoryのbindingと型番判定器のSet登録 |
+| `nfc/detection/` | 検出契約・対象参照・検出Source・ReaderMode制御 |
+| `nfc/profile/` | 型番・通信方式・メモリ構成の型、判定器の契約と共通Resolver |
+| `nfc/profile/icodesli/` | SLI固有のProfileと判定器 |
+| `nfc/card/` | `NfcCardReader`の契約・Default実装・生成Factory |
+| `nfc/memory/` | `NfcMemoryDataSource`、座標・範囲・メモリ構成、Android接続API |
+| `err/nfc/` | 検出・読取失敗の共通interface・Factory、例外の分類処理 |
+| `di/nfc/` | Repository・業務Factoryのbindingと型番判定器のSet登録 |
+| `repository/card/` | 業務Repository生成の公開契約とDefault実装 |
+| `repository/golf/` | ゴルフのRepository契約・Default実装と固定座標 |
 
 ## 対象参照と引数なしAPI
 
@@ -57,15 +63,15 @@ UI・ViewModelはRepositoryを直接呼びません。ViewModelは業務ユー�
 
 ```kotlin
 // 2つとも同じ検出対象から生成する。型番・座標・接続を呼出側へ渡さない。
-val course = readers.courseNumber(target)()
-val holder = readers.holderNumber(target)()
+val course = readers.courseNum(target)()
+val holder = readers.holderNum(target)()
 ```
 
 実装ではゴルフ場番号が失敗した時点で今回の処理を終えます。ホルダー番号も成功した場合だけ完了イベントを通知し、部分成功や別カードの値を組み合わせません。
 
 ```kotlin
 /** 生成時に固定した対象から、業務項目の生バイトを取得する。 */
-interface GolfCardRepository<out E : NfcReadFailure> {
+interface GolfCardRepository<out E : NfcReadErr> {
     suspend fun readGolfCourseNum(): Result<ByteArray, E>
     suspend fun readGolfCardHolderNum(): Result<ByteArray, E>
 }
@@ -90,13 +96,13 @@ memoryDataSource.read(
     tag = target.access,
     profile = profile,
     range = range,
-    failures = failures,
+    errFactory = errFactory,
 )
 ```
 
 範囲検査・バイト数計算・ブロック境界の切り出し・正常応答の長さはProfileのメモリ構成を参照します。ISO 15693の送受信ではUID付きSingle Block READだけを実装し、ブロック番号が1バイトに収まらない拡張READへ自動では切り替えません。
 
-型番Profileと業務レイアウトは別の責務です。モデルが一致しても、発行サービスの配置が同じとは限りません。ゴルフの固定座標はdata/golfで管理し、`DefaultGolfCardRepository`が配置の対応モデルを`expectedModel`として共通Readerへ渡します。共通側で実タグと照合するため、将来別モデルへ対応してもSLI用の座標を無条件に流用しません。現在登録されているSLI判定器はTagのメタデータだけを使い、追加のRFコマンドを送りません。共通ResolverはUIDの書式を固定せず、型番ごとの判定器をHiltのSetで受け取ります。[追加手順と共通部の責務](NFC_TAG_IDENTIFICATION.md)を参照してください。
+型番Profileと業務レイアウトは別の責務です。モデルが一致しても、発行サービスの配置が同じとは限りません。ゴルフの固定座標はdata/repository/golfで管理し、`DefaultGolfCardRepository`が配置の対応モデルを`expectedModel`として共通Readerへ渡します。共通側で実タグと照合するため、将来別モデルへ対応してもSLI用の座標を無条件に流用しません。現在登録されているSLI判定器はTagのメタデータだけを使い、追加のRFコマンドを送りません。共通ResolverはUIDの書式を固定せず、型番ごとの判定器をHiltのSetで受け取ります。[追加手順と共通部の責務](NFC_TAG_IDENTIFICATION.md)を参照してください。
 
 共有済みTagInfoの転記は`ICODE SLI(SLI2ICS20)`で、資料の表記は`SL2 ICS20`です。原レポートとの照合待ちの正式品番を確定値としてコードへ登録せず、`ICODE_SLI`として扱います。28×4バイトのユーザー領域とISO 15693対応は[NXPのSLI仕様 §1.1・§3.2](https://www.nxp.com/docs/en/data-sheet/058031.pdf)と照合しています。
 
@@ -106,18 +112,18 @@ memoryDataSource.read(
 
 | ファイル | 担当 |
 | --- | --- |
-| [CardRepositoryFactory.kt](../native/data/src/main/kotlin/dev/example/nativedata/card/CardRepositoryFactory.kt) | 業務カードの生成契約。現在は`createGolfCard()`を提供 |
-| [DefaultCardRepositoryFactory.kt](../native/data/src/main/kotlin/dev/example/nativedata/card/DefaultCardRepositoryFactory.kt) | 共通NFCのFactoryを使い、業務Repositoryを生成する |
-| [NfcCardReaderFactory.kt](../native/data/src/main/kotlin/dev/example/nativedata/nfc/reader/NfcCardReaderFactory.kt) | 対象タグ・エラーFactory・DataSourceを組み合わせて共通Readerを生成する |
-| [DefaultNfcCardReader.kt](../native/data/src/main/kotlin/dev/example/nativedata/nfc/reader/DefaultNfcCardReader.kt) | 対象の有効期間・排他・Profile識別・モデル照合・範囲読取を担当する |
-| [DefaultGolfCardRepository.kt](../native/data/src/main/kotlin/dev/example/nativedata/golf/DefaultGolfCardRepository.kt) | ゴルフの項目を範囲と対応モデルへ変換し、共通Readerへ委譲する |
-| [GolfCardField.kt](../native/data/src/main/kotlin/dev/example/nativedata/golf/GolfCardField.kt) | SLIで発行された業務カードの固定座標を管理する |
+| [CardRepositoryFactory.kt](../native/data/src/main/kotlin/dev/example/nativedata/repository/card/CardRepositoryFactory.kt) | 業務カードの生成契約。現在は`createGolfCard()`を提供 |
+| [DefaultCardRepositoryFactory.kt](../native/data/src/main/kotlin/dev/example/nativedata/repository/card/DefaultCardRepositoryFactory.kt) | 共通NFCのFactoryを使い、業務Repositoryを生成する |
+| [NfcCardReaderFactory.kt](../native/data/src/main/kotlin/dev/example/nativedata/nfc/card/NfcCardReaderFactory.kt) | 対象タグ・エラーFactory・DataSourceを組み合わせて共通Readerを生成する |
+| [DefaultNfcCardReader.kt](../native/data/src/main/kotlin/dev/example/nativedata/nfc/card/DefaultNfcCardReader.kt) | 対象の有効期間・排他・Profile識別・モデル照合・範囲読取を担当する |
+| [DefaultGolfCardRepository.kt](../native/data/src/main/kotlin/dev/example/nativedata/repository/golf/DefaultGolfCardRepository.kt) | ゴルフの項目を範囲と対応モデルへ変換し、共通Readerへ委譲する |
+| [GolfCardField.kt](../native/data/src/main/kotlin/dev/example/nativedata/repository/golf/GolfCardField.kt) | SLIで発行された業務カードの固定座標を管理する |
 | [DefaultNfcTagDetectionRepository.kt](../native/data/src/main/kotlin/dev/example/nativedata/nfc/detection/DefaultNfcTagDetectionRepository.kt) | 検出Sourceの通知を、呼出元固有の検出結果へ変換する |
 
 `DefaultCardRepositoryFactory.createGolfCard()`の組み立ては次のとおりです。
 
 ```kotlin
-val nfcReader = nfcReaders.create(target, failures)
+val nfcReader = nfcReaders.create(target, errFactory)
 return DefaultGolfCardRepository(nfcReader)
 ```
 
@@ -142,7 +148,7 @@ ReaderModeの解除と、通信接続のcloseは別の責務です。実行中�
 
 検出の失敗は`ObserveNfcTagsErr.NfcDetection.NotSupported`・`Disabled`・`AccessDenied`です。NFC設定変更を監視し、無効から有効へ戻ったら検出を再開します。
 
-読取は従来どおり`ReadGolfCourseNumberErr.NfcRead.*`・`ReadGolfHolderNumberErr.NfcRead.*`を直接生成します。購読の終了等で対象の有効期間が終わった場合に`TargetExpired`を追加しました。物理的な離脱を表す`TagLost`と区別します。
+読取は従来どおり`ReadGolfCourseNumErr.NfcRead.*`・`ReadGolfHolderNumErr.NfcRead.*`を直接生成します。購読の終了等で対象の有効期間が終わった場合に`TargetExpired`を追加しました。物理的な離脱を表す`TagLost`と区別します。
 
 `GolfCardReadEvent`は検出失敗・ゴルフ場番号失敗・ホルダー番号失敗・両項目の取得完了を通知します。失敗値は元のユースケースの具体型のままで、エラー型を合わせるための変換は行いません。失敗後も次のカード検出を待ちます。独自アノテーション・エラー生成用KSPは使いません。
 

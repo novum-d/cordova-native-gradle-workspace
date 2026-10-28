@@ -10,10 +10,10 @@ import com.github.michaelbull.result.map
 import com.github.michaelbull.result.mapError
 import com.github.michaelbull.result.onFailure
 import com.github.michaelbull.result.runCatching
-import dev.example.nativedata.nfc.failure.NfcReadFailure
-import dev.example.nativedata.nfc.failure.NfcReadFailureFactory
-import dev.example.nativedata.nfc.failure.nfcCall
-import dev.example.nativedata.nfc.failure.nfcFailure
+import dev.example.nativedata.err.nfc.NfcReadErr
+import dev.example.nativedata.err.nfc.NfcReadErrFactory
+import dev.example.nativedata.err.nfc.nfcCall
+import dev.example.nativedata.err.nfc.nfcErr
 import dev.example.nativedata.nfc.profile.NfcReadProtocol
 import dev.example.nativedata.nfc.profile.NfcTagProfile
 import dev.example.nativedata.nfc.profile.NfcTagProfileResolver
@@ -35,46 +35,46 @@ internal class NfcMemoryDataSource @Inject constructor(
      * 0始まり・終了を含む範囲を読む。Profileと実タグのモデル・Android技術の整合も確認する。
      * ブロッキングI/OはDispatchers.IOで行い、キャンセルは結果型へ変換せず伝播する。
      */
-    suspend fun <E : NfcReadFailure> read(
+    suspend fun <E : NfcReadErr> read(
         tag: NfcTagAccess,
         profile: NfcTagProfile,
         range: NfcMemoryRange,
-        failures: NfcReadFailureFactory<E>,
+        errFactory: NfcReadErrFactory<E>,
     ): Result<ByteArray, E> = withContext(Dispatchers.IO) {
-        if (!range.isWithin(profile.memory) || range.endInclusive.blockNumber > 0xFF) {
-            return@withContext Err(failures.invalidRange(range))
+        if (!range.isWithin(profile.memory) || range.endInclusive.blockNum > 0xFF) {
+            return@withContext Err(errFactory.invalidRange(range))
         }
-        nfcCall(failures) {
+        nfcCall(errFactory) {
             val uid = tag.uid.copyOf()
             val actual = profileResolver.identify(tag)
             if (actual?.model == profile.model && actual.protocol == profile.protocol) uid else null
         }.andThen { uid ->
             if (uid == null) {
-                Err(failures.unsupportedTag())
+                Err(errFactory.unsupportedTag())
             } else {
                 when (profile.protocol) {
-                    NfcReadProtocol.ISO_15693 -> readIso15693(tag, uid, profile.memory, range, failures)
+                    NfcReadProtocol.ISO_15693 -> readIso15693(tag, uid, profile.memory, range, errFactory)
                 }
             }
         }
     }
 
     /** 接続APIとコマンドの組合せを通信方式の分岐内に閉じ、接続の解放を一度だけ行う。 */
-    private suspend fun <E : NfcReadFailure> readIso15693(
+    private suspend fun <E : NfcReadErr> readIso15693(
         tag: NfcTagAccess,
         uid: ByteArray,
         memory: NfcBlockMemory,
         range: NfcMemoryRange,
-        failures: NfcReadFailureFactory<E>,
+        errFactory: NfcReadErrFactory<E>,
     ): Result<ByteArray, E> {
         // UIDの長さは共通Resolverではなく、ISO 15693の送信形式として検査する。
-        if (uid.size != 8) return Err(failures.unsupportedTag())
-        return nfcCall(failures) { tag.openNfcV() }.andThen { connection ->
+        if (uid.size != 8) return Err(errFactory.unsupportedTag())
+        return nfcCall(errFactory) { tag.openNfcV() }.andThen { connection ->
             if (connection == null) {
-                Err(failures.unsupportedTag())
+                Err(errFactory.unsupportedTag())
             } else {
-                useConnection(connection, failures) {
-                    readConnected(connection, uid, memory, range, failures)
+                useConnection(connection, errFactory) {
+                    readConnected(connection, uid, memory, range, errFactory)
                 }
             }
         }
@@ -84,28 +84,28 @@ internal class NfcMemoryDataSource @Inject constructor(
      * UID指定のSingle Block READを順に送り、必要部分だけを返す。途中までのデータは返さない。
      * bindingの外で現在のコルーチンのContextを取得し、ブロック間の取消確認に使う。
      */
-    private suspend fun <E : NfcReadFailure> readConnected(
+    private suspend fun <E : NfcReadErr> readConnected(
         connection: NfcVConnection,
         uid: ByteArray,
         geometry: NfcBlockMemory,
         range: NfcMemoryRange,
-        failures: NfcReadFailureFactory<E>,
+        errFactory: NfcReadErrFactory<E>,
     ): Result<ByteArray, E> {
         val context = currentCoroutineContext()
         return binding {
             context.ensureActive()
-            nfcCall(failures) { connection.connect() }.bind()
+            nfcCall(errFactory) { connection.connect() }.bind()
             val memory = ByteArray(range.byteCount(geometry))
             var written = 0
-            for (block in range.start.blockNumber..range.endInclusive.blockNumber) {
+            for (block in range.start.blockNum..range.endInclusive.blockNum) {
                 context.ensureActive()
                 // 22=高速・Addressed・Optionなし、20=Read Single Block。UIDは送信順のまま使用する。
                 // NFCAppの非Addressed READ（02 20 block）から対象指定を追加。CRCはAndroid側で付加される。
                 val request = byteArrayOf(0x22, 0x20) + uid + block.toByte()
-                val response = nfcCall(failures) { connection.transceive(request) }.bind()
-                val bytes = readBlockData(response, geometry.bytesPerBlock, failures).bind()
-                val from = if (block == range.start.blockNumber) range.start.byteOffset else 0
-                val until = if (block == range.endInclusive.blockNumber) {
+                val response = nfcCall(errFactory) { connection.transceive(request) }.bind()
+                val bytes = readBlockData(response, geometry.bytesPerBlock, errFactory).bind()
+                val from = if (block == range.start.blockNum) range.start.byteOffset else 0
+                val until = if (block == range.endInclusive.blockNum) {
                     range.endInclusive.byteOffset + 1
                 } else {
                     geometry.bytesPerBlock
@@ -119,27 +119,27 @@ internal class NfcMemoryDataSource @Inject constructor(
 }
 
 /** Optionなし応答のFlagsとProfile由来のブロック幅を検査し、データだけを返す。 */
-private fun <E : NfcReadFailure> readBlockData(
+private fun <E : NfcReadErr> readBlockData(
     response: ByteArray,
     bytesPerBlock: Int,
-    failures: NfcReadFailureFactory<E>,
+    errFactory: NfcReadErrFactory<E>,
 ): Result<ByteArray, E> = when {
-    response.isEmpty() -> Err(failures.responseFormat("Empty Read Single Block response"))
+    response.isEmpty() -> Err(errFactory.responseFormat("Empty Read Single Block response"))
     response[0].toInt() and 0x01 != 0 ->
         if (response.size == 2) {
-            Err(failures.commandRejected(response[1].toInt() and 0xFF))
+            Err(errFactory.commandRejected(response[1].toInt() and 0xFF))
         } else {
-            Err(failures.responseFormat("Expected response flags and one error code byte"))
+            Err(errFactory.responseFormat("Expected response flags and one error code byte"))
         }
     response.size != bytesPerBlock + 1 ->
-        Err(failures.responseFormat("Expected response flags and $bytesPerBlock data bytes"))
+        Err(errFactory.responseFormat("Expected response flags and $bytesPerBlock data bytes"))
     else -> Ok(response.copyOfRange(1, response.size))
 }
 
 /** connect途中の失敗でもcloseし、closeの失敗で先に発生した読取エラーやキャンセルを上書きしない。 */
-private suspend fun <T, E : NfcReadFailure> useConnection(
+private suspend fun <T, E : NfcReadErr> useConnection(
     connection: NfcVConnection,
-    failures: NfcReadFailureFactory<E>,
+    errFactory: NfcReadErrFactory<E>,
     operation: suspend () -> Result<T, E>,
 ): Result<T, E> {
     val attempt = runCatching { operation() }
@@ -148,12 +148,12 @@ private suspend fun <T, E : NfcReadFailure> useConnection(
         closeAttempt.onFailure { closeCause -> if (cause !== closeCause) cause.addSuppressed(closeCause) }
         throw cause
     }
-    read.onFailure { failure ->
+    read.onFailure { err ->
         closeAttempt.onFailure { closeCause ->
-            failure.cause?.let { cause -> if (cause !== closeCause) cause.addSuppressed(closeCause) }
+            err.cause?.let { cause -> if (cause !== closeCause) cause.addSuppressed(closeCause) }
         }
     }
     return read.andThen { value ->
-        closeAttempt.mapError { cause -> nfcFailure(cause, failures) }.map { value }
+        closeAttempt.mapError { cause -> nfcErr(cause, errFactory) }.map { value }
     }
 }

@@ -13,7 +13,7 @@
 | [NfcTagProfileResolver.kt](../native/data/src/main/kotlin/dev/example/nativedata/nfc/profile/NfcTagProfileResolver.kt) | 登録済みの判定器を呼び、一意のProfileを選ぶ |
 | [IcodeSliTagProfile.kt](../native/data/src/main/kotlin/dev/example/nativedata/nfc/profile/icodesli/IcodeSliTagProfile.kt) | SLI固有の28ブロック×4バイト等の仕様 |
 | [IcodeSliTagProfileIdentifier.kt](../native/data/src/main/kotlin/dev/example/nativedata/nfc/profile/icodesli/IcodeSliTagProfileIdentifier.kt) | SLIのUID長・メーカー・製品種別・派生型ビットの判定 |
-| [NfcTagIdentificationModule.kt](../native/data/src/main/kotlin/dev/example/nativedata/nfc/di/NfcTagIdentificationModule.kt) | HiltのSetへ判定器を登録する |
+| [NfcTagIdentificationModule.kt](../native/data/src/main/kotlin/dev/example/nativedata/di/nfc/NfcTagIdentificationModule.kt) | HiltのSetへ判定器を登録する |
 
 ReaderとDataSourceは同じ登録内容のResolverを使います。旧`identifyNfcTagProfile(uid, technologies)`へ製品ごとのwhen分岐を追加する構成から、`profileResolver.identify(tag)`へ置き換えています。
 

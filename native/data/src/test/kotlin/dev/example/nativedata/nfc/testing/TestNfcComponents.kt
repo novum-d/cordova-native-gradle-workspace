@@ -1,9 +1,9 @@
 package dev.example.nativedata.nfc.testing
 
+import dev.example.nativedata.nfc.card.NfcCardReaderFactory
 import dev.example.nativedata.nfc.memory.NfcMemoryDataSource
 import dev.example.nativedata.nfc.profile.NfcTagProfileResolver
 import dev.example.nativedata.nfc.profile.icodesli.IcodeSliTagProfileIdentifier
-import dev.example.nativedata.nfc.reader.NfcCardReaderFactory
 
 /** 本番のSLI判定器だけを登録し、各JVMテストへ独立したResolverを渡す。 */
 internal fun testNfcProfileResolver(): NfcTagProfileResolver =

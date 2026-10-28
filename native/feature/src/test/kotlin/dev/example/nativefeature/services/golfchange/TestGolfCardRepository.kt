@@ -3,15 +3,15 @@ package dev.example.nativefeature.services.golfchange
 import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
-import dev.example.nativedata.golf.GolfCardRepository
+import dev.example.nativedata.err.nfc.NfcReadErr
+import dev.example.nativedata.err.nfc.NfcReadErrFactory
 import dev.example.nativedata.nfc.detection.DetectedNfcTag
-import dev.example.nativedata.nfc.failure.NfcReadFailure
-import dev.example.nativedata.nfc.failure.NfcReadFailureFactory
+import dev.example.nativedata.repository.golf.GolfCardRepository
 
 /** 実NFCはdataのテストへ任せ、featureでは業務値・処理順序・具体エラーを観測する。 */
-internal class TestGolfCardRepository<E : NfcReadFailure>(
+internal class TestGolfCardRepository<E : NfcReadErr>(
     private val target: DetectedNfcTag,
-    private val failures: NfcReadFailureFactory<E>,
+    private val errFactory: NfcReadErrFactory<E>,
     private val state: TestCardRepositoryFactory,
 ) : GolfCardRepository<E> {
     override suspend fun readGolfCourseNum(): Result<ByteArray, E> =
@@ -27,10 +27,10 @@ internal class TestGolfCardRepository<E : NfcReadFailure>(
     ): Result<ByteArray, E> {
         state.calls.add(target to field)
         state.beforeRead()
-        val cause = state.failure
+        val cause = state.err
         return when {
-            state.unsupported -> Err(failures.unsupportedTag())
-            cause != null && (!state.failHolderOnly || field == "holder") -> Err(failures.communication(cause))
+            state.unsupported -> Err(errFactory.unsupportedTag())
+            cause != null && (!state.failHolderOnly || field == "holder") -> Err(errFactory.communication(cause))
             else -> Ok(bytes.copyOf())
         }
     }

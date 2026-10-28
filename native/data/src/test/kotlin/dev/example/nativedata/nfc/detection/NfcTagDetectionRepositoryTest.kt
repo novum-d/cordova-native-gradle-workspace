@@ -3,6 +3,8 @@ package dev.example.nativedata.nfc.detection
 import com.github.michaelbull.result.Result
 import com.github.michaelbull.result.unwrap
 import com.github.michaelbull.result.unwrapError
+import dev.example.nativedata.err.nfc.NfcDetectionErr
+import dev.example.nativedata.err.nfc.NfcDetectionErrFactory
 import dev.example.nativedata.nfc.testing.FakeNfcTag
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -28,10 +30,10 @@ class NfcTagDetectionRepositoryTest {
     @Test
     fun startsOnCollectionAndInvalidatesTargetOnCancellation() = runTest {
         assertNull(source.requests.value)
-        val results = mutableListOf<Result<DetectedNfcTag, DetectionFailure>>()
+        val results = mutableListOf<Result<DetectedNfcTag, DetectionErr>>()
         val release = CompletableDeferred<Unit>()
         val job = backgroundScope.launch {
-            repository.observeTags(DetectionFailures).collect {
+            repository.observeTags(DetectionErrFactory).collect {
                 results.add(it)
                 release.await()
             }
@@ -52,8 +54,8 @@ class NfcTagDetectionRepositoryTest {
     /** 再購読では別要求を作り、前回のTagを再生しない。 */
     @Test
     fun neverReplaysAnOldTagToANewSubscriber() = runTest {
-        val results = mutableListOf<Result<DetectedNfcTag, DetectionFailure>>()
-        val first = backgroundScope.launch { repository.observeTags(DetectionFailures).collect { results.add(it) } }
+        val results = mutableListOf<Result<DetectedNfcTag, DetectionErr>>()
+        val first = backgroundScope.launch { repository.observeTags(DetectionErrFactory).collect { results.add(it) } }
         runCurrent()
         val oldRequest = requireNotNull(source.requests.value)
         oldRequest.onTag(FakeNfcTag())
@@ -61,7 +63,7 @@ class NfcTagDetectionRepositoryTest {
         first.cancelAndJoin()
         results.clear()
 
-        val second = backgroundScope.launch { repository.observeTags(DetectionFailures).collect { results.add(it) } }
+        val second = backgroundScope.launch { repository.observeTags(DetectionErrFactory).collect { results.add(it) } }
         runCurrent()
         assertNotSame(oldRequest, source.requests.value)
         assertTrue(results.isEmpty())
@@ -74,7 +76,7 @@ class NfcTagDetectionRepositoryTest {
         val release = CompletableDeferred<Unit>()
         val results = mutableListOf<DetectedNfcTag>()
         val job = backgroundScope.launch {
-            repository.observeTags(DetectionFailures).collect {
+            repository.observeTags(DetectionErrFactory).collect {
                 results.add(it.unwrap())
                 release.await()
             }
@@ -97,10 +99,10 @@ class NfcTagDetectionRepositoryTest {
     /** 同時の購読は1つのReaderModeを競合させず、終了したら次へ引き継ぐ。 */
     @Test
     fun serializesConcurrentDetectionRequests() = runTest {
-        val first = backgroundScope.launch { repository.observeTags(DetectionFailures).collect {} }
+        val first = backgroundScope.launch { repository.observeTags(DetectionErrFactory).collect {} }
         runCurrent()
         val oldRequest = source.requests.value
-        val second = backgroundScope.launch { repository.observeTags(DetectionFailures).collect {} }
+        val second = backgroundScope.launch { repository.observeTags(DetectionErrFactory).collect {} }
         runCurrent()
         assertSame(oldRequest, source.requests.value)
 
@@ -113,9 +115,9 @@ class NfcTagDetectionRepositoryTest {
 
     /** NFC非搭載・無効・権限拒否の原因を、指定したFactoryで生成する。 */
     @Test
-    fun generatesDetectionFailuresWithoutWrappingTheCause() = runTest {
-        val results = mutableListOf<Result<DetectedNfcTag, DetectionFailure>>()
-        val job = backgroundScope.launch { repository.observeTags(DetectionFailures).collect { results.add(it) } }
+    fun generatesDetectionErrsWithoutWrappingTheCause() = runTest {
+        val results = mutableListOf<Result<DetectedNfcTag, DetectionErr>>()
+        val job = backgroundScope.launch { repository.observeTags(DetectionErrFactory).collect { results.add(it) } }
         runCurrent()
         val request = requireNotNull(source.requests.value)
         request.signals.send(NfcDetectionSignal.NotSupported)
@@ -134,10 +136,10 @@ class NfcTagDetectionRepositoryTest {
     /** 読取処理が戻ったら、次の検出や購読終了を待たず対象を無効化する。 */
     @Test
     fun invalidatesTargetImmediatelyAfterConsumerFinishes() = runTest {
-        val results = mutableListOf<Result<DetectedNfcTag, DetectionFailure>>()
+        val results = mutableListOf<Result<DetectedNfcTag, DetectionErr>>()
         var activeDuringRead = false
         val job = backgroundScope.launch {
-            repository.observeTags(DetectionFailures).collect {
+            repository.observeTags(DetectionErrFactory).collect {
                 results.add(it)
                 activeDuringRead = (it.unwrap() as DetectedNfcTagHandle).isActive
             }
@@ -154,11 +156,11 @@ class NfcTagDetectionRepositoryTest {
 }
 
 /** Android・featureの型に依存せず、Factoryの呼出結果を観測する。 */
-private data class DetectionFailure(val reason: String, val cause: SecurityException? = null) : NfcDetectionFailure
+private data class DetectionErr(val reason: String, val cause: SecurityException? = null) : NfcDetectionErr
 
 /** 検出失敗の原因をそのまま返す試験用Factory。 */
-private object DetectionFailures : NfcDetectionFailureFactory<DetectionFailure> {
-    override fun notSupported() = DetectionFailure("not supported")
-    override fun disabled() = DetectionFailure("disabled")
-    override fun accessDenied(cause: SecurityException) = DetectionFailure("denied", cause)
+private object DetectionErrFactory : NfcDetectionErrFactory<DetectionErr> {
+    override fun notSupported() = DetectionErr("not supported")
+    override fun disabled() = DetectionErr("disabled")
+    override fun accessDenied(cause: SecurityException) = DetectionErr("denied", cause)
 }

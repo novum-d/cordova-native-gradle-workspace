@@ -12,8 +12,8 @@ internal class FakeNfcTag(
     var connectCount = 0
     var closeCount = 0
     val requests = mutableListOf<ByteArray>()
-    var connectFailure: Throwable? = null
-    var closeFailure: Throwable? = null
+    var connectErr: Throwable? = null
+    var closeErr: Throwable? = null
     var connectionAvailable = true
     var respond: (Int) -> ByteArray = { block ->
         byteArrayOf(0) + ByteArray(4) { offset -> (block * 4 + offset).toByte() }
@@ -28,7 +28,7 @@ internal class FakeNfcTag(
     private inner class Connection : NfcVConnection {
         override fun connect() {
             connectCount++
-            connectFailure?.let { throw it }
+            connectErr?.let { throw it }
         }
 
         override fun transceive(request: ByteArray): ByteArray {
@@ -38,7 +38,7 @@ internal class FakeNfcTag(
 
         override fun close() {
             closeCount++
-            closeFailure?.let { throw it }
+            closeErr?.let { throw it }
         }
     }
 }

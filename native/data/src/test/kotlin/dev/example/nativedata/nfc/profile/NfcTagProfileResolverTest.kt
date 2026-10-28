@@ -2,6 +2,7 @@ package dev.example.nativedata.nfc.profile
 
 import com.github.michaelbull.result.unwrap
 import com.github.michaelbull.result.unwrapError
+import dev.example.nativedata.nfc.card.NfcCardReaderFactory
 import dev.example.nativedata.nfc.detection.DetectedNfcTagHandle
 import dev.example.nativedata.nfc.memory.NfcBlockMemory
 import dev.example.nativedata.nfc.memory.NfcMemoryDataSource
@@ -10,10 +11,9 @@ import dev.example.nativedata.nfc.memory.NfcMemoryRange
 import dev.example.nativedata.nfc.memory.NfcTagAccess
 import dev.example.nativedata.nfc.profile.icodesli.IcodeSliTagProfile
 import dev.example.nativedata.nfc.profile.icodesli.IcodeSliTagProfileIdentifier
-import dev.example.nativedata.nfc.reader.NfcCardReaderFactory
-import dev.example.nativedata.nfc.testing.FailureKind
+import dev.example.nativedata.nfc.testing.ErrKind
 import dev.example.nativedata.nfc.testing.FakeNfcTag
-import dev.example.nativedata.nfc.testing.TestNfcFailures
+import dev.example.nativedata.nfc.testing.TestNfcErrFactory
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.test.runTest
@@ -121,7 +121,7 @@ class NfcTagProfileResolverTest {
 
     /** 判定器の失敗を未対応へ隠さず、呼出元のエラー生成処理へ伝える。 */
     @Test
-    fun propagatesIdentificationFailures() = runTest {
+    fun propagatesIdentificationErrs() = runTest {
         val cause = SecurityException("probe denied")
         val identifier = TestProfileIdentifier(probe = { throw cause })
         val resolver = NfcTagProfileResolver(setOf(identifier))
@@ -150,7 +150,7 @@ class NfcTagProfileResolverTest {
         val dataSource = NfcMemoryDataSource(resolver)
         val factory = NfcCardReaderFactory(dataSource, resolver)
         val tag = FakeNfcTag(uid = ByteArray(8) { 0x55 })
-        val cardReader = factory.create(DetectedNfcTagHandle(tag), TestNfcFailures)
+        val cardReader = factory.create(DetectedNfcTagHandle(tag), TestNfcErrFactory)
         val position = NfcMemoryPosition(1, 0)
         val result = cardReader.read(NfcTagModel.ICODE_SLI, NfcMemoryRange(position, position))
 
@@ -169,11 +169,11 @@ class NfcTagProfileResolverTest {
             tag,
             IcodeSliTagProfile.profile,
             NfcMemoryRange(position, position),
-            TestNfcFailures,
+            TestNfcErrFactory,
         )
 
         assertSame(IcodeSliTagProfile.profile, resolver.identify(tag))
-        assertEquals(FailureKind.UNSUPPORTED, result.unwrapError().kind)
+        assertEquals(ErrKind.UNSUPPORTED, result.unwrapError().kind)
         assertTrue(tag.requests.isEmpty())
         assertEquals(0, tag.openCount)
     }

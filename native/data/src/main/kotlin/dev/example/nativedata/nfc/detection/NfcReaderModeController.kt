@@ -8,7 +8,7 @@ import android.content.IntentFilter
 import android.nfc.NfcAdapter
 import android.os.Build
 import dagger.hilt.android.scopes.ActivityScoped
-import dev.example.nativedata.nfc.memory.AndroidNfcTagAccess
+import dev.example.nativedata.nfc.memory.DefaultNfcTagAccess
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -98,7 +98,7 @@ class NfcReaderModeController @Inject constructor(private val source: NfcTagDete
     ) {
         val flags = NfcAdapter.FLAG_READER_NFC_A or NfcAdapter.FLAG_READER_NFC_B or
             NfcAdapter.FLAG_READER_NFC_F or NfcAdapter.FLAG_READER_NFC_V or NfcAdapter.FLAG_READER_SKIP_NDEF_CHECK
-        adapter.enableReaderMode(activity, { tag -> request.onTag(AndroidNfcTagAccess(tag)) }, flags, null)
+        adapter.enableReaderMode(activity, { tag -> request.onTag(DefaultNfcTagAccess(tag)) }, flags, null)
     }
 
     /** 新しいAndroidではReceiverの公開範囲を明示し、OSのNFC設定変更だけを受ける。 */

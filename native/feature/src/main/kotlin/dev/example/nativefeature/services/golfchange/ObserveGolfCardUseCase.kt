@@ -17,11 +17,11 @@ class ObserveGolfCardUseCase @Inject constructor(
             GolfCardReadEvent.DetectionFailed(detection.error)
         } else {
             val target = detection.value
-            val course = readers.courseNumber(target)()
+            val course = readers.courseNum(target)()
             if (course.isErr) {
                 GolfCardReadEvent.CourseReadFailed(course.error)
             } else {
-                val holder = readers.holderNumber(target)()
+                val holder = readers.holderNum(target)()
                 if (holder.isErr) {
                     GolfCardReadEvent.HolderReadFailed(holder.error)
                 } else {
@@ -34,8 +34,8 @@ class ObserveGolfCardUseCase @Inject constructor(
 
 /** UIへ通知する読取結果。元のユースケースの具体エラーを変換せず保持する。 */
 sealed interface GolfCardReadEvent {
-    data class DetectionFailed(val failure: ObserveNfcTagsErr) : GolfCardReadEvent
-    data class CourseReadFailed(val failure: ReadGolfCourseNumberErr.NfcRead) : GolfCardReadEvent
-    data class HolderReadFailed(val failure: ReadGolfHolderNumberErr.NfcRead) : GolfCardReadEvent
-    data class ReadCompleted(val courseNumber: Int, val holderNumber: String) : GolfCardReadEvent
+    data class DetectionFailed(val err: ObserveNfcTagsErr) : GolfCardReadEvent
+    data class CourseReadFailed(val err: ReadGolfCourseNumErr.NfcRead) : GolfCardReadEvent
+    data class HolderReadFailed(val err: ReadGolfHolderNumErr.NfcRead) : GolfCardReadEvent
+    data class ReadCompleted(val courseNum: Int, val holderNum: String) : GolfCardReadEvent
 }

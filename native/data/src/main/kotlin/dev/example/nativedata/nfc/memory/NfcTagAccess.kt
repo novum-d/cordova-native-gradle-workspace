@@ -19,16 +19,16 @@ interface NfcVConnection : Closeable {
     fun transceive(request: ByteArray): ByteArray
 }
 
-/** ReaderCallbackで得たTagを包むAndroid側の入口。接続・通信はDataSourceのIOコンテキストで行う。 */
-class AndroidNfcTagAccess(private val tag: Tag) : NfcTagAccess {
+/** NfcTagAccessの標準実装としてReaderCallbackのTagを包む。接続・通信はDataSourceのIOで行う。 */
+class DefaultNfcTagAccess(private val tag: Tag) : NfcTagAccess {
     override val uid: ByteArray get() = tag.id.copyOf()
     override val technologies: Set<String> get() = tag.techList.toSet()
 
-    override fun openNfcV(): NfcVConnection? = NfcV.get(tag)?.let(::AndroidNfcVConnection)
+    override fun openNfcV(): NfcVConnection? = NfcV.get(tag)?.let(::DefaultNfcVConnection)
 }
 
-/** Androidの例外と応答バイト列を変えずに転送し、分類・切り出しはDataSourceへ任せる。 */
-private class AndroidNfcVConnection(private val connection: NfcV) : NfcVConnection {
+/** NfcVConnectionの標準実装。Androidの例外と応答を転送し、分類・切り出しはDataSourceへ任せる。 */
+private class DefaultNfcVConnection(private val connection: NfcV) : NfcVConnection {
     override fun connect() = connection.connect()
     override fun transceive(request: ByteArray): ByteArray = connection.transceive(request)
     override fun close() = connection.close()
