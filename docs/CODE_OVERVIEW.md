@@ -34,8 +34,9 @@ Git indexを自動更新する処理はありません。通常の`check`・`ktl
 | --- | --- |
 | [featureの設定](../native/feature/build.gradle.kts)・[dataの設定](../native/data/build.gradle.kts) | Android Libraryの依存・JVM target・コード生成・単体テスト・Dokkaを設定。依存方向はfeature → data |
 | [NativeApplication](../native/host/src/main/kotlin/dev/example/nativehost/NativeApplication.kt) | 両APKで直接コンパイルするHiltルート。詳細は[Hiltの構成](HILT.md)を参照 |
-| [dataのNFC処理](../native/data/src/main/kotlin/dev/example/nativedata/nfc/) | ICODE SLIのProfile選択・Profileからの通信方式とメモリ構成の解決・必要なブロックの読取・切り出し・解放。詳細は[NFC読取](NFC_READING.md)を参照 |
-| [dataの業務Repository](../native/data/src/main/kotlin/dev/example/nativedata/golf/) | 検出対象とエラー文脈を固定し、業務項目の物理範囲を解決して生バイトを返す |
+| [dataのNFC処理](../native/data/src/main/kotlin/dev/example/nativedata/nfc/) | 登録された判定器によるProfile選択・Profileからの通信方式とメモリ構成の解決・必要なブロックの読取・切り出し・解放。詳細は[NFC読取](NFC_READING.md)を参照 |
+| [業務カードのFactory](../native/data/src/main/kotlin/dev/example/nativedata/card/) | `createGolfCard()`等の生成入口。共通NFCのFactoryと業務Repositoryを組み合わせる |
+| [dataの業務Repository](../native/data/src/main/kotlin/dev/example/nativedata/golf/) | 業務項目の物理範囲を解決し、対象とエラー文脈を固定した共通NFC Repositoryへ読取を委譲する |
 | [汎用タグ検出ユースケース](../native/feature/src/main/kotlin/dev/example/nativefeature/nfc/ObserveNfcTagsUseCase.kt) | ゴルフ以外にも再利用する検出の入口。UIからRepositoryを直接呼ばない |
 | [ゴルフ場番号ユースケース](../native/feature/src/main/kotlin/dev/example/nativefeature/services/golfchange/ReadGolfCourseNumberUseCase.kt) | Repositoryから取得した2バイトのLSBファーストInt変換。失敗はユースケース固有の階層型で返す |
 | [ホルダー番号ユースケース](../native/feature/src/main/kotlin/dev/example/nativefeature/services/golfchange/ReadGolfHolderNumberUseCase.kt) | 固定領域の14バイトを読取順・大文字・区切りなし28桁の16進Stringで返す |

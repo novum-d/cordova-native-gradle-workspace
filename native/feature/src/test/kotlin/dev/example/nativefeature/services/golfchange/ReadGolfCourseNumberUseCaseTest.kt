@@ -12,7 +12,7 @@ import java.io.IOException
 
 /** 物理座標に依存せず、Repositoryのバイト列をLSBファーストの数値として解釈する。 */
 class ReadGolfCourseNumberUseCaseTest {
-    private val repositories = GolfCardTestRepositories()
+    private val repositories = TestCardRepositoryFactory()
     private val target = TestDetectedTag()
 
     /** 01 02を258ではなく513と解釈する。 */

@@ -9,8 +9,8 @@ import org.junit.Test
 
 /** 必要な物理ブロックだけを読み、開始・終了バイトを含む連続領域をそのまま取得する。 */
 class NfcMemoryReaderTest {
-    private val reader = NfcMemoryReader()
-    private val profile = NfcTagProfiles.icodeSli
+    private val reader = NfcMemoryReader(testNfcProfileResolver())
+    private val profile = IcodeSliTagProfile.profile
 
     /** 同一ブロックの一部だけを取り出し、UID付きREADフレームを確認する。 */
     @Test

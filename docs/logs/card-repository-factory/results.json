@@ -1,0 +1,72 @@
+{
+  "date": "2026-10-28",
+  "native": {
+    "debugApk": "passed",
+    "tests": {
+      "dataDebug": {
+        "tests": 59,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "dataRelease": {
+        "tests": 59,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "featureDebug": {
+        "tests": 46,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "featureRelease": {
+        "tests": 46,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    "detekt": "passed",
+    "format": "passed",
+    "androidLint": "passed",
+    "dokka": "passed"
+  },
+  "cordova": {
+    "debugApk": "passed",
+    "releaseApk": "passed",
+    "tests": {
+      "dataDebug": {
+        "tests": 59,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "dataRelease": {
+        "tests": 59,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "featureDebug": {
+        "tests": 46,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "featureRelease": {
+        "tests": 46,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    "detekt": "passed",
+    "format": "passed",
+    "androidLint": "passed"
+  },
+  "factoryImplementationFileSeparation": "passed",
+  "featureModelEncapsulation": "passed",
+  "physicalTagCommunication": "not verified"
+}

@@ -12,7 +12,7 @@ import java.io.IOException
 
 /** 文字コード・パディングを推定せず、Repositoryの14バイトを28桁の16進表現へ変換する。 */
 class ReadGolfHolderNumberUseCaseTest {
-    private val repositories = GolfCardTestRepositories()
+    private val repositories = TestCardRepositoryFactory()
     private val target = TestDetectedTag()
 
     /** 順序・大文字・固定桁数を維持する。 */

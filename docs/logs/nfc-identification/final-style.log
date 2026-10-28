@@ -1,0 +1,37 @@
+> Task :detekt
+
+> Task :detektFormatCheck
+..................................................................................
+
+82 kotlin files were analyzed.
+Complexity Report:
+	- 4,431 lines of code (loc)
+	- 3,379 source lines of code (sloc)
+	- 2,288 logical lines of code (lloc)
+	- 457 comment lines of code (cloc)
+	- 542 cyclomatic complexity (mcc)
+	- 243 cognitive complexity
+	- 0 number of total code smells
+	- 13% comment source ratio
+	- 236 mcc per 1,000 lloc
+	- 0 code smells per 1,000 lloc
+
+Project Statistics:
+	- number of properties: 421
+	- number of functions: 291
+	- number of classes: 151
+	- number of packages: 16
+	- number of kt files: 82
+
+Successfully generated HTML report at file:///Users/novumd/repos/cordova-native-gradle-workspace/native/build/reports/detekt/detektFormatCheck.html
+
+[Incubating] Problems report is available at: file:///Users/novumd/repos/cordova-native-gradle-workspace/native/build/reports/problems/problems-report.html
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/8.13/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD SUCCESSFUL in 2s
+2 actionable tasks: 2 executed

@@ -21,7 +21,9 @@ import kotlin.coroutines.coroutineContext
  * 現在の通信実装はISO 15693のAddressed Single Block READのみ。
  * 1呼び出しごとに接続し、成功・失敗・キャンセルのいずれでも、取得した接続を一度だけ閉じる。
  */
-internal class NfcMemoryReader @Inject constructor() {
+internal class NfcMemoryReader @Inject constructor(
+    private val profileResolver: NfcTagProfileResolver,
+) {
     /**
      * 0始まり・終了を含む範囲を読む。Profileと実タグのモデル・Android技術の整合も確認する。
      * ブロッキングI/OはDispatchers.IOで行い、キャンセルは結果型へ変換せず伝播する。
@@ -37,7 +39,7 @@ internal class NfcMemoryReader @Inject constructor() {
         }
         nfcCall(failures) {
             val uid = tag.uid.copyOf()
-            val actual = identifyNfcTagProfile(uid, tag.technologies)
+            val actual = profileResolver.identify(tag)
             if (actual?.model == profile.model && actual.protocol == profile.protocol) uid else null
         }.andThen { uid ->
             if (uid == null) {
@@ -57,12 +59,16 @@ internal class NfcMemoryReader @Inject constructor() {
         memory: NfcBlockMemory,
         range: NfcMemoryRange,
         failures: NfcReadFailureFactory<E>,
-    ): Result<ByteArray, E> = nfcCall(failures) { tag.openNfcV() }.andThen { connection ->
-        if (connection == null) {
-            Err(failures.unsupportedTag())
-        } else {
-            useConnection(connection, failures) {
-                readConnected(connection, uid, memory, range, failures)
+    ): Result<ByteArray, E> {
+        // UIDの長さは共通Resolverではなく、ISO 15693の送信形式として検査する。
+        if (uid.size != 8) return Err(failures.unsupportedTag())
+        return nfcCall(failures) { tag.openNfcV() }.andThen { connection ->
+            if (connection == null) {
+                Err(failures.unsupportedTag())
+            } else {
+                useConnection(connection, failures) {
+                    readConnected(connection, uid, memory, range, failures)
+                }
             }
         }
     }

@@ -2,7 +2,7 @@ package dev.example.nativedata.nfc
 
 import com.github.michaelbull.result.unwrap
 import com.github.michaelbull.result.unwrapError
-import dev.example.nativedata.golf.DefaultGolfCardRepositoryFactory
+import dev.example.nativedata.card.DefaultCardRepositoryFactory
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertEquals
@@ -13,13 +13,13 @@ import java.io.IOException
 
 /** 本物のRepositoryから模擬通信まで通し、物理配置・対象固定・期限切れの拒否を検証する。 */
 class GolfCardRepositoryTest {
-    private val repositories = DefaultGolfCardRepositoryFactory(NfcMemoryReader())
+    private val repositories = DefaultCardRepositoryFactory(testNfcCardRepositoryFactory())
 
     /** 業務座標はdata側で選び、範囲外や隣の項目を混ぜない。 */
     @Test
     fun readsOnlyTheConfiguredBusinessRanges() = runTest {
         val tag = FakeNfcTag()
-        val repository = repositories.create(DetectedNfcTagHandle(tag), TestNfcFailures)
+        val repository = repositories.createGolfCard(DetectedNfcTagHandle(tag), TestNfcFailures)
 
         assertArrayEquals(byteArrayOf(4, 5), repository.readGolfCourseNum().unwrap())
         assertArrayEquals(ByteArray(14) { (it + 6).toByte() }, repository.readGolfCardHolderNum().unwrap())
@@ -32,8 +32,8 @@ class GolfCardRepositoryTest {
     fun keepsEachRepositoryBoundToItsOriginalTarget() = runTest {
         val firstTag = FakeNfcTag()
         val secondTag = FakeNfcTag().apply { respond = { byteArrayOf(0, 20, 21, 22, 23) } }
-        val first = repositories.create(DetectedNfcTagHandle(firstTag), TestNfcFailures)
-        val second = repositories.create(DetectedNfcTagHandle(secondTag), TestNfcFailures)
+        val first = repositories.createGolfCard(DetectedNfcTagHandle(firstTag), TestNfcFailures)
+        val second = repositories.createGolfCard(DetectedNfcTagHandle(secondTag), TestNfcFailures)
 
         assertArrayEquals(byteArrayOf(20, 21), second.readGolfCourseNum().unwrap())
         assertArrayEquals(byteArrayOf(4, 5), first.readGolfCourseNum().unwrap())
@@ -46,7 +46,7 @@ class GolfCardRepositoryTest {
     fun rejectsExpiredTargetsWithoutOpeningAConnection() = runTest {
         val tag = FakeNfcTag()
         val target = DetectedNfcTagHandle(tag)
-        val repository = repositories.create(target, TestNfcFailures)
+        val repository = repositories.createGolfCard(target, TestNfcFailures)
         target.invalidate()
 
         assertEquals(FailureKind.EXPIRED, repository.readGolfCourseNum().unwrapError().kind)
@@ -58,7 +58,7 @@ class GolfCardRepositoryTest {
     @Test
     fun rejectsUnsupportedTagsBeforeConnecting() = runTest {
         val tag = FakeNfcTag(technologies = setOf("android.nfc.tech.NfcF"))
-        val repository = repositories.create(DetectedNfcTagHandle(tag), TestNfcFailures)
+        val repository = repositories.createGolfCard(DetectedNfcTagHandle(tag), TestNfcFailures)
 
         assertEquals(FailureKind.UNSUPPORTED, repository.readGolfCardHolderNum().unwrapError().kind)
         assertEquals(0, tag.openCount)
@@ -68,7 +68,7 @@ class GolfCardRepositoryTest {
     @Test
     fun rejectsIncompleteDataAndClosesConnection() = runTest {
         val tag = FakeNfcTag().apply { respond = { byteArrayOf(0, 1) } }
-        val repository = repositories.create(DetectedNfcTagHandle(tag), TestNfcFailures)
+        val repository = repositories.createGolfCard(DetectedNfcTagHandle(tag), TestNfcFailures)
 
         assertEquals(FailureKind.RESPONSE_FORMAT, repository.readGolfCardHolderNum().unwrapError().kind)
         assertEquals(1, tag.closeCount)
@@ -79,7 +79,7 @@ class GolfCardRepositoryTest {
     fun preservesCommunicationCause() = runTest {
         val cause = IOException("connect")
         val tag = FakeNfcTag().apply { connectFailure = cause }
-        val repository = repositories.create(DetectedNfcTagHandle(tag), TestNfcFailures)
+        val repository = repositories.createGolfCard(DetectedNfcTagHandle(tag), TestNfcFailures)
         val failure = repository.readGolfCourseNum().unwrapError()
 
         assertEquals(FailureKind.COMMUNICATION, failure.kind)
@@ -95,7 +95,7 @@ class GolfCardRepositoryTest {
         val tag = object : NfcTagAccess by delegate {
             override val technologies: Set<String> get() = throw cause
         }
-        val repository = repositories.create(DetectedNfcTagHandle(tag), TestNfcFailures)
+        val repository = repositories.createGolfCard(DetectedNfcTagHandle(tag), TestNfcFailures)
         val failure = repository.readGolfCourseNum().unwrapError()
 
         assertEquals(FailureKind.ACCESS_DENIED, failure.kind)
@@ -110,9 +110,11 @@ class GolfCardRepositoryTest {
         val tag = object : NfcTagAccess by FakeNfcTag() {
             override val uid: ByteArray get() = throw cause
         }
-        val repository = repositories.create(DetectedNfcTagHandle(tag), TestNfcFailures)
+        val repository = repositories.createGolfCard(DetectedNfcTagHandle(tag), TestNfcFailures)
         val thrown = kotlin.runCatching { repository.readGolfCardHolderNum() }.exceptionOrNull()
 
-        assertTrue(thrown === cause)
+        assertTrue(thrown is IllegalStateException)
+        // IO境界のスタックトレース復元による複製も含め、元の原因が残ることを確認する。
+        assertTrue(generateSequence(thrown) { it.cause }.any { it === cause })
     }
 }

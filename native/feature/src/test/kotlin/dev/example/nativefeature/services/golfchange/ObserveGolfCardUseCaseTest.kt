@@ -32,7 +32,7 @@ import java.io.IOException
 @OptIn(ExperimentalCoroutinesApi::class)
 class ObserveGolfCardUseCaseTest {
     private val detection = TestTagDetectionRepository()
-    private val repositories = GolfCardTestRepositories()
+    private val repositories = TestCardRepositoryFactory()
     private val useCase = ObserveGolfCardUseCase(
         ObserveNfcTagsUseCase(detection),
         GolfCardReadUseCaseFactory(repositories),

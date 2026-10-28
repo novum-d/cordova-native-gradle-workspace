@@ -9,8 +9,8 @@ import org.junit.Test
 
 /** 形状を変えた試験用Profileで、SLIの4バイト定数に依存しないことを検証する。実製品の追加ではない。 */
 class NfcMemoryProfileTest {
-    private val reader = NfcMemoryReader()
-    private val profile = NfcTagProfiles.icodeSli.copy(memory = NfcBlockMemory(blockCount = 2, bytesPerBlock = 8))
+    private val reader = NfcMemoryReader(testNfcProfileResolver())
+    private val profile = IcodeSliTagProfile.profile.copy(memory = NfcBlockMemory(blockCount = 2, bytesPerBlock = 8))
 
     /** Profileの幅で応答を検査し、ブロックをまたぐ範囲の先頭・末尾を切り出す。 */
     @Test

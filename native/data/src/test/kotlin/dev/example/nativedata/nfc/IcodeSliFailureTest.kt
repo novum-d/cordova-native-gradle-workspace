@@ -13,8 +13,8 @@ import java.util.concurrent.CancellationException
 
 /** 不正応答・I/O・取消時に部分結果を返さず、接続を解放して原因を保持する。 */
 class IcodeSliFailureTest {
-    private val reader = NfcMemoryReader()
-    private val profile = NfcTagProfiles.icodeSli
+    private val reader = NfcMemoryReader(testNfcProfileResolver())
+    private val profile = IcodeSliTagProfile.profile
     private val range = NfcMemoryRange(NfcMemoryPosition(1, 2), NfcMemoryPosition(4, 3))
 
     /** Flagsのない空応答と、データ不足・過剰の正常応答を拒否する。 */

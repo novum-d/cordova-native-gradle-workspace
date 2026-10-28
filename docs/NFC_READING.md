@@ -11,6 +11,7 @@
 | 配置 | 責務 |
 | --- | --- |
 | [data/nfc](../native/data/src/main/kotlin/dev/example/nativedata/nfc/) | Android Tagとの接続、SLI判定、範囲検査、READ・応答検査、連続ByteArrayの取得、共通の失敗契約 |
+| [data/card](../native/data/src/main/kotlin/dev/example/nativedata/card/) | 業務Repositoryの生成契約と、共通Factoryを使う生成実装 |
 | [data/golf](../native/data/src/main/kotlin/dev/example/nativedata/golf/) | 対象タグに紐づくRepository、業務項目と固定座標の対応 |
 | [feature/nfc](../native/feature/src/main/kotlin/dev/example/nativefeature/nfc/) | 汎用タグ検出ユースケース・検出エラー |
 | [ObserveGolfCardUseCase](../native/feature/src/main/kotlin/dev/example/nativefeature/services/golfchange/ObserveGolfCardUseCase.kt) | 同じ対象から2項目を取得し、画面へ結果を通知 |
@@ -21,7 +22,7 @@
 
 ## 型番Profileとタグ判定
 
-[identifyNfcTagProfile](../native/data/src/main/kotlin/dev/example/nativedata/nfc/NfcTagProfile.kt)は、通信せずに次を確認し、ICODE SLIのProfileまたは未対応を示すnullを返します。
+[NfcTagProfileResolver](../native/data/src/main/kotlin/dev/example/nativedata/nfc/NfcTagProfileResolver.kt)が登録済みの判定器を呼び、一意のProfileを選びます。現在登録している[IcodeSliTagProfileIdentifier](../native/data/src/main/kotlin/dev/example/nativedata/nfc/IcodeSliTagProfileIdentifier.kt)は、通信せずに次を確認します。
 
 - 選択するProfileの通信方式が必要とする技術`android.nfc.tech.NfcV`がある。
 - UIDが8バイトで、UID7＝E0、UID6＝04、UID5＝01。
@@ -29,7 +30,7 @@
 
 配列はUID0からの送信順です。表示用のUID文字列へ変換・反転してから渡しません。メーカーと製品種別だけではSLIXやSLIX2も一致するため、ISO 15693の1始まりのbit 37・36で区別します。[SLIX2データシート §9.2.1 Table 8](https://www.nxp.com/docs/en/data-sheet/SL2S2602.pdf#page=12)の区別を参照しています。UIDによる製品分類であり、真正性の認証ではありません。
 
-Profileが得られない場合は未対応という判断です。FeliCaやMIFAREの種類を細かく識別したり、各規格のコマンドで試し読みしたりしません。
+Profileが得られない、または複数の判定器が一致した場合は未対応という判断です。追加手順は[型番識別の判定器を追加する](NFC_TAG_IDENTIFICATION.md)を参照してください。FeliCaやMIFAREの種類を細かく識別したり、各規格のコマンドで試し読みしたりしません。
 
 ## 座標指定
 
@@ -41,7 +42,7 @@ SLIのProfileにユーザー領域を28ブロック・各4バイトと定義し�
 
 ## 通信・解放・取消
 
-内部の`NfcMemoryReader`は、Repositoryが選択したProfileで通信方式を決め、Dispatchers.IOで実行し、1回の呼び出しごとに接続・切断します。複数ユースケース間で接続や読取済みブロックをキャッシュしません。
+`DefaultGolfCardRepository`は項目の固定範囲を共通の`NfcCardRepository`へ渡します。共通実装がタグの有効期間・排他・Profileと業務配置の対応モデルを確認します。内部の`NfcMemoryReader`は、共通Repositoryが選択したProfileで通信方式を決め、Dispatchers.IOで実行し、1回の呼び出しごとに接続・切断します。複数ユースケース間で接続や読取済みブロックをキャッシュしません。
 
 フレームは`22 20 <UID0〜7> <block>`です。高速・Addressed・OptionなしのRead Single Blockで対象UIDを指定します。NFCAppの`02 20 <block>`から、対象指定を追加した点が異なります。CRCはAndroidに任せ、Single Block READを必要ブロックへ順番に送ります。[Android NfcV](https://developer.android.com/reference/android/nfc/tech/NfcV)
 
